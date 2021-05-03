@@ -1,23 +1,23 @@
 from VigilantAssigment import *
+from fileProblem import *
+import pandas as pd
 import random
 
-problem = VigilantAssigment()
+
+dataSet = FileProblem("Data/userInterface.csv",4)
+dataSet.procedureData()
+problem = VigilantAssigment(dataSet.DataProblem,4)  
 solution = []
-for vigilant in range(0,1):
+for vigilant in range(0,100):
     shifts = []
     for period in range(0,168*4):
-        #sitio = random.randint(0,1)
-        sitio = 1
+        sitio = random.randint(0,problem.getCantPlaces())
         if sitio != 0:
             problem.addVigilant(sitio-1,period,vigilant)
         shifts.append(sitio)
     solution.append(shifts)
 problem.evalute(solution)
 
-
-# = 0
-#for place in shifts:
-#    for turno in place:
-#        pos += 1
-#        print(str(pos)+ " " +str(turno.getCantAssigmentVigilants()))
-        
+#Continuar con el anteproyecto
+#Crear el algoritmo
+#Generar el csv de la solucion

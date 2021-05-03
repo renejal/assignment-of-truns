@@ -18,10 +18,10 @@ class VigilantAssigment:
     periodEndWeek = []
     turnosAsignados = []
     
-    def __init__(self):
+    def __init__(self,dataSet,weeks):
         self.totalVigilants = 1
-        self.totalPlaces = 1
-        self.totalWeeks = 4
+        self.totalPlaces = len(dataSet)
+        self.totalWeeks = weeks
         self.totalPeriods = 24*7*self.totalWeeks
         self.maxShiftDuration = 12
         self.minShiftDuration = 6
@@ -37,13 +37,14 @@ class VigilantAssigment:
         for i in range(0,self.totalPlaces):
             shifts = []
             for j in range(0,168*self.totalWeeks):
-                shifts.append(Turno(4))
+                shifts.append(Turno(dataSet[i][j]))
             self.shifts.append(shifts)
-        print(self.periodEndWeek)
     def addVigilant(self,place,period,vigilant):
         self.shifts[place][period].addVigilant(vigilant)
     def getShifts(self):
         return self.turnosAsignados
+    def getCantPlaces(self):
+        return self.totalPlaces
     def evalute(self, solution):
         fitness = 0
         isVigilanResting = True
