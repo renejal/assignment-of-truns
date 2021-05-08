@@ -1,5 +1,7 @@
 from VigilantAssigment import *
 from fileProblem import *
+from Solution import *
+from Metaheuristics.GRASP import *
 import pandas as pd
 import random
 
@@ -15,7 +17,7 @@ def bubbleSort(array):
         if swapped == False:
             break
     return array
-def makeLRC(solutions,tam):
+def makeRCL(solutions,tam):
     solutions = bubbleSort(solutions)
     listaReducida = []
     if len(solutions) >= tam:
@@ -24,12 +26,14 @@ def makeLRC(solutions,tam):
         listaReducida = solutions
     for element in listaReducida:
         print(element[1])
-    
-
-
+        
 dataSet = FileProblem("Data/userInterface.csv",4)
 dataSet.procedureData()
 problem = VigilantAssigment(dataSet.DataProblem,4)
+algorithm  = Grasp()
+algorithm.Execute(problem,random.random())
+
+
 solutions = []
 for i in range(0,10):
     solution = []
@@ -42,10 +46,9 @@ for i in range(0,10):
             shifts.append(sitio)
         solution.append(shifts)
     solutions.append([solution,problem.evalute(solution)])
-makeLRC(solutions,9)
+makeRCL(solutions,9)
 
 #listaReducida
-
 #Continuar con el anteproyecto
 #Crear el algoritmo
 #Generar el csv de la solucion
