@@ -1,6 +1,6 @@
 class Turno:
     
-    def __init__(self,cantVigilantsPerPeriod):
+    def __init__(self, cantVigilantsPerPeriod):
         self.cantVigilantsPerPeriod = cantVigilantsPerPeriod
         self.assigmentVigilants = []
 

@@ -30,6 +30,7 @@ def makeRCL(solutions,tam):
 dataSet = FileProblem("Data/userInterface.csv",4)
 dataSet.procedureData()
 problem = VigilantAssigment(dataSet.DataProblem,4)
+
 algorithm  = Grasp()
 algorithm.Execute(problem,random.random())
 

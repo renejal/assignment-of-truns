@@ -1,56 +1,63 @@
 from Turno import *
 
 class VigilantAssigment:
-    totalVigilants =0
+    totalVigilantes =1000
     totalPlaces=0
     totalWeeks=0
     totalPeriods=0
-    maxShiftDuration=0
-    minShiftDuration=0
-    minBreakDuration=0
-    maxOvertimeWorkHoursPerWeek=0
-    maxWorkHoursPerWeek=0
-    minWorkHoursPerWeek=0
-    idealWorkHoursPerWeek=0
+    maxShiftDuration=12
+    minShiftDuration=6
+    minBreakDuration=18
+    maxOvertimeWorkHoursPerWeek=12
+    maxWorkHoursPerWeek=48
+    minWorkHoursPerWeek=40
+    idealWorkHoursPerWeek=48
     vigilantDistance=0
     vigilantPreference=0
     shifts = [] # 0[turnos,turnos...] [1]
     periodEndWeek = []
     turnosAsignados = []
     
-    def __init__(self,dataSet,weeks):
-        self.totalVigilants = 1
+    def __init__(self, dataSet, weeks):
         self.totalPlaces = len(dataSet)
         self.totalWeeks = weeks
         self.totalPeriods = 24*7*self.totalWeeks
-        self.maxShiftDuration = 12
-        self.minShiftDuration = 6
-        self.minBreakDuration = 18
-        self.maxOvertimeWorkHoursPerWeek = 12
-        self.maxWorkHoursPerWeek = 48
-        self.minWorkHoursPerWeek = 40
-        self.idealWorkHoursPerWeek = 48
-        #Identifica el periodo de inicio de la semana
-        for i in range(0,self.totalWeeks):
-            self.periodEndWeek.append((i+1)*168)
-        #Creacion de turnos    
-        for i in range(0,self.totalPlaces):
+        #self.identifiesWeekStartPeriod()
+        self.createShift(dataSet)
+
+    def createShift(self, dataSet):
+        '''
+        :param dataSet: data de entrada turnos a vigilar para cada sitio
+        '''
+        for i in range(0, self.totalPlaces):
             shifts = []
-            for j in range(0,168*self.totalWeeks):
+            for j in range(0, 168*self.totalWeeks):
                 shifts.append(Turno(dataSet[i][j]))
             self.shifts.append(shifts)
-    def addVigilant(self,place,period,vigilant):
+
+
+    def identifiesWeekStartPeriod(self):
+        '''
+        Identifica el periodo de inicio de la semana
+        '''
+        for i in range(0, self.totalWeeks):
+            self.periodEndWeek.append((i + 1) * 168)
+
+    def addVigilant(self, place, period, vigilant):
         self.shifts[place][period].addVigilant(vigilant)
+
     def getShifts(self):
         return self.turnosAsignados
+
     def getCantPlaces(self):
-        return self.totalPlaces        
+        return self.totalPlaces
+
     def evalute(self, solution):
         fitness = 0
         isVigilanResting = True
         hoursWorking = 0
         restTime = self.minBreakDuration + 1
-        for vigilant in range(0,self.totalVigilants):
+        for vigilant in range(0, self.totalVigilantes):
             cantWorkHoursWeek = 0
             day = 1
             week =1
