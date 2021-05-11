@@ -5,6 +5,8 @@ from Metaheuristics.GRASP import *
 import pandas as pd
 import random
 
+
+
 def bubbleSort(array):
     for iteration in range(0,len(array)-1):
         swapped =False
@@ -27,12 +29,12 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
         
-dataSet = FileProblem("Data/userInterface.csv",4)
+dataSet = FileProblem("Data/userInterface.csv",24)
 dataSet.procedureData()
-problem = VigilantAssigment(dataSet.DataProblem,4)
+problem = VigilantAssigment(dataSet.DataProblem,24)
 
-algorithm  = Grasp()
-algorithm.Execute(problem,random.random())
+#algorithm  = Grasp()
+#algorithm.Execute(problem,random.random())
 
 
 solutions = []
@@ -40,7 +42,7 @@ for i in range(0,10):
     solution = []
     for vigilant in range(0,100):
         shifts = []
-        for period in range(0,168*4):
+        for period in range(0,168*24):
             sitio = random.randint(0,problem.getCantPlaces())
             if sitio != 0:
                 problem.addVigilant(sitio-1,period,vigilant)
