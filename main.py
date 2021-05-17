@@ -1,5 +1,5 @@
 from VigilantAssigment import *
-from fileProblem import *
+from File import *
 from Solution import *
 from Metaheuristics.GRASP import *
 import pandas as pd
@@ -29,9 +29,9 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
         
-dataSet = FileProblem("Data/userInterface.csv",24)
+dataSet = File("Data/userInterface.csv", 4)
 dataSet.procedureData()
-problem = VigilantAssigment(dataSet.DataProblem,24)
+problem = VigilantAssigment(dataSet.DataProblem, 4)
 
 #algorithm  = Grasp()
 #algorithm.Execute(problem,random.random())

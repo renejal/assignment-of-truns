@@ -1,7 +1,10 @@
 from Turno import *
+from Vigilant import Vigilant
+import random
 
 class VigilantAssigment:
     totalVigilantes =1000
+    VigilantesList = []
     totalPlaces=0
     totalWeeks=0
     totalPeriods=0
@@ -14,31 +17,67 @@ class VigilantAssigment:
     idealWorkHoursPerWeek=48
     vigilantDistance=0
     vigilantPreference=0
-    shifts = [] # 0[turnos,turnos...] [1]
+    Sites = [] # 0[turnos,turnos...] [1]
     periodEndWeek = []
+    Site = 0
+    Shift = 0
     turnosAsignados = []
     
     def __init__(self, dataSet, weeks):
         self.totalPlaces = len(dataSet)
         self.totalWeeks = weeks
-        self.totalPeriods = 24*7*self.totalWeeks
-        #self.identifiesWeekStartPeriod()
+        self.totalPeriods = 168*self.totalWeeks
+        self.identifiesWeekStartPeriod()
+        self.Dataset = dataSet
+        self.initProblem()
         self.createShift(dataSet)
+
+    def initProblem(self):
+        '''
+        inicialize empty default problem
+        :return: None
+        '''
+        for i in range(self.totalPlaces):
+            shift = []
+            for j in range(self.totalPeriods):
+                shift.append(Turno(0, []))
+            self.Sites.append(shift)
+        for i in range(self.totalVigilantes):
+            self.VigilantesList.append(Vigilant(0, 0))
+
 
     def createShift(self, dataSet):
         '''
-        :param dataSet: data de entrada turnos a vigilar para cada sitio
+        Assigment vigilant to a shift and site
+        :param dataSet: data the input shift for to vigilantes
         '''
-        for i in range(0, self.totalPlaces):
-            shifts = []
-            for j in range(0, 168*self.totalWeeks):
-                shifts.append(Turno(dataSet[i][j]))
-            self.shifts.append(shifts)
+        while self.Site < self.totalPlaces:
+            while self.Shift < self.totalPeriods:
+                sites = []
+                self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+            self.Shift.append(sites)
 
+    def assigmentVigilantes(self, site, shift, vigilantes):
+        '''
+        assigna of vigilantes to site in shift
+        :param site: index site
+        :param shift: index shift of site
+        :param vigilantes: list vigilantes assigment
+        :return:
+        '''
+        for i in range(8):
+            objShift = self.Sites[site][shift]
+            objShift.addVigilant(vigilantes)
+
+    def aleatoryVigilantes(self, numVigilantes):
+        vigilantList = []
+        for i in range(numVigilantes):
+            vigilantList = random.randint(0, numVigilantes)
+        return vigilantList
 
     def identifiesWeekStartPeriod(self):
         '''
-        Identifica el periodo de inicio de la semana
+        identify the shift the init for the week
         '''
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)

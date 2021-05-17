@@ -4,7 +4,7 @@ import pandas as pd
 from pandas import DataFrame
 
 
-class FileProblem:
+class File:
     column= 0
     Row = 0
     UrlFile = ""
@@ -18,7 +18,10 @@ class FileProblem:
         self.Weeks = weeks
         self.Dataset = pd.read_csv(urlFile, sep=",")
         self.NumberSites = len(self.Dataset)
-        self.DataProblem = np.zeros((self.NumberSites, self.Weeks*168), dtype=int)
+        self.DataProblem = np.zeros((self.NumberSites, self.Weeks * 168), dtype=int)
+        self.procedureData()
+
+
 
     def procedureData(self):
         #data = self.Dataset.copy(deep=True)
@@ -50,11 +53,8 @@ class FileProblem:
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
             self.hoursConverst(hoursInitGuard, hoursFinitGuard, 6, i, numGuard)
 
-
         dataframe = pd.DataFrame(self.DataProblem)
-        dataframe.to_csv("data.csv")
-
-
+        dataframe.to_csv("Data/Inputdata.csv")
 
     def proceduresplit(self, hoursdayList):
         if hoursdayList == '0':
@@ -62,12 +62,10 @@ class FileProblem:
         listTemp = hoursdayList.split(",")
         return int(listTemp[0]),int(listTemp[1])
 
-
     def hoursConverst(self, inithour, finithour, day, row, numGuards):
         listAssignedShifts=self.assignedShifts(inithour, finithour, day)
         for i in range(len(listAssignedShifts)):
             self.DataProblem[row][listAssignedShifts[i]] = 0
-
 
     def assignedShifts(self, parInihour, parFinithour ,day):
         shift = []
