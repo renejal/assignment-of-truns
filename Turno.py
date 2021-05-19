@@ -8,6 +8,7 @@ class Turno:
         self.state = 0
         self.cantVigilantesPerPeriod = 0
         self.assigmentVigilantes = 0
+        self.site = None
 
     def getCantVigilantsPerPeriod(self):
         return self.cantVigilantsPerPeriod;

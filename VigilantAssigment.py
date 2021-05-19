@@ -3,7 +3,7 @@ from Vigilant import Vigilant
 import random
 
 class VigilantAssigment:
-    totalVigilantes = 2
+    totalVigilantes = 30
     totalPlaces=0
     totalWeeks=0
     totalPeriods=0
@@ -32,7 +32,7 @@ class VigilantAssigment:
         self.identifiesWeekStartPeriod()
         self.Dataset = dataSet
         self.initProblem()
-        self.createShift(dataSet)
+        #self.createShift(dataSet)
 
     def initProblem(self):
         '''
@@ -53,8 +53,10 @@ class VigilantAssigment:
         while self.Site < self.totalPlaces:
             while self.Shift < self.totalPeriods:
                 sites = []
-                self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
-            self.Shift.append(sites)
+                if dataSet[self.Site][self.Shift] != 0 :
+                    self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+            if sites:
+                self.Shift.append(sites)
 
     def assigmentVigilantes(self, site, shift, vigilantes):
         '''
@@ -65,13 +67,12 @@ class VigilantAssigment:
         :return:
         '''
         for i in range(8): #todo: 8 numero aleatorio
-            objShift = self.Sites[site][shift]
-            objShift.addVigilant(vigilantes)
+            self.addVigilant(site, shift, vigilantes)
 
     def aleatoryVigilantes(self, numVigilantes):
         vigilantList = []
         for i in range(numVigilantes):
-            vigilantList = random.randint(0, numVigilantes)
+            vigilantList.append(random.randint(0, self.totalVigilantes))#todo se puede genear valores repetidos
         return vigilantList
 
     def identifiesWeekStartPeriod(self):
@@ -82,10 +83,11 @@ class VigilantAssigment:
             self.periodEndWeek.append((i + 1) * 168)
 
 
-    def addVigilant(self, period, vigilantes):
-        for i in vigilantes:
-            self.shifts[i][period].state = 1
-
+  #  def addVigilant(self, site, shift, vigilantes):
+      #  for i in vigilantes:
+       #     objVigilan=self.vigilantes[i]
+        #    objWeek = objVigilan.shifts[site]#todo convertir numero de perdos a semans y peridos
+           # objTurno= objWeek[]
 
     def getShifts(self):
         return self.turnosAsignados
