@@ -3,7 +3,7 @@ from Vigilant import Vigilant
 import random
 
 class VigilantAssigment:
-    totalVigilantes = 30
+    totalVigilantes = 2
     totalPlaces=0
     totalWeeks=0
     totalPeriods=0
@@ -41,7 +41,8 @@ class VigilantAssigment:
         '''
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
-            self.vigilantes.append(Vigilant(self.totalVigilantes))
+            objVigilant = Vigilant(self.totalWeeks)
+            self.vigilantes.append(objVigilant)
 
 
     def createShift(self, dataSet):
@@ -63,7 +64,7 @@ class VigilantAssigment:
         :param vigilantes: list vigilantes assigment
         :return:
         '''
-        for i in range(8):
+        for i in range(8): #todo: 8 numero aleatorio
             objShift = self.Sites[site][shift]
             objShift.addVigilant(vigilantes)
 
