@@ -1,11 +1,12 @@
+import numpy.lib.format
+
 from VigilantAssigment import *
 from File import *
+from Vigilant import *
 from Solution import *
 from Metaheuristics.GRASP import *
 import pandas as pd
 import random
-
-
 
 def bubbleSort(array):
     for iteration in range(0,len(array)-1):

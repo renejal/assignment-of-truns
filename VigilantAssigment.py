@@ -3,8 +3,7 @@ from Vigilant import Vigilant
 import random
 
 class VigilantAssigment:
-    totalVigilantes =1000
-    VigilantesList = []
+    totalVigilantes = 30
     totalPlaces=0
     totalWeeks=0
     totalPeriods=0
@@ -17,7 +16,9 @@ class VigilantAssigment:
     idealWorkHoursPerWeek=48
     vigilantDistance=0
     vigilantPreference=0
-    Sites = [] # 0[turnos,turnos...] [1]
+    Sites = []
+    VigilantesList = []
+    Shifts = []
     periodEndWeek = []
     Site = 0
     Shift = 0
@@ -37,13 +38,13 @@ class VigilantAssigment:
         inicialize empty default problem
         :return: None
         '''
-        for i in range(self.totalPlaces):
-            shift = []
-            for j in range(self.totalPeriods):
-                shift.append(Turno(0, []))
-            self.Sites.append(shift)
+        #init vigilantes and shift default
+        shift = []
         for i in range(self.totalVigilantes):
-            self.VigilantesList.append(Vigilant(0, 0))
+            shift.append(Vigilant())
+            for j in range(self.totalPeriods):
+                shift.append(Turno())
+            self.Shifts.append(shift)
 
 
     def createShift(self, dataSet):
@@ -81,9 +82,13 @@ class VigilantAssigment:
         '''
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
+    def createShitftVigilant(self, period, vigilantes, hoursWorked, hoursRest):
 
-    def addVigilant(self, place, period, vigilant):
-        self.shifts[place][period].addVigilant(vigilant)
+
+    def addVigilant(self, period, vigilantes):
+        for i in vigilantes:
+            self.shifts[i][period].state = 1
+
 
     def getShifts(self):
         return self.turnosAsignados
