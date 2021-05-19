@@ -1,11 +1,10 @@
 import random
-
-assigmentVigilants = []
-state = 0
-cantVigilantsPerPeriod = 0
-assigmentVigilants = 0
-
 class Turno:
+
+    assigmentVigilants = []
+    state = 0
+    cantVigilantsPerPeriod = 0
+    assigmentVigilants = 0
 
     def getCantVigilantsPerPeriod(self):
         return self.cantVigilantsPerPeriod;

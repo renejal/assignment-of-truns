@@ -23,6 +23,7 @@ class VigilantAssigment:
     Site = 0
     Shift = 0
     turnosAsignados = []
+    vigilantes = []
     
     def __init__(self, dataSet, weeks):
         self.totalPlaces = len(dataSet)
@@ -39,12 +40,8 @@ class VigilantAssigment:
         :return: None
         '''
         #init vigilantes and shift default
-        shift = []
         for i in range(self.totalVigilantes):
-            shift.append(Vigilant())
-            for j in range(self.totalPeriods):
-                shift.append(Turno())
-            self.Shifts.append(shift)
+            self.vigilantes.append(Vigilant(self.totalVigilantes))
 
 
     def createShift(self, dataSet):
@@ -82,7 +79,6 @@ class VigilantAssigment:
         '''
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
-    def createShitftVigilant(self, period, vigilantes, hoursWorked, hoursRest):
 
 
     def addVigilant(self, period, vigilantes):
