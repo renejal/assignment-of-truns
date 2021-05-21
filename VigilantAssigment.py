@@ -24,6 +24,7 @@ class VigilantAssigment:
     Shift = 0
     turnosAsignados = []
     cantVigilantsPeriod = []
+    vigilantes = []
     
     def __init__(self, dataSet, weeks):
         self.totalPlaces = len(dataSet)
@@ -32,7 +33,7 @@ class VigilantAssigment:
         self.identifiesWeekStartPeriod()
         self.Dataset = dataSet
         self.initProblem()
-        self.createShift(dataSet)
+        #self.createShift(dataSet)
 
     def initProblem(self):
         '''
@@ -40,12 +41,9 @@ class VigilantAssigment:
         :return: None
         '''
         #init vigilantes and shift default
-        shift = []
         for i in range(self.totalVigilantes):
-            shift.append(Vigilant())
-            for j in range(self.totalPeriods):
-                shift.append(Turno())
-            self.Shifts.append(shift)
+            objVigilant = Vigilant(self.totalWeeks)
+            self.vigilantes.append(objVigilant)
 
 
     def createShift(self, dataSet):
@@ -56,8 +54,10 @@ class VigilantAssigment:
         while self.Site < self.totalPlaces:
             while self.Shift < self.totalPeriods:
                 sites = []
-                self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
-            self.Shift.append(sites)
+                if dataSet[self.Site][self.Shift] != 0 :
+                    self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+            if sites:
+                self.Shift.append(sites)
 
     def assigmentVigilantes(self, site, shift, vigilantes):
         '''
@@ -67,14 +67,13 @@ class VigilantAssigment:
         :param vigilantes: list vigilantes assigment
         :return:
         '''
-        for i in range(8):
-            objShift = self.Sites[site][shift]
-            objShift.addVigilant(vigilantes)
+        for i in range(8): #todo: 8 numero aleatorio
+            self.addVigilant(site, shift, vigilantes)
 
     def aleatoryVigilantes(self, numVigilantes):
         vigilantList = []
         for i in range(numVigilantes):
-            vigilantList = random.randint(0, numVigilantes)
+            vigilantList.append(random.randint(0, self.totalVigilantes))#todo se puede genear valores repetidos
         return vigilantList
 
     def identifiesWeekStartPeriod(self):
@@ -83,13 +82,13 @@ class VigilantAssigment:
         '''
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
-    def createShitftVigilant(self, period, vigilantes, hoursWorked, hoursRest):
 
 
-    def addVigilant(self, period, vigilantes):
-        for i in vigilantes:
-            self.shifts[i][period].state = 1
-
+  #  def addVigilant(self, site, shift, vigilantes):
+      #  for i in vigilantes:
+       #     objVigilan=self.vigilantes[i]
+        #    objWeek = objVigilan.shifts[site]#todo convertir numero de perdos a semans y peridos
+           # objTurno= objWeek[]
 
     def getShifts(self):
         return self.turnosAsignados
