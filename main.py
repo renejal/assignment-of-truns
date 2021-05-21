@@ -29,15 +29,18 @@ def makeRCL(solutions,tam):
         listaReducida = solutions
     for element in listaReducida:
         print(element[1])
-        
+
+
+
+
 dataSet = File("Data/userInterface.csv", 4)
 dataSet.procedureData()
 problem = VigilantAssigment(dataSet.DataProblem, 4)
-
+problem.to_print()
 #algorithm  = Grasp()
 #algorithm.Execute(problem,random.random())
 
-
+"""
 solutions = []
 for i in range(0,10):
     solution = []
@@ -56,3 +59,4 @@ makeRCL(solutions,9)
 #Continuar con el anteproyecto
 #Crear el algoritmo
 #Generar el csv de la solucion
+"""

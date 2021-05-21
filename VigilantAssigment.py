@@ -1,3 +1,5 @@
+import numpy as np
+
 from Turno import *
 from Vigilant import Vigilant
 import random
@@ -32,7 +34,7 @@ class VigilantAssigment:
         self.identifiesWeekStartPeriod()
         self.Dataset = dataSet
         self.initProblem()
-        #self.createShift(dataSet)
+        self.createShift(dataSet)
 
     def initProblem(self):
         '''
@@ -54,11 +56,15 @@ class VigilantAssigment:
             while self.Shift < self.totalPeriods:
                 sites = []
                 if dataSet[self.Site][self.Shift] != 0 :
-                    self.assigmentVigilantes(self.Site, self.Shift, self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+                    self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+                self.Shift += 1
+            self.Shift = 0
             if sites:
-                self.Shift.append(sites)
+                self.Shifts.append(sites)
+            self.Site += 1
 
-    def assigmentVigilantes(self, site, shift, vigilantes):
+
+    def assigmentVigilantes(self, vigilantes):
         '''
         assigna of vigilantes to site in shift
         :param site: index site
@@ -67,12 +73,13 @@ class VigilantAssigment:
         :return:
         '''
         for i in range(8): #todo: 8 numero aleatorio
-            self.addVigilant(site, shift, vigilantes)
+            self.addVigilant(vigilantes)
+            self.Shift += 1
 
     def aleatoryVigilantes(self, numVigilantes):
         vigilantList = []
         for i in range(numVigilantes):
-            vigilantList.append(random.randint(0, self.totalVigilantes))#todo se puede genear valores repetidos
+            vigilantList.append(random.randint(0, self.totalVigilantes-1))#todo se puede genear valores repetidos
         return vigilantList
 
     def identifiesWeekStartPeriod(self):
@@ -82,12 +89,27 @@ class VigilantAssigment:
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
 
+    def ShiftConvert(self, shift):
+        i = 0
+        while shift >= 168:
+            shift = shift - 168
+            i = i + 1
+        return shift, i
 
-  #  def addVigilant(self, site, shift, vigilantes):
-      #  for i in vigilantes:
-       #     objVigilan=self.vigilantes[i]
-        #    objWeek = objVigilan.shifts[site]#todo convertir numero de perdos a semans y peridos
-           # objTurno= objWeek[]
+    def addVigilant(self, vigilantes):
+        for i in vigilantes:
+            if self.Shift < self.totalPeriods:
+                turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
+                self.vigilantes[i].shifts[week][turno].state = 1 #vigilantes
+                self.vigilantes[i].shifts[week][turno].site = self.Site
+    def to_print(self):
+        result =  []
+        for vigilantI, vigilant in enumerate(self.vigilantes):
+            for weekI, week in enumerate(vigilant.shifts):
+                for shiftI, shift in enumerate(week):
+                    result[vigilantI][]
+
+
 
     def getShifts(self):
         return self.turnosAsignados
