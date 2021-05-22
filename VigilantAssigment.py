@@ -26,6 +26,7 @@ class VigilantAssigment:
     Site = 0
     Shift = 0
     turnosAsignados = []
+    cantVigilantsPeriod = []
     vigilantes = []
     
     def __init__(self, dataSet, weeks):
@@ -188,5 +189,63 @@ class VigilantAssigment:
                     cantWorkHoursWeek = 0
                     week+=1
             return fitness
-
+    def evalute2(self, solution):
+        vigilantsByPeriod = self.cantVigilantsPeriod
+        fitness = 0
+        for vigilant in solution:
+            period = 0
+            hoursWorking = 0
+            isVigilanResting = True
+            restTime = 0
+            day = 1
+            weekToCheck = 1
+            workInSunday = False
+            for week in range(0,len(vigilant.turnos)):
+                for periodInWeek in range(0,len(week)):
+                    place = vigilant.turnos[week][periodInWeek].sitio
+                    if place != 0
+                        #Verifica que existe el turno
+                        if self.vigilantsByPeriod[place][period] == 0:
+                            fitnes+=1000
+                        #Verifica horas de descanso
+                        if restTime < self.minBreakDuration:
+                            fitness+= 1000
+                        isVigilanResting = False
+                        restTime = 0 
+                        hoursWorking +=1
+                        vigilantsByPeriod[place][period]--
+                        #verifica que no se hagan cambios entre las 11p.m y 5p.m
+                        if 23*day + (day-1) <= period and period <30*day - ((day-1)*6):
+                            if vigilant.turnos[week][periodInWeek-1].sitio == 0:
+                                fitness+= 100
+                        #Verifica si trabajo dos domingo consecutivos
+                        if weekToCheck == week+1 and period  >= 144 + (week)*168 and period <= 168 * week+1:
+                            if workInSunday:
+                                fitness+= 100
+                            workInSunday = True
+                            weekToCheck = week+2
+                    else:
+                        #Verifica las horas seguidas trabajadas
+                        if hoursWorking < self.minShiftDuration and isVigilanResting == False:
+                            fitness += (self.minShiftDuration - hoursWorking)*1000
+                        if hoursWorking >  self.maxShiftDuration and isVigilanResting == False:
+                            fitness += (hoursWorking - self.maxShiftDuration)*1000
+                        isVigilanResting = True
+                        restTime +=1
+                        hoursWorking = 0
+                    if period >= 30 + (24*(day-1)):
+                        day +=1 
+                    period++
+                #NO debe exceder la cantidad de horas extras trabajadas
+                if(vigilant.horasWeek[turno] > self.maxWorkHoursPerWeek):
+                     fitness += 500
+                #Se debe trabajar u minimo d horas trabajadas
+                if(vigilant.horasWeek[turno] < self.maxWorkHoursPerWeek):
+                     fitness += 500
+        #verificar catidad de guardias
+        for place in vigilantsByPeriod:
+            for period in place:
+                fitness+= abs(period)*1000
+        print(fitness)
+        
                 
