@@ -31,11 +31,10 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
 
-dataSet = File("Data/userInterface.csv", 4)
-dataSet.procedureData()
-problem = VigilantAssigment(dataSet.DataProblem, 4)
-dataFrame=problem.get_DataSetResult()
-dataFrame.to_csv("Data/datasetResult.csv")
+
+problem = VigilantAssigment("Data/userInterface.csv", 4)
+problem.to_Save("Data/datasetResult.csv")
+
 #algorithm  = Grasp()
 #algorithm.Execute(problem,random.random())
 

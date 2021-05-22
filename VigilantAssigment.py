@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+from File import File
 from Turno import *
 from Vigilant import Vigilant
 import random
@@ -29,14 +29,18 @@ class VigilantAssigment:
     cantVigilantsPeriod = []
     vigilantes = []
     
-    def __init__(self, dataSet, weeks):
-        self.totalPlaces = len(dataSet)
+    def __init__(self, path, weeks):
         self.totalWeeks = weeks
         self.totalPeriods = 168*self.totalWeeks
         self.identifiesWeekStartPeriod()
-        self.Dataset = dataSet
+        self.readData(path)
         self.initProblem()
-        self.createShift(dataSet)
+        self.createShift(self.Dataset)
+
+    def readData(self,path):
+        self.Dataset = File(path, self.totalWeeks)
+        self.totalPlaces = len(self.Dataset)
+
 
     def initProblem(self):
         '''
@@ -105,14 +109,14 @@ class VigilantAssigment:
                 self.vigilantes[i].shifts[week][turno].state = 1 #vigilantes
                 self.vigilantes[i].shifts[week][turno].site = self.Site
 
-    def get_DataSetResult(self):
+    def to_Save(self, path):
         result = np.empty((0, self.totalPeriods*self.totalWeeks+1) ,int)
         for vigilantI, vigilant in enumerate(self.vigilantes):
             turno = self.getShitfVigilant(vigilant)
             turno.insert(0, vigilantI)
             result = np.append(result, np.array([turno]), axis=0)
         result = pd.DataFrame(result)
-        return result
+        result.to_csv(path)
 
 
     def getShitfVigilant(self, vigilant):
