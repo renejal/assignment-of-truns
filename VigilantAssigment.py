@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from Turno import *
 from Vigilant import Vigilant
@@ -102,13 +103,23 @@ class VigilantAssigment:
                 turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
                 self.vigilantes[i].shifts[week][turno].state = 1 #vigilantes
                 self.vigilantes[i].shifts[week][turno].site = self.Site
-    def to_print(self):
-        result =  []
-        for vigilantI, vigilant in enumerate(self.vigilantes):
-            for weekI, week in enumerate(vigilant.shifts):
-                for shiftI, shift in enumerate(week):
-                    result[vigilantI][]
 
+    def get_DataSetResult(self):
+        result = np.empty((0, self.totalPeriods*self.totalWeeks+1) ,int)
+        for vigilantI, vigilant in enumerate(self.vigilantes):
+            turno = self.getShitfVigilant(vigilant)
+            turno.insert(0, vigilantI)
+            result = np.append(result, np.array([turno]), axis=0)
+        result = pd.DataFrame(result)
+        return result
+
+
+    def getShitfVigilant(self, vigilant):
+        turno = []
+        for weekI, week in enumerate(vigilant.shifts):
+            for shiftI, shift in enumerate(week):
+                turno.append(shift.state)
+        return turno
 
 
     def getShifts(self):

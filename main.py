@@ -1,3 +1,4 @@
+import numpy as np
 import numpy.lib.format
 
 from VigilantAssigment import *
@@ -30,13 +31,11 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
 
-
-
-
 dataSet = File("Data/userInterface.csv", 4)
 dataSet.procedureData()
 problem = VigilantAssigment(dataSet.DataProblem, 4)
-problem.to_print()
+dataFrame=problem.get_DataSetResult()
+dataFrame.to_csv("Data/datasetResult.csv")
 #algorithm  = Grasp()
 #algorithm.Execute(problem,random.random())
 
