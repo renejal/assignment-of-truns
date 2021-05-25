@@ -197,6 +197,7 @@ class VigilantAssigment:
     def evalute2(self, solution):
         vigilantsByPeriod = self.cantVigilantsPeriod
         fitness = 0
+        print(fitness)
         for vigilant in solution:
             period = 0
             hoursWorking = 0
