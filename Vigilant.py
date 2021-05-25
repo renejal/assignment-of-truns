@@ -4,7 +4,7 @@ class Vigilant:
     def __init__(self, numberWeek):
         self.shifts = []
         self.HoursWorked = 0
-        self.HoursWeek = 0
+        self.HoursWeeks = []
         self.HoursofRest = 0
         self.initShift(numberWeek)
 
