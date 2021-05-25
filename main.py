@@ -22,7 +22,7 @@ def bubbleSort(array):
             break
     return array
 def makeRCL(solutions,tam):
-    solutions = bubbleSort(solutions)
+    solutions = bubbleSort(solutions)   
     listaReducida = []
     if len(solutions) >= tam:
         listaReducida = solutions[:tam]
