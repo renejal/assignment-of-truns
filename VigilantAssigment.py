@@ -111,10 +111,10 @@ class VigilantAssigment:
                 self.vigilantes[i].shifts[week][turno].site = self.Site
 
     def to_Save(self, path):
-        result = np.empty((0, self.totalPeriods*self.totalWeeks+1) ,int)
+        result = np.empty((0, self.totalPeriods) ,int)
         for vigilantI, vigilant in enumerate(self.vigilantes):
             turno = self.getShitfVigilant(vigilant)
-            turno.insert(0, vigilantI)
+            #turno.insert(0, vigilantI)
             result = np.append(result, np.array([turno]), axis=0)
         result = pd.DataFrame(result)
         result.to_csv(path)
@@ -205,7 +205,7 @@ class VigilantAssigment:
             day = 1
             weekToCheck = 1
             workInSunday = False
-            for week in range(0,len(vigilant.turnos)):
+            for week in range(0,len(vigilant.shifts)):
                 for periodInWeek in range(0,len(week)):
                     place = vigilant.turnos[week][periodInWeek].sitio
                     if place != 0:

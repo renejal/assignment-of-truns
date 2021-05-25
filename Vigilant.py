@@ -12,7 +12,7 @@ class Vigilant:
     def initShift(self, numberWeek):
         for i in range(numberWeek):
             week = []
-            for j in range(672):
+            for j in range(168):
                 week.append(Turno())
             self.shifts.append(week)
 

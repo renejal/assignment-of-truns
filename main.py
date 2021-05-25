@@ -34,7 +34,7 @@ def makeRCL(solutions,tam):
 
 problem = VigilantAssigment("Data/userInterface.csv", 4)
 problem.to_Save("Data/datasetResult.csv")
-problem.evalute(problem.vigilantes)
+problem.evalute2(problem.vigilantes)
 #algorithm  = Grasp()
 #algorithm.Execute(problem,random.random())
 
