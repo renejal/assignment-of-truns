@@ -2,12 +2,10 @@ import random
 class Turno:
 
 
-
     def __init__(self):
         self.assigmentVigilantes = []
         self.state = 0
         self.cantVigilantesPerPeriod = 0
-        self.assigmentVigilantes = 0
         self.site = None
 
     def getCantVigilantsPerPeriod(self):

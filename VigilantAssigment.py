@@ -37,7 +37,7 @@ class VigilantAssigment:
         self.initProblem()
         self.createShift(self.Dataset)
 
-    def readData(self,path):
+    def readData(self, path):
         datasets = File(path, self.totalWeeks)
         self.Dataset = datasets.DataProblem
         self.totalPlaces = len(self.Dataset)
@@ -62,8 +62,8 @@ class VigilantAssigment:
         while self.Site < self.totalPlaces:
             while self.Shift < self.totalPeriods:
                 sites = []
-                if dataSet[self.Site][self.Shift] != 0 :
-                    self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift]))
+                if dataSet[self.Site][self.Shift] != 0:
+                    self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift], 0, self.totalVigilantes-1))
                 self.Shift += 1
             self.Shift = 0
             if sites:
@@ -83,11 +83,13 @@ class VigilantAssigment:
             self.addVigilant(vigilantes)
             self.Shift += 1
 
-    def aleatoryVigilantes(self, numVigilantes):
+    def aleatoryVigilantes(self, numVigilantes, numInit, numEnd):
         vigilantList = []
-        for i in range(numVigilantes):
-            vigilantList.append(random.randint(0, self.totalVigilantes-1))#todo se puede genear valores repetidos
-        return vigilantList
+        while len(vigilantList) < numVigilantes:
+            aleatoryVigilant=random.randint(numInit, numEnd)
+            if aleatoryVigilant is not vigilantList:
+                vigilantList.append(aleatoryVigilant)
+        return  vigilantList
 
     def identifiesWeekStartPeriod(self):
         '''
@@ -107,8 +109,35 @@ class VigilantAssigment:
         for i in vigilantes:
             if self.Shift < self.totalPeriods:
                 turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
-                self.vigilantes[i].shifts[week][turno].state = 1 #vigilantes
-                self.vigilantes[i].shifts[week][turno].site = self.Site
+                self.addVigilantShift(i, week, turno, self.Site, 1)
+
+    def addvigilant(self):
+        if self.Shift < self.totalPeriods:
+            turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
+            self.addVigilantShift(random.randint(0, self.totalVigilantes), week, turno, self.Site, 1)
+
+    def addVigilantShift(self, Indexvigilant, IndexWeek, IndexTurno, indexSite, state):
+        #validate if the vigilant is on shift
+        k = 0
+        while k < self.totalVigilantes:
+
+            vigilantIs=self.validateVigilantinShift(Indexvigilant, IndexWeek, IndexTurno)
+            if not vigilantIs:
+                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].state = state  # vigilantes
+                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].site = indexSite
+                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].assigmentVigilantes.append(Indexvigilant)
+                break
+            Indexvigilant=random.randint(0, self.totalVigilantes)
+            k += 1
+
+
+
+    def validateVigilantinShift(self, IndexVigilant, IndexWeek, IndexTurno):
+        vigilantIs = False
+        vigilantes=self.vigilantes[IndexVigilant].shifts[IndexWeek][IndexTurno].assigmentVigilantes
+        if IndexVigilant is vigilantes:
+            vigilantIs = True
+        return vigilantIs
 
     def to_Save(self, path):
         result = np.empty((0, self.totalPeriods) ,int)
