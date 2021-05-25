@@ -38,7 +38,8 @@ class VigilantAssigment:
         self.createShift(self.Dataset)
 
     def readData(self,path):
-        self.Dataset = File(path, self.totalWeeks)
+        datasets = File(path, self.totalWeeks)
+        self.Dataset = datasets.DataProblem
         self.totalPlaces = len(self.Dataset)
 
 
