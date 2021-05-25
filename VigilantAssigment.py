@@ -41,6 +41,11 @@ class VigilantAssigment:
         datasets = File(path, self.totalWeeks)
         self.Dataset = datasets.DataProblem
         self.totalPlaces = len(self.Dataset)
+        for place in self.Dataset:
+            cantVigilantByPeriod = []
+            for cantByperiod in place:
+                cantVigilantByPeriod.append(cantByperiod)
+            self.cantVigilantsPeriod.append(cantVigilantByPeriod)
 
 
     def initProblem(self):
@@ -197,7 +202,6 @@ class VigilantAssigment:
     def evalute2(self, solution):
         vigilantsByPeriod = self.cantVigilantsPeriod
         fitness = 0
-        print(fitness)
         for vigilant in solution:
             period = 0
             hoursWorking = 0
@@ -206,12 +210,13 @@ class VigilantAssigment:
             day = 1
             weekToCheck = 1
             workInSunday = False
-            for week in range(0,len(vigilant.turnos)):
-                for periodInWeek in range(0,len(week)):
-                    place = vigilant.turnos[week][periodInWeek].sitio
-                    if place != 0:
+            for week in range(0,len(vigilant.shifts)):
+                for periodInWeek in range(0,len(vigilant.shifts)):
+                    place = vigilant.shifts[week][periodInWeek].site
+                    if place != 0 and place != None:
+                        print(place)
                         #Verifica que existe el turno
-                        if self.vigilantsByPeriod[place][period] == 0:
+                        if self.cantVigilantsPeriod[place][period] == 0:
                             fitnes+=1000
                         #Verifica horas de descanso
                         if restTime < self.minBreakDuration:
@@ -243,10 +248,10 @@ class VigilantAssigment:
                         day +=1 
                     period+=1
                 #NO debe exceder la cantidad de horas extras trabajadas
-                if(vigilant.horasWeek[turno] > self.maxWorkHoursPerWeek):
+                if(vigilant.HoursWeek[turno] > self.maxWorkHoursPerWeek):
                      fitness += 500
                 #Se debe trabajar u minimo d horas trabajadas
-                if(vigilant.horasWeek[turno] < self.maxWorkHoursPerWeek):
+                if(vigilant.HoursWeek[turno] < self.maxWorkHoursPerWeek):
                      fitness += 500
         #verificar catidad de guardias
         for place in vigilantsByPeriod:
