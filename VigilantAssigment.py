@@ -207,7 +207,7 @@ class VigilantAssigment:
             for week in range(0,len(vigilant.turnos)):
                 for periodInWeek in range(0,len(week)):
                     place = vigilant.turnos[week][periodInWeek].sitio
-                    if place != 0
+                    if place != 0:
                         #Verifica que existe el turno
                         if self.vigilantsByPeriod[place][period] == 0:
                             fitnes+=1000
@@ -217,7 +217,7 @@ class VigilantAssigment:
                         isVigilanResting = False
                         restTime = 0 
                         hoursWorking +=1
-                        vigilantsByPeriod[place][period]--
+                        vigilantsByPeriod[place][period]-=1
                         #verifica que no se hagan cambios entre las 11p.m y 5p.m
                         if 23*day + (day-1) <= period and period <30*day - ((day-1)*6):
                             if vigilant.turnos[week][periodInWeek-1].sitio == 0:
@@ -239,7 +239,7 @@ class VigilantAssigment:
                         hoursWorking = 0
                     if period >= 30 + (24*(day-1)):
                         day +=1 
-                    period++
+                    period+=1
                 #NO debe exceder la cantidad de horas extras trabajadas
                 if(vigilant.horasWeek[turno] > self.maxWorkHoursPerWeek):
                      fitness += 500
