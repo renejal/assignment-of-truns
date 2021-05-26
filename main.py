@@ -8,6 +8,7 @@ from Solution import *
 from Metaheuristics.GRASP import *
 import pandas as pd
 import random
+random.seed(0)
 
 def bubbleSort(array):
     for iteration in range(0,len(array)-1):
@@ -30,7 +31,6 @@ def makeRCL(solutions,tam):
         listaReducida = solutions
     for element in listaReducida:
         print(element[1])
-
 
 problem = VigilantAssigment("Data/userInterface.csv", 4)
 problem.to_Save("Data/datasetResult.csv")

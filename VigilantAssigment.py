@@ -4,6 +4,7 @@ from File import File
 from Turno import *
 from Vigilant import Vigilant
 import random
+random.seed(0)
 
 class VigilantAssigment:
     totalVigilantes = 30
@@ -35,6 +36,7 @@ class VigilantAssigment:
         self.identifiesWeekStartPeriod()
         self.readData(path)
         self.initProblem()
+        self.InitListVigilantesAssigment()
         self.createShift(self.Dataset)
 
     def readData(self, path):
@@ -58,6 +60,10 @@ class VigilantAssigment:
             objVigilant = Vigilant(self.totalWeeks)
             self.vigilantes.append(objVigilant)
 
+    def InitListVigilantesAssigment(self):
+        for i in range(self.totalVigilantes):
+            self.VigilantesList.append(i)
+        random.shuffle(self.VigilantesList)
 
     def createShift(self, dataSet):
         '''
@@ -75,6 +81,17 @@ class VigilantAssigment:
                 self.Shifts.append(sites)
             self.Site += 1
 
+   # def assigmentVigilantes(self,parSite, parShift):
+        #asignar vigilanestes locales
+
+            #validar horas trabajas
+            #validar horas descanzo
+        #asignar vigilantes globales
+            #asignar
+
+
+
+
 
     def assigmentVigilantes(self, vigilantes):
         '''
@@ -88,13 +105,7 @@ class VigilantAssigment:
             self.addVigilant(vigilantes)
             self.Shift += 1
 
-    def aleatoryVigilantes(self, numVigilantes, numInit, numEnd):
-        vigilantList = []
-        while len(vigilantList) < numVigilantes:
-            aleatoryVigilant=random.randint(numInit, numEnd)
-            if aleatoryVigilant is not vigilantList:
-                vigilantList.append(aleatoryVigilant)
-        return  vigilantList
+
 
     def identifiesWeekStartPeriod(self):
         '''
@@ -138,6 +149,14 @@ class VigilantAssigment:
 
 
     def validateVigilantinShift(self, IndexVigilant, IndexWeek, IndexTurno):
+        '''
+        check if the vigilant is assigment in the indexTurno in indexWeek
+
+        :param IndexVigilant: position vigilant
+        :param IndexWeek:  position week
+        :param IndexTurno: position shift
+        :return: true if the vigilant is found otherwise false
+        '''
         vigilantIs = False
         vigilantes=self.vigilantes[IndexVigilant].shifts[IndexWeek][IndexTurno].assigmentVigilantes
         if IndexVigilant is vigilantes:
@@ -161,6 +180,22 @@ class VigilantAssigment:
                 turno.append(shift.state)
         return turno
 
+    #aleatory
+    def aleatoryVigilantes(self, numVigilantes, numInit, numEnd):
+        '''
+        create list of aleatory vigilantes uniques
+        :param numVigilantes:
+        :param numInit:
+        :param numEnd:
+        :return:
+        '''
+
+        vigilantList = []
+        while len(vigilantList) < numVigilantes:
+            aleatoryVigilant=random.randint(numInit, numEnd)
+            if aleatoryVigilant is not vigilantList:
+                vigilantList.append(aleatoryVigilant)
+        return  vigilantList
 
     def getShifts(self):
         return self.turnosAsignados
