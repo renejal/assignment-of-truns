@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 import pandas as pd
 from File import File
@@ -29,6 +30,7 @@ class VigilantAssigment:
     turnosAsignados = []
     cantVigilantsPeriod = []
     vigilantes = []
+    vigilantesforSite = {}
     
     def __init__(self, path, weeks):
         self.totalWeeks = weeks
@@ -36,19 +38,26 @@ class VigilantAssigment:
         self.identifiesWeekStartPeriod()
         self.readData(path)
         self.initProblem()
-        self.InitListVigilantesAssigment()
-        self.createShift(self.Dataset)
+        #self.InitListVigilantesAssigment()
+        #self.createShift(self.Dataset)
 
     def readData(self, path):
         datasets = File(path, self.totalWeeks)
         self.Dataset = datasets.DataProblem
         self.totalPlaces = len(self.Dataset)
+        indexSite = 0
         for place in self.Dataset:
             cantVigilantByPeriod = []
+            sum = 0
             for cantByperiod in place:
                 cantVigilantByPeriod.append(cantByperiod)
+                sum = sum + cantByperiod
             self.cantVigilantsPeriod.append(cantVigilantByPeriod)
+            self.vigilantesforSite[indexSite] = sum
+            indexSite += 1
 
+    def getSite(self, siteId):
+        return self.Dataset[siteId]
 
     def initProblem(self):
         '''
