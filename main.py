@@ -32,7 +32,7 @@ def makeRCL(solutions,tam):
         print(element[1])
 
 
-problem = VigilantAssigment("Data/userInterface.csv", 4)
+problem = VigilantAssigment("Data/userInterface.csv","Data/vigilants.csv", 4)
 problem.to_Save("Data/datasetResult.csv")
 problem.evalute2(problem.vigilantes)
 #algorithm  = Grasp()

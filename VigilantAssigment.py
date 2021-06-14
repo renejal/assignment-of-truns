@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from File import File
+from VigilantsFile import VigilantsFile
 from Turno import *
 from Vigilant import Vigilant
 import random
@@ -28,17 +29,18 @@ class VigilantAssigment:
     turnosAsignados = []
     cantVigilantsPeriod = []
     vigilantes = []
+    dataSetVigilants = []
     
-    def __init__(self, path, weeks):
+    def __init__(self, pathInterface , pathVigilants, weeks):
         self.totalWeeks = weeks
         self.totalPeriods = 168*self.totalWeeks
         self.identifiesWeekStartPeriod()
-        self.readData(path)
+        self.readData(pathInterface,pathVigilants)
         self.initProblem()
         self.createShift(self.Dataset)
 
-    def readData(self, path):
-        datasets = File(path, self.totalWeeks)
+    def readData(self, pathInterface , pathVigilants):
+        datasets = File(pathInterface, self.totalWeeks)
         self.Dataset = datasets.DataProblem
         self.totalPlaces = len(self.Dataset)
         for place in self.Dataset:
@@ -46,7 +48,10 @@ class VigilantAssigment:
             for cantByperiod in place:
                 cantVigilantByPeriod.append(cantByperiod)
             self.cantVigilantsPeriod.append(cantVigilantByPeriod)
-
+        #Read Vigilant data
+        data = VigilantsFile(pathVigilants)
+        self.dataSetVigilants = data.vigilantesInfo
+        self.totalVigilantes = data.numberVigilants
 
     def initProblem(self):
         '''
@@ -55,7 +60,7 @@ class VigilantAssigment:
         '''
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
-            objVigilant = Vigilant(self.totalWeeks)
+            objVigilant = Vigilant(self.totalWeeks,self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2])
             self.vigilantes.append(objVigilant)
 
 
