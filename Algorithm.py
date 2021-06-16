@@ -6,6 +6,7 @@ class Algorithm(ABC):
     CurrentEFOs = 0
     MyBestSolution = None
     VigilantAssigment = None
+    Aleatory = None
 
 
     @abstractmethod

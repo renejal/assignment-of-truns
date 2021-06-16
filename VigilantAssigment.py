@@ -33,13 +33,10 @@ class VigilantAssigment:
     vigilantes = []
     vigilantesforSite = {}
     dataSetVigilants = []
-<<<<<<< HEAD
     workingDay={}
 
-=======
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []
->>>>>>> 7e8c6ed98a6f0b6cbc986892b2db1595aabca872
     
     def __init__(self, pathInterface , pathVigilants, weeks):
         self.totalWeeks = weeks
@@ -72,11 +69,10 @@ class VigilantAssigment:
 
     def getSite(self, siteId):
         return self.Dataset[siteId]
-<<<<<<< HEAD
+
     def loadWorkingDay(self):
         self.workingDay = {6:6, 7:7,8:8,9:9,10:10,11:11,12:12,13:{7,6},14:{7,7},15:{8,7},16:{8,8},17:{8,9},20:{10,10},21:{7,7,7},22:{8,7,7},
                       23:{8,8,7},24:{8,8,8}}
-=======
     def bubbleSort(self,array):
         for iteration in range(0,len(array)-1):
             swapped =False
@@ -89,7 +85,6 @@ class VigilantAssigment:
             if swapped == False:
                 break
         return array
->>>>>>> 7e8c6ed98a6f0b6cbc986892b2db1595aabca872
     def initProblem(self):
         '''
         inicialize empty default problem

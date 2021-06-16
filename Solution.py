@@ -5,13 +5,15 @@ class Solution:
 
     schedule = []
     Fitness = int
-
-   # MyContainer = Algorithm
+    MyContainer = Algorithm
     
 
-    def __init__(self, theOwner):
+    def __init__(self, theOwner, Aletory):
         self.MyContainer = theOwner
+        self.MyContainer.Aleatory = Aletory
         solution = []
+
+
 
 
     def Tweak(self, Problem):
@@ -19,14 +21,13 @@ class Solution:
         # implementation
         return 0
 
-    def ObtainComponents(self, problem):
-        listSiteOrderId = self.OrderSitesForCantVigilantes(self, problem)
-        print("sitios ordenados por cantidad de vigilantes:",listSiteOrderId)
-        return 0
+    def ObtainComponents(self):
+        listSiteOrderId = self.OrderSitesForCantVigilantes(self.MyContainer.VigilantAssigment)
+        return 1
 
     def CompleteSolution(self):
         # implementation
-        return 0
+        return 1
     def obtainFirsWokingDay(self,site):
         start = False
         stop = False
