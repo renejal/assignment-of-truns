@@ -5,12 +5,13 @@ class Solution:
 
     schedule = []
     Fitness = int
+
    # MyContainer = Algorithm
     
 
-    #def __init__(self, theOwner):
-     #   self.MyContainer = theOwner
-      #  solution = []
+    def __init__(self, theOwner):
+        self.MyContainer = theOwner
+        solution = []
 
 
     def Tweak(self, Problem):
@@ -26,6 +27,31 @@ class Solution:
     def CompleteSolution(self):
         # implementation
         return 0
+    def obtainFirsWokingDay(self,site):
+        start = False
+        stop = False
+        workinDay = []
+        k = 0
+        for index, t in enumerate(site):
+            if t == 1:
+                start = True
+                if k<24:
+                    workinDay.append(t)
+                    k = +1
+                else:
+                    stop = True
+
+            elif start == True or stop == True:
+                pass
+
+
+
+
+
+
+
+
+
 
     def Union(self, components):
         # implementation

@@ -32,12 +32,7 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
 
-<<<<<<< HEAD
-
 problem = VigilantAssigment("Data/userInterface.csv","Data/vigilants.csv", 4)
-=======
-problem = VigilantAssigment("Data/userInterface.csv", 4)
->>>>>>> 5f4244c64111d994da2fd63692e6485119e5ecdf
 problem.to_Save("Data/datasetResult.csv")
 s = Solution
 s.ObtainComponents(s,problem)
