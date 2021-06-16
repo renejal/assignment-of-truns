@@ -38,6 +38,17 @@ class Solution:
         for i in sites:
             site.append(i[0])
         return site
-
+    def orderVigilantsBySite(self,place,vigilants):
+        for iteration in range(0,len(vigilants)-1):
+            swapped =False
+            for pos in range(0,len(vigilants)-1-iteration):
+                if(vigilants[pos + 1].distances[place-1] < vigilants[pos].distances[place-1]):
+                    aux = vigilants[pos]
+                    vigilants[pos] = vigilants[pos+1]
+                    vigilants[pos + 1] = aux
+                    swapped = True
+            if swapped == False:
+                break
+        return vigilants 
 
 

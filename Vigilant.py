@@ -1,7 +1,8 @@
 from Turno import  Turno
 class Vigilant:
 
-    def __init__(self, numberWeek, preferences, expectedPlace,distances):
+    def __init__(self,id, expectedPlace,preferences,distances,numberWeek):
+        self.id = id
         self.shifts = []
         self.HoursWorked = 0
         self.HoursWeeks = []
