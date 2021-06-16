@@ -1,3 +1,5 @@
+import numpy as np
+
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 import operator
@@ -6,6 +8,7 @@ class Solution:
     schedule = []
     Fitness = int
     MyContainer = Algorithm
+    Problem = VigilantAssigment
     
 
     def __init__(self, theOwner, Aletory):
@@ -23,8 +26,8 @@ class Solution:
         return 0
 
     def ObtainComponents(self):
-
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
+        jornada, site=self.obtainFirsWokingDay(self.Problem.getSite(listSiteOrderId[0]))
         if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
             vigilantDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
 
@@ -37,22 +40,32 @@ class Solution:
     def CompleteSolution(self):
         # implementation
         return 1
-    def obtainFirsWokingDay(self,site):
+    def obtainFirsWokingDay(self,parSite):
+        site = np.copy(parSite)
         start = False
-        stop = False
-        workinDay = []
         k = 0
         for index, t in enumerate(site):
-            if t == 1:
+
+            if t == 0 and start == False:
+                continue
+            elif t==0 and start == True:
+                break
+            if t != 0:
                 start = True
                 if k<24:
-                    workinDay.append(t)
-                    k = +1
-                else:
-                    stop = True
+                    site = np.delete(site,0)
+                    k +=1
 
-            elif start == True or stop == True:
-                pass
+                else:
+                    print("cumplio el limite de horas por jornada de 24 horas")
+                    break
+
+        if start == True:
+            workin_day=self.Problem.workingDay[k]
+            return workin_day,site
+
+
+
 
 
 
