@@ -7,9 +7,11 @@ class Grasp(Algorithm):
     MaxEFOs = 10000
 
     def Execute(self, Problem, Aleatory):
+        self.VigilantAssigment = Problem;
+        self.Aleatory = Aleatory;
         Best:Solution
         while self.CurrentEFOs < self.MaxEFOs:
-            S = Solution(self)
+            S = Solution(self, Aleatory)
 
             while S.CompleteSolution():
                 RestrictedList = S.ObtainComponents()
