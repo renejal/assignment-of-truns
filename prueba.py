@@ -1,5 +1,2 @@
-lista = []
-lista.append(1)
-lista.append(2)
-lista.append(5)
-print(lista)
+dicionario = {1:[0,2],2:3}
+print(dicionario[1])
