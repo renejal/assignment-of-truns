@@ -11,6 +11,7 @@ class Solution:
     def __init__(self, theOwner, Aletory):
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
+        self.Problem = self.MyContainer.VigilantAssigment
         solution = []
 
 
@@ -22,7 +23,15 @@ class Solution:
         return 0
 
     def ObtainComponents(self):
-        listSiteOrderId = self.OrderSitesForCantVigilantes(self.MyContainer.VigilantAssigment)
+
+        listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
+        if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
+            vigilantDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
+
+            #si hay
+        else:
+            self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
+
         return 1
 
     def CompleteSolution(self):
