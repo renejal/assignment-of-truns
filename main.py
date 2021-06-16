@@ -1,6 +1,5 @@
 import numpy as np
 import numpy.lib.format
-
 from VigilantAssigment import *
 from File import *
 from Vigilant import *
@@ -32,6 +31,10 @@ def makeRCL(solutions,tam):
     for element in listaReducida:
         print(element[1])
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7e8c6ed98a6f0b6cbc986892b2db1595aabca872
 problem = VigilantAssigment("Data/userInterface.csv","Data/vigilants.csv", 4)
 problem.to_Save("Data/datasetResult.csv")
 s = Solution

@@ -33,8 +33,13 @@ class VigilantAssigment:
     vigilantes = []
     vigilantesforSite = {}
     dataSetVigilants = []
+<<<<<<< HEAD
     workingDay={}
 
+=======
+    vigilantExpectedPlaces = {}
+    vigilantsWithOutPreference = []
+>>>>>>> 7e8c6ed98a6f0b6cbc986892b2db1595aabca872
     
     def __init__(self, pathInterface , pathVigilants, weeks):
         self.totalWeeks = weeks
@@ -67,9 +72,24 @@ class VigilantAssigment:
 
     def getSite(self, siteId):
         return self.Dataset[siteId]
+<<<<<<< HEAD
     def loadWorkingDay(self):
         self.workingDay = {6:6, 7:7,8:8,9:9,10:10,11:11,12:12,13:{7,6},14:{7,7},15:{8,7},16:{8,8},17:{8,9},20:{10,10},21:{7,7,7},22:{8,7,7},
                       23:{8,8,7},24:{8,8,8}}
+=======
+    def bubbleSort(self,array):
+        for iteration in range(0,len(array)-1):
+            swapped =False
+            for pos in range(0,len(array)-1-iteration):
+                if(array[pos + 1] < array[pos]):
+                    aux = array[pos]
+                    array[pos] = array[pos+1]
+                    array[pos + 1] = aux
+                    swapped = True
+            if swapped == False:
+                break
+        return array
+>>>>>>> 7e8c6ed98a6f0b6cbc986892b2db1595aabca872
     def initProblem(self):
         '''
         inicialize empty default problem
@@ -77,9 +97,18 @@ class VigilantAssigment:
         '''
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
-            objVigilant = Vigilant(self.totalWeeks,self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2])
+            if (self.dataSetVigilants[i][1] in self.vigilantExpectedPlaces) == False:
+              self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] = [self.dataSetVigilants[i][0]]
+            else:
+                self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(self.dataSetVigilants[i][0])
+            objVigilant = Vigilant(self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2],self.dataSetVigilants[i][3],self.totalWeeks)
             self.vigilantes.append(objVigilant)
+            if len(objVigilant.preferences) == 0:
+                self.vigilantsWithOutPreference.append(objVigilant.id)
 
+        for place in self.vigilantExpectedPlaces.values():
+            self.bubbleSort(place)
+       
     def InitListVigilantesAssigment(self):
         for i in range(self.totalVigilantes):
             self.VigilantesList.append(i)

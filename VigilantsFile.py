@@ -19,15 +19,17 @@ class VigilantsFile:
         for i in range(0,self.numberVigilants):
             vigilant = []
             preferences = []
-            preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
-            preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][i])
-            preferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][i])
             disitancePlaces = []
-            # vigilant.append(self.Dataset['ID Vigilante'][i])
-            for i in range(1,cantPlaces):
-                disitancePlaces.append(self.Dataset['D. Sitio '+str(i)][i])
-            vigilant.append(preferences)
+            vigilant.append(self.Dataset['ID Vigilante'][i])
             vigilant.append(self.Dataset['Sitio Esperado'][i])
+            print(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
+            if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i]) == False:
+                preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
+                preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][i])
+                preferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][i])
+            for j in range(0,cantPlaces):
+                disitancePlaces.append(self.Dataset['D. Sitio '+str(j+1)][i])
+            vigilant.append(preferences)
             vigilant.append(disitancePlaces)
             self.vigilantesInfo.append(vigilant)
 
