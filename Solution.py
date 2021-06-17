@@ -27,10 +27,9 @@ class Solution:
 
     def ObtainComponents(self):
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        workingDayList=self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0]))
         if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
             vigilantDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
-
+            workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0])) #retorna listado de jornadas para el sitio N
             #si hay
         else:
             self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
