@@ -1,4 +1,6 @@
+from random import random
 import numpy as np
+import random
 
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
@@ -27,10 +29,12 @@ class Solution:
 
     def ObtainComponents(self):
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
+        
         jornada, site=self.obtainFirsWokingDay(self.Problem.getSite(listSiteOrderId[0]))
         if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
-            vigilantDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
-
+            vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
+            shift = [165,173]
+            self.chooseVigilant(vigilantsDefault,shift)
             #si hay
         else:
             self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
@@ -64,8 +68,12 @@ class Solution:
             workin_day=self.Problem.workingDay[k]
             return workin_day,site
 
-
-
+    def chooseVigilant(self, vigilants,shift):
+        vigilantID = vigilants[random.randint(0, len(vigilants)-1)]
+        vigilant = self.Problem.getVigilant(vigilantID)
+        if vigilant.availabilityShift(shift[0],shift[1]):
+            #assignVigilant(site,vigilant,shift[0],shift[1])  
+            return
 
 
 
