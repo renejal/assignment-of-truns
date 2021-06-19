@@ -1,51 +1,66 @@
 from Turno import  Turno
 import numpy as np
-
+import math
 class Vigilant:
 
     def __init__(self,id, expectedPlace,preferences,distances,numberWeek):
         self.id = id
-        self.shifts = []
-        self.HoursWorked = 0
-        self.HoursWeeks = []
         self.HoursofRest = 0
-        self.preferences = preferences
+        self.HoursWorked = 0
         self.distances = distances
         self.expectedPlace = expectedPlace
-        self.initShift(numberWeek)
-
-
-    def initShift(self, numberWeek):
-        for i in range(numberWeek):
-            week = []
-            week = np.zeros(168)
-            # for j in range(168):
-            #     week.append(Turno())
-            self.shifts.append(week)
-            self.HoursWeeks.append(0)
-
+        self.preferences = preferences
+        self.shifts = np.zeros(168*numberWeek)
+        self.HoursWeeks = np.zeros(numberWeek)      
+   
+    def isVigilantAvailable(self,startPeriod,endPeriod):
+        if self.hasEnoughHoursToWork(startPeriod,endPeriod) == False:
+            return False
+        if self.availabilityShift(startPeriod,endPeriod) == False:
+            return False
+        if self.enoughResting(startPeriod) == False:
+            return False
+        week = math.floor(startPeriod/168)
+        if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
+            return self.workInLastSunday(week)
+        else:
+            if (endPeriod > 144+ (168*week)):
+                return self.workInLastSunday(week)
+        return True
+    
     def availabilityShift(self,startPeriod,endPeriod):
-        shift =  self.ShiftConvert(startPeriod)
-        if endPeriod > 168 * (shift[1]+1):
-            changePeriod = 168 - startPeriod
-            for period in range(shift[0],shift[0]+changePeriod):
-                if self.shifts[shift[1]][period] == 0: #change to different
-                    return False
-            for period in range(0,endPeriod-startPeriod-changePeriod):
-                if self.shifts[shift[1]+1][period] == 0: #change to different
-                    return False
-            return True
-        for period in range(shift[0],endPeriod-startPeriod+shift[0]):
-            if self.shifts[shift[1]][period] == 0: #change to different
+        for period in range(startPeriod,endPeriod):
+            if self.shifts[period] != 0:
+                return False
+        return True
+
+    def enoughResting(self,period):
+        for period in range(period, -16,-1):
+            if period == 0:
+                break
+            if self.shifts[period] != 0:
                 return False
         return True
         
-    def ShiftConvert(self, shift):
-        i = 0
-        while shift >= 168:
-            shift = shift - 168
-            i = i + 1
-        return shift, i
+    def hasEnoughHoursToWork(self,startPeriod,endPeriod):
+        # startPeriod = 328
+        # endPeriod = 336
+        weekStarPeriod = math.floor(startPeriod/168)
+        weekEndPeriod  =  math.floor(endPeriod/168)
+        if weekStarPeriod == weekEndPeriod:
+            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= 56:
+                return True
+            return False
+        else:
+            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= 56 and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= 56:
+                return True
+        return False
+    
 
-
-
+    def workInLastSunday(self,week):
+        if week == 0:
+            return False
+        for period in range (168*week,(168*week)-24,-1):
+            if self.shifts[period] != 0:
+                return True
+        return False
