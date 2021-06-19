@@ -33,7 +33,10 @@ class Solution:
             vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
             workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0])) #retorna listado de jornadas para el sitio N
             for shift in workingDayList:
-                self.chooseVigilant(vigilantsDefault,shift)
+                vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
+                cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
+                for iteration in range(0,cantVigilantFaltantes):
+                    self.chooseVigilant(vigilantsDefault,shift)
             #si hay
         else:
             self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
@@ -95,14 +98,15 @@ class Solution:
                 k = 0
         return  listWorkinDay
 
-    def chooseVigilant(self, vigilants,shift,place):
+    def chooseVigilant(self, vigilants,shift):
         vigilantID = vigilants[random.randint(0, len(vigilants)-1)]
         vigilant = self.Problem.getVigilant(vigilantID)
-        if vigilant.availabilityShift(shift[0],shift[1]):
+        if vigilant.isVigilantAvailable(shift[0],shift[1]):
+            #validar guardia
             #assignVigilant(site,vigilant,shift[0],shift[1]) 
-            
             return
-
+   
+    
 
 
 
