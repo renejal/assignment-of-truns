@@ -18,9 +18,9 @@ class Vigilant:
     def initShift(self, numberWeek):
         for i in range(numberWeek):
             week = []
-            # week = np.zeros(168)
-            for j in range(168):
-                week.append(Turno())
+            week = np.zeros(168)
+            # for j in range(168):
+            #     week.append(Turno())
             self.shifts.append(week)
             self.HoursWeeks.append(0)
 

@@ -95,11 +95,12 @@ class Solution:
                 k = 0
         return  listWorkinDay
 
-    def chooseVigilant(self, vigilants,shift):
+    def chooseVigilant(self, vigilants,shift,place):
         vigilantID = vigilants[random.randint(0, len(vigilants)-1)]
         vigilant = self.Problem.getVigilant(vigilantID)
         if vigilant.availabilityShift(shift[0],shift[1]):
-            #assignVigilant(site,vigilant,shift[0],shift[1])  
+            #assignVigilant(site,vigilant,shift[0],shift[1]) 
+            
             return
 
 
