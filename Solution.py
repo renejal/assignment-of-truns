@@ -4,6 +4,7 @@ import random
 
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
+
 import operator
 class Solution:
 
@@ -28,6 +29,7 @@ class Solution:
         return 0
 
     def ObtainComponents(self):
+        self.AssigemtVigilant(0,0,0)
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
         if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
             vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
@@ -43,6 +45,10 @@ class Solution:
     def CompleteSolution(self):
         # implementation
         return 1
+    def AssigemtVigilant(self, vigilantId, siteId, workingDay):
+        self.Problem.assigmentVigilantes(vigilantId,siteId,workingDay)
+
+
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []

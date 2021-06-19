@@ -34,7 +34,7 @@ class VigilantAssigment:
     vigilantesforSite = {}
     dataSetVigilants = []
     workingDay={}
-
+    Aleatory = None
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []
     
@@ -43,8 +43,9 @@ class VigilantAssigment:
         self.totalPeriods = 168*self.totalWeeks
         self.identifiesWeekStartPeriod()
         self.readData(pathInterface,pathVigilants)
-        self.initProblem()
+        #self.initProblem()
         self.loadWorkingDay()
+        self.Aleatory = random.seed(0) #todo add parametro aleatorio en el contructor
         #self.InitListVigilantesAssigment()
         #self.createShift(self.Dataset)
 
@@ -137,16 +138,10 @@ class VigilantAssigment:
 
 
 
-    def assigmentVigilantes(self, vigilantes):
-        '''
-        assigna of vigilantes to site in shift
-        :param site: index site
-        :param shift: index shift of site
-        :param vigilantes: list vigilantes assigment
-        :return:
-        '''
+    def assigmentVigilantes(self, vigilantId, siteId , lisWorkingDay):
+        objVigilant = Vigilant(vigilantId, siteId, [], 20, self.totalWeeks)#todo: agregar parametro distance
         for i in range(8): #todo: 8 numero aleatorio
-            self.addVigilant(vigilantes)
+          #  self.addVigilant(vigilantes)
             self.Shift += 1
 
 
