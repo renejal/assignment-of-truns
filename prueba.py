@@ -1,4 +1,4 @@
-list1=[1,2,3,4]
-list2=[5,6,7,8]
-list1 = list1+list2
-print(list1)
+dicionario = {1:5,3:7}
+if 1.0 in dicionario:
+    print("esta")
+

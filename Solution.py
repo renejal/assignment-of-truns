@@ -19,39 +19,28 @@ class Solution:
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
         solution = []
-
-
-
-
     def Tweak(self, Problem):
 
         # implementation
         return 0
-
     def ObtainComponents(self):
-        self.AssigemtVigilant(0,0,0)
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        if (listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces) == True:
+        if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
             vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
             workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0])) #retorna listado de jornadas para el sitio N
             for shift in workingDayList:
                 vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
                 cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
                 for iteration in range(0,cantVigilantFaltantes):
-                    self.chooseVigilant(vigilantsDefault,shift)
+                    self.chooseVigilant(vigilantsDefault,listSiteOrderId[0],shift)
             #si hay
         else:
             self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
 
         return 1
-
     def CompleteSolution(self):
         # implementation
         return 1
-    def AssigemtVigilant(self, vigilantId, siteId, workingDay):
-        self.Problem.assigmentVigilantes(vigilantId,siteId,workingDay)
-
-
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []
@@ -103,23 +92,30 @@ class Solution:
                 i+= 1
                 k = 0
         return  listWorkinDay
-
-    def chooseVigilant(self, vigilants,shift):
+    def chooseVigilant(self, vigilants,site,shift):
         vigilantID = vigilants[random.randint(0, len(vigilants)-1)]
         vigilant = self.Problem.getVigilant(vigilantID)
         if vigilant.isVigilantAvailable(shift[0],shift[1]):
             #validar guardia
-            #assignVigilant(site,vigilant,shift[0],shift[1]) 
+            self.assigmentVigilantes(vigilant,site,shift[0],shift[1])
             return
    
     
 
 
+    def assigmentVigilantes(self, objvigilant, siteId ,initShift, endShift):
+        '''
 
-
-
-
-
+        :param objvigilant: object vigilante
+        :param siteId: id the site
+        :param initShift: turn init for vigilant in site
+        :param endShift: turn init for vigilant in site
+        :return: True: assigned corretly , false if error in assigment
+        '''
+        if endShift > len(objvigilant.shifts):
+            print("turno fuera de limite")
+        for i in range(initShift,endShift):
+            objvigilant.setShift(i,siteId)
 
 
     def Union(self, components):
@@ -131,7 +127,7 @@ class Solution:
         sites = sorted(sites.items(), key=operator.itemgetter(1), reverse=True)
         site = []
         for i in sites:
-            site.append(i[0])
+            site.append(int(i[0]))
         return site
     def orderVigilantsBySite(self,place,vigilants):
         for iteration in range(0,len(vigilants)-1):

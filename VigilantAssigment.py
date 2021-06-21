@@ -43,7 +43,7 @@ class VigilantAssigment:
         self.totalPeriods = 168*self.totalWeeks
         self.identifiesWeekStartPeriod()
         self.readData(pathInterface,pathVigilants)
-        #self.initProblem()
+        self.initProblem()
         self.loadWorkingDay()
         self.Aleatory = random.seed(0) #todo add parametro aleatorio en el contructor
         #self.InitListVigilantesAssigment()
@@ -94,7 +94,7 @@ class VigilantAssigment:
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
             if (self.dataSetVigilants[i][1] in self.vigilantExpectedPlaces) == False:
-              self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] = [self.dataSetVigilants[i][0]]
+              self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] =[self.dataSetVigilants[i][0]]
             else:
                 self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(self.dataSetVigilants[i][0])
             objVigilant = Vigilant(self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2],self.dataSetVigilants[i][3],self.totalWeeks)
@@ -138,8 +138,16 @@ class VigilantAssigment:
 
 
 
-    def assigmentVigilantes(self, vigilantId, siteId , lisWorkingDay):
-        objVigilant = Vigilant(vigilantId, siteId, [], 20, self.totalWeeks)#todo: agregar parametro distance
+    def assigmentVigilantess(self, objvigilant, siteId ,initShift, endShift):
+        '''
+
+        :param objvigilant: object vigilante
+        :param siteId: id the site
+        :param initShift: turn init for vigilant in site
+        :param endShift: turn init for vigilant in site
+        :return: True: assigned corretly , false if error in assigment
+        '''
+
         for i in range(8): #todo: 8 numero aleatorio
           #  self.addVigilant(vigilantes)
             self.Shift += 1

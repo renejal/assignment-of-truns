@@ -56,6 +56,8 @@ class Vigilant:
                 return True
         return False
     
+    def setShift(self, index, site):
+        self.shifts[index] = site
 
     def workInLastSunday(self,week):
         if week == 0:
