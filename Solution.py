@@ -25,17 +25,20 @@ class Solution:
         return 0
     def ObtainComponents(self):
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
-            vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
-            workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0])) #retorna listado de jornadas para el sitio N
-            for shift in workingDayList:
-                vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
-                cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
-                for iteration in range(0,cantVigilantFaltantes):
-                    self.chooseVigilant(vigilantsDefault,listSiteOrderId[0],shift)
-            #si hay
-        else:
-            self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
+        for site in listSiteOrderId:
+
+            if site in self.Problem.vigilantExpectedPlaces:
+                vigilantsDefault = self.Problem.vigilantExpectedPlaces[site]
+                workingDayList = self.obtainWokingDay(self.Problem.getSite(site))
+                for shift in workingDayList:
+                    vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
+                    cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
+                    for iteration in range(0,cantVigilantFaltantes):
+                        # todo: Calcular guardia necesarios para el sitio
+                        self.chooseVigilant(vigilantsDefault,site,shift)
+                #si hay
+            else:
+                self.orderVigilantsBySite(listSiteOrderId[site], self.Problem.Vigilantes)
 
         return 1
     def CompleteSolution(self):
@@ -93,12 +96,11 @@ class Solution:
                 k = 0
         return  listWorkinDay
     def chooseVigilant(self, vigilants,site,shift):
-        vigilantID = vigilants[random.randint(0, len(vigilants)-1)]
+        vigilantID = vigilants[random.randint(0, len(vigilants)-1)]#todo: escoger vigilantes por preferencias y agregar vigilantes faltantes a la lista
         vigilant = self.Problem.getVigilant(vigilantID)
         if vigilant.isVigilantAvailable(shift[0],shift[1]):
             #validar guardia
             self.assigmentVigilantes(vigilant,site,shift[0],shift[1])
-            return
    
     
 
@@ -114,8 +116,8 @@ class Solution:
         '''
         if endShift > len(objvigilant.shifts):
             print("turno fuera de limite")
-        for i in range(initShift,endShift):
-            objvigilant.setShift(i,siteId)
+        for i in range(initShift, endShift):
+            objvigilant.setShift(i, siteId)
 
 
     def Union(self, components):
