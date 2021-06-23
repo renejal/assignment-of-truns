@@ -1,3 +1,4 @@
+from Site import Site
 from random import random
 import numpy as np
 import random
@@ -24,22 +25,34 @@ class Solution:
         # implementation
         return 0
     def ObtainComponents(self):
-        listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
-            vigilantsDefault = self.Problem.vigilantExpectedPlaces[listSiteOrderId[0]]
-            workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0])) #retorna listado de jornadas para el sitio N
-            for shift in workingDayList:
+        siteId = self.Problem.orderSitesForCantVigilantes[0]
+        canNewComponents = 1
+        components = []
+        shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
+        for component in range(0,canNewComponents):
+            site = Site(siteId)
+            self.getSchedule(site,shifts)
+            components.append(site)
+        return component
+
+
+    def getSchedule(self,site,shifts):
+        if site in self.Problem.vigilantExpectedPlaces:
+            vigilantsDefault = self.Problem.vigilantExpectedPlaces[site]
+            for shift in shifts:
                 vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
-                cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
+                cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
                 for iteration in range(0,cantVigilantFaltantes):
-                    self.chooseVigilant(vigilantsDefault,listSiteOrderId[0],shift)
+                    self.chooseVigilant(vigilantsDefault,site,shift)
             #si hay
         else:
             self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
 
         return 1
+
     def CompleteSolution(self):
-        # implementation
+        # Haber recorrido todos los sitios
+        #Aun hay sitios en la lista?
         return 1
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
@@ -117,18 +130,17 @@ class Solution:
         for i in range(initShift,endShift):
             objvigilant.setShift(i,siteId)
 
-
-    def Union(self, components):
+    def BestComponents(seslf,components):
+        return components[0]
+    def Union(self, component):
+        #CLASE SITIO
+        #Solution
+        #Schedule = V[]P[]
+        #Lista de VIGILANTES 
         # implementation
         return 0
 
-    def OrderSitesForCantVigilantes(self, problem):
-        sites = problem.vigilantesforSite
-        sites = sorted(sites.items(), key=operator.itemgetter(1), reverse=True)
-        site = []
-        for i in sites:
-            site.append(int(i[0]))
-        return site
+   
     def orderVigilantsBySite(self,place,vigilants):
         for iteration in range(0,len(vigilants)-1):
             swapped =False

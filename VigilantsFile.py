@@ -22,7 +22,6 @@ class VigilantsFile:
             disitancePlaces = []
             vigilant.append(self.Dataset['ID Vigilante'][i])
             vigilant.append(self.Dataset['Sitio Esperado'][i])
-            print(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
             if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i]) == False:
                 preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
                 preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][i])

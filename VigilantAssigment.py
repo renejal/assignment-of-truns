@@ -1,3 +1,4 @@
+import operator
 import numpy
 import numpy as np
 import pandas as pd
@@ -37,7 +38,8 @@ class VigilantAssigment:
     Aleatory = None
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []
-    
+    orderSitesForCantVigilantes = []
+
     def __init__(self, pathInterface , pathVigilants, weeks):
         self.totalWeeks = weeks
         self.totalPeriods = 168*self.totalWeeks
@@ -104,27 +106,34 @@ class VigilantAssigment:
 
         for place in self.vigilantExpectedPlaces.values():
             self.bubbleSort(place)
-       
-    def InitListVigilantesAssigment(self):
-        for i in range(self.totalVigilantes):
-            self.VigilantesList.append(i)
-        random.shuffle(self.VigilantesList)
+        self.OrderSitesForCantVigilantes()    
+    def OrderSitesForCantVigilantes(self):
+        sites = self.vigilantesforSite
+        sites = sorted(sites.items(), key=operator.itemgetter(1), reverse=True)
+        site = []
+        for i in sites:
+            site.append(int(i[0]))
+        self.orderSitesForCantVigilantes = site   
+    # def InitListVigilantesAssigment(self):
+    #     for i in range(self.totalVigilantes):
+    #         self.VigilantesList.append(i)
+    #     random.shuffle(self.VigilantesList)
 
-    def createShift(self, dataSet):
-        '''
-        Assigment vigilant to a shift and site
-        :param dataSet: data the input shift for to vigilantes
-        '''
-        while self.Site < self.totalPlaces:
-            while self.Shift < self.totalPeriods:
-                sites = []
-                if dataSet[self.Site][self.Shift] != 0:
-                    self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift], 0, self.totalVigilantes-1))
-                self.Shift += 1
-            self.Shift = 0
-            if sites:
-                self.Shifts.append(sites)
-            self.Site += 1
+    # def createShift(self, dataSet):
+    #     '''
+    #     Assigment vigilant to a shift and site
+    #     :param dataSet: data the input shift for to vigilantes
+    #     '''
+    #     while self.Site < self.totalPlaces:
+    #         while self.Shift < self.totalPeriods:
+    #             sites = []
+    #             if dataSet[self.Site][self.Shift] != 0:
+    #                 self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift], 0, self.totalVigilantes-1))
+    #             self.Shift += 1
+    #         self.Shift = 0
+    #         if sites:
+    #             self.Shifts.append(sites)
+    #         self.Site += 1
 
    # def assigmentVigilantes(self,parSite, parShift):
         #asignar vigilanestes locales
@@ -138,19 +147,19 @@ class VigilantAssigment:
 
 
 
-    def assigmentVigilantess(self, objvigilant, siteId ,initShift, endShift):
-        '''
+    # def assigmentVigilantess(self, objvigilant, siteId ,initShift, endShift):
+    #     '''
 
-        :param objvigilant: object vigilante
-        :param siteId: id the site
-        :param initShift: turn init for vigilant in site
-        :param endShift: turn init for vigilant in site
-        :return: True: assigned corretly , false if error in assigment
-        '''
+    #     :param objvigilant: object vigilante
+    #     :param siteId: id the site
+    #     :param initShift: turn init for vigilant in site
+    #     :param endShift: turn init for vigilant in site
+    #     :return: True: assigned corretly , false if error in assigment
+    #     '''
 
-        for i in range(8): #todo: 8 numero aleatorio
-          #  self.addVigilant(vigilantes)
-            self.Shift += 1
+    #     for i in range(8): #todo: 8 numero aleatorio
+    #       #  self.addVigilant(vigilantes)
+    #         self.Shift += 1
 
 
 

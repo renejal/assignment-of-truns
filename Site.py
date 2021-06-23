@@ -3,7 +3,8 @@ class Site:
     HoursMax = 0
     HoursMinRest = 0
     HoursMaxRest = 0
-    vigilantesDefault = []
+    #vigilantesDefault = [ [1,2,3]],[4,5,6],..]
+    
 
     def __int__(self, hoursMin, hoursMax, hourMaxRest, hoursMinRest):
         self.HoursMin = hoursMin
