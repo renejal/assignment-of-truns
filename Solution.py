@@ -1,14 +1,14 @@
+from Component import Component
 from Site import Site
 from random import random
 import numpy as np
 import random
-
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 
-import operator
 class Solution:
 
+    sitesSchedule = []
     schedule = []
     Fitness = int
     MyContainer = Algorithm
@@ -19,41 +19,46 @@ class Solution:
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
-        solution = []
+        self.schedule = [None]*(len(self.Problem.vigilantes))
+        self.sitesSchedule = [None]*(self.Problem.totalPlaces)
+
+
     def Tweak(self, Problem):
 
         # implementation
         return 0
     def ObtainComponents(self):
         siteId = self.Problem.orderSitesForCantVigilantes[0]
-        canNewComponents = 1
+        canNewComponents = 3
         components = []
         shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
+        vigilantsByPeriod = self.Problem.cantVigilantsPeriod[siteId-1].copy()
         for component in range(0,canNewComponents):
+            component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriod)
             site = Site(siteId)
             self.getSchedule(site,shifts)
-            components.append(site)
-        return component
+            component.calcuteFitness()
+            components.append(component)
+        return components
 
 
     def getSchedule(self,site,shifts):
+        vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
         if site in self.Problem.vigilantExpectedPlaces:
             vigilantsDefault = self.Problem.vigilantExpectedPlaces[site]
             for shift in shifts:
-                vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
                 cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
                 for iteration in range(0,cantVigilantFaltantes):
                     self.chooseVigilant(vigilantsDefault,site,shift)
             #si hay
         else:
-            self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
-
+            #self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
+            pass
         return 1
 
     def CompleteSolution(self):
-        # Haber recorrido todos los sitios
-        #Aun hay sitios en la lista?
-        return 1
+        return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
+
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []
@@ -130,16 +135,28 @@ class Solution:
         for i in range(initShift,endShift):
             objvigilant.setShift(i,siteId)
 
-    def BestComponents(seslf,components):
-        return components[0]
+    def BestComponents(self,components):   
+        cantRestrictedComponets = 2
+        #Fitness de la solucion
+        for iteration in range(0,cantRestrictedComponets):
+            swapped =False
+            for pos in range(0,len(components)-1-iteration):
+                if(components[pos + 1].fitness < components[pos].fitness):
+                    aux = components[pos]
+                    components[pos] = components[pos+1]
+                    components[pos + 1] = aux
+                    swapped = True
+            if swapped == False:
+                break
+            #self.evaluteComponent()
+            pass
+        restrictedList = components[:5]
+        return restrictedList[random.randint(0,cantRestrictedComponets-1)]
+    
     def Union(self, component):
-        #CLASE SITIO
-        #Solution
-        #Schedule = V[]P[]
-        #Lista de VIGILANTES 
-        # implementation
-        return 0
-
+        for vigilant in component.newVigilants:
+            self.schedule[vigilant.id-1] = vigilant
+        self.sitesSchedule[component.siteId-1] = component.siteSchedule
    
     def orderVigilantsBySite(self,place,vigilants):
         for iteration in range(0,len(vigilants)-1):
