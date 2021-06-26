@@ -1,16 +1,13 @@
+import HEAD as HEAD
+
 from Component import Component
 from Site import Site
 from random import random
 import numpy as np
 import random
-<<<<<<< HEAD
-
 import Vigilant
 
 random.seed(0)
-
-=======
->>>>>>> main
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 
@@ -28,25 +25,24 @@ class Solution:
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
-<<<<<<< HEAD
+
         self.vigilantsForPlaces = []
         self.initVigilsForPlaces()
         solution = []
     def initVigilsForPlaces(self):
         for i in range(0,self.Problem.totalPlaces):
             self.vigilantsForPlaces.append([])
-=======
+
         self.schedule = [None]*(len(self.Problem.vigilantes))
         self.sitesSchedule = [None]*(self.Problem.totalPlaces)
 
 
->>>>>>> main
+
     def Tweak(self, Problem):
 
         # implementation
         return 0
     def ObtainComponents(self):
-<<<<<<< HEAD
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
         if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
 
@@ -61,7 +57,6 @@ class Solution:
         else:
             self.orderVigilantsBySite(listSiteOrderId[listSiteOrderId[0]], self.Problem.Vigilantes)
 
-=======
         siteId = self.Problem.orderSitesForCantVigilantes[0]
         canNewComponents = 3
         components = []
@@ -88,11 +83,9 @@ class Solution:
         else:
             #self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
             pass
->>>>>>> main
         return 1
 
     def CompleteSolution(self):
-<<<<<<< HEAD
         # implementation
         return 1
     def aleatory(self,init, end):
@@ -122,10 +115,8 @@ class Solution:
 
 
         return varResultado
-=======
-        return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
+       # return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
 
->>>>>>> main
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []
@@ -209,7 +200,6 @@ class Solution:
         :param endShift: turn init for vigilant in site
         :return: True: assigned corretly , false if error in assigment
         '''
-<<<<<<< HEAD
         varResult = False
         for i in range(initShift, endShift):
             objvigilant.setShift(i, siteId)
@@ -227,7 +217,7 @@ class Solution:
         for i in sites:
             site.append(int(i[0]))
         return site
-=======
+
         if endShift > len(objvigilant.shifts):
             print("turno fuera de limite")
         for i in range(initShift,endShift):
@@ -256,7 +246,7 @@ class Solution:
             self.schedule[vigilant.id-1] = vigilant
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
    
->>>>>>> main
+
     def orderVigilantsBySite(self,place,vigilants):
         for iteration in range(0,len(vigilants)-1):
             swapped =False
