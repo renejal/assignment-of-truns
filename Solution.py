@@ -1,5 +1,3 @@
-import HEAD as HEAD
-
 from Component import Component
 from Site import Site
 from random import random
