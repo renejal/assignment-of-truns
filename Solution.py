@@ -2,6 +2,10 @@ from random import random
 import numpy as np
 import random
 
+import Vigilant
+
+random.seed(0)
+
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 
@@ -12,38 +16,69 @@ class Solution:
     Fitness = int
     MyContainer = Algorithm
     Problem = VigilantAssigment
+    vigilantsForPlaces = None
     
 
     def __init__(self, theOwner, Aletory):
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
+        self.vigilantsForPlaces = []
+        self.initVigilsForPlaces()
         solution = []
+    def initVigilsForPlaces(self):
+        for i in range(0,self.Problem.totalPlaces):
+            self.vigilantsForPlaces.append([])
     def Tweak(self, Problem):
 
         # implementation
         return 0
     def ObtainComponents(self):
         listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        for site in listSiteOrderId:
+        if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
 
-            if site in self.Problem.vigilantExpectedPlaces:
-                vigilantsDefault = self.Problem.vigilantExpectedPlaces[site]
-                workingDayList = self.obtainWokingDay(self.Problem.getSite(site))
-                for shift in workingDayList:
-                    vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
-                    cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
-                    for iteration in range(0,cantVigilantFaltantes):
-                        # todo: Calcular guardia necesarios para el sitio
-                        self.chooseVigilant(vigilantsDefault,site,shift)
-                #si hay
-            else:
-                self.orderVigilantsBySite(listSiteOrderId[site], self.Problem.Vigilantes)
+            workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0]))
+            for shift in workingDayList:
+                vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
+                cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
+                for iteration in range(0,cantVigilantFaltantes):
+                    # todo: Calcular guardia necesarios para el sitio
+                    self.chooseVigilant(listSiteOrderId[0],shift)
+            #si hay
+        else:
+            self.orderVigilantsBySite(listSiteOrderId[listSiteOrderId[0]], self.Problem.Vigilantes)
 
         return 1
     def CompleteSolution(self):
         # implementation
         return 1
+    def aleatory(self,init, end):
+        return random.randint(init, end)
+    def assignVigilantsmissingofSite(self, siteId):
+        workingday = self.Problem.workingDay(siteId)
+
+
+    def obtainVigilantAvailable(self,site, InitShift, endShift):
+        varResultado = None
+        #1 vigilante de los asignados al sitio
+        for i in range(0,10):
+            #todo : revisar el limite superios del for, cuentas iteraciones se podrian hacer en caso de que no encuentr un vigilantes valido??
+            vigilantDefaulList =self.Problem.vigilantExpectedPlaces[site]
+            vigilantId = self.aleatory(0,len(vigilantDefaulList))
+            objVigilant = self.Problem.getVigilant(vigilantId)
+            if objVigilant.isVigilantAvailable(InitShift,endShift):
+                varResultado = objVigilant
+
+        #2 si no existe vigilante valido dentro del sitio se toma uno de la lista de vigilantes global y se asigna a la lista de vigi
+        #lantes para el sitio
+        for i in range(0,len(self.Problem.totalVigilantes)):
+            vigilantId = self.aleatory(0, len(self.Problem.vigilantExpectedPlaces(site)))
+            objVigilant = self.Problem.getVigilant(vigilantId)
+            if objVigilant.isVigilantAvailable(InitShift,endShift):
+                varResultado = objVigilant
+
+
+        return varResultado
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []
@@ -95,30 +130,43 @@ class Solution:
                 i+= 1
                 k = 0
         return  listWorkinDay
-    def chooseVigilant(self, vigilants,site,shift):
-        vigilantID = vigilants[random.randint(0, len(vigilants)-1)]#todo: escoger vigilantes por preferencias y agregar vigilantes faltantes a la lista
-        vigilant = self.Problem.getVigilant(vigilantID)
-        if vigilant.isVigilantAvailable(shift[0],shift[1]):
-            #validar guardia
-            self.assigmentVigilantes(vigilant,site,shift[0],shift[1])
-   
+    def chooseVigilant(self,site,shift):
+        '''
+        assigns vigilants to the shift
+        :param vigilantsDefault:
+        :param site:
+        :param shift:
+        :return:
+        '''
+        objVigilant = self.obtainVigilantAvailable(site, shift[0],shift[1])#todo: escoger vigilantes por preferencias y agregar vigilantes faltantes a la lista
+        if objVigilant != None:
+            if objVigilant.isVigilantAvailable(shift[0],shift[1]):
+                #validar guardia
+                if self.assigmentVigilantes(objVigilant, site, shift[0],shift[1]):
+                    self.vigilantsForPlaces[site-1].append(objVigilant.id)
+
+        else:
+            pass
+            #empty list
+
+
+
     
 
 
     def assigmentVigilantes(self, objvigilant, siteId ,initShift, endShift):
         '''
-
         :param objvigilant: object vigilante
         :param siteId: id the site
         :param initShift: turn init for vigilant in site
         :param endShift: turn init for vigilant in site
         :return: True: assigned corretly , false if error in assigment
         '''
-        if endShift > len(objvigilant.shifts):
-            print("turno fuera de limite")
+        varResult = False
         for i in range(initShift, endShift):
             objvigilant.setShift(i, siteId)
-
+            varResult = True
+        return varResult
 
     def Union(self, components):
         # implementation
