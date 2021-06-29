@@ -60,11 +60,8 @@ class VigilantsFile:
         #dataF = pd.DataFrame(self.DataProblem)
         #dataF.to_csv('data.csv', index=False, header=False)
         #dataF.to_csv('data.csv')
-
     def itemRow(self, row, rows, day):
-
         dayLimit = 0
-
         upperLimit = 0
         hf = 24
         posInt = 0
@@ -85,8 +82,6 @@ class VigilantsFile:
                     if i < 24 and dayLimit == 2:
                         for j in range(int(i), 24):
                             self.DataProblem[rows][j] = 0
-
         if dayLimit == 2:
             day = day + 1
             dayLimit = 1
-        

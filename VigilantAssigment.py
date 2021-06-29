@@ -113,7 +113,7 @@ class VigilantAssigment:
         site = []
         for i in sites:
             site.append(int(i[0]))
-        self.orderSitesForCantVigilantes = site   
+        self.orderSitesForCantVigilantes = site
     # def InitListVigilantesAssigment(self):
     #     for i in range(self.totalVigilantes):
     #         self.VigilantesList.append(i)
@@ -170,12 +170,7 @@ class VigilantAssigment:
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
 
-    def ShiftConvert(self, shift):
-        i = 0
-        while shift >= 168:
-            shift = shift - 168
-            i = i + 1
-        return shift, i
+
 
     def addVigilant(self, vigilantes):
         for i in vigilantes:
@@ -392,3 +387,7 @@ class VigilantAssigment:
             locPlace+=1    
     def getVigilant(self,vigilantID):
         return self.vigilantes[vigilantID]
+
+
+    def orderSitesForCantVigilantes(self):
+        return self.orderSitesForCantVigilantes

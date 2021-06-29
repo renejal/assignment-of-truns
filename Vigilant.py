@@ -66,3 +66,7 @@ class Vigilant:
             if self.shifts[period] != 0:
                 return True
         return False
+    def setHoursWorked(self,week):
+        self.HoursWeeks[week] = self.HoursWeeks[week]+1
+    def setHoursRest(self, hours):
+        self.HoursofRest = self.HoursofRest + hours
