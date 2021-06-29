@@ -1,3 +1,4 @@
+from numpy.core.numeric import NaN
 from Vigilant import Vigilant
 import numpy
 import numpy as np
@@ -21,7 +22,10 @@ class VigilantsFile:
             preferences = []
             disitancePlaces = []
             vigilant.append(self.Dataset['ID Vigilante'][i])
-            vigilant.append(self.Dataset['Sitio Esperado'][i])
+            if pd.isna(self.Dataset['Sitio Esperado'][i]):
+                vigilant.append(0)
+            else:
+                vigilant.append(self.Dataset['Sitio Esperado'][i])
             if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i]) == False:
                 preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
                 preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][i])

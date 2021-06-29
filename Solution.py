@@ -63,6 +63,7 @@ class Solution:
         components = []
         shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
         vigilantsByPeriod = self.Problem.cantVigilantsPeriod[siteId-1].copy()
+        necesaryVigilantes - self.getNecessaryVigilants(vigilantsByPeriod)
         for component in range(0,canNewComponents):
             component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriod)
             #site = Site(siteId)
@@ -270,4 +271,6 @@ class Solution:
                 break
         return vigilants 
 
-
+    def getNecessaryVigilants(self,vigilantsByPeriod):
+        vigilantsByPeriodInAWeek = vigilantsByPeriod[:168]
+        
