@@ -96,18 +96,18 @@ class VigilantAssigment:
         '''
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
+            objVigilant = Vigilant(self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2],self.dataSetVigilants[i][3],self.totalWeeks)
             if self.dataSetVigilants[i][1] != 0:
                 if (self.dataSetVigilants[i][1] in self.vigilantExpectedPlaces) == False:
-                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] =[self.dataSetVigilants[i][0]]
+                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] = [objVigilant]
                 else:
-                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(self.dataSetVigilants[i][0])
-            objVigilant = Vigilant(self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2],self.dataSetVigilants[i][3],self.totalWeeks)
+                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(objVigilant)
             self.vigilantes.append(objVigilant)
             if len(objVigilant.preferences) == 0:
                 self.vigilantsWithOutPreference.append(objVigilant.id)
 
-        for place in self.vigilantExpectedPlaces.values():
-            self.bubbleSort(place)
+        # for place in self.vigilantExpectedPlaces.values():
+        #     self.bubbleSort(place)
         self.OrderSitesForCantVigilantes()    
     def OrderSitesForCantVigilantes(self):
         sites = self.vigilantesforSite

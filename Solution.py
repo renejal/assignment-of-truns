@@ -4,6 +4,7 @@ from random import random
 import numpy as np
 import random
 import Vigilant
+import math
 
 random.seed(0)
 from Algorithm import Algorithm
@@ -41,48 +42,26 @@ class Solution:
         # implementation
         return 0
     def ObtainComponents(self):
-        listSiteOrderId = self.OrderSitesForCantVigilantes(self.Problem)
-        if listSiteOrderId[0] in self.Problem.vigilantExpectedPlaces:
-
-            workingDayList = self.obtainWokingDay(self.Problem.getSite(listSiteOrderId[0]))
-            for shift in workingDayList:
-                vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
-                cantVigilantFaltantes = vigilantsByPeriod[listSiteOrderId[0]][shift[0]]
-                for iteration in range(0,cantVigilantFaltantes):
-                    # todo: Calcular guardia necesarios para el sitio
-                    self.chooseVigilant(listSiteOrderId[0],shift)
-            #si hay
-        else:
-            self.orderVigilantsBySite(listSiteOrderId[listSiteOrderId[0]], self.Problem.Vigilantes)
-
         siteId = self.Problem.orderSitesForCantVigilantes[0]
         canNewComponents = 3
         components = []
         shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
         vigilantsByPeriod = self.Problem.cantVigilantsPeriod[siteId-1].copy()
-        necesaryVigilantes - self.getNecessaryVigilants(vigilantsByPeriod)
+        necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriod)
         for component in range(0,canNewComponents):
             component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriod)
-            site = Site(siteId)
-            self.getSchedule(site,shifts)
+            self.getSchedule(component,shifts,necesaryVigilantes)
             component.calcuteFitness()
             components.append(component)
         return components
 
 
-    def getSchedule(self,site,shifts):
-        vigilantsByPeriod = self.Problem.cantVigilantsPeriod.copy()
-        if site in self.Problem.vigilantExpectedPlaces:
-            vigilantsDefault = self.Problem.vigilantExpectedPlaces[site]
-            for shift in shifts:
-                cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
-                for iteration in range(0,cantVigilantFaltantes):
-                    self.chooseVigilant(vigilantsDefault,site,shift)
-            #si hay
-        else:
-            #self.orderVigilantsBySite(listSiteOrderId[0], self.Problem.Vigilantes)
-            pass
-        return 1
+    def getSchedule(self,component,shifts,necesaryVigilantes):
+        for shift in shifts:
+            cantVigilantFaltantes = vigilantsByPeriod[site][shift[0]]
+            for iteration in range(0,cantVigilantFaltantes):
+                self.chooseVigilant(vigilantsDefault,site,shift)
+       
 
     def CompleteSolution(self):
         # implementation
@@ -210,6 +189,7 @@ class Solution:
         return 0
 
     def OrderSitesForCantVigilantes(self, problem):
+        return 1
         sites = problem.vigilantesforSite
         sites = sorted(sites.items(), key=operator.itemgetter(1), reverse=True)
         site = []
@@ -246,7 +226,8 @@ class Solution:
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
    
 
-    def orderVigilantsBySite(self,place,vigilants):
+    def orderVigilantsBySite(self,place):
+        vigilants = self.Problem.vigilantes
         for iteration in range(0,len(vigilants)-1):
             swapped =False
             for pos in range(0,len(vigilants)-1-iteration):
@@ -259,6 +240,25 @@ class Solution:
                 break
         return vigilants 
 
-    def getNecessaryVigilants(self,vigilantsByPeriod):
+    def getNecesaryVigilants(self,siteId,vigilantsByPeriod):
         vigilantsByPeriodInAWeek = vigilantsByPeriod[:168]
-        
+        cantNecesaryVigilantsInWeek = sum(vigilantsByPeriodInAWeek)
+        porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
+        canVigilantsNecesaryInSite =  math.floor(cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
+        Expectedvigilants = []
+        orderVigilants = []
+        if siteId in self.Problem.vigilantExpectedPlaces:
+            if len(self.Problem.vigilantExpectedPlaces[siteId]) >= canVigilantsNecesaryInSite:
+                Expectedvigilants = self.Problem.vigilantExpectedPlaces[siteId][:canVigilantsNecesaryInSite]
+            else:
+                Expectedvigilants = self.Problem.vigilantExpectedPlaces[siteId]
+            canVigilantsNecesaryInSite -= len(Expectedvigilants)
+        if canVigilantsNecesaryInSite > 0:
+         orderVigilantsBySite = self.orderVigilantsBySite(siteId)
+         pos = 0
+         while canVigilantsNecesaryInSite > 0:
+                if (orderVigilantsBySite[pos] in Expectedvigilants) == False:
+                  orderVigilants.append(orderVigilantsBySite[pos])
+                  canVigilantsNecesaryInSite-=1  
+                pos+=1
+        return [Expectedvigilants,orderVigilants]
