@@ -388,7 +388,7 @@ class VigilantAssigment:
                     #print("Se deben cumplir la cant de guardias para el sitio "+str(locPlace)+" en el periodo " +str(period))
             locPlace+=1    
     def getVigilant(self,vigilantID):
-        return self.vigilantes[vigilantID]
+        return self.vigilantes[int(vigilantID)]
 
 
     def orderSitesForCantVigilantes(self):
