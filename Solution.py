@@ -255,6 +255,7 @@ class Solution:
     def getNecesaryVigilants(self,siteId,vigilantsByPeriod):
         vigilantsByPeriodInAWeek = vigilantsByPeriod[:168]
         cantNecesaryVigilantsInWeek = sum(vigilantsByPeriodInAWeek)
+        cantNecesaryVigilantsInWeek = 50
         porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
         canVigilantsNecesaryInSite =  math.floor(cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
         Expectedvigilants = []
