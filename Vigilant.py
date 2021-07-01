@@ -34,7 +34,17 @@ class Vigilant:
                 return False
         return True
 
+<<<<<<< HEAD
 
+=======
+    def enoughResting(self,period):
+        for period in range(period, period-16,-1):
+            if period == 0:
+                break
+            if self.shifts[period] != 0:
+                return False
+        return True
+>>>>>>> 8ccf5de1f7263f8004af581bd49e2f6acb473b89
         
     def hasEnoughHoursToWork(self,startPeriod,endPeriod):
         # startPeriod = 328
