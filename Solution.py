@@ -119,6 +119,7 @@ class Solution:
     def assignVigilantsmissingofSite(self, siteId):
         workingday = self.Problem.workingDay(siteId)
     def obtainVigilantAvailable(self,site, InitShift, endShift,lisVigilantDefault,vigilantDefaultList):
+
         #todo: optimizar metodo, posible mente dividir en dos metodos y revisar la validacion de inexistencia de vigilants repetidos
         ObjResultado = None
         #1 vigilante de los asignados al sitio
@@ -143,6 +144,7 @@ class Solution:
 
         return ObjResultado
        # return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
+
     def obtainWokingDay(self,parSite):
         site = np.copy(parSite)
         working_day = []
