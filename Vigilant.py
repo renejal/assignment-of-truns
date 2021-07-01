@@ -35,7 +35,7 @@ class Vigilant:
         return True
 
     def enoughResting(self,period):
-        for period in range(period, -16,-1):
+        for period in range(period, period-16,-1):
             if period == 0:
                 break
             if self.shifts[period] != 0:

@@ -58,6 +58,7 @@ class Solution:
 
 
     def getSchedule(self,component,shifts,necesaryVigilantes):
+        necesaryVigilantes[0][0].enoughResting(16)
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
