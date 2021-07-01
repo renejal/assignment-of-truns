@@ -12,20 +12,20 @@ class Vigilant:
         self.preferences = preferences
         self.shifts = np.zeros(168*numberWeek)
         self.HoursWeeks = np.zeros(numberWeek)      
-   
+
     def isVigilantAvailable(self,startPeriod,endPeriod):
         if self.hasEnoughHoursToWork(startPeriod,endPeriod) == False:
             return False
-        if self.availabilityShift(startPeriod,endPeriod) == False:
-            return False
-        if self.enoughResting(startPeriod) == False:
-            return False
-        week = math.floor(startPeriod/168)
-        if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
-            return self.workInLastSunday(week)
-        else:
-            if (endPeriod > 144+ (168*week)):
-                return self.workInLastSunday(week)
+        #if self.availabilityShift(startPeriod,endPeriod) == False:
+         #   return False
+        #if self.enoughResting(startPeriod) == False:
+         #   return False
+       # week = math.floor(startPeriod/168)
+        #if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
+        #    return self.workInLastSunday(week)
+        #else:
+         #   if (endPeriod > 144+ (168*week)):
+          #      return self.workInLastSunday(week)
         return True
     
     def availabilityShift(self,startPeriod,endPeriod):
@@ -34,9 +34,6 @@ class Vigilant:
                 return False
         return True
 
-<<<<<<< HEAD
-
-=======
     def enoughResting(self,period):
         for period in range(period, period-16,-1):
             if period == 0:
@@ -44,7 +41,6 @@ class Vigilant:
             if self.shifts[period] != 0:
                 return False
         return True
->>>>>>> 8ccf5de1f7263f8004af581bd49e2f6acb473b89
         
     def hasEnoughHoursToWork(self,startPeriod,endPeriod):
         # startPeriod = 328

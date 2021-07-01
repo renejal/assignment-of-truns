@@ -1,4 +1,5 @@
 from Component import Component
+from heapq import merge
 from Site import Site
 from random import random
 import random
@@ -64,19 +65,21 @@ class Solution:
             listTempVigilant.clear()
             for iteration in range(0,component.vigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
                 objViglant = self.obtainVigilantAvailable(component.siteId,shift[0],shift[1],listTempVigilant,necesaryVigilantes)
-                self.chooseVigilant(objViglant,component.siteId,shift)
+                self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant.id) #guardos los vigilantes que se van asignado al sitio
             self.updateHours(shift,listTempVigilant,component.siteId)
             #si hay
        # else:
            # self.orderVigilantsBySite(site, self.Problem.Vigilantes)
 
-    def chooseVigilant(self,objVigilant,site,shift):
+    def AssigmentVigilants(self, objVigilant, site, shift,component):
         if objVigilant == None:
             print("null")
         else:
             for i in range(shift[0], shift[1]):
                 objVigilant.setShift(i, site)
+                component.siteSchedule[i].append(objVigilant.id)
+
     def updateHours(self,shift,lisVigilantsAssiged,site):
         hoursWorkend = self.obtainRange(shift[0], shift[1])
         #asigna horas de descanso a los vigilantes que este trabajando en el sitio y ya se le hallan asignado un turno
@@ -96,7 +99,9 @@ class Solution:
          # se actualiza los vigilantes que estan trabajando en el sitio
         """
         vigilants = self.vigilantsForPlaces[site]
-        vigilants = listVigilantnew + vigilants
+        vigilants.extend(element for element in listVigilantnew if element not in vigilants)
+        #vigilants = list(merge(vigilants,listVigilantnew))
+        #vigilants = listVigilantnew + vigilants
         self.vigilantsForPlaces[site] = vigilants
 
     def assigmentHoursVigilant(self, objVigilant,hoursWorkend,typeHours):
@@ -125,6 +130,8 @@ class Solution:
         ObjResultado = None
         #1 vigilante de los asignados al sitio
         for i in range(0,100):
+            if i == 98:
+                print("encontrado")
             #todo : revisar el limite superios del for, cuentas iteraciones se podrian hacer en caso de que no encuentr un vigilantes valido??
             #vigilantDefaultList =self.Problem.vigilantExpectedPlaces[site]
             objVigilant = random.choice(vigilantDefaultList[0]) #toma un elemento de forma aleatorio de la lista
