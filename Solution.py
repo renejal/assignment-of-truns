@@ -26,6 +26,8 @@ class Solution:
 
         self.vigilantsForPlaces = {}
         self.initVigilsForPlaces()
+        self.vigilants = self.Problem.vigilantes.copy()
+
         solution = []
     def initVigilsForPlaces(self):
         sites = self.Problem.orderSitesForCantVigilantes
@@ -58,7 +60,6 @@ class Solution:
 
 
     def getSchedule(self,component,shifts,necesaryVigilantes):
-        necesaryVigilantes[0][0].enoughResting(16)
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
@@ -242,19 +243,17 @@ class Solution:
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
 
     def orderVigilantsBySite(self,place):
-        vigilants = self.Problem.vigilantes
-
-        for iteration in range(0,len(vigilants)-1):
+        for iteration in range(0,len(self.vigilants)-1):
             swapped =False
-            for pos in range(0,len(vigilants)-1-iteration):
-                if(vigilants[pos + 1].distances[place-1] < vigilants[pos].distances[place-1]):
-                    aux = vigilants[pos]
-                    vigilants[pos] = vigilants[pos+1]
-                    vigilants[pos + 1] = aux
+            for pos in range(0,len(self.vigilants)-1-iteration):
+                if(self.vigilants[pos + 1].distances[place-1] < self.vigilants[pos].distances[place-1]):
+                    aux = self.vigilants[pos]
+                    self.vigilants[pos] = self.vigilants[pos+1]
+                    self.vigilants[pos + 1] = aux
                     swapped = True
             if swapped == False:
                 break
-        return vigilants 
+        return self.vigilants 
 
     def getNecesaryVigilants(self,siteId,vigilantsByPeriod):
         vigilantsByPeriodInAWeek = vigilantsByPeriod[:168]
