@@ -18,8 +18,8 @@ class Vigilant:
             return False
         #if self.availabilityShift(startPeriod,endPeriod) == False:
          #   return False
-        #if self.enoughResting(startPeriod) == False:
-         #   return False
+        if self.enoughResting(startPeriod) == False:
+           return False
        # week = math.floor(startPeriod/168)
         #if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
         #    return self.workInLastSunday(week)

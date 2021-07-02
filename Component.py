@@ -2,7 +2,9 @@ class Component:
     def __init__(self,solution,siteId,cantWeeks,vigilantsByPeriod):   
         self.solution = solution
         self.siteId = siteId
-        self.siteSchedule = [[]] * 168*cantWeeks
+        self.siteSchedule = []
+        for i in range(0,168*cantWeeks):
+            self.siteSchedule.append([])
         self.newVigilants = []
         self.vigilantsByPeriod = vigilantsByPeriod
         self.fitness = 0
