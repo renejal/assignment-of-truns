@@ -16,8 +16,8 @@ class Vigilant:
     def isVigilantAvailable(self,startPeriod,endPeriod):
         if self.hasEnoughHoursToWork(startPeriod,endPeriod) == False:
             return False
-        #if self.availabilityShift(startPeriod,endPeriod) == False:
-         #   return False
+        if self.availabilityShift(startPeriod,endPeriod) == False:
+            return False
         if self.enoughResting(startPeriod) == False:
            return False
        # week = math.floor(startPeriod/168)

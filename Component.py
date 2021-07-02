@@ -11,8 +11,8 @@ class Component:
 
     def calcuteFitness(self):
         #Calculate missing shifts
-        for period in len(self.siteSchedule):
-            self.fitnes += (self.vigilantsByPeriod[period] - len(self.siteSchedule[period]))*100
+        for period in range(0,len(self.siteSchedule)):
+            self.fitness += (self.vigilantsByPeriod[period] - len(self.siteSchedule[period]))*100
         #Calculate distances
         for vigilant in self.newVigilants:
             for assignedPlace in vigilant.shifts:

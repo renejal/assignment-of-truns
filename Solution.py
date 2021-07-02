@@ -77,7 +77,7 @@ class Solution:
         if objVigilant == None:
             print("null")
         else:
-            for i in range(shift[0], shift[1]):
+            for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
 
