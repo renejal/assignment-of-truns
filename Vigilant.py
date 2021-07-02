@@ -20,12 +20,12 @@ class Vigilant:
             return False
         if self.enoughResting(startPeriod) == False:
            return False
-       # week = math.floor(startPeriod/168)
-        #if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
-        #    return self.workInLastSunday(week)
-        #else:
-         #   if (endPeriod > 144+ (168*week)):
-          #      return self.workInLastSunday(week)
+        # week = math.floor(startPeriod/168)
+        # if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
+        #     return self.canWorkThisSunday(week)
+        # else:
+        #     if (endPeriod > 144+ (168*week)):
+        #       return self.canWorkThisSunday(week)
         return True
     
     def availabilityShift(self,startPeriod,endPeriod):
@@ -59,13 +59,13 @@ class Vigilant:
     def setShift(self, index, site):
         self.shifts[index] = site
 
-    def workInLastSunday(self,week):
+    def canWorkThisSunday(self,week):
         if week == 0:
-            return False
+            return True
         for period in range (168*week,(168*week)-24,-1):
             if self.shifts[period] != 0:
-                return True
-        return False
+                return False
+        return True
     def setHoursWorked(self,week):
         self.HoursWeeks[week] = self.HoursWeeks[week]+1
     def setHoursRest(self, hours):
