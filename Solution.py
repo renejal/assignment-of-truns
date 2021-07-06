@@ -70,14 +70,11 @@ class Solution:
             for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
                 objViglant = self.obtainVigilantAvailable(component.siteId,shift[0],shift[1],listTempVigilant,necesaryVigilantes)
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
-                listTempVigilant.append(objViglant.id) #guardos los vigilantes que se van asignado al sitio
+                listTempVigilant.append(objViglant) #guardos los vigilantes que se van asignado al sitio
             self.updateHours(shift,listTempVigilant,component.siteId)
         
 
     def AssigmentVigilants(self, objVigilant, site, shift,component):
-        if objVigilant == None:
-            print("null")
-        else:
             for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
@@ -85,15 +82,12 @@ class Solution:
     def updateHours(self,shift,lisVigilantsAssiged,site):
         hoursWorkend = self.obtainRange(shift[0], shift[1])
         #asigna horas de descanso a los vigilantes que este trabajando en el sitio y ya se le hallan asignado un turno
-        for idVigilant in self.vigilantsForPlaces[site]:
-            objVigilant = self.Problem.getVigilant(idVigilant)
+        for objVigilant in self.vigilantsForPlaces[site]:
             self.assigmentHoursVigilant(objVigilant, hoursWorkend, 'rest')
-
         self.updateListVigilanteforSite(site,lisVigilantsAssiged)
 
        #asigna horas de trabajo a los vigilantes los cuales apenas se les asigno turno en la itercion anterior
-        for idVigilant in lisVigilantsAssiged:
-            objVigilant = self.Problem.getVigilant(idVigilant)
+        for objVigilant in lisVigilantsAssiged:
             self.assigmentHoursVigilant(objVigilant,hoursWorkend,'worked')
 
     def updateListVigilanteforSite(self,site,listVigilantnew):
@@ -113,6 +107,8 @@ class Solution:
         if typeHours == "worked":
             for hours in hoursWorkend:
                 objVigilant.setHoursWorked(self.ShiftConvert(hours))
+    #def updateHourWeek(self,objVigilant, hoursWorkend):
+
     def ShiftConvert(self, shift):
         week = 0
         while shift >= 168:
@@ -246,7 +242,7 @@ class Solution:
             pass
         restrictedList = components[:5]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
-
+    #todo: pasar objetos vigilantes al componente, generar solucion,
     def Union(self, component):
         self.updateListVigilanteforSite(component)
         for vigilant in component.newVigilants:
