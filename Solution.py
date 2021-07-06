@@ -51,7 +51,7 @@ class Solution:
         #todo: tener en cuenta las horas de descanzo no cesariamente pueden ser consecutivas???
         shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
         vigilantsByPeriod = self.Problem.cantVigilantsPeriod[siteId-1].copy()
-        necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriod)
+        necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriod,shifts)
         for component in range(0,canNewComponents):
             component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriod)
             self.getSchedule(component,shifts,necesaryVigilantes)
@@ -69,9 +69,7 @@ class Solution:
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant.id) #guardos los vigilantes que se van asignado al sitio
             self.updateHours(shift,listTempVigilant,component.siteId)
-            #si hay
-       # else:
-           # self.orderVigilantsBySite(site, self.Problem.Vigilantes)
+        
 
     def AssigmentVigilants(self, objVigilant, site, shift,component):
         if objVigilant == None:
@@ -264,10 +262,14 @@ class Solution:
                 break
         return self.vigilants 
 
-    def getNecesaryVigilants(self,siteId,vigilantsByPeriod):
-        vigilantsByPeriodInAWeek = vigilantsByPeriod[:168]
+    def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
+        vigilantsByPeriodInAWeek = []
+        for shift in shifts:
+            if shift[0] > 168:
+                break 
+            vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
         cantNecesaryVigilantsInWeek = sum(vigilantsByPeriodInAWeek)
-        cantNecesaryVigilantsInWeek = 50
+        #cantNecesaryVigilantsInWeek = 100
         porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
         canVigilantsNecesaryInSite =  math.floor(cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
         Expectedvigilants = []
