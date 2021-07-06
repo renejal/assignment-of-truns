@@ -13,9 +13,12 @@ class Component:
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
             self.fitness += (self.vigilantsByPeriod[period] - len(self.siteSchedule[period]))*100
-        #Calculate distances
+        #Calculate distances and preferences
         for vigilant in self.newVigilants:
             for assignedPlace in vigilant.shifts:
                 if assignedPlace != 0:
+                    #calculate fitness distance
                     self.fitnes+= vigilant.expectedPlace - assignedPlace
-        
+                    #Calculate preferencias 
+                    #TODO 
+                    

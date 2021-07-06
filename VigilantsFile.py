@@ -1,13 +1,13 @@
 from numpy.core.numeric import NaN
 from Vigilant import Vigilant
-import numpy
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
+
 class VigilantsFile:
     numberVigilants = int
     Dataset = None
-    vigilantesInfo = []
+    vigilantsInfo = []
 
     def __init__(self, urlFile):
         self.Dataset = pd.read_csv(urlFile)
@@ -16,44 +16,28 @@ class VigilantsFile:
         self.procedureData()
 
     def procedureData(self):
-        cantPlaces = self.Dataset.columns.size - 5
-        for i in range(0,self.numberVigilants):
+        infoVigilantsColums = 5
+        cantPlaces = self.Dataset.columns.size - infoVigilantsColums
+        for actualVigilant in range(0,self.numberVigilants):
             vigilant = []
             preferences = []
             disitancePlaces = []
-            vigilant.append(self.Dataset['ID Vigilante'][i])
-            if pd.isna(self.Dataset['Sitio Esperado'][i]):
+            vigilant.append(self.Dataset['ID Vigilante'][actualVigilant])
+            if pd.isna(self.Dataset['Sitio Esperado'][actualVigilant]):
                 vigilant.append(0)
             else:
-                vigilant.append(self.Dataset['Sitio Esperado'][i])
-            if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i]) == False:
-                preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][i])
-                preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][i])
-                preferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][i])
+                vigilant.append(self.Dataset['Sitio Esperado'][actualVigilant])
+            if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][actualVigilant]) == False:
+                preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][actualVigilant])
+                preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][actualVigilant])
+                preferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][actualVigilant])
             for j in range(0,cantPlaces):
-                disitancePlaces.append(self.Dataset['D. Sitio '+str(j+1)][i])
+                disitancePlaces.append(self.Dataset['D. Sitio '+str(j+1)][actualVigilant])
             vigilant.append(preferences)
             vigilant.append(disitancePlaces)
-            self.vigilantesInfo.append(vigilant)
+            self.vigilantsInfo.append(vigilant)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#???????????????????????????????????????????????????????????????????????#???????????????????????????????????????????????????????????????????????
             #self.DataProblem[columns][i]
         #for index, row in data.iterrows():
         #    self.itemRow(row, rows, day)

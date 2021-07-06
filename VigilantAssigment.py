@@ -68,7 +68,7 @@ class VigilantAssigment:
             indexSite += 1
         #Read Vigilant data
         data = VigilantsFile(pathVigilants)
-        self.dataSetVigilants = data.vigilantesInfo
+        self.dataSetVigilants = data.vigilantsInfo
         self.totalVigilantes = data.numberVigilants
 
     def getSite(self, siteId):

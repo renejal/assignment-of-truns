@@ -8,6 +8,7 @@ import math
 import numpy as np
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
+import copy 
 random.seed(0)
 
 class Solution:
@@ -28,8 +29,7 @@ class Solution:
         self.vigilantsForPlaces = {}
         self.initVigilsForPlaces()
         self.vigilants = self.Problem.vigilantes.copy()
-
-        solution = []
+        
     def initVigilsForPlaces(self):
         sites = self.Problem.orderSitesForCantVigilantes
         for site in sites:
@@ -49,12 +49,13 @@ class Solution:
         canNewComponents = 3
         components = []
         #todo: tener en cuenta las horas de descanzo no cesariamente pueden ser consecutivas???
-        shifts = self.obtainWokingDay(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
-        vigilantsByPeriod = self.Problem.cantVigilantsPeriod[siteId-1].copy()
-        necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriod,shifts)
+        shifts = self.obtainShiftBySite(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
+        vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1].copy()
+        necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
-            component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriod)
-            self.getSchedule(component,shifts,necesaryVigilantes)
+            component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
+           # v = copy.copy(necesaryVigilantes[0][0])
+            self.getSchedule(component,shifts,copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)
         return components
@@ -149,7 +150,7 @@ class Solution:
         return ObjResultado
        # return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
 
-    def obtainWokingDay(self,parSite):
+    def obtainShiftBySite(self,parSite):
         site = np.copy(parSite)
         working_day = []
         init = -1
@@ -240,6 +241,7 @@ class Solution:
             pass
         restrictedList = components[:5]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
+
     def Union(self, component):
         self.updateListVigilanteforSite(component)
         for vigilant in component.newVigilants:
@@ -260,11 +262,7 @@ class Solution:
         return self.vigilants 
 
     def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
-        vigilantsByPeriodInAWeek = []
-        for shift in shifts:
-            if shift[0] > 168:
-                break 
-            vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
+        vigilantsByPeriodInAWeek = self.getVigilantsByPeriodInAWeek(shifts,vigilantsByPeriod,)
         cantNecesaryVigilantsInWeek = sum(vigilantsByPeriodInAWeek)
         #cantNecesaryVigilantsInWeek = 100
         porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
@@ -286,3 +284,10 @@ class Solution:
                   canVigilantsNecesaryInSite-=1  
                 pos+=1
         return [Expectedvigilants,orderVigilants]
+    def getVigilantsByPeriodInAWeek(self,shifts,vigilantsByPeriod):
+        vigilantsByPeriodInAWeek = []
+        for shift in shifts:
+            if shift[0] > 168:
+                break 
+            vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
+        return vigilantsByPeriodInAWeek

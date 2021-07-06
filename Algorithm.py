@@ -8,7 +8,6 @@ class Algorithm(ABC):
     VigilantAssigment = None
     Aleatory = None
 
-
     @abstractmethod
     def Execute(self, problem, theAleatory):
         pass
