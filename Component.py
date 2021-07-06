@@ -1,20 +1,19 @@
 class Component:    
-    def __init__(self,solution,siteId,cantWeeks,vigilantsByPeriod):   
-        self.solution = solution
+    def __init__(self,siteId,cantWeeks,necesaryvigilantsByPeriod):   
         self.siteId = siteId
         self.siteSchedule = []
-        for i in range(0,168*cantWeeks):
+        for period in range(0,168*cantWeeks):
             self.siteSchedule.append([])
-        self.newVigilants = []
-        self.vigilantsByPeriod = vigilantsByPeriod
+        self.assignedVigilants = []
+        self.necesaryvigilantsByPeriod = necesaryvigilantsByPeriod
         self.fitness = 0
 
     def calcuteFitness(self):
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
-            self.fitness += (self.vigilantsByPeriod[period] - len(self.siteSchedule[period]))*100
+            self.fitness += (self.necesaryvigilantsByPeriod[period] - len(self.siteSchedule[period]))*100
         #Calculate distances and preferences
-        for vigilant in self.newVigilants:
+        for vigilant in self.assignedVigilants:
             for assignedPlace in vigilant.shifts:
                 if assignedPlace != 0:
                     #calculate fitness distance

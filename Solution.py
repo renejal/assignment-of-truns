@@ -1,9 +1,7 @@
 from Component import Component
 from heapq import merge
-from Site import Site
 from random import random
 import random
-import Vigilant
 import math
 import numpy as np
 from Algorithm import Algorithm
@@ -53,8 +51,12 @@ class Solution:
         vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1].copy()
         necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
-            component = Component(self.schedule,siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
+            component = Component(siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
            # v = copy.copy(necesaryVigilantes[0][0])
+            v =  copy.deepcopy(necesaryVigilantes)
+            v[0][0].HoursWeeks[0] = 56
+            print(v[0][0].HoursWeeks)
+            print(necesaryVigilantes[0][0].HoursWeeks)
             self.getSchedule(component,shifts,copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)
@@ -65,7 +67,7 @@ class Solution:
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
-            for iteration in range(0,component.vigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
+            for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
                 objViglant = self.obtainVigilantAvailable(component.siteId,shift[0],shift[1],listTempVigilant,necesaryVigilantes)
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant.id) #guardos los vigilantes que se van asignado al sitio
@@ -255,7 +257,7 @@ class Solution:
         for iteration in range(0,len(self.vigilants)-1):
             swapped =False
             for pos in range(0,len(self.vigilants)-1-iteration):
-                if(self.vigilants[pos + 1].distances[place-1] < self.vigilants[pos].distances[place-1]):
+                if(self.vigilants[pos + 1].distancesBetweenPlacesToWatch[place-1] < self.vigilants[pos].distancesBetweenPlacesToWatch[place-1]):
                     aux = self.vigilants[pos]
                     self.vigilants[pos] = self.vigilants[pos+1]
                     self.vigilants[pos + 1] = aux
