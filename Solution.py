@@ -142,7 +142,7 @@ class Solution:
 
         #2 si no existe vigilante valido dentro del sitio se toma uno de la lista de vigilantes global y se asigna a la lista de vigi
         #lantes para el sitio
-        for j in range(0,len(vigilantDefaultList)):
+        for j in range(0,len(vigilantDefaultList[1])):
             objVigilant = random.choice(vigilantDefaultList[1])
             if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
                 ObjResultado = objVigilant
@@ -211,9 +211,10 @@ class Solution:
             shift.append(numberInit)
             numberInit +=1
         return shift
-    def Union(self, components):
-        # implementation
-        return 0
+    def UpdateListVigilantAvaliable(self,components):
+        Listvigilants=self.vigilantsForPlaces[components.siteId]
+        for i in Listvigilants:
+            self.vigilants.remove(i)
     def OrderSitesForCantVigilantes(self, problem):
         return 1
         sites = problem.vigilantesforSite
@@ -245,6 +246,7 @@ class Solution:
         restrictedList = components[:5]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
     def Union(self, component):
+        self.updateListVigilanteforSite(component)
         for vigilant in component.newVigilants:
             self.schedule[vigilant.id-1] = vigilant
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
