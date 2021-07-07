@@ -73,9 +73,13 @@ class Solution:
         
 
     def AssigmentVigilants(self, objVigilant, site, shift,component):
+            if objVigilant not in component.newVigilants:
+                component.newVigilants.append(objVigilant)
+
             for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
+
 
     def updateHours(self,shift,lisVigilantsAssiged,site):
         hoursWorkend = self.obtainRange(shift[0], shift[1])
