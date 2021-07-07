@@ -12,7 +12,7 @@ random.seed(0)
 class Solution:
 
     sitesSchedule = []
-    schedule = []
+    vigilantsSchedule = []
     Fitness = int
     MyContainer = Algorithm
     Problem = VigilantAssigment
@@ -23,45 +23,33 @@ class Solution:
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
-
         self.vigilantsForPlaces = {}
         self.initVigilsForPlaces()
         self.vigilants = self.Problem.vigilantes.copy()
+        self.iteration = 0
         
     def initVigilsForPlaces(self):
         sites = self.Problem.orderSitesForCantVigilantes
         for site in sites:
             self.vigilantsForPlaces[site] = []
 
-        self.schedule = [None]*(len(self.Problem.vigilantes))
+        self.vigilantsSchedule = [None]*(len(self.Problem.vigilantes))
         self.sitesSchedule = [None]*(self.Problem.totalPlaces)
 
-
-
-    def Tweak(self, Problem):
-
-        # implementation
-        return 0
     def ObtainComponents(self):
-        siteId = self.Problem.orderSitesForCantVigilantes[0]
+        siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         canNewComponents = 3
         components = []
         #todo: tener en cuenta las horas de descanzo no cesariamente pueden ser consecutivas???
         shifts = self.obtainShiftBySite(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
-        vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1].copy()
+        vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
             component = Component(siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
-           # v = copy.copy(necesaryVigilantes[0][0])
-            v =  copy.deepcopy(necesaryVigilantes)
-            v[0][0].HoursWeeks[0] = 56
-            print(v[0][0].HoursWeeks)
-            print(necesaryVigilantes[0][0].HoursWeeks)
             self.getSchedule(component,shifts,copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)
         return components
-
 
     def getSchedule(self,component,shifts,necesaryVigilantes):
         listTempVigilant = []
@@ -73,15 +61,13 @@ class Solution:
                 listTempVigilant.append(objViglant) #guardos los vigilantes que se van asignado al sitio
             self.updateHours(shift,listTempVigilant,component.siteId)
         
-
     def AssigmentVigilants(self, objVigilant, site, shift,component):
-            if objVigilant not in component.newVigilants:
-                component.newVigilants.append(objVigilant)
+            if objVigilant not in component.assignedVigilants:
+                component.assignedVigilants.append(objVigilant)
 
             for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
-
 
     def updateHours(self,shift,lisVigilantsAssiged,site):
         hoursWorkend = self.obtainRange(shift[0], shift[1])
@@ -119,13 +105,13 @@ class Solution:
             shift = shift - 168
             week = week + 1
         return week
-    def CompleteSolution(self):
-        # implementation
-        return 1
+    
     def aleatory(self,init, end):
         return random.randint(init, end)
+    
     def assignVigilantsmissingofSite(self, siteId):
         workingday = self.Problem.workingDay(siteId)
+    
     def obtainVigilantAvailable(self,site, InitShift, endShift,lisVigilantDefault,vigilantDefaultList):
 
         #todo: optimizar metodo, posible mente dividir en dos metodos y revisar la validacion de inexistencia de vigilants repetidos
@@ -188,6 +174,7 @@ class Solution:
 
 
         return working_day
+    
     def calculateworkinday(self, workinday, indexWorkingDay, endWorkingDay):
         listWorkinDay = []
         flag = False
@@ -206,29 +193,65 @@ class Solution:
                 i+= 1
                 k = 0
         return  listWorkinDay
+    
     def obtainRange(self, numberInit, numberEnd):
         shift = []
         while numberInit <= numberEnd:
             shift.append(numberInit)
             numberInit +=1
         return shift
+    
     def UpdateListVigilantAvaliable(self,components):
         Listvigilants=self.vigilantsForPlaces[components.siteId]
         for i in Listvigilants:
-            self.vigilants.remove(i)
-    def OrderSitesForCantVigilantes(self, problem):
-        return 1
-        sites = problem.vigilantesforSite
-        sites = sorted(sites.items(), key=operator.itemgetter(1), reverse=True)
-        site = []
-        for i in sites:
-            site.append(int(i[0]))
-        return site
+            self.vigilants.remove(i)    
 
-        if endShift > len(objvigilant.shifts):
-            print("turno fuera de limite")
-        for i in range(initShift,endShift):
-            objvigilant.setShift(i,siteId)
+    def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
+        necesaryVigilantsByPeriodInAWeek = self.getNecesaryVigilantsByPeriodInAWeek(shifts,vigilantsByPeriod)
+        cantNecesaryVigilantsInWeek = sum(necesaryVigilantsByPeriodInAWeek)
+        porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
+        cantVigilantsNecesaryInSite =  math.floor(cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
+        expectedvigilantsInPlace = []
+        orderVigilantsByDistance = []
+        if siteId in self.Problem.vigilantExpectedPlaces:
+            if len(self.Problem.vigilantExpectedPlaces[siteId]) >= cantVigilantsNecesaryInSite:
+                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId][:cantVigilantsNecesaryInSite]
+            else:
+                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId]
+            for iteration in range(0,len(expectedvigilantsInPlace)):
+                expectedvigilantsInPlace[iteration] = self.vigilants[expectedvigilantsInPlace[iteration]-1]
+            cantVigilantsNecesaryInSite -= len(expectedvigilantsInPlace)
+        if cantVigilantsNecesaryInSite > 0:
+         orderVigilantsInPlaceByDistance = self.orderVigilantsInPlaceByDistance(siteId)
+         pos = 0
+         while cantVigilantsNecesaryInSite > 0:
+                if (orderVigilantsInPlaceByDistance[pos] in expectedvigilantsInPlace) == False:
+                  orderVigilantsByDistance.append(orderVigilantsInPlaceByDistance[pos])
+                  cantVigilantsNecesaryInSite-=1  
+                pos+=1
+        return [expectedvigilantsInPlace,orderVigilantsByDistance]
+    
+    def getNecesaryVigilantsByPeriodInAWeek(self,shifts,vigilantsByPeriod):
+        vigilantsByPeriodInAWeek = []
+        for shift in shifts:
+            if shift[0] > 168:
+                break 
+            vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
+        return vigilantsByPeriodInAWeek
+    
+    def orderVigilantsInPlaceByDistance(self,place):
+        for iteration in range(0,len(self.vigilants)-1):
+            swapped =False
+            for pos in range(0,len(self.vigilants)-1-iteration):
+                if(self.vigilants[pos + 1].distancesBetweenPlacesToWatch[place-1] < self.vigilants[pos].distancesBetweenPlacesToWatch[place-1]):
+                    aux = self.vigilants[pos]
+                    self.vigilants[pos] = self.vigilants[pos+1]
+                    self.vigilants[pos + 1] = aux
+                    swapped = True
+            if swapped == False:
+                break
+        return self.vigilants 
+    
     def BestComponents(self,components):
         cantRestrictedComponets = 2
         #Fitness de la solucion
@@ -242,57 +265,23 @@ class Solution:
                     swapped = True
             if swapped == False:
                 break
-            #self.evaluteComponent()
             pass
         restrictedList = components[:5]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
     #todo: pasar objetos vigilantes al componente, generar solucion,
     def Union(self, component):
-        self.updateListVigilanteforSite(component)
-        for vigilant in component.newVigilants:
-            self.schedule[vigilant.id-1] = vigilant
+        for vigilant in component.assignedVigilants:
+            self.vigilantsSchedule[vigilant.id-1] = vigilant
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
+        self.iteration+=1
 
-    def orderVigilantsBySite(self,place):
-        for iteration in range(0,len(self.vigilants)-1):
-            swapped =False
-            for pos in range(0,len(self.vigilants)-1-iteration):
-                if(self.vigilants[pos + 1].distancesBetweenPlacesToWatch[place-1] < self.vigilants[pos].distancesBetweenPlacesToWatch[place-1]):
-                    aux = self.vigilants[pos]
-                    self.vigilants[pos] = self.vigilants[pos+1]
-                    self.vigilants[pos + 1] = aux
-                    swapped = True
-            if swapped == False:
-                break
-        return self.vigilants 
 
-    def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
-        vigilantsByPeriodInAWeek = self.getVigilantsByPeriodInAWeek(shifts,vigilantsByPeriod,)
-        cantNecesaryVigilantsInWeek = sum(vigilantsByPeriodInAWeek)
-        #cantNecesaryVigilantsInWeek = 100
-        porcentajeDeTrabajo = 3.5 #Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
-        canVigilantsNecesaryInSite =  math.floor(cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
-        Expectedvigilants = []
-        orderVigilants = []
-        if siteId in self.Problem.vigilantExpectedPlaces:
-            if len(self.Problem.vigilantExpectedPlaces[siteId]) >= canVigilantsNecesaryInSite:
-                Expectedvigilants = self.Problem.vigilantExpectedPlaces[siteId][:canVigilantsNecesaryInSite]
-            else:
-                Expectedvigilants = self.Problem.vigilantExpectedPlaces[siteId]
-            canVigilantsNecesaryInSite -= len(Expectedvigilants)
-        if canVigilantsNecesaryInSite > 0:
-         orderVigilantsBySite = self.orderVigilantsBySite(siteId)
-         pos = 0
-         while canVigilantsNecesaryInSite > 0:
-                if (orderVigilantsBySite[pos] in Expectedvigilants) == False:
-                  orderVigilants.append(orderVigilantsBySite[pos])
-                  canVigilantsNecesaryInSite-=1  
-                pos+=1
-        return [Expectedvigilants,orderVigilants]
-    def getVigilantsByPeriodInAWeek(self,shifts,vigilantsByPeriod):
-        vigilantsByPeriodInAWeek = []
-        for shift in shifts:
-            if shift[0] > 168:
-                break 
-            vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
-        return vigilantsByPeriodInAWeek
+    def CompleteSolution(self):
+        if self.iteration < len(self.sitesSchedule):
+            return True
+        return False
+
+    def Tweak(self, Problem):
+
+        # implementation
+        return 0

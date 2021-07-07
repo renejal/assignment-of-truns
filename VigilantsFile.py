@@ -20,7 +20,7 @@ class VigilantsFile:
         cantPlaces = self.Dataset.columns.size - infoVigilantsColums
         for posicionVigilant in range(0,self.numberVigilants):
             vigilant = []
-            preferences = []
+            shiftPreferences = []
             distancesBetweenPlacesToWatch = []
             vigilant.append(self.Dataset['ID Vigilante'][posicionVigilant])
             if pd.isna(self.Dataset['Sitio Esperado'][posicionVigilant]):
@@ -28,11 +28,11 @@ class VigilantsFile:
             else:
                 vigilant.append(self.Dataset['Sitio Esperado'][posicionVigilant])
             if pd.isna(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][posicionVigilant]) == False:
-                preferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][posicionVigilant])
-                preferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][posicionVigilant])
-                preferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][posicionVigilant])
+                shiftPreferences.append(self.Dataset['Horario preferencia 6 a.m - 2 p.m'][posicionVigilant])
+                shiftPreferences.append(self.Dataset['Horario preferencia 2 p.m - 10 p.m'][posicionVigilant])
+                shiftPreferences.append(self.Dataset['Horario preferencia 10 p.m - 6 a.m'][posicionVigilant])
             for place in range(0,cantPlaces):
                 distancesBetweenPlacesToWatch.append(self.Dataset['D. Sitio '+str(place+1)][posicionVigilant])
-            vigilant.append(preferences)
+            vigilant.append(shiftPreferences)
             vigilant.append(distancesBetweenPlacesToWatch)
             self.vigilantsInfo.append(vigilant)

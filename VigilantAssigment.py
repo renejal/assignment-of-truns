@@ -92,9 +92,9 @@ class VigilantAssigment:
             objVigilant = Vigilant(self.dataSetVigilants[i][0],self.dataSetVigilants[i][1],self.dataSetVigilants[i][2],self.dataSetVigilants[i][3],self.totalWeeks)
             if self.dataSetVigilants[i][1] != 0:
                 if (self.dataSetVigilants[i][1] in self.vigilantExpectedPlaces) == False:
-                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] = [objVigilant]
+                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]] = [objVigilant.id]
                 else:
-                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(objVigilant)
+                    self.vigilantExpectedPlaces[self.dataSetVigilants[i][1]].append(objVigilant.id)
             self.vigilantes.append(objVigilant)
             if len(objVigilant.shiftPreferences) == 0:
                 self.vigilantsWithOutPreference.append(objVigilant.id)

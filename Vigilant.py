@@ -76,5 +76,5 @@ class Vigilant:
     def setHoursRest(self, hours):
         self.HoursofRest = self.HoursofRest + hours
    
-    def setShift(self, index, site):
-        self.shifts[index] = site
+    def setShift(self, period, site):
+        self.shifts[period] = site

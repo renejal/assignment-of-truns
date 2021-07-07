@@ -17,7 +17,7 @@ class Component:
             for assignedPlace in vigilant.shifts:
                 if assignedPlace != 0:
                     #calculate fitness distance
-                    self.fitness+= vigilant.expectedPlace - assignedPlace
+                    self.fitness+= vigilant.expectedPlaceToWatch - assignedPlace
                     #Calculate preferencias 
                     #TODO 
                     
