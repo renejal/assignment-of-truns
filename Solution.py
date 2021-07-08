@@ -118,14 +118,15 @@ class Solution:
         ObjResultado = None
         #1 vigilante de los asignados al sitio
         for i in range(0,100):
-            if i == 98:
-                print("encontrado")
-            #todo : revisar el limite superios del for, cuentas iteraciones se podrian hacer en caso de que no encuentr un vigilantes valido??
-            #vigilantDefaultList =self.Problem.vigilantExpectedPlaces[site]
-            objVigilant = random.choice(vigilantDefaultList[0]) #toma un elemento de forma aleatorio de la lista
-            if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
-                ObjResultado = objVigilant
-                return ObjResultado
+            if vigilantDefaultList[0]:
+                #todo : revisar el limite superios del for, cuentas iteraciones se podrian hacer en caso de que no encuentr un vigilantes valido??
+                #vigilantDefaultList =self.Problem.vigilantExpectedPlaces[site]
+                objVigilant = random.choice(vigilantDefaultList[0]) #toma un elemento de forma aleatorio de la lista
+                if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
+                    ObjResultado = objVigilant
+                    return ObjResultado
+            else:
+                print("lista de vigilantes por default esta vacia")
 
         #2 si no existe vigilante valido dentro del sitio se toma uno de la lista de vigilantes global y se asigna a la lista de vigi
         #lantes para el sitio
