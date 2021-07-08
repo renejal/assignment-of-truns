@@ -275,7 +275,6 @@ class Solution:
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
         self.iteration+=1
 
-
     def CompleteSolution(self):
         if self.iteration < len(self.sitesSchedule):
             return True
