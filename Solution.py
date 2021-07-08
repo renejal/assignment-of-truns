@@ -149,7 +149,8 @@ class Solution:
         start = False
         k = 0
         for index, t in enumerate(site):
-
+            if index == 150:
+                print("preuba debug")
             if t == 0 and start == False:
                 continue
 
@@ -162,7 +163,10 @@ class Solution:
                     k +=1
 
             if (t==0 and start == True) or k == 24:
+                workindaytimes = None
                 workindaytimes = self.Problem.workingDay[k] # obtiene el numero de jornadas en relacion a la cantidad de horas a trabajar
+                if workindaytimes == None:
+                    print("el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
                 #termina el conteo
                 start = False
                 #se crear las jornadas a partidir de workindytimes
