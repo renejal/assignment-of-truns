@@ -78,7 +78,6 @@ class File:
                 shiftResult.append(i+(day*25))
         return shiftResult
 
-
     def dataInitialization(self, numGuards, row):
         self.DataProblem[row] = numGuards
 
@@ -147,6 +146,7 @@ class File:
         if dayLimit == 2:
             day = day + 1
             dayLimit = 1
+
 
 
 

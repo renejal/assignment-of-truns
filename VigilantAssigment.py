@@ -6,6 +6,8 @@ from File import File
 from VigilantsFile import VigilantsFile
 from Vigilant import Vigilant
 import random
+from openpyxl import load_workbook
+
 random.seed(0)
 
 class VigilantAssigment:
@@ -217,8 +219,30 @@ class VigilantAssigment:
             result = np.append(result, np.array([turno]), axis=0)
         result = pd.DataFrame(result)
         result.to_csv(path)
-
-
+    
+    def generateResults(self,path,solution):
+        writer = pd.ExcelWriter(path, engine='openpyxl') 
+        wb  = writer.book
+        for sideId in range(0,len(solution.sitesSchedule)):
+            sheduleSite = {}
+            if len(solution.sitesSchedule[sideId]) > 0:
+                numerDay = 1
+                period = 0
+                vigilantsByDay = []
+                for assignedVigilantsInPeriod in solution.sitesSchedule[sideId]:
+                    vigilantsByDay.append(assignedVigilantsInPeriod)
+                    period+=1
+                    if period == 24:
+                        sheduleSite['day'+str(numerDay)] = vigilantsByDay
+                        vigilantsByDay = []
+                        period = 0
+                        numerDay+=1
+            df = pd.DataFrame(sheduleSite)
+            df.to_excel(writer, sheet_name = 'site'+str(sideId+1))
+            sideId += 1
+        wb.save(path)
+        writer.close()
+        
     def getShitfVigilant(self, vigilant):
         turno = []
         for weekI, week in enumerate(vigilant.shifts):

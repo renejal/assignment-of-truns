@@ -7,6 +7,7 @@ import numpy as np
 from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 import copy 
+
 random.seed(0)
 
 class Solution:
@@ -34,7 +35,7 @@ class Solution:
             self.vigilantsForPlaces[site] = []
 
         self.vigilantsSchedule = [None]*(len(self.Problem.vigilantes))
-        self.sitesSchedule = [None]*(self.Problem.totalPlaces)
+        self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
 
     def ObtainComponents(self):
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
@@ -283,6 +284,14 @@ class Solution:
         if self.iteration < len(self.sitesSchedule):
             return True
         return False
+
+    def generateResults(self,CurrentEFOs,MaxEFOs): 
+        if CurrentEFOs == 0:
+            self.Problem.generateResults('./Data/Results/FirstResult.xlsx',self)
+        elif CurrentEFOs == MaxEFOs/2:
+            self.Problem.generateResults('./Data/Results/HalfResult',self)
+        elif CurrentEFOs == MaxEFOs-1:
+            self.Problem.generateResults('./Data/Results/FinalResult',self)
 
     def Tweak(self, Problem):
 
