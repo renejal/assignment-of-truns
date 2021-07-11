@@ -26,6 +26,7 @@ class Solution:
         self.Problem = self.MyContainer.VigilantAssigment
         self.vigilantsForPlaces = {}
         self.initVigilsForPlaces()
+        self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.vigilants = self.Problem.vigilantes.copy()
         self.iteration = 0
         
@@ -33,8 +34,6 @@ class Solution:
         sites = self.Problem.orderSitesForCantVigilantes
         for site in sites:
             self.vigilantsForPlaces[site] = []
-
-        self.vigilantsSchedule = [None]*(len(self.Problem.vigilantes))
         self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
 
     def ObtainComponents(self):
@@ -58,6 +57,8 @@ class Solution:
             listTempVigilant.clear()
             for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
                 objViglant = self.obtainVigilantAvailable(component.siteId,shift[0],shift[1],listTempVigilant,necesaryVigilantes)
+                if objViglant == None:
+                    continue
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant) #guardos los vigilantes que se van asignado al sitio
             self.updateHours(shift,listTempVigilant,component.siteId)
@@ -127,7 +128,8 @@ class Solution:
                     ObjResultado = objVigilant
                     return ObjResultado
             else:
-                print("lista de vigilantes por default esta vacia")
+                continue
+                #print("lista de vigilantes por default esta vacia")
 
         #2 si no existe vigilante valido dentro del sitio se toma uno de la lista de vigilantes global y se asigna a la lista de vigi
         #lantes para el sitio
@@ -138,7 +140,6 @@ class Solution:
                 return ObjResultado
         if ObjResultado == None:
             print("no se encontraron mas vigilantes validos")
-            exit()
 
         return ObjResultado
        # return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
@@ -221,18 +222,18 @@ class Solution:
         orderVigilantsByDistance = []
         if siteId in self.Problem.vigilantExpectedPlaces:
             if len(self.Problem.vigilantExpectedPlaces[siteId]) >= cantVigilantsNecesaryInSite:
-                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId][:cantVigilantsNecesaryInSite]
+                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId][:cantVigilantsNecesaryInSite].copy()
             else:
-                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId]
+                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId].copy()
             for iteration in range(0,len(expectedvigilantsInPlace)):
-                expectedvigilantsInPlace[iteration] = self.vigilants[expectedvigilantsInPlace[iteration]-1]
+                expectedvigilantsInPlace[iteration] = self.vigilantsSchedule[expectedvigilantsInPlace[iteration]-1]
             cantVigilantsNecesaryInSite -= len(expectedvigilantsInPlace)
         if cantVigilantsNecesaryInSite > 0:
-         orderVigilantsInPlaceByDistance = self.orderVigilantsInPlaceByDistance(siteId)
+         orderVigilantsInPlaceByDistance = self.orderVigilantsInPlaceByDistance(self.vigilants,siteId)
          pos = 0
          while cantVigilantsNecesaryInSite > 0:
                 if (orderVigilantsInPlaceByDistance[pos] in expectedvigilantsInPlace) == False:
-                  orderVigilantsByDistance.append(orderVigilantsInPlaceByDistance[pos])
+                  orderVigilantsByDistance.append(self.vigilantsSchedule[orderVigilantsInPlaceByDistance[pos].id-1])
                   cantVigilantsNecesaryInSite-=1  
                 pos+=1
         return [expectedvigilantsInPlace,orderVigilantsByDistance]
@@ -245,18 +246,18 @@ class Solution:
             vigilantsByPeriodInAWeek.append(vigilantsByPeriod[shift[0]]) 
         return vigilantsByPeriodInAWeek
     
-    def orderVigilantsInPlaceByDistance(self,place):
-        for iteration in range(0,len(self.vigilants)-1):
+    def orderVigilantsInPlaceByDistance(self,vigilants,place):
+        for iteration in range(0,len(vigilants)-1):
             swapped =False
-            for pos in range(0,len(self.vigilants)-1-iteration):
-                if(self.vigilants[pos + 1].distancesBetweenPlacesToWatch[place-1] < self.vigilants[pos].distancesBetweenPlacesToWatch[place-1]):
-                    aux = self.vigilants[pos]
-                    self.vigilants[pos] = self.vigilants[pos+1]
-                    self.vigilants[pos + 1] = aux
+            for pos in range(0,len(vigilants)-1-iteration):
+                if(vigilants[pos + 1].distancesBetweenPlacesToWatch[place-1] < vigilants[pos].distancesBetweenPlacesToWatch[place-1]):
+                    aux = vigilants[pos]
+                    vigilants[pos] = vigilants[pos+1]
+                    vigilants[pos + 1] = aux
                     swapped = True
             if swapped == False:
                 break
-        return self.vigilants 
+        return vigilants 
     
     def BestComponents(self,components):
         cantRestrictedComponets = 2
@@ -288,7 +289,7 @@ class Solution:
 
     def generateResults(self,CurrentEFOs,MaxEFOs): 
         if CurrentEFOs == 0:
-            self.Problem.generateResults('./Data/Results/FirstResult.xlsx',self)
+            self.Problem.generateResults('./Data/Results/FirstResult',self)
         elif CurrentEFOs == MaxEFOs/2:
             self.Problem.generateResults('./Data/Results/HalfResult',self)
         elif CurrentEFOs == MaxEFOs-1:
