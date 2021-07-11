@@ -1,5 +1,4 @@
 from Component import Component
-from heapq import merge
 from random import random
 import random
 import math
@@ -40,8 +39,7 @@ class Solution:
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         canNewComponents = 3
         components = []
-        #todo: tener en cuenta las horas de descanzo no cesariamente pueden ser consecutivas???
-        shifts = self.obtainShiftBySite(self.Problem.getSite(siteId)) #retorna listado de jornadas para el sitio N
+        shifts = self.obtainShiftBySite(self.Problem.getSite(siteId))
         vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
@@ -55,41 +53,33 @@ class Solution:
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
-            for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]): #todo: encontra una forma mas segura
-                objViglant = self.obtainVigilantAvailable(component.siteId,shift[0],shift[1],listTempVigilant,necesaryVigilantes)
+            for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]):
+                objViglant = self.obtainVigilantAvailable(shift[0],shift[1],listTempVigilant,necesaryVigilantes)
                 if objViglant == None:
                     continue
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
-                listTempVigilant.append(objViglant) #guardos los vigilantes que se van asignado al sitio
+                listTempVigilant.append(objViglant)
             self.updateHours(shift,listTempVigilant,component.siteId)
         
     def AssigmentVigilants(self, objVigilant, site, shift,component):
             if objVigilant not in component.assignedVigilants:
                 component.assignedVigilants.append(objVigilant)
-
             for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
 
     def updateHours(self,shift,lisVigilantsAssiged,site):
         hoursWorkend = self.obtainRange(shift[0], shift[1])
-        #asigna horas de descanso a los vigilantes que este trabajando en el sitio y ya se le hallan asignado un turno
         for objVigilant in self.vigilantsForPlaces[site]:
             self.assigmentHoursVigilant(objVigilant, hoursWorkend, 'rest')
         self.updateListVigilanteforSite(site,lisVigilantsAssiged)
 
-       #asigna horas de trabajo a los vigilantes los cuales apenas se les asigno turno en la itercion anterior
         for objVigilant in lisVigilantsAssiged:
             self.assigmentHoursVigilant(objVigilant,hoursWorkend,'worked')
 
     def updateListVigilanteforSite(self,site,listVigilantnew):
-        """
-         # se actualiza los vigilantes que estan trabajando en el sitio
-        """
         vigilants = self.vigilantsForPlaces[site]
         vigilants.extend(element for element in listVigilantnew if element not in vigilants)
-        #vigilants = list(merge(vigilants,listVigilantnew))
-        #vigilants = listVigilantnew + vigilants
         self.vigilantsForPlaces[site] = vigilants
 
     def assigmentHoursVigilant(self, objVigilant,hoursWorkend,typeHours):
@@ -99,7 +89,6 @@ class Solution:
         if typeHours == "worked":
             for hours in hoursWorkend:
                 objVigilant.setHoursWorked(self.ShiftConvert(hours))
-    #def updateHourWeek(self,objVigilant, hoursWorkend):
 
     def ShiftConvert(self, shift):
         week = 0
@@ -108,32 +97,16 @@ class Solution:
             week = week + 1
         return week
     
-    def aleatory(self,init, end):
-        return random.randint(init, end)
-    
-    def assignVigilantsmissingofSite(self, siteId):
-        workingday = self.Problem.workingDay(siteId)
-    
-    def obtainVigilantAvailable(self,site, InitShift, endShift,lisVigilantDefault,vigilantDefaultList):
-
-        #todo: optimizar metodo, posible mente dividir en dos metodos y revisar la validacion de inexistencia de vigilants repetidos
+    def obtainVigilantAvailable(self, InitShift, endShift,lisVigilantDefault,vigilantDefaultList):
+        #busca en la lista de vigilantes por default [0](vigilantes fijos) si hay disponibles para asignar
         ObjResultado = None
-        #1 vigilante de los asignados al sitio
-        for i in range(0,100):
-            if vigilantDefaultList[0]:
-                #todo : revisar el limite superios del for, cuentas iteraciones se podrian hacer en caso de que no encuentr un vigilantes valido??
-                #vigilantDefaultList =self.Problem.vigilantExpectedPlaces[site]
-                objVigilant = random.choice(vigilantDefaultList[0]) #toma un elemento de forma aleatorio de la lista
+        for i in vigilantDefaultList[0]:
+                objVigilant = random.choice(vigilantDefaultList[0])
                 if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
                     ObjResultado = objVigilant
                     return ObjResultado
-            else:
-                continue
-                #print("lista de vigilantes por default esta vacia")
-
-        #2 si no existe vigilante valido dentro del sitio se toma uno de la lista de vigilantes global y se asigna a la lista de vigi
-        #lantes para el sitio
-        for j in range(0,len(vigilantDefaultList[1])):
+        #busca en la lista de vigilantes por default [1](ordenados por distancia) si hay disponibles para asignar
+        for j in vigilantDefaultList[1]:
             objVigilant = random.choice(vigilantDefaultList[1])
             if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
                 ObjResultado = objVigilant
@@ -142,43 +115,32 @@ class Solution:
             print("no se encontraron mas vigilantes validos")
 
         return ObjResultado
-       # return True if self.sitesSchedule[len(self.sitesSchedule)-1] == None else False
 
     def obtainShiftBySite(self,parSite):
         site = np.copy(parSite)
         working_day = []
         init = -1
-        end = 0
         start = False
         k = 0
         for index, t in enumerate(site):
-            if index == 150:
-                print("preuba debug")
             if t == 0 and start == False:
                 continue
 
             if t != 0:
                 if init == -1:
-                    #lleva el control cuando inicia la jornada
                     init = index
-                start = True #comienza el conteo
+                start = True
                 if k<24:
                     k +=1
 
             if (t==0 and start == True) or k == 24:
-                workindaytimes = None
-                workindaytimes = self.Problem.workingDay[k] # obtiene el numero de jornadas en relacion a la cantidad de horas a trabajar
+                workindaytimes = self.Problem.workingDay[k]
                 if workindaytimes == None:
                     print("el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
-                #termina el conteo
                 start = False
-                #se crear las jornadas a partidir de workindytimes
                 working_day = working_day + (self.calculateworkinday(workindaytimes,init,index))
-                #se asigna el final del turno a la variable end
                 init = index+1
-                #se reinicia los identificadores init y end
                 k = 0
-
 
         return working_day
     
@@ -275,7 +237,7 @@ class Solution:
             pass
         restrictedList = components[:5]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
-    #todo: pasar objetos vigilantes al componente, generar solucion,
+
     def Union(self, component):
         for vigilant in component.assignedVigilants:
             self.vigilantsSchedule[vigilant.id-1] = vigilant

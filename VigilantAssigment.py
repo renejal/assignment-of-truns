@@ -1,10 +1,8 @@
 import operator
-import numpy as np
-from numpy.core.numeric import NaN
-import pandas as pd
 from File import File
 from VigilantsFile import VigilantsFile
 from Vigilant import Vigilant
+import pandas as pd
 import random
 from openpyxl import load_workbook
 
@@ -36,16 +34,13 @@ class VigilantAssigment:
     vigilantsWithOutPreference = []
     orderSitesForCantVigilantes = []
 
-    def __init__(self, pathInterface , pathVigilants, weeks):
+    def __init__(self, pathInterface, pathVigilants, weeks):
         self.totalWeeks = weeks
         self.totalPeriods = 168*self.totalWeeks
         self.identifiesWeekStartPeriod()
         self.readData(pathInterface,pathVigilants)
         self.initProblem()
         self.loadWorkingDay()
-        self.Aleatory = random.seed(0) #todo add parametro aleatorio en el contructor
-        #self.InitListVigilantesAssigment()
-        #self.createShift(self.Dataset)
 
     def readData(self, pathInterface , pathVigilants):
         datasets = File(pathInterface, self.totalWeeks)
@@ -65,10 +60,8 @@ class VigilantAssigment:
         data = VigilantsFile(pathVigilants)
         self.dataSetVigilants = data.vigilantsInfo
         self.totalVigilantes = data.numberVigilants
-
     def getSite(self, siteId):
         return self.Dataset[siteId]
-
     def loadWorkingDay(self):
         self.workingDay = {6:6, 7:7,8:8,9:9,10:10,11:11,12:12,13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],20:[10,10],21:[7,7,7],22:[8,7,7],
                       23:[8,8,7],24:[8,8,8]}
@@ -101,8 +94,6 @@ class VigilantAssigment:
             if len(objVigilant.shiftPreferences) == 0:
                 self.vigilantsWithOutPreference.append(objVigilant.id)
 
-        # for place in self.vigilantExpectedPlaces.values():
-        #     self.bubbleSort(place)
         self.OrderSitesForCantVigilantes()    
     def OrderSitesForCantVigilantes(self):
         sites = self.vigilantesforSite
@@ -111,106 +102,12 @@ class VigilantAssigment:
         for i in sites:
             site.append(int(i[0]))
         self.orderSitesForCantVigilantes = site
-    # def InitListVigilantesAssigment(self):
-    #     for i in range(self.totalVigilantes):
-    #         self.VigilantesList.append(i)
-    #     random.shuffle(self.VigilantesList)
-
-    # def createShift(self, dataSet):
-    #     '''
-    #     Assigment vigilant to a shift and site
-    #     :param dataSet: data the input shift for to vigilantes
-    #     '''
-    #     while self.Site < self.totalPlaces:
-    #         while self.Shift < self.totalPeriods:
-    #             sites = []
-    #             if dataSet[self.Site][self.Shift] != 0:
-    #                 self.assigmentVigilantes(self.aleatoryVigilantes(dataSet[self.Site][self.Shift], 0, self.totalVigilantes-1))
-    #             self.Shift += 1
-    #         self.Shift = 0
-    #         if sites:
-    #             self.Shifts.append(sites)
-    #         self.Site += 1
-
-   # def assigmentVigilantes(self,parSite, parShift):
-        #asignar vigilanestes locales
-
-            #validar horas trabajas
-            #validar horas descanzo
-        #asignar vigilantes globales
-            #asignar
-
-
-
-
-
-    # def assigmentVigilantess(self, objvigilant, siteId ,initShift, endShift):
-    #     '''
-
-    #     :param objvigilant: object vigilante
-    #     :param siteId: id the site
-    #     :param initShift: turn init for vigilant in site
-    #     :param endShift: turn init for vigilant in site
-    #     :return: True: assigned corretly , false if error in assigment
-    #     '''
-
-    #     for i in range(8): #todo: 8 numero aleatorio
-    #       #  self.addVigilant(vigilantes)
-    #         self.Shift += 1
-
-
-
     def identifiesWeekStartPeriod(self):
         '''
         identify the shift the init for the week
         '''
         for i in range(0, self.totalWeeks):
             self.periodEndWeek.append((i + 1) * 168)
-
-
-
-    def addVigilant(self, vigilantes):
-        for i in vigilantes:
-            if self.Shift < self.totalPeriods:
-                turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
-                self.addVigilantShift(i, week, turno, self.Site, 1)
-
-    def addvigilant(self):
-        if self.Shift < self.totalPeriods:
-            turno, week = self.ShiftConvert(self.Shift)  # trasformation the shift a shift and week
-            self.addVigilantShift(random.randint(0, self.totalVigilantes), week, turno, self.Site, 1)
-
-    def addVigilantShift(self, Indexvigilant, IndexWeek, IndexTurno, indexSite, state):
-        #validate if the vigilant is on shift
-        k = 0
-        while k < self.totalVigilantes:
-
-            vigilantIs=self.validateVigilantinShift(Indexvigilant, IndexWeek, IndexTurno)
-            if not vigilantIs:
-                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].state = state  # vigilantes
-                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].site = indexSite
-                self.vigilantes[Indexvigilant].shifts[IndexWeek][IndexTurno].assigmentVigilantes.append(Indexvigilant)
-                break
-            Indexvigilant=random.randint(0, self.totalVigilantes)
-            k += 1
-
-
-
-    def validateVigilantinShift(self, IndexVigilant, IndexWeek, IndexTurno):
-        '''
-        check if the vigilant is assigment in the indexTurno in indexWeek
-
-        :param IndexVigilant: position vigilant
-        :param IndexWeek:  position week
-        :param IndexTurno: position shift
-        :return: true if the vigilant is found otherwise false
-        '''
-        vigilantIs = False
-        vigilantes=self.vigilantes[IndexVigilant].shifts[IndexWeek][IndexTurno].assigmentVigilantes
-        if IndexVigilant is vigilantes:
-            vigilantIs = True
-        return vigilantIs
-
     def to_Save(self, path):
         result = np.empty((0, self.totalPeriods) ,int)
         for vigilantI, vigilant in enumerate(self.vigilantes):
@@ -280,31 +177,10 @@ class VigilantAssigment:
             for shiftI, shift in enumerate(week):
                 turno.append(shift.state)
         return turno
-
-    #aleatory
-    def aleatoryVigilantes(self, numVigilantes, numInit, numEnd):
-        '''
-        create list of aleatory vigilantes uniques
-        :param numVigilantes:
-        :param numInit:
-        :param numEnd:
-        :return:
-        '''
-
-        vigilantList = []
-        while len(vigilantList) < numVigilantes:
-            aleatoryVigilant=random.randint(numInit, numEnd)
-            if aleatoryVigilant is not vigilantList:
-                vigilantList.append(aleatoryVigilant)
-        return  vigilantList
-
     def getShifts(self):
         return self.turnosAsignados
-
     def getCantPlaces(self):
         return self.totalPlaces
-
-    
     def evalute2(self, solution):
         vigilantsByPeriod = self.cantVigilantsPeriod.copy()
         fitness = 0
@@ -378,7 +254,5 @@ class VigilantAssigment:
             locPlace+=1    
     def getVigilant(self,vigilantID):
         return self.vigilantes[vigilantID-1]
-
-
     def orderSitesForCantVigilantes(self):
         return self.orderSitesForCantVigilantes
