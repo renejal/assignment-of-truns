@@ -157,15 +157,21 @@ class VigilantAssigment:
                 numerDay = 1
                 period = 0
                 scheduleByDay = []
+                workingHoursByDay = 0
                 for assignedSiteInPeriod in solution.vigilantsSchedule[vigilantId].shifts:
+                    if assignedSiteInPeriod != 0:
+                        workingHoursByDay+=1
                     scheduleByDay.append(assignedSiteInPeriod)
                     period+=1
                     if period == 24:
+                        scheduleByDay.append(str(workingHoursByDay)+'Hours')
                         sheduleVigilant['day'+str(numerDay)] = scheduleByDay
                         scheduleByDay = []
                         period = 0
                         numerDay+=1
+                        workingHoursByDay = 0
             df = pd.DataFrame(sheduleVigilant)
+            df.style.background_gradient(cmap='YlOrRd', axis=1, subset=df.index[-1])
             df.to_excel(writer, sheet_name = 'vig'+str(vigilantId+1))
             vigilantId += 1
         wb.save(path+"Vigilant.xlsx")
