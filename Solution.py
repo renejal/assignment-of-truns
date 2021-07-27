@@ -40,7 +40,7 @@ class Solution:
         canNewComponents = 3
         components = []
         shifts = self.obtainShiftBySite(self.Problem.getSite(siteId))
-        vigilantsByPeriodInSite = self.Problem.cantVigilantsPeriod[siteId-1]
+        vigilantsByPeriodInSite = self.Problem.cantVigilantsByPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
             component = Component(siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
