@@ -4,30 +4,22 @@ from pandas import DataFrame
 
 
 class SiteDataFile:
-    column= 0
-    Row = 0
-    UrlFile = ""
-    Weeks = int
-    NumberSites = int
-    Dataset = None
     DataProblem = pd.DataFrame()  # Data procedure for problem
 
     def __init__(self, urlFile, weeks):
-        self.UrlFile = urlFile
-        self.Weeks = weeks
-        self.Dataset = pd.read_csv(urlFile, sep=",")
-        self.NumberSites = len(self.Dataset)
-        self.DataProblem = np.zeros((self.NumberSites, self.Weeks * 168), dtype=int)
-        self.procedureData()
+        Dataset = pd.read_csv(urlFile, sep=",")
+        self.weeks = weeks
+        numberSites = len(Dataset)
+        self.DataProblem = np.zeros((numberSites, self.weeks * 168), dtype=int)
+        self.procedureData(Dataset)
 
 
 
-    def procedureData(self):
+    def procedureData(self,Dataset):
         #data = self.Dataset.copy(deep=True)
-        data = pd.DataFrame(self.Dataset)
+        data = pd.DataFrame(Dataset)
         #data = data.dropna()  #clear empty data
         for i in data.index:
-            site = data["sitio"][i]
             day = data["lunes"][i]
             numGuard = data["numero guardias"][i]
             self.dataInitialization(numGuard,i)
@@ -67,16 +59,12 @@ class SiteDataFile:
             self.DataProblem[row][listAssignedShifts[i]] = 0
 
     def assignedShifts(self, parInihour, parFinithour ,day):
-        shift = []
         shiftResult = []
-        for i in range(parInihour,parFinithour+1):
-            shift.append(i)
-
-        for i in range(25):
-            if i not in shift:
-                shiftResult.append(i+(day*25))
+        for i in range(24):
+            if i < parInihour or i > parFinithour:
+                for j in range (0,self.weeks):
+                    shiftResult.append(i+(day*24)+(168*j))
         return shiftResult
-
     def dataInitialization(self, numGuards, row):
         self.DataProblem[row] = numGuards
 

@@ -23,21 +23,20 @@ class Solution:
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
-        self.vigilantsForPlaces = {}
         self.initVigilsForPlaces()
         self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.vigilants = self.Problem.vigilantes.copy()
         self.iteration = 0
         
     def initVigilsForPlaces(self):
+        self.vigilantsForPlaces = {}
         sites = self.Problem.orderSitesForCantVigilantes
         for site in sites:
             self.vigilantsForPlaces[site] = []
         self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
 
-    def ObtainComponents(self):
+    def ObtainComponents(self, canNewComponents):
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
-        canNewComponents = 3
         components = []
         shifts = self.obtainShiftBySite(self.Problem.getSite(siteId))
         vigilantsByPeriodInSite = self.Problem.cantVigilantsByPeriod[siteId-1]
@@ -138,8 +137,10 @@ class Solution:
                 if workindaytimes == None:
                     print("el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
                 start = False
-                working_day = working_day + (self.calculateworkinday(workindaytimes,init,index))
-                init = index+1
+                if workindaytimes == 9:
+                     return
+                working_day = working_day + (self.calculateworkinday(workindaytimes,init))
+                init = -1
                 k = 0
 
         return working_day
@@ -150,7 +151,7 @@ class Solution:
         i = 0
         k = 0
         init = indexWorkingDay
-        while indexWorkingDay <= endWorkingDay:
+        while indexWorkingDay < endWorkingDay:
 
             if k < workinday[i]-1:
                 k+=1
@@ -162,6 +163,14 @@ class Solution:
                 i+= 1
                 k = 0
         return  listWorkinDay
+    def calculateworkinday(self, workinday, indexWorkingDay):
+        dayShiftS = []
+        for durationShift in workinday:
+            dayShiftS.append([indexWorkingDay,indexWorkingDay+durationShift-1])
+            indexWorkingDay+=durationShift
+        return dayShiftS
+
+
     
     def obtainRange(self, numberInit, numberEnd):
         shift = []
@@ -221,8 +230,7 @@ class Solution:
                 break
         return vigilants 
     
-    def BestComponents(self,components):
-        cantRestrictedComponets = 2
+    def BestComponents(self,components,cantRestrictedComponets):
         #Fitness de la solucion
         for iteration in range(0,cantRestrictedComponets):
             swapped =False
@@ -235,7 +243,7 @@ class Solution:
             if swapped == False:
                 break
             pass
-        restrictedList = components[:5]
+        restrictedList = components[:cantRestrictedComponets]
         return restrictedList[random.randint(0,cantRestrictedComponets-1)]
 
     def Union(self, component):

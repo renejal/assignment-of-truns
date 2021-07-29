@@ -13,13 +13,13 @@ class Grasp(Algorithm):
         while self.CurrentEFOs < self.MaxEFOs:
             S = Solution(self, Aleatory)
             while S.CompleteSolution():
-                RestrictedList = S.ObtainComponents()
+                RestrictedList = S.ObtainComponents(5)
                 if RestrictedList == None:
                     #S = Solution(Problem, Aleatory)
                     #Next Site
                     continue
                 else:
-                    BestRestrictedList = S.BestComponents(RestrictedList)
+                    BestRestrictedList = S.BestComponents(RestrictedList,3)
                     S.Union(BestRestrictedList)
             #Comparar si la nueva solucion es mejor que la anterior
             S.generateResults(self.CurrentEFOs,self.MaxEFOs)

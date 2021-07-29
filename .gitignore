@@ -1,4 +1,5 @@
 /Data/datasetResult.csv
+/Data/Results/*
 
 env/
 __pycache__/
