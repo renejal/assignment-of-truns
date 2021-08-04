@@ -40,7 +40,7 @@ class Vigilant:
         weekStarPeriod = math.floor(startPeriod/168)
         weekEndPeriod  =  math.floor(endPeriod/168)
         if weekStarPeriod == weekEndPeriod:
-            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= 56:
+            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= 48:
                 for period in range(startPeriod, startPeriod+16):
                     if period == len(self.shifts)-1:
                         break
@@ -49,7 +49,7 @@ class Vigilant:
                 return True
             return False
         else:
-            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= 56 and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= 56:
+            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= 48 and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= 48:
                 for period in range(startPeriod, startPeriod+16):
                     if period == len(self.shifts)-1:
                         break

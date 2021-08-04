@@ -77,7 +77,7 @@ class VigilantAssigment:
             self.periodEndByWeek.append((i + 1) * 168)
 
     def getCantVigilantesforSite(self):
-        indexSite = 0
+        indexSite = 1
         for place in self.SitesData:
             cantVigilantByPeriod = []
             sum = 0

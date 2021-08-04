@@ -1,5 +1,5 @@
 from Component import Component
-from random import random
+from random import choice, random
 import random
 import math
 import numpy as np
@@ -17,7 +17,7 @@ class Solution:
     MyContainer = Algorithm
     Problem = VigilantAssigment
     vigilantsForPlaces = None
-    
+    missingShiftsBySite = []
 
     def __init__(self, theOwner, Aletory):
         self.MyContainer = theOwner
@@ -26,6 +26,7 @@ class Solution:
         self.initVigilsForPlaces()
         self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.vigilants = self.Problem.vigilantes.copy()
+        self.missingShiftsBySite = [[]]*(self.Problem.totalPlaces)
         self.iteration = 0
         
     def initVigilsForPlaces(self):
@@ -49,13 +50,16 @@ class Solution:
         return components
 
     def getSchedule(self,component,shifts,necesaryVigilantes):
+        assignedVigilantsToSite = []
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
             for iteration in range(0,component.necesaryvigilantsByPeriod[shift[0]]):
-                objViglant = self.obtainVigilantAvailable(shift[0],shift[1],listTempVigilant,necesaryVigilantes)
+                objViglant = self.obtainVigilantAvailable(shift[0],shift[1],listTempVigilant,necesaryVigilantes,assignedVigilantsToSite)
                 if objViglant == None:
                     continue
+                else:
+                    assignedVigilantsToSite.append(objViglant)
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant)
             self.updateHours(shift,listTempVigilant,component.siteId)
@@ -96,20 +100,35 @@ class Solution:
             week = week + 1
         return week
     
-    def obtainVigilantAvailable(self, InitShift, endShift,lisVigilantDefault,vigilantDefaultList):
-        #busca en la lista de vigilantes por default [0](vigilantes fijos) si hay disponibles para asignar
+    def obtainVigilantAvailable(self, InitShift, endShift,assignedVigilantsInShift,vigilantDefaultList,assignedVigilantsToSite):
         ObjResultado = None
-        for i in vigilantDefaultList[0]:
-                objVigilant = random.choice(vigilantDefaultList[0])
-                if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
+        #Revisar primero con los asignados al sitio
+        # indexAssignedVigilantInPlace = [*range(len(assignedVigilantsToSite))]
+        # while indexAssignedVigilantInPlace:
+        #         rand = random.choice(indexAssignedVigilantInPlace)
+        #         objVigilant = assignedVigilantsToSite[rand]
+        #         if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift,endShift):
+        #             ObjResultado = objVigilant
+        #             return ObjResultado
+        #         indexAssignedVigilantInPlace.remove(rand)
+        #busca en la lista de vigilantes por default [0](vigilantes fijos) si hay disponibles para asignar
+        indexExpectedVigilantInPlace = [*range(len(vigilantDefaultList[0]))]
+        while indexExpectedVigilantInPlace:
+                rand = random.choice(indexExpectedVigilantInPlace)
+                objVigilant = vigilantDefaultList[0][rand]
+                if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift,endShift):
                     ObjResultado = objVigilant
                     return ObjResultado
+                indexExpectedVigilantInPlace.remove(rand)
         #busca en la lista de vigilantes por default [1](ordenados por distancia) si hay disponibles para asignar
-        for j in vigilantDefaultList[1]:
-            objVigilant = random.choice(vigilantDefaultList[1])
-            if objVigilant.isVigilantAvailable(InitShift,endShift) and objVigilant not in lisVigilantDefault:
+        indexOrderVigilantByPlace = [*range(len(vigilantDefaultList[1]))]
+        while indexOrderVigilantByPlace:
+            rand = random.choice(indexOrderVigilantByPlace)
+            objVigilant = vigilantDefaultList[1][rand]
+            if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift,endShift):
                 ObjResultado = objVigilant
                 return ObjResultado
+            indexOrderVigilantByPlace.remove(rand)
         if ObjResultado == None:
             print("no se encontraron mas vigilantes validos")
 
@@ -250,6 +269,7 @@ class Solution:
         for vigilant in component.assignedVigilants:
             self.vigilantsSchedule[vigilant.id-1] = vigilant
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
+        self.missingShiftsBySite[component.siteId-1]  = component.missingShfits
         self.iteration+=1
 
     def CompleteSolution(self):
@@ -265,7 +285,8 @@ class Solution:
         elif CurrentEFOs == MaxEFOs-1:
             self.Problem.generateResults('./Data/Results/FinalResult',self)
 
-    def Tweak(self, Problem):
-
+    def Tweak(self, solution):
+        self.shiftsBYSite
+        #Rellenar huecos con guardias faltantes
         # implementation
         return 0
