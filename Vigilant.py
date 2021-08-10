@@ -82,9 +82,11 @@ class Vigilant:
    
     def setHoursWorked(self,week):
         self.HoursWeeks[week] = self.HoursWeeks[week]+1
-    
-    def setHoursRest(self, hours):
-        self.HoursofRest = self.HoursofRest + hours
+        self.HoursWorked+=1
    
     def setShift(self, period, site):
         self.shifts[period] = site
+    
+    def setShifts(self,shifts,site):
+        for period in range(shifts[0],shifts[1]+1):
+            self.setShift(period,site)

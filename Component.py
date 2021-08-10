@@ -8,7 +8,7 @@ class Component:
         self.necesaryvigilantsByPeriod = necesaryvigilantsByPeriod
         self.fitness = 0
         self.missingShfits = []
-
+        
     def calcuteFitness(self):
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
