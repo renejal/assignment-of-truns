@@ -256,6 +256,7 @@ class Solution:
         for site in vigilantsForPlace:
             listSite.append(vigilantsForPlace[site])
         return  listSite
+
     def getAleatory(self,parInit,parEnd,parNumber):
         '''
         generate n number aleatory between  nunber init and number end
@@ -276,7 +277,7 @@ class Solution:
                 break
         return  listAleatory
 
-    def toExchageVigilants(self,parIdSiteOne,parIdVigilantOne,parIdSiteTwo,parIdVigilantsTwo,objSites):
+    def toExchageVigilants(self,parIdSiteOne,parIdVigilantOne,parIdSiteTwo,parIdVigilantsTwo,solucion):
         '''
         to Exchage vigilants between sites
         :param parSiteOne: site one select ramdoly
@@ -285,25 +286,24 @@ class Solution:
         :param parVigilantsTwo:
         :return: None
         '''
-        siteOne=objSites[parIdSiteOne]
-        vigilantOne = siteOne[parIdVigilantOne]
-        temvigilantOne=copy.copy(siteOne[parIdVigilantOne])
+        objVigilantOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+        objVigilantTwo = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+        self.updateFitnees(objVigilantOne,parIdSiteOne,parIdSiteTwo,solucion)
+        self.updateFitnees(objVigilantTwo,parIdSiteTwo,parIdSiteOne,solucion)
+        temVigilanOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+        solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne] = solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo]
+        solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo] = temVigilanOne
 
-        siteTwo= objSites[parIdSiteTwo]
-        vigilantTwo = siteTwo[parIdVigilantsTwo]
-
-        #to exchage
-        vigilantOne = vigilantTwo
-        vigilantTwo = temvigilantOne
-
+    def updateFitnees(self,objVigilants:Vigilant,site,newSite,solucion):
+        solucion.Fitness -= objVigilants.distancesBetweenPlacesToWatch[site]
+        solucion.Fitness += objVigilants.distancesBetweenPlacesToWatch[newSite]
 
     def tweakVigilants(self,solucion):
-        listSite = self.getAleatory(0,len(solucion.vigilantsForPlaces),2)
-        vigilantOne = self.getAleatory(0,len(solucion.vigilantsForPlaces[listSite[0]]),1)
-        vigilantTwo = self.getAleatory(0,len(solucion.vigilantsForPlaces[listSite[1]]),1)
-        self.toExchageVigilants(listSite[0],vigilantOne[0],listSite[1],vigilantTwo[0],solucion.vigilantsForPlaces)
-
-
+        for i in range(0,10):
+            listSite = self.getAleatory(0, len(solucion.vigilantsForPlaces), 2)
+            vigilantOne = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
+            vigilantTwo = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
+            self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
 
     def tweakMissingHoursVigilants(self,solution):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
