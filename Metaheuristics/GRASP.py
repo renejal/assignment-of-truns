@@ -21,6 +21,7 @@ class Grasp(Algorithm):
                 else:
                     BestRestrictedList = S.BestComponents(RestrictedList,5)
                     S.Union(BestRestrictedList)
+            S.generateResults(0,self.MaxEFOs)
             #Comparar si la nueva solucion es mejor que la anterior
             for m in range(0,10):
                 newSolution = self.Tweak(copy.copy(S))
@@ -29,6 +30,7 @@ class Grasp(Algorithm):
             if Best == None or S.Fitness < Best.Fitness:
                 Best = S
             self.CurrentEFOs+=1
+            print("Nueva  iteracion")
         Best.generateResults(0,self.MaxEFOs)
         return Best
 

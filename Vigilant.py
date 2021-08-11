@@ -4,7 +4,6 @@ class Vigilant:
 
     def __init__(self,id, expectedPlaceToWatch,shiftPreferences,distancesBetweenPlacesToWatch,numberWeeks):
         self.id = id
-        self.HoursofRest = 0
         self.HoursWorked = 0
         self.distancesBetweenPlacesToWatch = distancesBetweenPlacesToWatch
         self.expectedPlaceToWatch = expectedPlaceToWatch
@@ -15,46 +14,40 @@ class Vigilant:
     def isVigilantAvailable(self,startPeriod,endPeriod):
         if self.hasEnoughHoursToWorkInThisShift(startPeriod,endPeriod) == False:
             return False
-        if self.isAvailableInShift(startPeriod,endPeriod) == False:
-            return False
         if self.hasEnoughResting(startPeriod) == False:
            return False
+        if self.isAvailableInShift(startPeriod,endPeriod) == False:
+            return False
+        
         #return self.canWorkThisSunday(startPeriod,endPeriod)
         return True
     
     def isAvailableInShift(self,startPeriod,endPeriod):
-        for period in range(startPeriod,endPeriod):
+        for period in range(startPeriod,endPeriod+17):
+            if period == len(self.shifts)-1:
+                break
             if self.shifts[period] != 0:
                 return False
         return True
 
     def hasEnoughResting(self,period):
-        for period in range(period, period-16,-1):
-            if period == 0:
+        for Actualperiod in range(period-1, period-17,-1):
+            if Actualperiod <= 0:
                 break
-            if self.shifts[period] != 0:
+            if self.shifts[Actualperiod] != 0:
                 return False
         return True
-        
+
+     #Check restrictions   
     def hasEnoughHoursToWorkInThisShift(self,startPeriod,endPeriod):
         weekStarPeriod = math.floor(startPeriod/168)
         weekEndPeriod  =  math.floor(endPeriod/168)
         if weekStarPeriod == weekEndPeriod:
             if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= 48:
-                for period in range(startPeriod, startPeriod+16):
-                    if period == len(self.shifts)-1:
-                        break
-                    if self.shifts[period] != 0:
-                        return False
                 return True
             return False
         else:
             if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= 48 and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= 48:
-                for period in range(startPeriod, startPeriod+16):
-                    if period == len(self.shifts)-1:
-                        break
-                    if self.shifts[period] != 0:
-                        return False
                 return True
         return False
     
