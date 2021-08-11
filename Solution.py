@@ -60,7 +60,7 @@ class Solution:
                     continue
                 self.AssigmentVigilants(objViglant, component.siteId, shift,component)
                 listTempVigilant.append(objViglant)
-            self.updateHours(shift,listTempVigilant,component.siteId)
+            self.updateHours(shift,listTempVigilant)
         
     def AssigmentVigilants(self, objVigilant, site, shift,component):
             if objVigilant not in component.assignedVigilants:
@@ -69,24 +69,15 @@ class Solution:
                 objVigilant.setShift(i, site)
                 component.siteSchedule[i].append(objVigilant.id)
 
-    def updateHours(self,shift,lisVigilantsAssiged,site):
-        hoursWorkend = self.obtainRange(shift[0], shift[1])
-        for objVigilant in self.vigilantsForPlaces[site]:
-            self.assigmentHoursVigilant(objVigilant, hoursWorkend, 'rest')
-        self.updateListVigilanteforSite(site,lisVigilantsAssiged)
-
+    def updateHours(self,shift,lisVigilantsAssiged):
         for objVigilant in lisVigilantsAssiged:
-            self.assigmentHoursVigilant(objVigilant,hoursWorkend,'worked')
+            self.assigmentHoursVigilant(objVigilant,shift)
 
-    def updateListVigilanteforSite(self,site,listVigilantnew):
-        vigilants = self.vigilantsForPlaces[site]
-        vigilants.extend(element for element in listVigilantnew if element not in vigilants)
-        self.vigilantsForPlaces[site] = vigilants
 
-    def assigmentHoursVigilant(self, objVigilant,hoursWorkend,typeHours):
-        if typeHours == "worked":
-            for hours in hoursWorkend:
-                objVigilant.setHoursWorked(self.ShiftConvert(hours))
+
+    def assigmentHoursVigilant(self, objVigilant,shift):
+        for hours in range(shift[0],shift[1]+1):
+            objVigilant.setHoursWorked(self.ShiftConvert(hours))
 
     def ShiftConvert(self, shift):
         week = 0
@@ -106,8 +97,6 @@ class Solution:
                         ObjResultado = objVigilant
                         return ObjResultado
                     indexVigilants.remove(rand)
-        if ObjResultado == None:
-            print("no se encontraron mas vigilantes validos")
         return ObjResultado
 
     def obtainShiftBySite(self,parSite):
@@ -147,20 +136,7 @@ class Solution:
             dayShiftS.append([indexWorkingDay,indexWorkingDay+durationShift-1])
             indexWorkingDay+=durationShift
         return dayShiftS
-
-
     
-    def obtainRange(self, numberInit, numberEnd):
-        shift = []
-        while numberInit <= numberEnd:
-            shift.append(numberInit)
-            numberInit +=1
-        return shift
-    
-    def UpdateListVigilantAvaliable(self,components):
-        Listvigilants=self.vigilantsForPlaces[components.siteId]
-        for i in Listvigilants:
-            self.vigilants.remove(i)    
 
     def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
         necesaryVigilantsByPeriodInAWeek = self.getNecesaryVigilantsByPeriodInAWeek(shifts,vigilantsByPeriod)
@@ -246,13 +222,13 @@ class Solution:
             self.Problem.generateResults('./Data/Results/FinalResult',self)
 
     def Tweak(self, solution):
-        #solution = self.tweakMissingHoursVigilants(solution)
+        solution = self.tweakMissingHoursVigilants(solution)
         
         return solution
     
     def tweakMissingHoursVigilants(self,solution):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
-        vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items()))
+        vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items(),reverse=True))
         shiftsBysite = self.missingShiftsFormat(self.missingShiftsBySite)
         listTempVigilant = []
         for indexSite in range(0,len(shiftsBysite)):
@@ -268,7 +244,7 @@ class Solution:
                     for i in range(shift[0],shift[1]+1):
                         solution.sitesSchedule[indexSite][i].append(objViglant.id)
                     listTempVigilant.append(objViglant)
-                self.updateHours(shift,listTempVigilant,indexSite)
+                self.updateHours(shift,listTempVigilant)
         return solution
     
 
@@ -300,18 +276,7 @@ class Solution:
             for period in shiftsSite:
                 continue
 
-    def orderVigilantByHoursWork(self,vigilants):
-        for iteration in range(0,len(vigilants)-1):
-            swapped =False
-            for pos in range(0,len(vigilants)-1-iteration):
-                if(vigilants[pos + 1].HoursWorked < vigilants[pos ].HoursWorked):
-                    aux = vigilants[pos]
-                    vigilants[pos] = vigilants[pos+1]
-                    vigilants[pos + 1] = aux
-                    swapped = True
-            if swapped == False:
-                break
-        return vigilants 
+    
 
     def GetVigilatsByHours(self,vigilants):
         vigilantByHours = {}

@@ -15,7 +15,7 @@ class Component:
             missingVigilants = self.necesaryvigilantsByPeriod[period] - len(self.siteSchedule[period])
             if(missingVigilants != 0):
                 self.missingShfits.append(period)
-            self.fitness += missingVigilants*100
+            self.fitness += missingVigilants*1000
         #Calculate distances and preferences
         for vigilant in self.assignedVigilants:
             for assignedPlace in vigilant.shifts:
@@ -24,8 +24,10 @@ class Component:
                     self.fitness+= vigilant.expectedPlaceToWatch - assignedPlace
                     #calculate work hours
                     for hourWeek in vigilant.HoursWeeks:
-                        #self.fitness+= (hourWeek - 56)*10
-                        continue
+                        if hourWeek < 40:
+                            self.fitness+= 1000
+                        if hourWeek > 48:
+                             self.fitness+=(hourWeek-48)*100
                     #Calculate preferencias 
                     #TODO 
                     

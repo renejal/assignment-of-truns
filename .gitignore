@@ -1,11 +1,9 @@
 /Data/datasetResult.csv
-/Data/Results/*
-
+/Data/Results/*.xlsx
 env/
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
 *.xlsx
