@@ -8,7 +8,6 @@ from Algorithm import Algorithm
 from VigilantAssigment import VigilantAssigment
 import copy 
 import collections
-random.seed(0)
 
 class Solution:
 
@@ -19,8 +18,10 @@ class Solution:
     Problem = VigilantAssigment
     vigilantsForPlaces = None
     missingShiftsBySite = []
+    Aleatory = None
 
     def __init__(self, theOwner, Aletory):
+        random.seed(Aletory)
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
@@ -223,9 +224,66 @@ class Solution:
 
     def Tweak(self, solution):
         solution = self.tweakMissingHoursVigilants(solution)
-        
+        solution = self.tweakVigilants(solution)
         return solution
-    
+    def getVigilantsForPlaceList(self,vigilantsForPlace):
+        listSite = []
+        for site in vigilantsForPlace:
+            listSite.append(vigilantsForPlace[site])
+        return  listSite
+
+    def getAleatory(self,parInit,parEnd,parNumber):
+        '''
+        generate n number aleatory between  nunber init and number end
+        :param init: number init
+        :param end: number end
+        :param number: quantity the number aleatory
+        :return: list number aleatory
+        '''
+        k= 0
+        listAleatory = []
+        while True:
+            if parNumber > k:
+                numAleatory = random.randint(parInit,parEnd)
+                if numAleatory not in listAleatory:
+                    listAleatory.append(numAleatory)
+                    k=k+1
+            else:
+                break
+        return  listAleatory
+
+    def toExchageVigilants(self,parIdSiteOne,parIdVigilantOne,parIdSiteTwo,parIdVigilantsTwo,solucion):
+        '''
+        to Exchage vigilants between sites
+        :param parSiteOne: site one select ramdoly
+        :param parVigilantOne: vigilant one select the site one ramdoly
+        :param parSiteTwo:
+        :param parVigilantsTwo:
+        :return: None
+        '''
+        try:
+            objVigilantOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+            objVigilantTwo = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+            self.updateFitnees(objVigilantOne, parIdSiteOne, parIdSiteTwo, solucion)
+            self.updateFitnees(objVigilantTwo, parIdSiteTwo, parIdSiteOne, solucion)
+            temVigilanOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne]
+            solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne] = solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo]
+            solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo] = temVigilanOne
+        except:
+            print("excption")
+
+    def updateFitnees(self,objVigilants:Vigilant,site,newSite,solucion):
+        solucion.Fitness -= objVigilants.distancesBetweenPlacesToWatch[site]
+        solucion.Fitness += objVigilants.distancesBetweenPlacesToWatch[newSite]
+
+    def tweakVigilants(self,solucion):
+        if len(solucion.vigilantsForPlaces)>3 and len(solucion.vigilantsForPlaces)>3:
+            listSite = self.getAleatory(0, len(solucion.vigilantsForPlaces), 2)
+            vigilantOne = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
+            vigilantTwo = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
+            self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
+        return solucion
+
     def tweakMissingHoursVigilants(self,solution):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
         vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items(),reverse=True))
@@ -275,8 +333,6 @@ class Solution:
         for shiftsSite in self.shiftsBYSite:
             for period in shiftsSite:
                 continue
-
-    
 
     def GetVigilatsByHours(self,vigilants):
         vigilantByHours = {}
