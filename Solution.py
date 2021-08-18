@@ -204,6 +204,7 @@ class Solution:
     def Union(self, component):
         for vigilant in component.assignedVigilants:
             self.vigilantsSchedule[vigilant.id-1] = vigilant
+            self.vigilantsForPlaces[component.siteId].append(vigilant)
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
         self.missingShiftsBySite[component.siteId-1]  = component.missingShfits
         self.Fitness += component.fitness
@@ -277,12 +278,20 @@ class Solution:
         solucion.Fitness += objVigilants.distancesBetweenPlacesToWatch[newSite]
 
     def tweakVigilants(self,solucion):
-        if len(solucion.vigilantsForPlaces)>3 and len(solucion.vigilantsForPlaces)>3:
-            listSite = self.getAleatory(0, len(solucion.vigilantsForPlaces), 2)
+        if self.is_empty(solucion.vigilantsForPlaces):
+            listSite = self.getAleatory(1, len(solucion.vigilantsForPlaces), 2)
             vigilantOne = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
             vigilantTwo = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
             self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
         return solucion
+
+    def is_empty(self,list):
+        varResult = True
+        for i in list:
+            if list.get(i) == [] :
+                varResult = False
+                break
+        return varResult
 
     def tweakMissingHoursVigilants(self,solution):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
