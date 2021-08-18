@@ -4,7 +4,7 @@ import copy
 
 class Grasp(Algorithm):
     CurrentEFOs = 0
-    MaxEFOs = 10
+    MaxEFOs = 80
 
     def Execute(self, Problem, Aleatory):
         self.VigilantAssigment = Problem;
@@ -13,17 +13,18 @@ class Grasp(Algorithm):
         while self.CurrentEFOs < self.MaxEFOs:
             S = Solution(self, Aleatory)
             while S.CompleteSolution():
+                print("Start Component")
+
                 RestrictedList = S.ObtainComponents(20)
+                print("End Component")
                 if RestrictedList == None:
-                    #S = Solution(Problem, Aleatory)
-                    #Next Site
                     continue
                 else:
                     BestRestrictedList = S.BestComponents(RestrictedList,5)
                     S.Union(BestRestrictedList)
             S.generateResults(0,self.MaxEFOs)
             #Comparar si la nueva solucion es mejor que la anterior
-            for m in range(0,10):
+            for m in range(0,50):
                 newSolution = self.Tweak(copy.copy(S))
                 if newSolution.Fitness < S.Fitness:
                     S = newSolution

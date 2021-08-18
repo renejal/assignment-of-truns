@@ -1,3 +1,4 @@
+from typing import overload
 from Vigilant import Vigilant
 from Component import Component
 from random import choice, random
@@ -17,25 +18,19 @@ class Solution:
     Fitness = 0
     MyContainer = Algorithm
     Problem = VigilantAssigment
-    vigilantsForPlaces = None
     missingShiftsBySite = []
 
     def __init__(self, theOwner, Aletory):
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
-        self.initVigilsForPlaces()
-        self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.vigilants = self.Problem.vigilantes.copy()
+
+        self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
+        self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.missingShiftsBySite = [[]]*(self.Problem.totalPlaces)
         self.iteration = 0
-        
-    def initVigilsForPlaces(self):
-        self.vigilantsForPlaces = {}
-        sites = self.Problem.orderSitesForCantVigilantes
-        for site in sites:
-            self.vigilantsForPlaces[site] = []
-        self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
+
 
     def ObtainComponents(self, canNewComponents):
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
@@ -73,8 +68,6 @@ class Solution:
         for objVigilant in lisVigilantsAssiged:
             self.assigmentHoursVigilant(objVigilant,shift)
 
-
-
     def assigmentHoursVigilant(self, objVigilant,shift):
         for hours in range(shift[0],shift[1]+1):
             objVigilant.setHoursWorked(self.ShiftConvert(hours))
@@ -93,7 +86,7 @@ class Solution:
             while indexVigilants:
                     rand = random.choice(indexVigilants)
                     objVigilant = vigilants[rand]
-                    if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift,endShift):
+                    if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift,endShift,self.Problem.maxWorkHoursPerWeek):
                         ObjResultado = objVigilant
                         return ObjResultado
                     indexVigilants.remove(rand)
@@ -128,8 +121,7 @@ class Solution:
                 k = 0
 
         return working_day
-    
-   
+     
     def calculateworkinday(self, workinday, indexWorkingDay):
         dayShiftS = []
         for durationShift in workinday:
@@ -137,7 +129,6 @@ class Solution:
             indexWorkingDay+=durationShift
         return dayShiftS
     
-
     def getNecesaryVigilants(self,siteId,vigilantsByPeriod,shifts):
         necesaryVigilantsByPeriodInAWeek = self.getNecesaryVigilantsByPeriodInAWeek(shifts,vigilantsByPeriod)
         cantNecesaryVigilantsInWeek = sum(necesaryVigilantsByPeriodInAWeek)
@@ -211,6 +202,7 @@ class Solution:
     def CompleteSolution(self):
         if self.iteration < len(self.sitesSchedule):
             return True
+        self.missingShiftsFormat(self.missingShiftsBySite)
         return False
 
     def generateResults(self,CurrentEFOs,MaxEFOs): 
@@ -222,61 +214,88 @@ class Solution:
             self.Problem.generateResults('./Data/Results/FinalResult',self)
 
     def Tweak(self, solution):
-        solution = self.tweakMissingHoursVigilants(solution)
-        
+        solution = self.tweakMissingShifts(solution,True)
+        self.Problem.maxWorkHoursPerWeek = 56
+        solution = self.tweakMissingShifts(solution,False)
+        self.Problem.maxWorkHoursPerWeek = 48
+        self.calculateFitness(solution)
+
         return solution
     
-    def tweakMissingHoursVigilants(self,solution):
+    def calculateFitness(self,solution):
+        solution.Fitness = 0
+        for site in range(0,len(solution.sitesSchedule)):
+            for period in range(0,len(solution.sitesSchedule[site])):
+                actualVigilants = len(solution.sitesSchedule[site][period])
+                missingVigilants = self.Problem.cantVigilantsByPeriod[site][period] - actualVigilants
+                solution.Fitness += missingVigilants*10000
+        for vigilant in self.vigilantsSchedule:
+            for assignedPlace in vigilant.shifts:
+                if assignedPlace != 0:
+                    #calculate fitness distance
+                    if vigilant.expectedPlaceToWatch != assignedPlace:
+                        solution.Fitness+= 500
+                    #calculate work hours
+                    for hourWeek in vigilant.HoursWeeks:
+                        if hourWeek < 40 and hourWeek!=0:
+                            solution.Fitness+= 800
+                        if hourWeek > 48:
+                            solution.Fitness+= 300
+                    #Calculate preferencias 
+                    #TODO 
+
+    def tweakMissingShifts(self,solution, order):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
-        vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items(),reverse=True))
-        shiftsBysite = self.missingShiftsFormat(self.missingShiftsBySite)
+        vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items(),reverse=order))
         listTempVigilant = []
-        for indexSite in range(0,len(shiftsBysite)):
-            for shift in  shiftsBysite[indexSite]:
+        for indexSite in range(0,len(self.missingShiftsBySite)):
+            for shift in  self.missingShiftsBySite[indexSite]:
                 listTempVigilant.clear()
                 cantNecessariVigilantsInShift = self.Problem.cantVigilantsByPeriod[indexSite][shift[0]] - len(self.sitesSchedule[indexSite][shift[0]])
-                for i in range(0,cantNecessariVigilantsInShift):
+                numberIterations = cantNecessariVigilantsInShift
+                for i in range(0,numberIterations):
                     objViglant = self.obtainVigilantAvailable(shift[0],shift[1],listTempVigilant,vigilantsByHours.values())
                     if objViglant == None:
                         continue
                     objViglant.setShifts(shift, indexSite+1)
-                    solution.Fitness-=100
+                    cantNecessariVigilantsInShift-=1
                     for i in range(shift[0],shift[1]+1):
                         solution.sitesSchedule[indexSite][i].append(objViglant.id)
+                        #solution.Fitness-=10000
                     listTempVigilant.append(objViglant)
+                if cantNecessariVigilantsInShift == 0:
+                    self.missingShiftsBySite[indexSite].remove(shift)
                 self.updateHours(shift,listTempVigilant)
+                # for vigilan in listTempVigilant:
+                #     for week in vigilan.HoursWeeks:
+                #         if week > 48:
+                #             solution.Fitness+= (week-48)*100
         return solution
     
 
         
-    def missingShiftsFormat(self,missingShfitsByPlace):
+    def missingShiftsFormat(self,missingShiftsBySite):
         shiftsFormat = []
-        for missingShiftsInPlace in missingShfitsByPlace:
+        for missingShiftsInSite in missingShiftsBySite:
             shifts = []
             nHoras = 0
-            if missingShiftsInPlace:
+            if missingShiftsInSite:
                 indexShift = 0
-                cantMissingShifts = len(missingShiftsInPlace)
+                cantMissingShifts = len(missingShiftsInSite)
                 for i in range(0,cantMissingShifts-1):
-                    if missingShiftsInPlace[i]+1 != missingShiftsInPlace[i+1] or nHoras == 23 or i == cantMissingShifts-2:
+                    if missingShiftsInSite[i]+1 != missingShiftsInSite[i+1] or nHoras == 23 or i == cantMissingShifts-2:
                        
                         nHoras+=1
-                        shifts  = shifts + self.calculateworkinday(self.Problem.workingDay[nHoras],missingShiftsInPlace[indexShift])
+                        shifts  = shifts + self.calculateworkinday(self.Problem.workingDay[nHoras],missingShiftsInSite[indexShift])
                         indexShift+= nHoras
                         nHoras = 0
                     else:
                         nHoras+=1
                 shifts[len(shifts)-1][1] +=1
-            shiftsFormat.append(shifts)   
-        return shiftsFormat
+            shiftsFormat.append(shifts)
+        self.missingShiftsBySite = shiftsFormat
 
 
-    def assingMissingShifts(self):
-        for shiftsSite in self.shiftsBYSite:
-            for period in shiftsSite:
-                continue
-
-    
 
     def GetVigilatsByHours(self,vigilants):
         vigilantByHours = {}

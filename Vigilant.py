@@ -11,8 +11,8 @@ class Vigilant:
         self.shifts = np.zeros(168*numberWeeks)
         self.HoursWeeks = np.zeros(numberWeeks)      
 
-    def isVigilantAvailable(self,startPeriod,endPeriod):
-        if self.hasEnoughHoursToWorkInThisShift(startPeriod,endPeriod) == False:
+    def isVigilantAvailable(self,startPeriod,endPeriod,maxWorkHoursPerWeek):
+        if self.hasEnoughHoursToWorkInThisShift(startPeriod,endPeriod,maxWorkHoursPerWeek) == False:
             return False
         if self.hasEnoughResting(startPeriod) == False:
            return False
@@ -39,15 +39,15 @@ class Vigilant:
         return True
 
      #Check restrictions   
-    def hasEnoughHoursToWorkInThisShift(self,startPeriod,endPeriod):
+    def hasEnoughHoursToWorkInThisShift(self,startPeriod,endPeriod,maxHours):
         weekStarPeriod = math.floor(startPeriod/168)
         weekEndPeriod  =  math.floor(endPeriod/168)
         if weekStarPeriod == weekEndPeriod:
-            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= 48:
+            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= maxHours:
                 return True
             return False
         else:
-            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= 48 and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= 48:
+            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= maxHours and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= maxHours:
                 return True
         return False
     
