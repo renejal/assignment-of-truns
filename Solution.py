@@ -18,6 +18,7 @@ class Solution:
     MyContainer = Algorithm
     Problem = VigilantAssigment
     missingShiftsBySite = []
+    vigilantsForPlaces = []
     Aleatory = None
 
     def __init__(self, theOwner, Aletory):
@@ -26,7 +27,7 @@ class Solution:
         self.MyContainer.Aleatory = Aletory
         self.Problem = self.MyContainer.VigilantAssigment
         self.vigilants = self.Problem.vigilantes.copy()
-
+        self.vigilantsForPlaces = [[]]*(self.Problem.totalPlaces)
         self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
         self.vigilantsSchedule = self.Problem.vigilantes.copy()
         self.missingShiftsBySite = [[]]*(self.Problem.totalPlaces)
@@ -220,7 +221,9 @@ class Solution:
         self.Problem.maxWorkHoursPerWeek = 56
         solution = self.tweakMissingShifts(solution,False)
         self.Problem.maxWorkHoursPerWeek = 48
+        solution = self.tweakVigilants(solution)
         self.calculateFitness(solution)
+
 
         return solution
     
@@ -248,7 +251,6 @@ class Solution:
 
     def tweakMissingShifts(self,solution, order):
         solution = self.tweakMissingHoursVigilants(solution)
-        solution = self.tweakVigilants(solution)
         return solution
     def getVigilantsForPlaceList(self,vigilantsForPlace):
         listSite = []
@@ -294,7 +296,7 @@ class Solution:
             solucion.vigilantsForPlaces.get(parIdSiteOne)[parIdVigilantOne] = solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo]
             solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo] = temVigilanOne
         except:
-            print("excption")
+            print("exception")
 
     def updateFitnees(self,objVigilants:Vigilant,site,newSite,solucion):
         solucion.Fitness -= objVigilants.distancesBetweenPlacesToWatch[site]
