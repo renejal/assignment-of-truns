@@ -17,10 +17,8 @@ class Vigilant:
         if self.hasEnoughResting(startPeriod) == False:
            return False
         if self.isAvailableInShift(startPeriod,endPeriod) == False:
-            return False
-        
-        #return self.canWorkThisSunday(startPeriod,endPeriod)
-        return True
+            return False        
+        return self.canWorkThisSunday(startPeriod,endPeriod)
     
     def isAvailableInShift(self,startPeriod,endPeriod):
         for period in range(startPeriod,endPeriod+17):
