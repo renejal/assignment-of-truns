@@ -1,14 +1,12 @@
 /Data/datasetResult.csv
-/Data/Results/*
-
+/Data/Results/*.xlsx
 env/
 __pycache__/
 *.py[cod]
 *$py.class
-
 # C extensions
 *.so
-
+*.xlsx
 # Distribution / packaging
 .Python
 build/
@@ -112,6 +110,7 @@ celerybeat.pid
 .venv
 env/
 venv/
+Data/
 ENV/
 env.bak/
 venv.bak/
