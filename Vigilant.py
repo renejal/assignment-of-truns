@@ -63,7 +63,7 @@ class Vigilant:
                 return False
         return True
     
-    def thereIsAPeriodInSunday(startPeriod,endPeriod,week):
+    def thereIsAPeriodInSunday(self,startPeriod,endPeriod,week):
         if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
             return True
         else:

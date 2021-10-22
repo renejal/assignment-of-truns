@@ -249,8 +249,8 @@ class Solution:
                     #Calculate preferencias 
                     #TODO 
 
-    def tweakMissingShifts(self,solution, order):
-        solution = self.tweakMissingHoursVigilants(solution)
+    def tweakMissingShifts(self,solution,order):
+        solution = self.tweakMissingHoursVigilants(solution,order)
         return solution
     def getVigilantsForPlaceList(self,vigilantsForPlace):
         listSite = []
@@ -313,12 +313,12 @@ class Solution:
     def is_empty(self,list):
         varResult = True
         for i in list:
-            if list.get(i) == [] :
+            if i is None:
                 varResult = False
                 break
         return varResult
 
-    def tweakMissingHoursVigilants(self,solution):
+    def tweakMissingHoursVigilants(self,solution,order):
         vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
         vigilantsByHours= collections.OrderedDict(sorted(vigilantsByHours.items(),reverse=order))
         listTempVigilant = []
