@@ -16,13 +16,13 @@ class Grasp(Algorithm):
             S = Solution(self, Aleatory)
             i  = 1
             while S.CompleteSolution():
-                RestrictedList = S.ObtainComponents(100)
+                RestrictedList = S.ObtainComponents(1)
                 print("iteration:"+ str(i) )
                 i+=1
                 if RestrictedList == None:
                     continue
                 else:
-                    BestRestrictedList = S.BestComponents(RestrictedList,10)
+                    BestRestrictedList = S.BestComponents(RestrictedList,1)
                     S.Union(BestRestrictedList)
             for m in range(0,3):
                 print("TWEAKK:"+str(m))

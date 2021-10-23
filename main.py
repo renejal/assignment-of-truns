@@ -17,7 +17,7 @@ from Solution import *
 from Metaheuristics.GRASP import Grasp
 
 listAlgoritm = [Grasp()]
-myProblem = VigilantAssigment("Data/userInterfaceFinal.csv","Data/vigilantsFinal.csv", 4)
+myProblem = VigilantAssigment("Data/userInterface.csv","Data/vigilants.csv", 4)
 for algoritm in listAlgoritm:
     print("Start")
     tic = time.perf_counter()

@@ -196,9 +196,9 @@ class Solution:
     def Union(self, component):
         for vigilant in component.assignedVigilants:
             self.vigilantsSchedule[vigilant.id-1] = vigilant
-            self.vigilantsForPlaces[component.siteId].append(vigilant)
+            self.vigilantsForPlaces[component.siteId-1].append(vigilant)
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
-        self.missingShiftsBySite[component.siteId-1]  = component.missingShfits
+        self.missingShiftsBySite[component.siteId-1] = component.missingShfits
         self.Fitness += component.fitness
         self.iteration+=1
 
@@ -304,7 +304,7 @@ class Solution:
 
     def tweakVigilants(self,solucion):
         if self.is_empty(solucion.vigilantsForPlaces):
-            listSite = self.getAleatory(1, len(solucion.vigilantsForPlaces), 2)
+            listSite = self.getAleatory(0, len(solucion.vigilantsForPlaces)-1, 2)
             vigilantOne = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
             vigilantTwo = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
             self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
