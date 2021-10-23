@@ -1,8 +1,5 @@
-from numpy.core.numeric import NaN
-from Vigilant import Vigilant
-import numpy as np
 import pandas as pd
-from pandas import DataFrame
+
 
 class VigilantsDataFile:
     numberVigilants = int

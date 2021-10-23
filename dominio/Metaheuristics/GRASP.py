@@ -1,7 +1,7 @@
 import random
 
-from Algorithm import Algorithm
-from Solution import Solution
+from dominio.Algorithm import Algorithm
+from dominio.Solution import Solution
 import copy
 
 class Grasp(Algorithm):

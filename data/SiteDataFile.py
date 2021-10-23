@@ -4,7 +4,7 @@ from pandas import DataFrame
 
 
 class SiteDataFile:
-    DataProblem = pd.DataFrame()  # Data procedure for problem
+    DataProblem = pd.DataFrame()  # dataset procedure for problem
 
     def __init__(self, urlFile, weeks):
         Dataset = pd.read_csv(urlFile, sep=",")
@@ -45,7 +45,7 @@ class SiteDataFile:
             self.hoursConverst(hoursInitGuard, hoursFinitGuard, 6, i, numGuard)
 
         dataframe = pd.DataFrame(self.DataProblem)
-        dataframe.to_csv("Data/Inputdata.csv")
+        dataframe.to_csv("dataset/Inputdata.csv")
 
     def proceduresplit(self, hoursdayList):
         if hoursdayList == '0':

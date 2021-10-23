@@ -1,6 +1,6 @@
-from SiteDataFile import SiteDataFile
-from VigilantsDataFile import VigilantsDataFile
-from Vigilant import Vigilant
+from data.SiteDataFile import SiteDataFile
+from data.VigilantsDataFile import VigilantsDataFile
+from dominio.Vigilant import Vigilant
 import operator
 
 

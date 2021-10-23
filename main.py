@@ -13,11 +13,11 @@
 
 
 import time
-from Solution import *
-from Metaheuristics.GRASP import Grasp
+from dominio.Solution import *
+from dominio.Metaheuristics.GRASP import Grasp
 
 listAlgoritm = [Grasp()]
-myProblem = VigilantAssigment("Data/userInterface.csv","Data/vigilants.csv", 4)
+myProblem = VigilantAssigment("dataset/userInterface.csv","dataset/vigilants.csv", 4)
 for algoritm in listAlgoritm:
     print("Start")
     tic = time.perf_counter()

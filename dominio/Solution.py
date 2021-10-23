@@ -1,14 +1,14 @@
-from typing import overload
-from Vigilant import Vigilant
-from Component import Component
-from random import choice, random
+from dominio.Vigilant import Vigilant
+from dominio.Component import Component
+from random import random
 import random
 import math
 import numpy as np
-from Algorithm import Algorithm
-from VigilantAssigment import VigilantAssigment
+from dominio.Algorithm import Algorithm
+from dominio.VigilantAssigment import VigilantAssigment
 import copy 
 import collections
+from utils import aleatory
 
 class Solution:
 
@@ -210,11 +210,11 @@ class Solution:
 
     def generateResults(self,CurrentEFOs,MaxEFOs): 
         if CurrentEFOs == 0:
-            self.Problem.generateResults('./Data/Results/FirstResult',self)
+            self.Problem.generateResults('./views/FirstResult',self)
         elif CurrentEFOs == MaxEFOs/2:
-            self.Problem.generateResults('./Data/Results/HalfResult',self)
+            self.Problem.generateResults('./views/FResults/HalfResult',self)
         elif CurrentEFOs == MaxEFOs-1:
-            self.Problem.generateResults('./Data/Results/FinalResult',self)
+            self.Problem.generateResults('./views/Results/FinalResult',self)
 
     def Tweak(self, solution):
         solution = self.tweakMissingShifts(solution,True)
@@ -258,26 +258,6 @@ class Solution:
             listSite.append(vigilantsForPlace[site])
         return  listSite
 
-    def getAleatory(self,parInit,parEnd,parNumber):
-        '''
-        generate n number aleatory between  nunber init and number end
-        :param init: number init
-        :param end: number end
-        :param number: quantity the number aleatory
-        :return: list number aleatory
-        '''
-        k= 0
-        listAleatory = []
-        while True:
-            if parNumber > k:
-                numAleatory = random.randint(parInit,parEnd)
-                if numAleatory not in listAleatory:
-                    listAleatory.append(numAleatory)
-                    k=k+1
-            else:
-                break
-        return  listAleatory
-
     def toExchageVigilants(self,parIdSiteOne,parIdVigilantOne,parIdSiteTwo,parIdVigilantsTwo,solucion):
         '''
         to Exchage vigilants between sites
@@ -304,9 +284,9 @@ class Solution:
 
     def tweakVigilants(self,solucion):
         if self.is_empty(solucion.vigilantsForPlaces):
-            listSite = self.getAleatory(0, len(solucion.vigilantsForPlaces)-1, 2)
-            vigilantOne = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
-            vigilantTwo = self.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
+            listSite = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces)-1, 2)
+            vigilantOne = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
+            vigilantTwo = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
             self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
         return solucion
 
