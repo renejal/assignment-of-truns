@@ -5,7 +5,7 @@ import random
 import math
 import numpy as np
 from dominio.Algorithm import Algorithm
-from dominio.VigilantAssigment import VigilantAssigment
+from dominio.vigilant_assigment import VigilantAssigment
 import copy 
 import collections
 from utils import aleatory
@@ -33,7 +33,6 @@ class Solution:
         self.missingShiftsBySite = [[]]*(self.Problem.totalPlaces)
         self.iteration = 0
 
-
     def ObtainComponents(self, canNewComponents):
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         components = []
@@ -60,11 +59,14 @@ class Solution:
             self.updateHours(shift,listTempVigilant)
         
     def AssigmentVigilants(self, objVigilant, site, shift,component):
-            if objVigilant not in component.assignedVigilants:
-                component.assignedVigilants.append(objVigilant)
-            for i in range(shift[0], shift[1]+1):
-                objVigilant.setShift(i, site)
-                component.siteSchedule[i].append(objVigilant.id)
+        """
+        assigment vigilants with constraint number hours permanent for sites
+        """
+        if objVigilant not in component.assignedVigilants:
+            component.assignedVigilants.append(objVigilant)
+        for i in range(shift[0], shift[1]+1):
+            objVigilant.setShift(i, site)
+            component.siteSchedule[i].append(objVigilant.id)
 
     def updateHours(self,shift,lisVigilantsAssiged):
         for objVigilant in lisVigilantsAssiged:

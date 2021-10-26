@@ -1,3 +1,4 @@
+from views.general_shift_view import GenerateShiftView
 #Minimizar la cantidad de turnos faltantes.
 #Minimzar la distancia del vigilante al puesto de trabajo.
 #Minimizar la cantidad de guardias a utilizar para el problema.
@@ -10,19 +11,6 @@
 
 # Separar el fitness por funcion objetivo
 
-
-
-import time
-from dominio.Solution import *
-from dominio.Metaheuristics.GRASP import Grasp
-
-listAlgoritm = [Grasp()]
-myProblem = VigilantAssigment("dataset/userInterface.csv","dataset/vigilants.csv", 4)
-for algoritm in listAlgoritm:
-    print("Start")
-    tic = time.perf_counter()
-    algoritm.Execute(myProblem, 0)
-    toc = time.perf_counter()
-    print(f"Time {toc - tic:0.4f} seconds")
+GenerateShiftView().getShiftViglants()
 
 #Validara como calcular el fitness

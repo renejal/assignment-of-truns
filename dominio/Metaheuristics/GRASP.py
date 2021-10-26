@@ -8,7 +8,7 @@ class Grasp(Algorithm):
     CurrentEFOs = 0
     MaxEFOs = 10
 
-    def Execute(self, Problem, Aleatory):
+    def Execute(self, Problem, Aleatory,numComponets):
         self.VigilantAssigment = Problem
         random.seed(Aleatory)
         Best = None
@@ -16,7 +16,7 @@ class Grasp(Algorithm):
             S = Solution(self, Aleatory)
             i  = 1
             while S.CompleteSolution():
-                RestrictedList = S.ObtainComponents(1)
+                RestrictedList = S.ObtainComponents(numComponets)
                 print("iteration:"+ str(i) )
                 i+=1
                 if RestrictedList == None:
