@@ -10,7 +10,7 @@ class VigilantAssigment:
     totalWeeks=0
     totalPeriods=0
     
-    maxShiftDuration=12
+    maxShiftDuration: int = 12
     minShiftDuration=6
     minBreakDuration=18
     maxOvertimeWorkHoursPerWeek=12
@@ -23,13 +23,18 @@ class VigilantAssigment:
     vigilantes = []
     cantNecesaryVigilantesforSite = {}
     workingDay={}
+    __workingDay = None
 
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []
     orderSitesForCantVigilantes = []
+    obj_site_data_file: SiteDataFile = None
+
 
     def __init__(self, pathInterface, pathVigilants, weeks):
         self.totalWeeks = weeks
+        self.obj_site_data_file = None
+        self.__workingDay = None
         self.totalPeriods = 168*self.totalWeeks
         self.readData(pathInterface,pathVigilants)
         self.initProblem()
@@ -39,10 +44,12 @@ class VigilantAssigment:
         self.readVigilantData(pathVigilants)
 
     def readDataInterface(self,pathInterface):
-        self.SitesData = SiteDataFile(pathInterface, self.totalWeeks).DataProblem
+        self.obj_site_data_file: SiteDataFile = SiteDataFile(pathInterface, self.totalWeeks)
+        self.SitesData=self.obj_site_data_file.get_data_problem()
+        self.__workingDay = self.obj_site_data_file.get_working_day()
         self.totalPlaces = len(self.SitesData)
 
-    def readVigilantData(self,pathVigilants):
+    def readVigilantData(self, pathVigilants):
         data = VigilantsDataFile(pathVigilants)
         self.VigilantsData = data.vigilantsInfo
         self.totalVigilantes = data.numberVigilants
@@ -99,7 +106,13 @@ class VigilantAssigment:
     def loadWorkingDay(self):
         self.workingDay = { 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6], 7:[7],8:[8],9:[9],10:[10],11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],20:[10,10],21:[7,7,7],22:[8,7,7],
                       23:[8,8,7],24:[8,8,8]}
-    
+
+    def get_working_day_with_constraints(self, key, site):
+       if self.__workingDay[site-1] != 0:
+          return [key]
+       return self.workingDay[key]
+
+
     def getSite(self, siteId):
         return self.SitesData[siteId-1]
 
@@ -107,4 +120,5 @@ class VigilantAssigment:
         SiteDataFile.generateResultBySite(self.cantVigilantsByPeriod,path,solution)
         VigilantsDataFile.generateResultByVigilant(path,solution)
 
-    
+    def get_workig_day(self):
+        return self.__workingDay

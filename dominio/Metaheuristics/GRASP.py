@@ -2,13 +2,14 @@ import random
 
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
+from dominio.vigilant_assigment import VigilantAssigment
 import copy
 
 class Grasp(Algorithm):
     CurrentEFOs = 0
     MaxEFOs = 10
 
-    def Execute(self, Problem, Aleatory,numComponets):
+    def Execute(self, Problem: VigilantAssigment, Aleatory, numComponets):
         self.VigilantAssigment = Problem
         random.seed(Aleatory)
         Best = None
@@ -16,8 +17,9 @@ class Grasp(Algorithm):
             S = Solution(self, Aleatory)
             i  = 1
             while S.CompleteSolution():
-                RestrictedList = S.ObtainComponents(numComponets)
-                print("iteration:"+ str(i) )
+                components = S.ObtainComponents(numComponets)
+                RestrictedList = components
+                print("iteration:"+ str(i))
                 i+=1
                 if RestrictedList == None:
                     continue

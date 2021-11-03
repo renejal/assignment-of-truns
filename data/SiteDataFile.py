@@ -4,47 +4,50 @@ from pandas import DataFrame
 
 
 class SiteDataFile:
-    DataProblem = pd.DataFrame()  # dataset procedure for problem
+    __data_problem = pd.DataFrame()  # dataset procedure for problem
+    __workingDay:int
 
     def __init__(self, urlFile, weeks):
         Dataset = pd.read_csv(urlFile, sep=",")
         self.weeks = weeks
+        self.__workingDay = []
         numberSites = len(Dataset)
-        self.DataProblem = np.zeros((numberSites, self.weeks * 168), dtype=int)
+        self.__data_problem = np.zeros((numberSites, self.weeks * 168), dtype=int)
         self.procedureData(Dataset)
 
 
 
     def procedureData(self,Dataset):
-        #data = self.Dataset.copy(deep=True)
         data = pd.DataFrame(Dataset)
-        #data = data.dropna()  #clear empty data
-        for i in data.index:
-            day = data["lunes"][i]
-            numGuard = data["numero guardias"][i]
-            self.dataInitialization(numGuard,i)
+        for row in data.index:
+            day = data["lunes"][row]
+            numGuard = data["numero guardias"][row]
+            self.dataInitialization(numGuard,row)
             hoursInitGuard, hoursFinitGuard =self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 0, i, numGuard)
-            day = data["martes"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 0, row, numGuard)
+            day = data["martes"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 1, i, numGuard)
-            day = data["miercoles"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 1, row, numGuard)
+            day = data["miercoles"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 2, i, numGuard)
-            day = data["jueves"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 2, row, numGuard)
+            day = data["jueves"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 3, i, numGuard)
-            day = data["viernes"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 3, row, numGuard)
+            day = data["viernes"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 4, i, numGuard)
-            day = data["sabado"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 4, row, numGuard)
+            day = data["sabado"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 5, i, numGuard)
-            day = data["domingo"][i]
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 5, row, numGuard)
+            day = data["domingo"][row]
             hoursInitGuard, hoursFinitGuard = self.proceduresplit(day)
-            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 6, i, numGuard)
+            self.hoursConverst(hoursInitGuard, hoursFinitGuard, 6, row, numGuard)
+            workinday = data["jornada"][row]
+            self.__workingDay.append(workinday)
 
-        dataframe = pd.DataFrame(self.DataProblem)
+
+        dataframe = pd.DataFrame(self.__data_problem)
         dataframe.to_csv("dataset/Inputdata.csv")
 
     def proceduresplit(self, hoursdayList):
@@ -56,50 +59,23 @@ class SiteDataFile:
     def hoursConverst(self, inithour, finithour, day, row, numGuards):
         listAssignedShifts=self.assignedShifts(inithour, finithour, day)
         for i in range(len(listAssignedShifts)):
-            self.DataProblem[row][listAssignedShifts[i]] = 0
+            self.__data_problem[row][listAssignedShifts[i]] = 0
 
     def assignedShifts(self, parInihour, parFinithour ,day):
         shiftResult = []
         for i in range(24):
             if i < parInihour or i > parFinithour:
                 for j in range (0,self.weeks):
-                    shiftResult.append(i+(day*24)+(168*j))
+                    shiftResult.append(i+(day*24)+(169*j))
         return shiftResult
     def dataInitialization(self, numGuards, row):
-        self.DataProblem[row] = numGuards
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        self.__data_problem[row] = numGuards
 
             #self.DataProblem[columns][i]
         #for index, row in data.iterrows():
         #    self.itemRow(row, rows, day)
         #    rows = rows + 1
         #    day = day + 1
-
 
         #dataF = pd.DataFrame(self.DataProblem)
         #dataF.to_csv('data.csv', index=False, header=False)
@@ -115,7 +91,7 @@ class SiteDataFile:
         posFinit = 0
         for i in row:
             if posInt == 0:
-                self.DataProblem[rows][0] = i
+                self.__data_problem[rows][0] = i
                 posInt = posInt + 1
             else:
 
@@ -124,16 +100,21 @@ class SiteDataFile:
 
                 if i > 0 and dayLimit == 1:
                     for k in range(int(i)):
-                        self.DataProblem[rows][k+1] = 0
+                        self.__data_problem[rows][k + 1] = 0
                 else:
                     if i < 24 and dayLimit == 2:
                         for j in range(int(i), 24):
-                            self.DataProblem[rows][j] = 0
+                            self.__data_problem[rows][j] = 0
 
         if dayLimit == 2:
             day = day + 1
             dayLimit = 1
 
+    def get_data_problem(self):
+        return self.__data_problem
+
+    def get_working_day(self):
+        return self.__workingDay
     def generateResultBySite(cantVigilantsByPeriod,path,solution):
         writer = pd.ExcelWriter(path+"Site.xlsx", engine='openpyxl') 
         wb  = writer.book
@@ -161,6 +142,7 @@ class SiteDataFile:
             sideId += 1
         wb.save(path+"Site.xlsx")
         writer.close()
+
 
 
 

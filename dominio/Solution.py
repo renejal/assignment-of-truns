@@ -25,7 +25,7 @@ class Solution:
         random.seed(Aletory)
         self.MyContainer = theOwner
         self.MyContainer.Aleatory = Aletory
-        self.Problem = self.MyContainer.VigilantAssigment
+        self.Problem: VigilantAssigment = self.MyContainer.VigilantAssigment
         self.vigilants = self.Problem.vigilantes.copy()
         self.vigilantsForPlaces = [[]]*(self.Problem.totalPlaces)
         self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
@@ -36,17 +36,17 @@ class Solution:
     def ObtainComponents(self, canNewComponents):
         siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         components = []
-        shifts = self.obtainShiftBySite(self.Problem.getSite(siteId))
+        shifts = self.obtainShiftBySite(self.Problem.getSite(siteId), siteId)
         vigilantsByPeriodInSite = self.Problem.cantVigilantsByPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(siteId,vigilantsByPeriodInSite,shifts)
         for component in range(0,canNewComponents):
-            component = Component(siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
+            component: Component = Component(siteId,self.Problem.totalWeeks,vigilantsByPeriodInSite)
             self.getSchedule(component,shifts,copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)
         return components
 
-    def getSchedule(self,component,shifts,necesaryVigilantes):
+    def getSchedule(self,component: Component,shifts,necesaryVigilantes):
         listTempVigilant = []
         for shift in shifts:
             listTempVigilant.clear()
@@ -54,16 +54,20 @@ class Solution:
                 objViglant = self.obtainVigilantAvailable(shift[0],shift[1],listTempVigilant,necesaryVigilantes)
                 if objViglant == None:
                     continue
-                self.AssigmentVigilants(objViglant, component.siteId, shift,component)
+                self.AssigmentVigilants(objViglant, component.siteId, shift, component)
                 listTempVigilant.append(objViglant)
             self.updateHours(shift,listTempVigilant)
         
-    def AssigmentVigilants(self, objVigilant, site, shift,component):
+    def AssigmentVigilants(self, objVigilant, site, shift, component: Component):
         """
         assigment vigilants with constraint number hours permanent for sites
         """
+
         if objVigilant not in component.assignedVigilants:
             component.assignedVigilants.append(objVigilant)
+
+        """udpate shifts sites whit vigilants"""
+
         for i in range(shift[0], shift[1]+1):
             objVigilant.setShift(i, site)
             component.siteSchedule[i].append(objVigilant.id)
@@ -96,7 +100,7 @@ class Solution:
                     indexVigilants.remove(rand)
         return ObjResultado
 
-    def obtainShiftBySite(self,parSite):
+    def obtainShiftBySite(self, parSite,id_site):
         site = np.copy(parSite)
         working_day = []
         init = -1
@@ -114,7 +118,7 @@ class Solution:
                     k +=1
 
             if (t==0 and start == True) or k == 24:
-                workindaytimes = self.Problem.workingDay[k]
+                workindaytimes = self.Problem.get_working_day_with_constraints(k,id_site)
                 if workindaytimes == None:
                     print("el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
                 start = False

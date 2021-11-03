@@ -11,6 +11,7 @@ from views.general_shift_view import GenerateShiftView
 
 # Separar el fitness por funcion objetivo
 
-GenerateShiftView().getShiftViglants()
+solucion = GenerateShiftView()
+solucion.getShiftViglants()
 
 #Validara como calcular el fitness
