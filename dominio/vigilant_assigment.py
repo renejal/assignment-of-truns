@@ -109,7 +109,7 @@ class VigilantAssigment:
 
     def get_working_day_with_constraints(self, key, site):
        if self.__workingDay[site-1] != 0:
-          return [key]
+          return [self.__workingDay[site-1]]
        return self.workingDay[key]
 
 
