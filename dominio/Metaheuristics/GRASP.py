@@ -35,7 +35,6 @@ class Grasp(Algorithm):
                 Best = S
             self.CurrentEFOs+=1
             print("Nueva  iteracion")
-        Best.generateResults(0,self.MaxEFOs)
         return Best
 
     def Tweak(self,solution):

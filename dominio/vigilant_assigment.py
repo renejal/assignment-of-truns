@@ -108,17 +108,15 @@ class VigilantAssigment:
                       23:[8,8,7],24:[8,8,8]}
 
     def get_working_day_with_constraints(self, key, site):
-       if self.__workingDay[site-1] != 0:
-          return [self.__workingDay[site-1]]
-       return self.workingDay[key]
+        response = self.workingDay[key]
+        if self.__workingDay[site-1] != 0:
+            response = [self.__workingDay[site-1]]
+        return response
 
 
     def getSite(self, siteId):
         return self.SitesData[siteId-1]
 
-    def generateResults(self,path,solution):
-        SiteDataFile.generateResultBySite(self.cantVigilantsByPeriod,path,solution)
-        VigilantsDataFile.generateResultByVigilant(path,solution)
 
     def get_workig_day(self):
         return self.__workingDay

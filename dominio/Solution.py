@@ -214,13 +214,7 @@ class Solution:
         self.missingShiftsFormat(self.missingShiftsBySite)
         return False
 
-    def generateResults(self,CurrentEFOs,MaxEFOs): 
-        if CurrentEFOs == 0:
-            self.Problem.generateResults('./views/FirstResult',self)
-        elif CurrentEFOs == MaxEFOs/2:
-            self.Problem.generateResults('./views/FResults/HalfResult',self)
-        elif CurrentEFOs == MaxEFOs-1:
-            self.Problem.generateResults('./views/Results/FinalResult',self)
+
 
     def Tweak(self, solution):
         solution = self.tweakMissingShifts(solution,True)
