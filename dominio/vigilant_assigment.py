@@ -25,6 +25,7 @@ class VigilantAssigment:
     workingDay={}
     __workingDay = None
 
+    specialSites={}
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []
     orderSitesForCantVigilantes = []
@@ -45,8 +46,9 @@ class VigilantAssigment:
 
     def readDataInterface(self,pathInterface):
         self.obj_site_data_file: SiteDataFile = SiteDataFile(pathInterface, self.totalWeeks)
-        self.SitesData=self.obj_site_data_file.get_data_problem()
+        self.SitesData= self.obj_site_data_file.get_data_problem()
         self.__workingDay = self.obj_site_data_file.get_working_day()
+        self.specialSites = self.obj_site_data_file.specialSites
         self.totalPlaces = len(self.SitesData)
 
     def readVigilantData(self, pathVigilants):
