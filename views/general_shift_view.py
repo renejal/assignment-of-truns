@@ -5,6 +5,7 @@ from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
 from utils.print_sites_xls import generateResultBySite
 from utils.print_vigilants_xls import generateResultByVigilant
+from utils.print_xls import generate_results
 import time
 class GenerateShiftView:
 
@@ -30,6 +31,7 @@ class GenerateShiftView:
             self.__generateResults_xls('./views/Results/FinalResult', response)
 
     def __generateResults_xls(self, path, solution):
+        generate_results(solution)
         generateResultBySite(self.__myProblem.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
 

@@ -23,7 +23,7 @@ class VigilantAssigment:
     vigilantes = []
     cantNecesaryVigilantesforSite = {}
     workingDay={}
-    __workingDay = None
+    __working_day_permanet = None
 
     vigilantExpectedPlaces = {}
     vigilantsWithOutPreference = []

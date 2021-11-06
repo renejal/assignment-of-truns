@@ -1,14 +1,9 @@
 import pandas as pd
 from dominio.Solution import Solution
 
-def from_dataFrame(solucion: Solution):
-    #todo implemantar from_data frame para solucion
-    #matriz de relacion vigilante vs periodo donde periodo termina el sitio en el cual trabajo el vigilante en ese periodo
-    #1: obtener de la solucion los vigilantes sus schedules
-        #1.1
-
-    #2:
-
+def generate_results(soluction: Solution):
+    pass
+def from_dataFrame(soluction: Solution):
     pass
 def generateResultByVigilant(path, solution):
     writer = pd.ExcelWriter(path + "results.xlsx", engine='openpyxl')
