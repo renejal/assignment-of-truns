@@ -1,5 +1,5 @@
-/dataset/datasetResult.csv
-/Data/Results/*.xlsx
+/dataset/*.xlsx
+/data/Results/*.xlsx
 env/
 __pycache__/
 *.py[cod]

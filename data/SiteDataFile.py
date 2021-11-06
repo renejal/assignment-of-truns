@@ -6,6 +6,7 @@ from pandas import DataFrame
 class SiteDataFile:
     __data_problem = pd.DataFrame()  # dataset procedure for problem
     __workingDay:int
+    specialSites = {}
 
     def __init__(self, urlFile, weeks):
         Dataset = pd.read_csv(urlFile, sep=",")
@@ -22,6 +23,8 @@ class SiteDataFile:
         for row in data.index:
             day = data["lunes"][row]
             numGuard = data["numero guardias"][row]
+            if pd.isna(data["turnos minimos"][row]) == False: 
+                self.specialSites[row+1] = int(data["turnos minimos"][row])
             self.dataInitialization(numGuard,row)
             hoursInitGuard, hoursFinitGuard =self.proceduresplit(day)
             self.hoursConverst(hoursInitGuard, hoursFinitGuard, 0, row, numGuard)
