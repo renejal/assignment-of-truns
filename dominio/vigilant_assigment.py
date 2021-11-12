@@ -3,11 +3,11 @@ from data.VigilantsDataFile import VigilantsDataFile
 from dominio.Vigilant import Vigilant
 import operator
 
-
 class VigilantAssigment:
-    totalVigilantes = 0
+
+    __total_vigilantes = 0
     totalPlaces=0 
-    totalWeeks=0
+    __total_weeks: int 
     totalPeriods=0
     
     maxShiftDuration: int = 12
@@ -33,7 +33,7 @@ class VigilantAssigment:
 
 
     def __init__(self, pathInterface, pathVigilants, weeks):
-        self.totalWeeks = weeks
+        self.__total_weeks = weeks
         self.obj_site_data_file = None
         self.__workingDay = None
         self.totalPeriods = 168*self.totalWeeks

@@ -10,6 +10,8 @@ import copy
 import collections
 from utils import aleatory
 
+#Como se crea un individuo en NSGA-II
+
 
 class Solution:
 
@@ -35,8 +37,8 @@ class Solution:
         self.iteration = 0
 
     def ObtainComponents(self, canNewComponents):
-        siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         components = []
+        siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
         shifts = self.obtainShiftBySite(siteId)
         vigilantsByPeriodInSite = self.Problem.cantVigilantsByPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(

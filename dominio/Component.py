@@ -1,15 +1,21 @@
-class Component:    
-    def __init__(self,siteId,cantWeeks,necesaryvigilantsByPeriod):   
-        self.siteId = siteId
-        self.siteSchedule = []
-        for period in range(0,168*cantWeeks):
-            self.siteSchedule.append([])
-        self.assignedVigilants = []
-        self.necesaryvigilantsByPeriod = necesaryvigilantsByPeriod
-        self.fitness = 0
-        self.missingShfits = []
+from dominio.Shift import Shift
+from typing import List
 
-    def calcuteFitness(self):
+class Component:
+
+    __site_id: int
+    __site_schedule: List[Shift]
+    __missing_shifts: List[Shift]
+    __missing_shifts_fitness: int
+    __distance_fitness: int
+    __extra_hours_fitness: int
+    __assigned_vigilants_fitness: int
+
+    def __init__(self, site_id : int , site_schedule : List[Shift]) -> None:   
+        self.__site_id = site_id
+        self.__site_schedule = site_schedule
+
+    def calcuteFitness(self) -> None: #decraped
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
             missingVigilants = self.necesaryvigilantsByPeriod[period] - len(self.siteSchedule[period])

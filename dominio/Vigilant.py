@@ -1,15 +1,23 @@
+from typing import List
 import numpy as np
 import math
+from dominio.Shift import Shift
+
 class Vigilant:
 
-    def __init__(self,id, expectedPlaceToWatch,shiftPreferences,distancesBetweenPlacesToWatch,numberWeeks):
-        self.id = id
-        self.HoursWorked = 0
-        self.distancesBetweenPlacesToWatch = distancesBetweenPlacesToWatch
-        self.expectedPlaceToWatch = expectedPlaceToWatch
-        self.shiftPreferences = shiftPreferences
-        self.shifts = np.zeros(168*numberWeeks)
-        self.HoursWeeks = np.zeros(numberWeeks)      
+    __vigilant_id : int
+    __expected_place_to_work: int
+    __distances_between_places_to_work: List[int]
+    __hours_worked: int 
+    __hours_worked_by_week: List[int] 
+    __shifts : List[Shift]
+
+    def __init__(self, vigilant_id : int , expected_place_to_work : int , distances_between_places_to_work : List[int], total_weeks) -> None:
+        self.__vigilant_id = id
+        self.__expected_place_to_work = expected_place_to_work
+        self.__distances_between_places_to_work = distances_between_places_to_work
+        self.__hours_worked = 0
+        self.__hours_worked_by_week = np.zeros(total_weeks)
 
     def isVigilantAvailable(self,startPeriod,endPeriod,maxWorkHoursPerWeek):
         if self.hasEnoughHoursToWorkInThisShift(startPeriod,endPeriod,maxWorkHoursPerWeek) == False:
