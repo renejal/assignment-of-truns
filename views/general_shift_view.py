@@ -6,13 +6,22 @@ from dominio.Solution import Solution
 from utils.print_sites_xls import generateResultBySite
 from utils.print_vigilants_xls import generateResultByVigilant
 from utils.print_xls import generate_results
+from dominio.problem import Problem
 import time
+import json
 class GenerateShiftView:
 
-    __algoritmGrasp = Grasp()
     __algoritmNSGA = None
     __myProblem: VigilantAssigment = VigilantAssigment("dataset/userInterface.csv", "dataset/vigilants.csv", 4)
     __myProblem.get_workig_day()
+
+    def problem_created(self, path) -> json:
+        json_problem: None
+        with open(path) as json_file:
+            json_problem = json.load(json_file)
+        json_file.close()
+        problem = Problem.from_dict(json_problem)
+        return problem
 
     def getShiftViglants(self):
         print("Start")
@@ -34,5 +43,3 @@ class GenerateShiftView:
         generate_results(solution)
         generateResultBySite(self.__myProblem.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
-
-

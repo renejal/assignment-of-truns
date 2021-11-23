@@ -16,8 +16,6 @@ class SiteDataFile:
         self.__data_problem = np.zeros((numberSites, self.weeks * 168), dtype=int)
         self.procedureData(Dataset)
 
-
-
     def procedureData(self,Dataset):
         data = pd.DataFrame(Dataset)
         for row in data.index:
