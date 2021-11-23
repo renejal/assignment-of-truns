@@ -1,3 +1,5 @@
+from typing import List
+from dominio.Shift import Shift
 from dominio.Vigilant import Vigilant
 from dominio.Component import Component
 from random import random
@@ -15,36 +17,35 @@ from utils import aleatory
 
 class Solution:
 
-    sitesSchedule = []
-    vigilantsSchedule = []
-    Fitness = 0
-    MyContainer = Algorithm
-    Problem = VigilantAssigment
-    missingShiftsBySite = []
-    vigilantsForPlaces = []
-    Aleatory = None
+    __problem = VigilantAssigment
+    __vigilants: List[Vigilant]
+    __sitesSchedule: List[Component]
+    __vigilantsSchedule: List[Vigilant] 
+    missingShiftsBySite: List[Shift] 
+    Fitness: int = 0
+    vigilantsForPlaces = [] ## cuestionar este atributo
 
-    def __init__(self, theOwner, Aletory):
-        random.seed(Aletory)
-        self.MyContainer = theOwner
-        self.MyContainer.Aleatory = Aletory
-        self.Problem: VigilantAssigment = self.MyContainer.VigilantAssigment
-        self.vigilants = self.Problem.vigilantes.copy()
-        self.vigilantsForPlaces = [[]]*(self.Problem.totalPlaces)
-        self.sitesSchedule = [[]]*(self.Problem.totalPlaces)
-        self.vigilantsSchedule = self.Problem.vigilantes.copy()
-        self.missingShiftsBySite = [[]]*(self.Problem.totalPlaces)
-        self.iteration = 0
+    def __init__(self, problem: VigilantAssigment , Aletory):
+        random.seed(Aletory) ## es necesario?
+        self.__problem = problem
+        self.__vigilants = self.__problem.vigilantes.copy()
+        self.__sitesSchedule = [[]]*(self.__problem.totalPlaces)
+        self.vigilantsSchedule = self.__problem.vigilantes.copy()
+        self.missingShiftsBySite = [[]]*(self.__problem.totalPlaces)
+        self.__iteration = 0
+        self.vigilantsForPlaces = [[]]*(self.__problem.totalPlaces)
 
     def ObtainComponents(self, canNewComponents):
-        components = []
-        siteId = self.Problem.orderSitesForCantVigilantes[self.iteration]
-        shifts = self.obtainShiftBySite(siteId)
-        vigilantsByPeriodInSite = self.Problem.cantVigilantsByPeriod[siteId-1]
+        components = List[Component]
+        ##siteId = self.__problem.orderSitesForCantVigilantes[self.iteration] ## Pasarlo al problema 
+        siteId = self.__problem.getOrderSitesForCantVigilantes(self.__iteration) ## Pasarlo al problema 
+        #shifts = self.obtainShiftBySite(siteId) ## Pasarlo al problema 
+        shifts = self.__problem.obtainShiftBySite(siteId) 
+        vigilantsByPeriodInSite = self.__problem.cantVigilantsByPeriod[siteId-1]
         necesaryVigilantes = self.getNecesaryVigilants(
             siteId, vigilantsByPeriodInSite, shifts)
         for component in range(0, canNewComponents):
-            component = Component(siteId, self.Problem.totalWeeks, vigilantsByPeriodInSite)
+            component = Component(siteId, self.__problem.totalWeeks, vigilantsByPeriodInSite)
             self.getSchedule(component, shifts, copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)
@@ -99,7 +100,7 @@ class Solution:
             while indexVigilants:
                 rand = random.choice(indexVigilants)
                 objVigilant = vigilants[rand]
-                if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift, endShift, self.Problem.maxWorkHoursPerWeek):
+                if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(InitShift, endShift, self.__problem.maxWorkHoursPerWeek):
                     ObjResultado = objVigilant
                     return ObjResultado
                 indexVigilants.remove(rand)
@@ -116,7 +117,7 @@ class Solution:
         return shifts
 
     def getSpecialShifts(self, siteId,parSite):
-        specialhours = self.Problem.specialSites[siteId]
+        specialhours = self.__problem.specialSites[siteId]
         shifts = []
         start = -1
         working = 0
@@ -137,8 +138,8 @@ class Solution:
         return shifts
 
     def obtainShiftBySite(self, siteId):
-        parSite = self.Problem.getSite(siteId)
-        if siteId in self.Problem.specialSites:
+        parSite = self.__problem.getSite(siteId)
+        if siteId in self.__problem.specialSites:
             return self.getSpecialShifts(siteId,parSite)
         else:
             site = np.copy(parSite)
@@ -157,7 +158,7 @@ class Solution:
                         k += 1
 
                 if (t == 0 and start == True) or k == 24:
-                    workindaytimes = self.Problem.workingDay[k]
+                    workindaytimes = self.__problem.workingDay[k]
                     if workindaytimes == None:
                         print(
                             "el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
@@ -188,12 +189,12 @@ class Solution:
             cantNecesaryVigilantsInWeek/porcentajeDeTrabajo)
         expectedvigilantsInPlace = []
         orderVigilantsByDistance = []
-        if siteId in self.Problem.vigilantExpectedPlaces:
-            if len(self.Problem.vigilantExpectedPlaces[siteId]) >= cantVigilantsNecesaryInSite:
-                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId][:cantVigilantsNecesaryInSite].copy(
+        if siteId in self.__problem.vigilantExpectedPlaces:
+            if len(self.__problem.vigilantExpectedPlaces[siteId]) >= cantVigilantsNecesaryInSite:
+                expectedvigilantsInPlace = self.__problem.vigilantExpectedPlaces[siteId][:cantVigilantsNecesaryInSite].copy(
                 )
             else:
-                expectedvigilantsInPlace = self.Problem.vigilantExpectedPlaces[siteId].copy(
+                expectedvigilantsInPlace = self.__problem.vigilantExpectedPlaces[siteId].copy(
                 )
             for iteration in range(0, len(expectedvigilantsInPlace)):
                 expectedvigilantsInPlace[iteration] = self.vigilantsSchedule[expectedvigilantsInPlace[iteration]-1]
@@ -254,10 +255,10 @@ class Solution:
         self.sitesSchedule[component.siteId-1] = component.siteSchedule
         self.missingShiftsBySite[component.siteId-1] = component.missingShfits
         self.Fitness += component.fitness
-        self.iteration += 1
+        self.__iteration += 1
 
     def CompleteSolution(self):
-        if self.iteration < len(self.sitesSchedule):
+        if self.__iteration < len(self.sitesSchedule):
             return True
         self.missingShiftsFormat(self.missingShiftsBySite)
         return False
@@ -265,9 +266,9 @@ class Solution:
 
     def Tweak(self, solution):
         solution = self.tweakMissingShifts(solution, True)
-        self.Problem.maxWorkHoursPerWeek = 56
+        self.__problem.maxWorkHoursPerWeek = 56
         solution = self.tweakMissingShifts(solution, False)
-        self.Problem.maxWorkHoursPerWeek = 48
+        self.__problem.maxWorkHoursPerWeek = 48
         #solution = self.tweakVigilants(solution)
         self.calculateFitness(solution)
 
@@ -278,7 +279,7 @@ class Solution:
         for site in range(0, len(solution.sitesSchedule)):
             for period in range(0, len(solution.sitesSchedule[site])):
                 actualVigilants = len(solution.sitesSchedule[site][period])
-                missingVigilants = self.Problem.cantVigilantsByPeriod[site][period] - \
+                missingVigilants = self.__problem.cantVigilantsByPeriod[site][period] - \
                     actualVigilants
                 solution.Fitness += missingVigilants*10000
         for vigilant in self.vigilantsSchedule:
@@ -381,7 +382,7 @@ class Solution:
         for indexSite in range(0, len(self.missingShiftsBySite)):
             for shift in self.missingShiftsBySite[indexSite]:
                 listTempVigilant.clear()
-                cantNecessariVigilantsInShift = self.Problem.cantVigilantsByPeriod[indexSite][shift[0]] - len(
+                cantNecessariVigilantsInShift = self.__problem.cantVigilantsByPeriod[indexSite][shift[0]] - len(
                     self.sitesSchedule[indexSite][shift[0]])
                 numberIterations = cantNecessariVigilantsInShift
                 for i in range(0, numberIterations):
@@ -419,7 +420,7 @@ class Solution:
                         nHoras += 1
                         shifts = shifts + \
                             self.calculateworkinday(
-                                self.Problem.workingDay[nHoras], missingShiftsInSite[indexShift])
+                                self.__problem.workingDay[nHoras], missingShiftsInSite[indexShift])
                         indexShift += nHoras
                         nHoras = 0
                     else:

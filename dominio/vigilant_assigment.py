@@ -1,5 +1,7 @@
+from typing import List
 from data.SiteDataFile import SiteDataFile
 from data.VigilantsDataFile import VigilantsDataFile
+from dominio.Site import Site
 from dominio.Vigilant import Vigilant
 import operator
 
@@ -9,10 +11,12 @@ class VigilantAssigment:
     totalPlaces=0 
     __total_weeks: int 
     totalPeriods=0
+
+    __vigilants: List[Vigilant]
     
     maxShiftDuration: int = 12
-    minShiftDuration=6
-    minBreakDuration=18
+    minShiftDuration: int = 4
+    minBreakDuration: int = 18
     maxOvertimeWorkHoursPerWeek=12
     maxWorkHoursPerWeek=48
     minWorkHoursPerWeek=40
@@ -40,9 +44,16 @@ class VigilantAssigment:
         self.readData(pathInterface,pathVigilants)
         self.initProblem()
 
+    def __init__(self, vigilants : List[Vigilant], sites: List[Site] , weeks ) -> None:
+        self.__vigilants = vigilants
+        self.__sites = sites
+        self.__total_weeks = weeks
+
+    ##Le pertenece a otra clase
     def readData(self, pathInterface , pathVigilants):
         self.readDataInterface(pathInterface)
         self.readVigilantData(pathVigilants)
+    ##Le pertenece a otra clase
 
     def readDataInterface(self,pathInterface):
         self.obj_site_data_file: SiteDataFile = SiteDataFile(pathInterface, self.totalWeeks)
@@ -50,6 +61,7 @@ class VigilantAssigment:
         self.__workingDay = self.obj_site_data_file.get_working_day()
         self.specialSites = self.obj_site_data_file.specialSites
         self.totalPlaces = len(self.SitesData)
+    ##Le pertenece a otra clase
 
     def readVigilantData(self, pathVigilants):
         data = VigilantsDataFile(pathVigilants)
@@ -57,11 +69,7 @@ class VigilantAssigment:
         self.totalVigilantes = data.numberVigilants
 
     def initProblem(self):
-        '''
-        inicialize empty default problem
-        :return: None
-        '''
-        self.identifiesWeekStartPeriod()
+        #self.identifiesWeekStartPeriod()
         self.getCantVigilantesforSite()
         #init vigilantes and shift default
         for i in range(self.totalVigilantes):
@@ -77,7 +85,7 @@ class VigilantAssigment:
         self.OrderSitesForCantVigilantes()
         self.loadWorkingDay()
     
-
+    ##eliminado
     def identifiesWeekStartPeriod(self):
         '''
         identify the shift the init for the week

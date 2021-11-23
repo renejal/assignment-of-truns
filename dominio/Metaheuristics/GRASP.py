@@ -6,15 +6,14 @@ from dominio.vigilant_assigment import VigilantAssigment
 import copy
 
 class Grasp(Algorithm):
-    CurrentEFOs = 0
-    MaxEFOs = 10
+    CurrentEFOs: int = 0
+    MaxEFOs: int = 10
 
-    def Execute(self, Problem: VigilantAssigment, Aleatory, numComponets):
-        self.VigilantAssigment = Problem
+    def Execute(self, problem: VigilantAssigment, Aleatory, numComponets):
         random.seed(Aleatory)
         Best = None
         while self.CurrentEFOs < self.MaxEFOs:
-            S = Solution(self, Aleatory)
+            S = Solution(problem, Aleatory)
             i  = 1
             while S.CompleteSolution():
                 components = S.ObtainComponents(numComponets)

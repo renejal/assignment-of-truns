@@ -7,8 +7,7 @@
         "working_day_start_time": 6,
         "weeks_schedule":
         [
-          {
-            "monday":
+          [
             {
               "working_day":
               [
@@ -19,430 +18,47 @@
                 }
               ]
             },
-            "tuesday":
             {
               "working_day":
               [
                 {
                   "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
                   "working_end":23,
-                  "num_vigilantes":3
+                  "num_vigilantes":4
                 }
               ]
             },
-            "wednesday":
             {
               "working_day":
               [
                 {
                   "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
                   "working_end":23,
-                  "num_vigilantes":3
+                  "num_vigilantes":4
                 }
               ]
             },
-            "thursday":
             {
               "working_day":
               [
                 {
                   "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
                   "working_end":23,
-                  "num_vigilantes":3
+                  "num_vigilantes":4
                 }
               ]
-            },
-            "friday":
-            {
+            },{
               "working_day":
               [
                 {
                   "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
                   "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "saturday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
                   "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "sunday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
                 }
               ]
             }
-          },
-          {
-            "monday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":23,
-                  "num_vigilantes":4
-                }
-              ]
-            },
-            "tuesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "wednesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "thursday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "friday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "saturday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "sunday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            }
-          },
-          {
-            "monday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":23,
-                  "num_vigilantes":4
-                }
-              ]
-            },
-            "tuesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "wednesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "thursday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "friday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "saturday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "sunday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            }
-          },
-          {
-            "monday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":23,
-                  "num_vigilantes":4
-                }
-              ]
-            },
-            "tuesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "wednesday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "thursday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "friday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "saturday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            },
-            "sunday":
-            {
-              "working_day":
-              [
-                {
-                  "working_start":0,
-                  "working_end":11,
-                  "num_vigilantes":4
-                },
-                {
-                  "working_start":12,
-                  "working_end":23,
-                  "num_vigilantes":3
-                }
-              ]
-            }
-          }
+          ]
+         
         ]
       },
       {
