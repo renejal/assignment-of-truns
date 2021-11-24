@@ -6,27 +6,36 @@ from dominio.Solution import Solution
 from utils.print_sites_xls import generateResultBySite
 from utils.print_vigilants_xls import generateResultByVigilant
 from utils.print_xls import generate_results
-from dominio.problem import Problem
+from dominio.problem import DataSites
+from dominio.problem import DataVigilantes
 import time
 import json
 class GenerateShiftView:
 
     __algoritmNSGA = None
     __myProblem: VigilantAssigment = VigilantAssigment("dataset/userInterface.csv", "dataset/vigilants.csv", 4)
-    __myProblem.get_workig_day()
+    __vigilantes: DataVigilantes= None
+    __dataSites: DataSites = None
+    __vigilantes.get_workig_day()
 
-    def problem_created(self, path) -> json:
-        json_problem: None
+    def create_sites(self, path) -> json:
+        json_problem = None
         with open(path) as json_file:
             json_problem = json.load(json_file)
         json_file.close()
-        problem = Problem.from_dict(json_problem)
-        return problem
+        __data_Sites = DataSites.from_dict(json_problem)
+
+    def create_vigilantes(self, path):
+        json_vigilantes = None
+        with open(path) as json_file:
+            json_vigilantes = json.load(json_file)
+            json_file.close()
+            __dataVigilantes = DataVigilantes.form_dict(json_vigilantes)
 
     def getShiftViglants(self):
         print("Start")
         tic = time.perf_counter()
-        response: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 1)
+        response: Solution = self.__algoritmGrasp.Execute(self.__vigilantes, 0, 1)
         toc = time.perf_counter()
         self.__generateResults(0, 10, response)
         print(f"Time {toc - tic:0.4f} seconds")
@@ -41,5 +50,5 @@ class GenerateShiftView:
 
     def __generateResults_xls(self, path, solution):
         generate_results(solution)
-        generateResultBySite(self.__myProblem.cantVigilantsByPeriod, path, solution)
+        generateResultBySite(self.__vigilantes.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
