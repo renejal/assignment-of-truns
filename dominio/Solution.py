@@ -21,19 +21,17 @@ class Solution:
     __vigilants: List[Vigilant]
     __sitesSchedule: List[Component]
     __vigilantsSchedule: List[Vigilant] 
-    missingShiftsBySite: List[Shift] 
     Fitness: int = 0
     vigilantsForPlaces = [] ## cuestionar este atributo
 
     def __init__(self, problem: VigilantAssigment , Aletory):
-        random.seed(Aletory) ## es necesario?
+        random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
         self.__problem = problem
         self.__vigilants = self.__problem.vigilantes.copy()
         self.__sitesSchedule = [[]]*(self.__problem.totalPlaces)
         self.vigilantsSchedule = self.__problem.vigilantes.copy()
-        self.missingShiftsBySite = [[]]*(self.__problem.totalPlaces)
         self.__iteration = 0
-        self.vigilantsForPlaces = [[]]*(self.__problem.totalPlaces)
+        self.vigilantsForPlaces = [[]]*(self.__problem.totalPlaces) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
     def ObtainComponents(self, canNewComponents):
         components = List[Component]
@@ -41,11 +39,10 @@ class Solution:
         siteId = self.__problem.getOrderSitesForCantVigilantes(self.__iteration) ## Pasarlo al problema 
         #shifts = self.obtainShiftBySite(siteId) ## Pasarlo al problema 
         shifts = self.__problem.obtainShiftBySite(siteId) 
-        vigilantsByPeriodInSite = self.__problem.cantVigilantsByPeriod[siteId-1]
-        necesaryVigilantes = self.getNecesaryVigilants(
-            siteId, vigilantsByPeriodInSite, shifts)
+        vigilantsByPeriodInSite = self.__problem.cantVigilantsByPeriod[siteId-1] #No es necesario
+        necesaryVigilantes = self.getNecesaryVigilants(siteId, vigilantsByPeriodInSite, shifts)
         for component in range(0, canNewComponents):
-            component = Component(siteId, self.__problem.totalWeeks, vigilantsByPeriodInSite)
+            component = Component(siteId, shifts)
             self.getSchedule(component, shifts, copy.deepcopy(necesaryVigilantes))
             component.calcuteFitness()
             components.append(component)

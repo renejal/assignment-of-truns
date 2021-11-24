@@ -17,7 +17,17 @@
                     "working_start": 0,
                     "working_end": 23,
                     "num_vigilantes": 4
-                  },
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "week 2",
+            "days": [
+              {
+                "description": "day 1",
+                "working_day": [
                   {
                     "description": "working day 1",
                     "working_start": 0,
@@ -27,24 +37,12 @@
                 ]
               }
             ]
-          },
-          {
-            "description": "week 2",
-            "monday": {
-              "working_day": [
-                {
-                  "working_start": 0,
-                  "working_end": 23,
-                  "num_vigilantes": 4
-                }
-              ]
-            }
           }
         ]
       },
       {
-        "description": "Site 1",
-        "id": 1,
+        "description": "Site 2",
+        "id": 2,
         "minimum_shift_hours_if_is_special_site": 0,
         "working_day_start_time": 6,
         "weeks_schedule": [
@@ -59,7 +57,17 @@
                     "working_start": 0,
                     "working_end": 23,
                     "num_vigilantes": 4
-                  },
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "description": "week 2",
+            "days": [
+              {
+                "description": "day 1",
+                "working_day": [
                   {
                     "description": "working day 1",
                     "working_start": 0,
@@ -69,18 +77,6 @@
                 ]
               }
             ]
-          },
-          {
-            "description": "week 2",
-            "monday": {
-              "working_day": [
-                {
-                  "working_start": 0,
-                  "working_end": 23,
-                  "num_vigilantes": 4
-                }
-              ]
-            }
           }
         ]
       }

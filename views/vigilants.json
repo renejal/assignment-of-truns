@@ -1,0 +1,20 @@
+{
+    "vigilants":[
+        {
+            "id": "1",
+            "default_place_to_look_out":"",
+            "distances":[
+                12,
+                23                
+            ]
+        },
+        {
+            "id": "2",
+            "default_place_to_look_out":"",
+            "distances":[
+                12,
+                23                
+            ]
+        }
+    ]
+}
