@@ -1,20 +1,19 @@
 from typing import Dict, List
-from data.SiteDataFile import SiteDataFile
-from data.VigilantsDataFile import VigilantsDataFile
+# from data.SiteDataFile import SiteDataFile
+# from data.VigilantsDataFile import VigilantsDataFile
 from dominio.Shift import Shift
-from dominio.Site import Site
-from dominio.Vigilant3 import Vigilant
+from dominio.site import Site
+from dominio.vigilant import Vigilant
 import operator
 
 class VigilantAssigment:
-    # maxShiftDuration: int = 12
-    # minShiftDuration: int = 4
-    # minBreakDuration: int = 18
-    # maxOvertimeWorkHoursPerWeek=12
-    # maxWorkHoursPerWeek=48
-    # minWorkHoursPerWeek=40
-    # idealWorkHoursPerWeek=48
-
+    maxShiftDuration: int = 12
+    minShiftDuration: int = 4
+    minBreakDuration: int = 18
+    maxOvertimeWorkHoursPerWeek=12
+    maxWorkHoursPerWeek=48
+    minWorkHoursPerWeek=40
+    idealWorkHoursPerWeek=48
     __vigilants: List[Vigilant]
     __sites: List[Site]
     __total_vigilantes: int
@@ -22,14 +21,13 @@ class VigilantAssigment:
     __total_weeks: int 
     __vigilantExpectedPlaces: Dict[int , List[int]]
     __order_sites_by_vigilants_amount: List[int]
-        
 
-    def __init__(self, vigilants : List[Vigilant], sites: List[Site] , weeks ) -> None:
+    def __init__(self, vigilants: List[Vigilant], sites: List[Site], weeks) -> None:
         self.__vigilants = vigilants
         self.__sites = sites
         self.__total_weeks = weeks
         # TO DO OrderSites 
-        self.initProblem()
+        #self.initProblem()
 
     def initProblem(self) -> None:
         for vigilant in self.__vigilants:
@@ -85,12 +83,6 @@ class VigilantAssigment:
 
     def getSite(self, siteId):
         return self.SitesData[siteId-1]
-
-
-
-
-    
-
 
      #PASARLO A VIGILANT ASSIGMNET
     def specialShifts(self, startWork, endWork, specialHours):

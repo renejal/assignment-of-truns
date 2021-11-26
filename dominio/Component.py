@@ -1,7 +1,7 @@
 from dominio.Shift import Shift
 from typing import List
 
-from dominio.Vigilant3 import Vigilant
+from dominio.vigilant import Vigilant
 
 class Component:
 

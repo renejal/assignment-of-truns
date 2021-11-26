@@ -1,22 +1,23 @@
-from dominio.Metaheuristics.GRASP import Grasp
-from data.SiteDataFile import SiteDataFile
-from data.VigilantsDataFile import VigilantsDataFile
+#from dominio.Metaheuristics.GRASP import Grasp
+#from data.SiteDataFile import SiteDataFile
+#from data.VigilantsDataFile import VigilantsDataFile
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
-from utils.print_sites_xls import generateResultBySite
-from utils.print_vigilants_xls import generateResultByVigilant
-from utils.print_xls import generate_results
+#from utils.print_sites_xls import generateResultBySite
+#from utils.print_vigilants_xls import generateResultByVigilant
+#from utils.print_xls import generate_results
 from dominio.problem import DataSites
 from dominio.problem import DataVigilantes
 import time
 import json
 class GenerateShiftView:
 
-   # __algoritmNSGA = None
-   # __myProblem: VigilantAssigment = VigilantAssigment("dataset/userInterface.csv", "dataset/vigilants.csv", 4)
-    __vigilantes: DataVigilantes = None
-    __dataSites: DataSites = None
-    #__vigilantes.get_workig_day()
+    def __init__(self, path_site: str, path_vigilantes: str):
+        self.__data_sites = self.create_sites(path_site)
+        self.__data_vigilantes = self.create_vigilantes(path_vigilantes)
+        self.__algoritmNSGA = None
+        self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites, 4)
+        # self.___myProble.get_workig_day()
 
     def create_sites(self, path) -> json:
         json_problem = None
@@ -40,6 +41,7 @@ class GenerateShiftView:
         self.__generateResults(0, 10, response)
         print(f"Time {toc - tic:0.4f} seconds")
 
+"""
     def __generateResults(self, CurrentEFOs, MaxEFOs, response: Solution):
         if CurrentEFOs == 0:
             self.__generateResults_xls('./views/FirstResult', response)
@@ -52,3 +54,4 @@ class GenerateShiftView:
         generate_results(solution)
         generateResultBySite(self.__vigilantes.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
+"""
