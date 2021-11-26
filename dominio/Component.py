@@ -19,7 +19,7 @@ class Component:
         self.__site_id = site_id
         self.__site_schedule = site_schedule
 
-    def calcuteFitness(self) -> None: #decraped
+    def calculate_fitness(self) -> None: #decraped
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
             missingVigilants = self.necesaryvigilantsByPeriod[period] - len(self.siteSchedule[period])
