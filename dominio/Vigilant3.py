@@ -3,14 +3,14 @@ import numpy as np
 import math
 #from dominio.Shift import Shift
 
-class Vigilant:
+class Vigilant3:
 
     __vigilant_id : int
     __expected_place_to_work: int
     __distances_between_places_to_work: List[int]
     __hours_worked: int 
     __hours_worked_by_week: List[int] 
-    __shifts : List[Shift]
+  #  __shifts : List[Shift]
 
     def __init__(self, vigilant_id : int , expected_place_to_work : int , distances_between_places_to_work : List[int], total_weeks) -> None:
         self.__vigilant_id = id

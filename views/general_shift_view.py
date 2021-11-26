@@ -30,8 +30,8 @@ class GenerateShiftView:
         with open(path) as json_file:
             json_vigilantes = json.load(json_file)
             json_file.close()
-            __dataVigilantes = DataVigilantes.form_dict(json_vigilantes)
-'''
+            __dataVigilantes = DataVigilantes.from_dict(json_vigilantes)
+
     def getShiftViglants(self):
         print("Start")
         tic = time.perf_counter()
@@ -52,4 +52,3 @@ class GenerateShiftView:
         generate_results(solution)
         generateResultBySite(self.__vigilantes.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
-'''

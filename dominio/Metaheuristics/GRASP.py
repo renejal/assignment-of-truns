@@ -1,5 +1,4 @@
 import random
-
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment

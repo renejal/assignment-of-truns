@@ -1,6 +1,6 @@
 from typing import List
-from dominio.Shift import Shift
-from dominio.Vigilant3 import Vigilant
+#from dominio.Shift import Shift
+#from dominio.Vigilant3 import Vigilant
 from dominio.Component import Component
 from random import random
 import random

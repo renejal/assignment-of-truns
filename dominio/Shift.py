@@ -1,6 +1,6 @@
 from typing import List
-from dominio.Vigilant3 import Vigilant
-
+from dominio.Vigilant3 import Vigilant3
+'''
 class Shift:
     __shift_start: int
     __shift_end: int
@@ -14,3 +14,4 @@ class Shift:
 
     def __addVigilant(self, vigilant: Vigilant):
         self.__assigment_vigilants.append(vigilant) 
+'''
