@@ -1,7 +1,7 @@
 from typing import List
 import numpy as np
 import math
-from dominio.Shift import Shift
+#from dominio.Shift import Shift
 
 class Vigilant:
 

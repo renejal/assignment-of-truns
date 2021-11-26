@@ -1,11 +1,13 @@
 {
-    "vigilants":[
+    "data_vigilantes":[
         {
             "id": "1",
             "default_place_to_look_out":"",
             "distances":[
                 12,
-                23                
+                12,
+                12,
+                12
             ]
         },
         {
@@ -13,8 +15,11 @@
             "default_place_to_look_out":"",
             "distances":[
                 12,
-                23                
+                23,
+                12,
+                12
             ]
+
         }
     ]
 }

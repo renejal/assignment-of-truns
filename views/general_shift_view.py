@@ -12,11 +12,11 @@ import time
 import json
 class GenerateShiftView:
 
-    __algoritmNSGA = None
-    __myProblem: VigilantAssigment = VigilantAssigment("dataset/userInterface.csv", "dataset/vigilants.csv", 4)
-    __vigilantes: DataVigilantes= None
+   # __algoritmNSGA = None
+   # __myProblem: VigilantAssigment = VigilantAssigment("dataset/userInterface.csv", "dataset/vigilants.csv", 4)
+    __vigilantes: DataVigilantes = None
     __dataSites: DataSites = None
-    __vigilantes.get_workig_day()
+    #__vigilantes.get_workig_day()
 
     def create_sites(self, path) -> json:
         json_problem = None
@@ -31,7 +31,7 @@ class GenerateShiftView:
             json_vigilantes = json.load(json_file)
             json_file.close()
             __dataVigilantes = DataVigilantes.form_dict(json_vigilantes)
-
+'''
     def getShiftViglants(self):
         print("Start")
         tic = time.perf_counter()
@@ -52,3 +52,4 @@ class GenerateShiftView:
         generate_results(solution)
         generateResultBySite(self.__vigilantes.cantVigilantsByPeriod, path, solution)
         generateResultByVigilant(path, solution)
+'''

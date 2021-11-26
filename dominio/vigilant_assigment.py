@@ -2,7 +2,7 @@ from typing import List
 from data.SiteDataFile import SiteDataFile
 from data.VigilantsDataFile import VigilantsDataFile
 from dominio.Site import Site
-from dominio.Vigilant import Vigilant
+from dominio.Vigilant3 import Vigilant
 import operator
 
 class VigilantAssigment:

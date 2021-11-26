@@ -1,5 +1,5 @@
 from typing import List
-from dominio.Vigilant import Vigilant
+from dominio.Vigilant3 import Vigilant
 
 class Shift:
     __shift_start: int
