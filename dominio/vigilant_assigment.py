@@ -1,48 +1,47 @@
 from typing import Dict, List
-from data.SiteDataFile import SiteDataFile
-from data.VigilantsDataFile import VigilantsDataFile
+# from data.SiteDataFile import SiteDataFile
+# from data.VigilantsDataFile import VigilantsDataFile
 from dominio.Shift import Shift
 from dominio.Site import Site
-from dominio.Vigilant3 import Vigilant
+from dominio.vigilant import Vigilant
 import operator
 
 class VigilantAssigment:
-    # maxShiftDuration: int = 12
-    # minShiftDuration: int = 4
-    # minBreakDuration: int = 18
-    # maxOvertimeWorkHoursPerWeek=12
-    # maxWorkHoursPerWeek=48
-    # minWorkHoursPerWeek=40
-    # idealWorkHoursPerWeek=48
-
+    maxShiftDuration: int = 12
+    minShiftDuration: int = 4
+    minBreakDuration: int = 18
+    maxOvertimeWorkHoursPerWeek=12
+    maxWorkHoursPerWeek=48
+    minWorkHoursPerWeek=40
+    idealWorkHoursPerWeek=48
     __vigilants: List[Vigilant]
     __sites: List[Site]
     __total_vigilantes: int
     __total_sites: int
     __total_weeks: int 
-    __vigilantExpectedPlaces: Dict[int , List[int]]
+    __vigilantExpectedPlaces: Dict[int, List[int]]
     __order_sites_by_vigilants_amount: List[int]
     
     __END_HOUR_TO_WORK: int = 23
 
-    def __init__(self, vigilants : List[Vigilant], sites: List[Site] , weeks ) -> None:
+    def __init__(self, vigilants: List[Vigilant], sites: List[Site], weeks) -> None:
         self.__vigilants = vigilants
         self.__sites = sites
         self.__total_weeks = weeks
-        # TO DO OrderSites 
+        # TO DO OrderSites
         self.initProblem()
 
     def initProblem(self) -> None:
         for vigilant in self.__vigilants:
-            if vigilant.__expected_place_to_work !=0:
-                if vigilant.__expected_place_to_work in self.__vigilantExpectedPlaces:
-                    self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work].apppend(vigilant.__vigilant_id)
+            if vigilant != 0:
+                if vigilant.__default_place_to_look_out:
+                    self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out].apppend(vigilant.__vigilant_id)
                 else:
-                    self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work]= vigilant.__vigilant_id
+                    self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out] = vigilant.__vigilant_id
         self.createShiftsBySite(self.__sites)
         self.OrderSitesForCantVigilantes()
 
-    def createShiftsBySite(self, sites: List[Site] ) -> List[List[Shift]]:
+    def createShiftsBySite(self, sites: List[Site]) -> List[List[Shift]]:
         workingDay = self.loadWorkingDay()
 
         for site in sites:
@@ -60,7 +59,8 @@ class VigilantAssigment:
                             shift_start_time += hours_amount_to_work
 
         return None
-    def get_shifts_by_site() -> List[Shift]:
+
+    def getShiftsBySite(self) -> List[Shift]:
         return None
 
     def getCantVigilantesforSite(self):
@@ -101,7 +101,6 @@ class VigilantAssigment:
 
     def getSite(self, siteId):
         return self.SitesData[siteId-1]
-
 
     #PASARLO A VIGILANT ASSIGMNET
     def getSpecialShifts(self, siteId,parSite):

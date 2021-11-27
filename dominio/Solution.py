@@ -1,6 +1,6 @@
 from typing import List
 #from dominio.Shift import Shift
-#from dominio.Vigilant3 import Vigilant
+from dominio.vigilant import Vigilant
 from dominio.Component import Component
 from random import random
 import random
@@ -22,7 +22,7 @@ class Solution:
     __vigilants: List[Vigilant]
     __sitesSchedule: List[Component]
     __vigilantsSchedule: List[Vigilant] 
-    __fitness: list[int]
+    __fitness: List[int]
     vigilantsForPlaces = [] ## cuestionar este atributo
 
     def __init__(self, problem: VigilantAssigment , Aletory):
