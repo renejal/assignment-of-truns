@@ -1,10 +1,12 @@
 from typing import Dict, List
 # from data.SiteDataFile import SiteDataFile
 # from data.VigilantsDataFile import VigilantsDataFile
-from dominio.Shift import Shift
 from dominio.Site import Site
 from dominio.vigilant import Vigilant
+from dominio.Shift import Shift
+
 import operator
+
 
 class VigilantAssigment:
     maxShiftDuration: int = 12
@@ -14,51 +16,54 @@ class VigilantAssigment:
     maxWorkHoursPerWeek=48
     minWorkHoursPerWeek=40
     idealWorkHoursPerWeek=48
-    __vigilants: List[Vigilant]
+    __vigilantes: List[Vigilant]
     __sites: List[Site]
     __total_vigilantes: int
     __total_sites: int
     __total_weeks: int 
     __vigilantExpectedPlaces: Dict[int, List[int]]
-    __order_sites_by_vigilants_amount: List[int]
+    __order_sites_by_vigilantes_amount: List[int]
     
     __END_HOUR_TO_WORK: int = 23
+    __MAX_HOURS_TO_WORK: int= 24 
 
-    def __init__(self, vigilants: List[Vigilant], sites: List[Site], weeks) -> None:
-        self.__vigilants = vigilants
+    def __init__(self, vigilantes: List[Vigilant], sites: List[Site], weeks) -> None:
+        self.__vigilantes = vigilantes
         self.__sites = sites
         self.__total_weeks = weeks
         # TO DO OrderSites
         self.initProblem()
 
     def initProblem(self) -> None:
-        for vigilant in self.__vigilants:
+        for vigilant in self.__vigilantes:
             if vigilant != 0:
                 if vigilant.__default_place_to_look_out:
                     self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out].apppend(vigilant.__vigilant_id)
                 else:
                     self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out] = vigilant.__vigilant_id
-        self.createShiftsBySite(self.__sites)
+        self.create_Shifts_By_Site(self.__sites)
         self.OrderSitesForCantVigilantes()
 
-    def createShiftsBySite(self, sites: List[Site]) -> List[List[Shift]]:
+    def create_Shifts_By_Site(self, sites: List[Site]) -> List[List[Shift]]:
         workingDay = self.loadWorkingDay()
-
+        shifts_by_site = List[List[Shift]]
         for site in sites:
+            shifts_by_site.append(list[Shift])
             for week in site.weeks_schedule:
                 for day in week:
                     for index, shift in enumerate(day.working_day):
                         shift_start_time =  shift.working_start
                         if( shift.working_end == self.__END_HOUR_TO_WORK and day.working_day[index+1].working_start == 0):
-                            working_hours_amount =  shift.working_end - shift.working_start +  day.working_day[index+1].end ##PENSAR MEJOR SOLUCION
-
-                        working_hours_amount = shift.working_end - shift.working_start
+                            working_hours_amount =  shift.working_end - shift.working_start +  day.working_day[index+1].end
+                            if working_hours_amount > self.__MAX_HOURS_TO_WORK:
+                                working_hours_amount = self.__MAX_HOURS_TO_WORK
+                        else:
+                            working_hours_amount = shift.working_end - shift.working_start
                         hoursByShift = workingDay[working_hours_amount]
                         for hours_amount_to_work in hoursByShift:
-                            Shift(shift_start_time, shift_start_time+hours_amount_to_work)
+                            shifts_by_site[site.__site_id-1].append(Shift(shift_start_time, shift_start_time+hours_amount_to_work))
                             shift_start_time += hours_amount_to_work
-
-        return None
+        return shifts_by_site
 
     def getShiftsBySite(self) -> List[Shift]:
         return None
@@ -77,7 +82,7 @@ class VigilantAssigment:
             indexSite += 1
         return cantNecesaryVigilantesforSite
 
-    def get_order_site_by_vigilants_amount()-> int:
+    def get_order_site_by_vigilantes_amount()-> int:
         return None
 
     def OrderSitesForCantVigilantes(self):
@@ -86,7 +91,7 @@ class VigilantAssigment:
         site = []
         for i in sites:
             site.append(int(i[0]))
-        self.__order_sites_by_vigilants_amount = site
+        self.__order_sites_by_vigilantes_amount = site
 
     def loadWorkingDay(self) -> Dict[int,List[int]]: 
         return { 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6], 7:[7],8:[8],9:[9],10:[10],11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],20:[10,10],21:[7,7,7],22:[8,7,7],
@@ -102,67 +107,4 @@ class VigilantAssigment:
     def getSite(self, siteId):
         return self.SitesData[siteId-1]
 
-    #PASARLO A VIGILANT ASSIGMNET
-    def getSpecialShifts(self, siteId,parSite):
-        specialhours = self.__problem.specialSites[siteId]
-        shifts = []
-        start = -1
-        working = 0
-        for i in range(0, len(parSite)):
-            if(parSite[i] != 0 and working + 1 != 24):
-                if start == -1:
-                    start = i
-                working += 1
-                if i == len(parSite)-1:
-                    shifts += self.specialShifts(start, i, specialhours)
-            elif(working > 0):
-                if working == 23:
-                    shifts += self.specialShifts(start, i, specialhours)
-                else:
-                    shifts += self.specialShifts(start, i-1, specialhours)
-                start = -1
-                working = 0
-        return shifts
-    #PASARLO A VIGILANT ASSIGMNET
-    def obtainShiftBySite(self, siteId):
-        parSite = self.__problem.getSite(siteId)
-        if siteId in self.__problem.specialSites:
-            return self.getSpecialShifts(siteId,parSite)
-        else:
-            site = np.copy(parSite)
-            working_day = []
-            init = -1
-            start = False
-            k = 0
-            for index, t in enumerate(site):
-                if t == 0 and start == False:
-                    continue
-                if t != 0:
-                    if init == -1:
-                        init = index
-                    start = True
-                    if k < 24:
-                        k += 1
-
-                if (t == 0 and start == True) or k == 24:
-                    workindaytimes = self.__problem.workingDay[k]
-                    if workindaytimes == None:
-                        print(
-                            "el numero de horas no puede establecerce a un vigilantes revice EL DATASET")
-                    start = False
-                    if workindaytimes == 9:
-                        return
-                    working_day = working_day + \
-                        (self.calculateworkinday(workindaytimes, init))
-                    init = -1
-                    k = 0
-
-            return working_day
-    #PASARLO A VIGILANT ASSIGMNET
-    def calculateworkinday(self, workinday, indexWorkingDay):
-        dayShiftS = []
-        for durationShift in workinday:
-            dayShiftS.append(
-                [indexWorkingDay, indexWorkingDay+durationShift-1])
-            indexWorkingDay += durationShift
-        return dayShiftS
+   

@@ -8,15 +8,15 @@ def from_dataFrame(soluction: Solution):
 def generateResultByVigilant(path, solution):
     writer = pd.ExcelWriter(path + "results.xlsx", engine='openpyxl')
     wb = writer.book
-    for vigilantId in range(0, len(solution.vigilantsSchedule)):
+    for vigilantId in range(0, len(solution.vigilantesSchedule)):
         sheduleVigilant = {}
-        if solution.vigilantsSchedule[vigilantId] != None:
+        if solution.vigilantesSchedule[vigilantId] != None:
             numerDay = 1
             period = 0
             scheduleByDay = []
             workingHoursByDay = 0
             totalHoursWork = 0
-            for assignedSiteInPeriod in solution.vigilantsSchedule[vigilantId].shifts:
+            for assignedSiteInPeriod in solution.vigilantesSchedule[vigilantId].shifts:
                 if assignedSiteInPeriod != 0:
                     workingHoursByDay += 1
                 scheduleByDay.append(assignedSiteInPeriod)

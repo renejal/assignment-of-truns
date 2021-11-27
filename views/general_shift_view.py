@@ -4,7 +4,7 @@
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
 #from utils.print_sites_xls import generateResultBySite
-#from utils.print_vigilants_xls import generateResultByVigilant
+#from utils.print_vigilantes_xls import generateResultByVigilant
 #from utils.print_xls import generate_results
 from dominio.problem import DataSites
 from dominio.problem import DataVigilantes
@@ -17,21 +17,23 @@ class GenerateShiftView:
         self.__data_vigilantes = self.create_vigilantes(path_vigilantes)
         self.__algoritmNSGA = None
         self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites, 4)
-        # self.___myProble.get_workig_day()
+        self.___myProble.get_workig_day()
 
     def create_sites(self, path) -> json:
         json_problem = None
         with open(path) as json_file:
             json_problem = json.load(json_file)
         json_file.close()
-        __data_Sites = DataSites.from_dict(json_problem)
+        return DataSites.from_dict(json_problem)
+
 
     def create_vigilantes(self, path):
         json_vigilantes = None
         with open(path) as json_file:
             json_vigilantes = json.load(json_file)
             json_file.close()
-            __dataVigilantes = DataVigilantes.from_dict(json_vigilantes)
+            return json_vigilantes
+            return DataVigilantes.from_dict(json_vigilantes)
 
     def getShiftViglants(self):
         print("Start")

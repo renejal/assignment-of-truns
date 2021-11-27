@@ -10,7 +10,8 @@ from views.general_shift_view import GenerateShiftView
 #Qk=Duración mínima del turno que se debe vigilar en un sitio k obligatoriamente.
 
 # Separar el fitness por funcion objetivo
-view = GenerateShiftView("views/sites.json","views/sites.json")
+view = GenerateShiftView("views/sites.json","views/vigilantes.json")
+
 #GenerateShiftView.create_sites()
 
 

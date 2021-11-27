@@ -1,9 +1,9 @@
 from utils.dataclass_classmethod import FromDictMixin
 import dataclasses
-from dominio.day import Day
 from typing import List, Dict
+from dominio.working_day import workingDay
 
 @dataclasses.dataclass
-class Week(FromDictMixin):
+class Day(FromDictMixin):
     description: str = ""
-    days: List[Day] = dataclasses.field(default_factory=list)
+    working_day: List[workingDay] = dataclasses.field(default_factory=list)

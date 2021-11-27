@@ -2,20 +2,20 @@ import pandas as pd
 
 
 class VigilantsDataFile:
-    numberVigilants = int
+    numberVigilantes = int
     Dataset = None
-    vigilantsInfo = []
+    vigilantesInfo = []
 
     def __init__(self, urlFile):
         self.Dataset = pd.read_csv(urlFile)
-        self.numberVigilants = len(self.Dataset)
+        self.numberVigilantes = len(self.Dataset)
         self.Dataset = pd.DataFrame(self.Dataset)    
         self.procedureData()
 
     def procedureData(self):
-        infoVigilantsColums = 5
-        cantPlaces = self.Dataset.columns.size - infoVigilantsColums
-        for posicionVigilant in range(0,self.numberVigilants):
+        infoVigilantesColums = 5
+        cantPlaces = self.Dataset.columns.size - infoVigilantesColums
+        for posicionVigilant in range(0,self.numberVigilantes):
             vigilant = []
             shiftPreferences = []
             distancesBetweenPlacesToWatch = []
@@ -32,5 +32,5 @@ class VigilantsDataFile:
                 distancesBetweenPlacesToWatch.append(self.Dataset['D. Sitio '+str(place+1)][posicionVigilant])
             vigilant.append(shiftPreferences)
             vigilant.append(distancesBetweenPlacesToWatch)
-            self.vigilantsInfo.append(vigilant)
+            self.vigilantesInfo.append(vigilant)
 

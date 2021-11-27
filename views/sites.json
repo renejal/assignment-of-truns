@@ -1,10 +1,10 @@
 {
-    "data_sites:": [
+    "data_sites": [
       {
         "description": "Site 1",
         "id": 1,
         "minimum_shift_hours_if_is_special_site": 0,
-        "weeks_schedule": [
+        "week": [
           {
             "description": "week 1",
             "days": [

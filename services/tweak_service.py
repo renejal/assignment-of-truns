@@ -15,18 +15,18 @@ class tweak_service:
         return solution
 
     def tweakVigilants(self, solucion):
-        if self.is_empty(solucion.vigilantsForPlaces):
-            listSite = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces)-1, 2)
-            vigilantOne = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[0]]), 1)
-            vigilantTwo = aleatory.getAleatory(0, len(solucion.vigilantsForPlaces[listSite[1]]), 1)
+        if self.is_empty(solucion.vigilantesForPlaces):
+            listSite = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces)-1, 2)
+            vigilantOne = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces[listSite[0]]), 1)
+            vigilantTwo = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces[listSite[1]]), 1)
             self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
         return solucion
 
 
     def tweakMissingHoursVigilants(self,solution,order):
-        vigilantsByHours = self.GetVigilatsByHours(solution.vigilantsSchedule)
-        vigilantsByHours = collections.OrderedDict(
-            sorted(vigilantsByHours.items(), reverse=order))
+        vigilantesByHours = self.GetVigilatsByHours(solution.vigilantesSchedule)
+        vigilantesByHours = collections.OrderedDict(
+            sorted(vigilantesByHours.items(), reverse=order))
         listTempVigilant = []
         for indexSite in range(0, len(self.missingShiftsBySite)):
             for shift in self.missingShiftsBySite[indexSite]:
@@ -36,7 +36,7 @@ class tweak_service:
                 numberIterations = cantNecessariVigilantsInShift
                 for i in range(0, numberIterations):
                     objViglant = self.getAvaibleVigilant(
-                        shift[0], shift[1], listTempVigilant, vigilantsByHours.values())
+                        shift[0], shift[1], listTempVigilant, vigilantesByHours.values())
                     if objViglant == None:
                         continue
                     objViglant.setShifts(shift, indexSite+1)
@@ -81,7 +81,7 @@ class tweak_service:
 
     def toExchageVigilants(self, parIdSiteOne, parIdVigilantOne, parIdSiteTwo, parIdVigilantsTwo,solucion):
         '''
-        to Exchage vigilants between sites
+        to Exchage vigilantes between sites
         :param parSiteOne: site one select ramdoly
         :param parVigilantOne: vigilant one select the site one ramdoly
         :param parSiteTwo:
@@ -89,19 +89,19 @@ class tweak_service:
         :return: None
         '''
         try:
-            objVigilantOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[
+            objVigilantOne = solucion.vigilantesForPlaces.get(parIdSiteOne)[
                 parIdVigilantOne]
-            objVigilantTwo = solucion.vigilantsForPlaces.get(parIdSiteOne)[
+            objVigilantTwo = solucion.vigilantesForPlaces.get(parIdSiteOne)[
                 parIdVigilantOne]
             self.updateFitnees(objVigilantOne, parIdSiteOne,
                                parIdSiteTwo, solucion)
             self.updateFitnees(objVigilantTwo, parIdSiteTwo,
                                parIdSiteOne, solucion)
-            temVigilanOne = solucion.vigilantsForPlaces.get(parIdSiteOne)[
+            temVigilanOne = solucion.vigilantesForPlaces.get(parIdSiteOne)[
                 parIdVigilantOne]
-            solucion.vigilantsForPlaces.get(parIdSiteOne)[
-                parIdVigilantOne] = solucion.vigilantsForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo]
-            solucion.vigilantsForPlaces.get(
+            solucion.vigilantesForPlaces.get(parIdSiteOne)[
+                parIdVigilantOne] = solucion.vigilantesForPlaces.get(parIdSiteTwo)[parIdVigilantsTwo]
+            solucion.vigilantesForPlaces.get(
                 parIdSiteTwo)[parIdVigilantsTwo] = temVigilanOne
         except:
             print("exception")
@@ -134,9 +134,9 @@ class tweak_service:
                 break
         return varResult
 
-    def GetVigilatsByHours(self, vigilants):
+    def GetVigilatsByHours(self, vigilantes):
         vigilantByHours = {}
-        for vigilant in vigilants:
+        for vigilant in vigilantes:
             if vigilant.HoursWorked in vigilantByHours:
                 vigilantByHours[vigilant.HoursWorked].append(vigilant)
             else:

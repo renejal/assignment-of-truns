@@ -11,7 +11,7 @@ class generate_site_schedule_service:
             assignedVigilantsInActualShift: List[Vigilant] = []
             for shift in shifts:
                 assignedVigilantsInActualShift.clear()
-                for iteration in range(0, shift.__necesary_vigilants):
+                for iteration in range(0, shift.__necesary_vigilantes):
                     vigilant = self.getAvaibleVigilant(shift, assignedVigilantsInActualShift, possibleVigilantsToAssign)
                     if vigilant == None:
                         continue
@@ -20,13 +20,13 @@ class generate_site_schedule_service:
             
     def assignVigilant(self, objVigilant, site, shift, component: Component):
             """
-            assigment vigilants with constraint number hours permanent for sites
+            assigment vigilantes with constraint number hours permanent for sites
             """
 
             if objVigilant not in component.assignedVigilants:
                 component.assignedVigilants.append(objVigilant)
 
-            """udpate shifts sites whit vigilants"""
+            """udpate shifts sites whit vigilantes"""
 
             for i in range(shift[0], shift[1]+1):
                 objVigilant.setShift(i, site)
@@ -34,11 +34,11 @@ class generate_site_schedule_service:
         
     def getAvaibleVigilant(self, shift: Shift, assignedVigilantsInShift, vigilantList: List[List[Vigilant]]):
             ObjResultado = None
-            for vigilants in vigilantList:
-                indexVigilants = [*range(len(vigilants))]
+            for vigilantes in vigilantList:
+                indexVigilants = [*range(len(vigilantes))]
                 while indexVigilants:
                     rand = random.choice(indexVigilants)
-                    objVigilant = vigilants[rand]
+                    objVigilant = vigilantes[rand]
                     if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(shift , self.__problem.maxWorkHoursPerWeek):
                         ObjResultado = objVigilant
                         return ObjResultado

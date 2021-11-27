@@ -8,12 +8,12 @@ class Component:
     __site_id: int
     __site_schedule: List[Shift]
     __missing_shifts: List[Shift]
-    __assigned_Vigilants: List[Vigilant]
+    __assigned_Vigilantes: List[Vigilant]
     
     __missing_shifts_fitness: int
     __distance_fitness: int
     __extra_hours_fitness: int
-    __assigned_vigilants_fitness: int
+    __assigned_vigilantes_fitness: int
 
     def __init__(self, site_id : int , site_schedule : List[Shift]) -> None:   
         self.__site_id = site_id
@@ -22,12 +22,12 @@ class Component:
     def calculate_fitness(self) -> None: #decraped
         #Calculate missing shifts
         for period in range(0,len(self.siteSchedule)):
-            missingVigilants = self.necesaryvigilantsByPeriod[period] - len(self.siteSchedule[period])
-            if(missingVigilants != 0):
+            missingVigilantes = self.necesaryvigilantesByPeriod[period] - len(self.siteSchedule[period])
+            if(missingVigilantes != 0):
                 self.missingShfits.append(period)
-            self.fitness += missingVigilants*10000
+            self.fitness += missingVigilantes*10000
         #Calculate distances and preferences
-        for vigilant in self.assignedVigilants:
+        for vigilant in self.assignedVigilantes:
             for assignedPlace in vigilant.shifts:
                 if assignedPlace != 0:
                     #calculate fitness distance
@@ -42,14 +42,14 @@ class Component:
 
     def calculateFitness2(self) -> None:
         for shift in self.__site_schedule:
-            if shift.__necesary_vigilants != len(shift.__assigment_vigilants):
+            if shift.__necesary_vigilantes != len(shift.__assigment_vigilantes):
                 self.__missing_shifts.append(shift)
                 self.__missing_shifts_fitness+= 1000   
-        for vigilant in self.__assigned_Vigilants:
+        for vigilant in self.__assigned_Vigilantes:
             if vigilant.__expected_place_to_work !=0 and vigilant.__expected_place_to_work != self.__site_id:
                 self.__distance_fitness+= 500
             for hour_week in vigilant.__hours_worked_by_week:
                 if hour_week > 48 :
                     self.__extra_hours_fitness+= 200 * (hour_week- 48)
                     
-##Verificar si __assigned_vigilants_fitness tocaria incluirlo aqui.
+##Verificar si __assigned_vigilantes_fitness tocaria incluirlo aqui.

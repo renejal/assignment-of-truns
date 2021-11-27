@@ -1,5 +1,5 @@
 {
-    "data_vigilantes":[
+    "vigilantes":[
         {
             "id": "1",
             "default_place_to_look_out":"",

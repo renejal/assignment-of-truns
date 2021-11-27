@@ -10,17 +10,17 @@ def generateResultBySite(cantVigilantsByPeriod, path, solution):
             cantMissingVigilants = 0
             numerDay = 1
             period = 0
-            vigilantsByDay = []
+            vigilantesByDay = []
             siteSchedule = solution.sitesSchedule[sideId]
             for assignedVigilantsInPeriod in range(0, len(siteSchedule)):
-                vigilantsByDay.append(siteSchedule[assignedVigilantsInPeriod])
+                vigilantesByDay.append(siteSchedule[assignedVigilantsInPeriod])
                 cantMissingVigilants += cantVigilantsByPeriod[sideId][assignedVigilantsInPeriod] - len(
                     siteSchedule[assignedVigilantsInPeriod])
                 period += 1
                 if period == 24:
-                    vigilantsByDay.append(cantMissingVigilants)
-                    sheduleSite['day' + str(numerDay)] = vigilantsByDay
-                    vigilantsByDay = []
+                    vigilantesByDay.append(cantMissingVigilants)
+                    sheduleSite['day' + str(numerDay)] = vigilantesByDay
+                    vigilantesByDay = []
                     period = 0
                     cantMissingVigilants = 0
                     numerDay += 1
