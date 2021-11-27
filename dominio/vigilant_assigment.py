@@ -19,30 +19,31 @@ class VigilantAssigment:
     __total_vigilantes: int
     __total_sites: int
     __total_weeks: int 
-    __vigilantExpectedPlaces: Dict[int , List[int]]
+    __vigilantExpectedPlaces: Dict[int, List[int]]
     __order_sites_by_vigilants_amount: List[int]
 
     def __init__(self, vigilants: List[Vigilant], sites: List[Site], weeks) -> None:
         self.__vigilants = vigilants
         self.__sites = sites
         self.__total_weeks = weeks
-        # TO DO OrderSites 
-        #self.initProblem()
+        # TO DO OrderSites
+        self.initProblem()
 
     def initProblem(self) -> None:
         for vigilant in self.__vigilants:
-            if vigilant.__expected_place_to_work !=0:
-                if vigilant.__expected_place_to_work in self.__vigilantExpectedPlaces:
-                    self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work].apppend(vigilant.__vigilant_id)
+            if vigilant != 0:
+                if vigilant.__default_place_to_look_out:
+                    self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out].apppend(vigilant.__vigilant_id)
                 else:
-                    self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work]= vigilant.__vigilant_id
+                    self.__vigilantExpectedPlaces[vigilant.__default_place_to_look_out] = vigilant.__vigilant_id
         self.createShiftsBySite()
         self.OrderSitesForCantVigilantes()
 
-    def createShiftsBySite() -> List[List[Shift]]:
+    def createShiftsBySite(self) -> List[List[Shift]]:
         workingDay = self.loadWorkingDay()
         return None
-    def getShiftsBySite() -> List[Shift]:
+
+    def getShiftsBySite(self) -> List[Shift]:
         return None
 
     def getCantVigilantesforSite(self):
