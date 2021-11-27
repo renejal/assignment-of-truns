@@ -1,4 +1,5 @@
 import random
+
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
@@ -14,22 +15,22 @@ class Grasp(Algorithm):
         while self.CurrentEFOs < self.MaxEFOs:
             S = Solution(problem, Aleatory)
             i  = 1
-            while S.CompleteSolution():
-                components = S.ObtainComponents(numComponets)
+            while S.is_solution_complete():
+                components = S.create_components(numComponets)
                 RestrictedList = components
                 print("iteration:"+ str(i))
                 i+=1
                 if RestrictedList == None:
                     continue
                 else:
-                    BestRestrictedList = S.BestComponents(RestrictedList,1)
-                    S.Union(BestRestrictedList)
+                    BestRestrictedList = S.get_best_components(RestrictedList,1)
+                    S.merge_component(BestRestrictedList)
             for m in range(0,3):
                 print("TWEAKK:"+str(m))
                 newSolution = self.Tweak(copy.copy(S))
-                if newSolution.Fitness < S.Fitness:
+                if newSolution.Fitness < S.__fitness:
                     S = newSolution
-            if Best == None or S.Fitness < Best.Fitness:
+            if Best == None or S.__fitness < Best.__fitness:
                 Best = S
             self.CurrentEFOs+=1
             print("Nueva  iteracion")

@@ -4,7 +4,7 @@
         "description": "Site 1",
         "id": 1,
         "minimum_shift_hours_if_is_special_site": 0,
-        "working_day_start_time": 6,
+        "working_day_start_time": 6, 
         "weeks_schedule": [
           {
             "description": "week 1",

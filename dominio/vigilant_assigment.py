@@ -22,7 +22,8 @@ class VigilantAssigment:
     __total_weeks: int 
     __vigilantExpectedPlaces: Dict[int , List[int]]
     __order_sites_by_vigilants_amount: List[int]
-        
+    
+    __END_HOUR_TO_WORK: int = 23
 
     def __init__(self, vigilants : List[Vigilant], sites: List[Site] , weeks ) -> None:
         self.__vigilants = vigilants
@@ -38,13 +39,28 @@ class VigilantAssigment:
                     self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work].apppend(vigilant.__vigilant_id)
                 else:
                     self.__vigilantExpectedPlaces[vigilant.__expected_place_to_work]= vigilant.__vigilant_id
-        self.createShiftsBySite()
+        self.createShiftsBySite(self.__sites)
         self.OrderSitesForCantVigilantes()
 
-    def createShiftsBySite() -> List[List[Shift]]:
+    def createShiftsBySite(self, sites: List[Site] ) -> List[List[Shift]]:
         workingDay = self.loadWorkingDay()
+
+        for site in sites:
+            for week in site.weeks_schedule:
+                for day in week:
+                    for index, shift in enumerate(day.working_day):
+                        shift_start_time =  shift.working_start
+                        if( shift.working_end == self.__END_HOUR_TO_WORK and day.working_day[index+1].working_start == 0):
+                            working_hours_amount =  shift.working_end - shift.working_start +  day.working_day[index+1].end ##PENSAR MEJOR SOLUCION
+
+                        working_hours_amount = shift.working_end - shift.working_start
+                        hoursByShift = workingDay[working_hours_amount]
+                        for hours_amount_to_work in hoursByShift:
+                            Shift(shift_start_time, shift_start_time+hours_amount_to_work)
+                            shift_start_time += hours_amount_to_work
+
         return None
-    def getShiftsBySite() -> List[Shift]:
+    def get_shifts_by_site() -> List[Shift]:
         return None
 
     def getCantVigilantesforSite(self):
@@ -87,21 +103,6 @@ class VigilantAssigment:
         return self.SitesData[siteId-1]
 
 
-
-
-    
-
-
-     #PASARLO A VIGILANT ASSIGMNET
-    def specialShifts(self, startWork, endWork, specialHours):
-        shifts = []
-        while(startWork < endWork):
-            endHour = specialHours+startWork-1
-            if(endHour+specialHours > endWork):
-                endHour = endWork
-            shifts.append([startWork, endHour])
-            startWork = endHour+1
-        return shifts
     #PASARLO A VIGILANT ASSIGMNET
     def getSpecialShifts(self, siteId,parSite):
         specialhours = self.__problem.specialSites[siteId]
