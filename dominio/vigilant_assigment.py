@@ -1,7 +1,7 @@
 from typing import Dict, List
 # from data.SiteDataFile import SiteDataFile
 # from data.VigilantsDataFile import VigilantsDataFile
-from dominio.Site import Site
+from dominio.model.site import Site
 from dominio.vigilant import Vigilant
 from dominio.Shift import Shift
 
@@ -32,7 +32,7 @@ class VigilantAssigment:
         self.__sites = sites
         self.__total_weeks = weeks
         # TO DO OrderSites
-        self.initProblem()
+        #self.initProblem()
 
     def initProblem(self) -> None:
         for vigilant in self.__vigilantes:

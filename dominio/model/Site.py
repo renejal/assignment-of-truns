@@ -2,7 +2,7 @@ from typing import List
 from dominio.model.week import Week 
 
 
-class Site:
+class Site3:
     __descripion: str
     __site_id: int
     __minimum_shift_hours_if_is_special_site: int

@@ -6,8 +6,7 @@ from dominio.Solution import Solution
 #from utils.print_sites_xls import generateResultBySite
 #from utils.print_vigilantes_xls import generateResultByVigilant
 #from utils.print_xls import generate_results
-from dominio.problem import DataSites
-from dominio.problem import DataVigilantes
+from dominio.model.problem import DataSites, DataVigilantes
 import time
 import json
 class GenerateShiftView:
@@ -32,7 +31,6 @@ class GenerateShiftView:
         with open(path) as json_file:
             json_vigilantes = json.load(json_file)
             json_file.close()
-            return json_vigilantes
             return DataVigilantes.from_dict(json_vigilantes)
 
     def getShiftViglants(self):

@@ -1,8 +1,8 @@
 {
-    "vigilantes":[
+    "data_vigilantes":[
         {
-            "id": "1",
-            "default_place_to_look_out":"",
+            "id": -1,
+            "default_place_to_look_out": -1,
             "distances":[
                 12,
                 12,
@@ -11,8 +11,8 @@
             ]
         },
         {
-            "id": "2",
-            "default_place_to_look_out":"",
+            "id": -1,
+            "default_place_to_look_out":-1,
             "distances":[
                 12,
                 23,
