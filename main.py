@@ -11,8 +11,5 @@ from views.general_shift_view import GenerateShiftView
 
 # Separar el fitness por funcion objetivo
 view = GenerateShiftView("views/sites.json","views/vigilantes.json")
-
-#GenerateShiftView.create_sites()
-
-
+view.execute()
 #Validara como calcular el fitness

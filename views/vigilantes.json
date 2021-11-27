@@ -1,23 +1,19 @@
 {
     "data_vigilantes":[
         {
-            "id": -1,
+            "id": 1,
             "default_place_to_look_out": -1,
             "distances":[
-                12,
-                12,
                 12,
                 12
             ]
         },
         {
-            "id": -1,
-            "default_place_to_look_out":-1,
+            "id": 21,
+            "default_place_to_look_out":1,
             "distances":[
                 12,
-                23,
-                12,
-                12
+                23
             ]
 
         }

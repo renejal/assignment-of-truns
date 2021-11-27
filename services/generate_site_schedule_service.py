@@ -1,7 +1,7 @@
 from typing import List
 from dominio.Component import Component
-from dominio.vigilant import Vigilant
-from dominio.Shift import Shift
+from dominio.model.vigilant import Vigilant
+from dominio.model.shift import Shift
 import random
 
 class generate_site_schedule_service:

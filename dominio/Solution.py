@@ -1,6 +1,6 @@
 from typing import List
 #from dominio.Shift import Shift
-from dominio.vigilant import Vigilant
+from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
 from random import random
 import random
@@ -28,16 +28,16 @@ class Solution:
     def __init__(self, problem: VigilantAssigment , Aletory):
         random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
         self.__problem = problem
-        self.__vigilantes = self.__problem.vigilantes.copy()
-        self.__sitesSchedule = [[]]*(self.__problem.totalPlaces)
+        self.__vigilantes = problem.vigilantes.copy()
+        self.__sitesSchedule = [[]]*(self.__problem.total_sites)
         self.vigilantesSchedule = self.__problem.vigilantes.copy()
         self.__iteration = 0
-        self.vigilantesForPlaces = [[]]*(self.__problem.totalPlaces) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
+        self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
     def create_components(self, components_new_amount):
         components = List[Component]
         site_id = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
-        shifts = self.__problem.get_shifts_by_site(site_id) 
+        shifts = self.__problem.get_shifts_on_site(site_id) 
         possible_vigilantes_to_assign = obtain_vigilantes_service.getPossibleVigilantesToAssign(site_id, shifts)
         for component in range(0, components_new_amount):
             component = Component(site_id, shifts) #Verificar que los shifts no cambien por referencia si no crear copia
@@ -72,7 +72,7 @@ class Solution:
         self.__iteration += 1
 
     def is_solution_complete(self):
-        if self.__iteration < len(self.sitesSchedule):
+        if self.__iteration < len(self.__sitesSchedule):
             return True
         #self.missingShiftsFormat(self.missingShiftsBySite)
         return False
