@@ -7,6 +7,8 @@ from dominio.model.shift import Shift
 
 import operator
 
+from dominio.model.week import Week
+
 
 class VigilantAssigment:
     # maxShiftDuration: int = 12
@@ -56,37 +58,65 @@ class VigilantAssigment:
         ideal_hours_amount_to_work = self.create_ideal_hours_amount_to_work()
         shifts_by_site : List[List[Shift]] = [] 
         for site in sites:
-            shifts_by_site.append([])
-            last_day_finished_at_end_hour_to_work = False
-            for index_week , week in enumerate(site.weeks_schedule):
-                for index_day, day in enumerate(week.days):
-                    for shift in day.working_day:
-                        if last_day_finished_at_end_hour_to_work == False:
-                            shift_start_time =  shift.working_start + day.id * 24 + index_week * 168
-                        if( shift.working_end == self.__END_HOUR_TO_WORK and index_day+1 < len(week.days) and week.days[index_day + 1].id == day.id+1 and week.days[index_day + 1].working_day[0].working_start == 0):
-                            working_hours_amount =  shift.working_end - shift.working_start +  week.days[index_day + 1].working_day[0].working_end
+            if site.is_special_site:
+                shifts_by_site.append(self.create_shifts_in_special_site(site))
+            else:
+                shifts_by_site.append(self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work))
+        return shifts_by_site
+
+    def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work) -> list[Shift]:
+        shifts : list[Shift] = []
+        last_day_finished_at_end_hour_to_work = False
+        for index_week , week in enumerate(site.weeks_schedule):
+            for index_day, day in enumerate(week.days):
+                for shift in day.working_day:
+                    if last_day_finished_at_end_hour_to_work == False:
+                        shift_start_time =  shift.working_start + day.id * 24 + index_week * 168
+                    if( shift.working_end == self.__END_HOUR_TO_WORK and index_day+1 < len(week.days) and week.days[index_day + 1].id == day.id+1 and week.days[index_day + 1].working_day[0].working_start == 0):
+                        working_hours_amount =  shift.working_end - shift.working_start +  week.days[index_day + 1].working_day[0].working_end
+                        if working_hours_amount > self.__MAX_HOURS_TO_WORK:
+                            working_hours_amount = self.__MAX_HOURS_TO_WORK     
+                        last_day_finished_at_end_hour_to_work = True
+                    else:
+                        if day.id == 6 and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
+                            working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week].days[0].working_day[0].working_end
                             if working_hours_amount > self.__MAX_HOURS_TO_WORK:
                                 working_hours_amount = self.__MAX_HOURS_TO_WORK     
                             last_day_finished_at_end_hour_to_work = True
-                        else:
-                            if day.id == 6 and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
-                                working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week].days[0].working_day[0].working_end
-                                if working_hours_amount > self.__MAX_HOURS_TO_WORK:
-                                    working_hours_amount = self.__MAX_HOURS_TO_WORK     
-                                last_day_finished_at_end_hour_to_work = True
-                            else: 
-                                if last_day_finished_at_end_hour_to_work:
-                                    working_hours_amount =  (shift.working_end + day.id*24 + index_week*168) - shift_start_time 
-                                    if shift.working_end == 23:
-                                        working_hours_amount = shift.working_end + 1
-                                else:
-                                    working_hours_amount =  shift.working_end -  shift.working_start + 1
-                                last_day_finished_at_end_hour_to_work = False
-                        hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
-                        for hours_amount_to_work in hours_amount_to_work_by_shift:
-                            shifts_by_site[site.id-1].append(Shift( shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
-                            shift_start_time += hours_amount_to_work
-        return shifts_by_site
+                        else: 
+                            if last_day_finished_at_end_hour_to_work:
+                                working_hours_amount =  (shift.working_end + day.id*24 + index_week*168) - shift_start_time 
+                                if shift.working_end == 23:
+                                    working_hours_amount = shift.working_end + 1
+                            else:
+                                working_hours_amount =  shift.working_end -  shift.working_start + 1
+                            last_day_finished_at_end_hour_to_work = False
+                    hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
+                    for hours_amount_to_work in hours_amount_to_work_by_shift:
+                        shifts.append(Shift( shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
+                        shift_start_time += hours_amount_to_work
+        return shifts
+        
+    def create_shifts_in_special_site(self,site: Site) -> list[Shift]:
+        shifts : list[Shift] = []
+        is_same_shift_that_last_day = False
+        for index_week, week in enumerate(site.weeks_schedule):
+            for index_day,day in enumerate(week.days):
+                for shift in day.working_day:
+                    if is_same_shift_that_last_day:
+                        is_same_shift_that_last_day = False
+                        continue                        
+                    shift_start_time = shift.working_start + 24 * day.id + index_week*168
+                    shift_end_time = shift.working_end + 24 * day.id + index_week*168
+                    if (shift.working_end == self.__END_HOUR_TO_WORK and index_day+1 < len(week.days) and week.days[index_day + 1].id == day.id+1 and week.days[index_day + 1].working_day[0].working_start == 0 ) :
+                        shift_end_time = week.days[index_day + 1].working_day[0].working_end + 24 * (day.id+1) + index_week*168
+                        is_same_shift_that_last_day = True
+                    elif day.id == 6 and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
+                        shift_end_time = site.weeks_schedule[index_week+1].days[0].working_day[0].working_end + (index_week+1)*168
+                        is_same_shift_that_last_day = True
+                    shifts.append(Shift( shift_start_time , shift_end_time -1 , shift.num_vigilantes))
+        return shifts
+
 
     def get_vigilantes_needed_by_site(self,shifts_by_sites) -> Dict[int,int]:
         vigilantes_needed_by_site = {}
