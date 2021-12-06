@@ -1,9 +1,9 @@
-class obtain_vigilantes_service:
-    
+
+class ObtainVigilantesService:
+
     @staticmethod
-    def getPossibleVigilantsToAssign(self, siteId, shifts):
-        necesaryVigilantsByPeriodInAWeek = self.getNecesaryVigilantsByPeriodInAWeek(
-            shifts, vigilantesByPeriod)
+    def get_possible_vigilant_to_assign(siteId, shifts):
+        necesaryVigilantsByPeriodInAWeek = ObtainVigilantesService.get_necesary_vigilants_by_period_in_a_week(shifts, vigilantesByPeriod)
         cantNecesaryVigilantsInWeek = sum(necesaryVigilantsByPeriodInAWeek)
         porcentajeDeTrabajo = 3.5  # Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
         cantVigilantsNecesaryInSite = math.floor(
@@ -32,7 +32,7 @@ class obtain_vigilantes_service:
                 pos += 1
         return [expectedvigilantesInPlace, orderVigilantsByDistance]
 
-    def getNecesaryVigilantsByPeriodInAWeek(self, shifts, vigilantesByPeriod):
+    def get_necesary_vigilants_by_period_in_a_week(self, shifts, vigilantesByPeriod):
         vigilantesByPeriodInAWeek = []
         for shift in shifts:
             if shift[0] > 168:
