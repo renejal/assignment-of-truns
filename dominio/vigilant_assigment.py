@@ -39,6 +39,7 @@ class VigilantAssigment:
         self.initProblem()
 
     def initProblem(self) -> None:
+
         for vigilant in self.vigilantes:
             if vigilant.default_place_to_look_out != self.__DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expectec_places_to_look_out_by_vigilants:
@@ -121,7 +122,7 @@ class VigilantAssigment:
             vigilantes_needed_by_site[indexSite + 1] = acc
         return vigilantes_needed_by_site
 
-    def get_order_site_by_vigilantes_amount(self, pos : int)-> int:
+    def get_order_site_by_vigilantes_amount(self, pos: int) -> int:
         return self.getSite(self.order_sites_by_id_vigilantes_amount[pos])
 
     def sorted_sites_by_vigilant_amount(self, shifts_by_sites ):

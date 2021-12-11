@@ -1,5 +1,5 @@
 from typing import List
-#from dominio.Shift import Shift
+from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
 from random import random
@@ -12,7 +12,7 @@ import copy
 import collections
 from utils import aleatory
 from services.generate_site_schedule_service import generate_site_schedule_service
-from services.obtain_vigilantes_service import obtain_vigilantes_service
+from services.obtainvigilantesservice import ObtainVigilantesService
 #Como se crea un individuo en NSGA-II
 
 
@@ -34,11 +34,11 @@ class Solution:
         self.__iteration = 0
         self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
-    def create_components(self, components_new_amount):
+    def create_components(self, components_new_amount: int):
         components = List[Component]
-        site_id = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
-        shifts = self.__problem.get_shifts_on_site(site_id) 
-        possible_vigilantes_to_assign = obtain_vigilantes_service.getPossibleVigilantesToAssign(site_id, shifts)
+        site_id: int = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
+        shifts: List[Shift] = self.__problem.get_shifts_on_site(site_id)
+        possible_vigilantes_to_assign = ObtainVigilantesService.get_possible_vigilant_to_assign(site_id, shifts)
         for component in range(0, components_new_amount):
             component = Component(site_id, shifts) #Verificar que los shifts no cambien por referencia si no crear copia
             generate_site_schedule_service.getSchedule(component, shifts, copy.deepcopy(possible_vigilantes_to_assign))
