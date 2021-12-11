@@ -107,7 +107,7 @@ class VigilantAssigment:
                     if (shift.working_end == self.__END_HOUR_TO_WORK and index_day+1 < len(week.days) and week.days[index_day + 1].id == day.id+1 and week.days[index_day + 1].working_day[0].working_start == 0 ) :
                         shift_end_time = week.days[index_day + 1].working_day[0].working_end + 24 * (day.id+1) + index_week*168
                         is_same_shift_that_last_day = True
-                    elif day.id == 6 and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
+                    elif day.id == 6 and shift.working_end == self.__END_HOUR_TO_WORK and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
                         shift_end_time = site.weeks_schedule[index_week+1].days[0].working_day[0].working_end + (index_week+1)*168
                         is_same_shift_that_last_day = True
                     shifts.append(Shift( shift_start_time , shift_end_time , shift.num_vigilantes))

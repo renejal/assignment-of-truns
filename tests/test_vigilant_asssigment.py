@@ -5,7 +5,6 @@ from dominio.model.site import Site
 from dominio.model.week import Week
 from dominio.model.working_day import workingDay
 from dominio.vigilant_assigment import VigilantAssigment
-from unittest.mock import MagicMock
 
 @pytest.mark.parametrize("site, ideal_hours_amount_to_work, expected", [
     #Aleatory day case
@@ -443,6 +442,114 @@ def test_create_normal_shifts_correctly(site, ideal_hours_amount_to_work, expect
             Shift(306,317,0),
             Shift(318,329,0),
             Shift(330,341,0)
+        ]
+    ),
+    #Full 2 week working ending at end sunday
+    (
+        Site("",1,True,[
+                Week("", [
+                    Day("",0, [
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",1, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",2, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",3, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",4, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",5, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",6, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ])
+                ]),
+                Week("", [
+                    Day("",0, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",1, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",2, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",3, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",4, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",5, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,17,0),
+                        workingDay("",18,23,0)
+                    ]),
+                    Day("",6, [
+                        workingDay("",0,5,0),
+                        workingDay("",6,14,0),
+                        workingDay("",15,23,0)
+                    ])
+                ])
+            ]),
+        [
+            Shift(6,17,0),
+            Shift(18,29,0),
+            Shift(30,41,0),
+            Shift(42,53,0),
+            Shift(54,65,0),
+            Shift(66,77,0),
+            Shift(78,89,0),
+            Shift(90,101,0),
+            Shift(102,113,0),
+            Shift(114,125,0),
+            Shift(126,137,0),
+            Shift(138,149,0),
+            Shift(150,161,0),
+            Shift(162,173,0),
+            Shift(174,185,0),
+            Shift(186,197,0),
+            Shift(198,209,0),
+            Shift(210,221,0),
+            Shift(222,233,0),
+            Shift(234,245,0),
+            Shift(246,257,0),
+            Shift(258,269,0),
+            Shift(270,281,0),
+            Shift(282,293,0),
+            Shift(294,305,0),
+            Shift(306,317,0),
+            Shift(318,326,0),
+            Shift(327,335,0)
         ]
     )  
 ])
