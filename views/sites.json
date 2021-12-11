@@ -259,7 +259,7 @@
                   {
                     "description": "working day 2",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -283,7 +283,7 @@
                   {
                     "description": "working day 3",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -307,7 +307,7 @@
                   {
                     "description": "working day 4",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -331,7 +331,7 @@
                   {
                     "description": "working day 5",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -355,7 +355,7 @@
                   {
                     "description": "working day 6",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -379,7 +379,7 @@
                   {
                     "description": "working day 7",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
@@ -408,7 +408,7 @@
                   {
                     "description": "working day 1",
                     "working_start": 0,
-                    "working_end": 6,
+                    "working_end": 5,
                     "num_vigilantes": 4
                   },
                   {
