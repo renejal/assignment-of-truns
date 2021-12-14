@@ -39,7 +39,6 @@ class VigilantAssigment:
         self.initProblem()
 
     def initProblem(self) -> None:
-
         for vigilant in self.vigilantes:
             if vigilant.default_place_to_look_out != self.__DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expectec_places_to_look_out_by_vigilants:
@@ -65,28 +64,30 @@ class VigilantAssigment:
 
     def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work: int) -> list[Shift]:
         shifts : list[Shift] = []
-        work_last_day_all_day = False
+        last_shift_finished_at_end_day = False
         shift_start_time = -1
         for index_week , week in enumerate(site.weeks_schedule):
             for index_day, day in enumerate(week.days):
                 for shift in day.working_day:
-                    if (shift.working_end + day.id*24 + index_week*168) - shift_start_time == 0:
+                    shift_end_time = shift.working_end + day.id*24 + index_week*168
+                    if shift_end_time - shift_start_time <= 0:
+                        last_shift_finished_at_end_day = False
                         continue
-                    if work_last_day_all_day == False:
+                    if last_shift_finished_at_end_day == False:
                         shift_start_time = shift.working_start + day.id*24 + index_week*168
                     if shift.working_end == self.__END_HOUR_TO_WORK and index_day+1 < len(week.days) and week.days[index_day + 1].id == day.id+1 and week.days[index_day + 1].working_day[0].working_start == 0:
                         working_hours_amount =  shift.working_end - shift.working_start +  week.days[index_day + 1].working_day[0].working_end + 2
                         if working_hours_amount > self.__MAX_HOURS_TO_WORK:
                             working_hours_amount = self.__MAX_HOURS_TO_WORK
-                        work_last_day_all_day = True     
-                    elif shift.working_end == self.__END_HOUR_TO_WORK and day.id == 6 and index_week + 1 < self.total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
+                        last_shift_finished_at_end_day = True     
+                    elif shift.working_end == self.__END_HOUR_TO_WORK and day.id == 6 and index_week + 1 < self.total_weeks and site.weeks_schedule[index_week+1].days[0].id == 0 and site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
                         working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week].days[0].working_day[0].working_end + 1
                         if working_hours_amount > self.__MAX_HOURS_TO_WORK:
                             working_hours_amount = self.__MAX_HOURS_TO_WORK
-                        work_last_day_all_day = True     
+                        last_shift_finished_at_end_day = True     
                     else:                         
-                        working_hours_amount =  (shift.working_end + day.id*24 + index_week*168) - shift_start_time + 1
-                        work_last_day_all_day = False
+                        working_hours_amount =  shift_end_time - shift_start_time + 1
+                        last_shift_finished_at_end_day = False
                     hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
                     for hours_amount_to_work in hours_amount_to_work_by_shift:
                         shifts.append(Shift( shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))

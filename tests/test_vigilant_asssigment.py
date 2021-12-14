@@ -272,8 +272,130 @@ from dominio.vigilant_assigment import VigilantAssigment
             Shift(318,326,0),
             Shift(327,335,0),
         ]
-    )
+    ),
     #create alatory strange schedule case
+    (      
+        Site("",1,False,[
+            Week("", [
+                Day("",0, [
+                    workingDay("",6,23,0)
+                ]),
+                Day("",1, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",2, [
+                    workingDay("",0,5,0)
+                ]),
+                Day("",3, [
+                    workingDay("",6,23,0)
+                ]),
+                Day("",4, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",5, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",6, [
+                    workingDay("",0,23,0)
+                ])
+            ]),
+            Week("", [
+                Day("",0, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",1, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",3, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",4, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",5, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",6, [
+                    workingDay("",0,23,0)
+                ])
+            ])
+        ]),
+        { 
+            0:[], 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6],7:[7],8:[8],9:[9],10:[10],
+            11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],18:[9,9],
+            19:[10,9],20:[10,10],21:[7,7,7],22:[8,7,7],23:[8,8,7],24:[8,8,8]
+        },
+        [
+            Shift(6,13,0),
+            Shift(14,21,0),
+            Shift(22,29,0),
+            Shift(30,37,0),
+            Shift(38,45,0),
+            Shift(46,53,0),
+            Shift(78,85,0),
+            Shift(86,93,0),
+            Shift(94,101,0),
+            Shift(102,109,0),
+            Shift(110,117,0),
+            Shift(118,125,0),
+            Shift(126,133,0),
+            Shift(134,141,0),
+            Shift(142,149,0),
+            Shift(150,157,0),
+            Shift(158,165,0),
+            Shift(166,173,0),
+            Shift(174,181,0),
+            Shift(182,189,0),
+            Shift(190,197,0),
+            Shift(198,206,0),
+            Shift(207,215,0),
+            Shift(240,247,0),
+            Shift(248,255,0),
+            Shift(256,263,0),
+            Shift(264,271,0),
+            Shift(272,279,0),
+            Shift(280,287,0),
+            Shift(288,295,0),
+            Shift(296,303,0),
+            Shift(304,311,0),
+            Shift(312,319,0),
+            Shift(320,327,0),
+            Shift(328,335,0),
+        ]
+    ),
+    (
+        Site("",1,False,[
+            Week("", [
+                Day("",1, [
+                    workingDay("",0,23,0)
+                ]),
+                Day("",6, [
+                    workingDay("",0,23,0)
+                ])
+            ]),
+            Week("", [
+                Day("",1, [
+                    workingDay("",0,23,0)
+                ])
+            ])
+        ]),
+        { 
+            0:[], 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6],7:[7],8:[8],9:[9],10:[10],
+            11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],18:[9,9],
+            19:[10,9],20:[10,10],21:[7,7,7],22:[8,7,7],23:[8,8,7],24:[8,8,8]
+        },
+        [
+            Shift(24,31,0),
+            Shift(32,39,0),
+            Shift(40,47,0),
+            Shift(144,151,0),
+            Shift(152,159,0),
+            Shift(160,167,0),
+            Shift(192,199,0),
+            Shift(200,207,0),
+            Shift(208,215,0)
+        ]
+    )
 ])
 def test_create_normal_shifts_correctly(site, ideal_hours_amount_to_work, expected):
     VigilantAssigment.total_weeks= len(site.weeks_schedule)

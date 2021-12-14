@@ -11,8 +11,8 @@ from dominio.vigilant_assigment import VigilantAssigment
 import copy 
 import collections
 from utils import aleatory
-from services.generate_site_schedule_service import generate_site_schedule_service
-from services.obtainvigilantesservice import ObtainVigilantesService
+from services.site_schedule_service import site_schedule_service
+from services.vigilant_assigment_service import Vigilant_assigment_service
 #Como se crea un individuo en NSGA-II
 
 
@@ -38,10 +38,10 @@ class Solution:
         components = List[Component]
         site_id: int = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.__problem.get_shifts_on_site(site_id)
-        possible_vigilantes_to_assign = ObtainVigilantesService.get_possible_vigilant_to_assign(site_id, shifts)
+        possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id, shifts)
         for component in range(0, components_new_amount):
             component = Component(site_id, shifts) #Verificar que los shifts no cambien por referencia si no crear copia
-            generate_site_schedule_service.getSchedule(component, shifts, copy.deepcopy(possible_vigilantes_to_assign))
+            site_schedule_service.get_schedule(component, shifts, copy.deepcopy(possible_vigilantes_to_assign))
             component.calculate_fitness()
             components.append(component)
         return components

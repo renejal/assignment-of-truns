@@ -4,10 +4,10 @@ from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import random
 
-class generate_site_schedule_service:
+class site_schedule_service:
     
     @staticmethod
-    def getSchedule(self,component: Component, shifts: List[Shift] , possibleVigilantsToAssign: List[Vigilant]):
+    def get_schedule(self,component: Component, shifts: List[Shift] , possibleVigilantsToAssign: List[Vigilant]):
             assignedVigilantsInActualShift: List[Vigilant] = []
             for shift in shifts:
                 assignedVigilantsInActualShift.clear()

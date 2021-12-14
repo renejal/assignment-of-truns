@@ -1,9 +1,17 @@
 
-class ObtainVigilantesService:
+from dominio.model.shift import Shift
+from dominio.model.vigilant import Vigilant
+
+
+class Vigilant_assigment_service:
+
+    def is_vigilant_avaible(vigilant: Vigilant, shift:Shift) -> bool:
+        return false
+        
 
     @staticmethod
     def get_possible_vigilant_to_assign(siteId, shifts):
-        necesaryVigilantsByPeriodInAWeek = ObtainVigilantesService.get_necesary_vigilants_by_period_in_a_week(shifts, vigilantesByPeriod)
+        necesaryVigilantsByPeriodInAWeek = Vigilant_assigment_service.get_necesary_vigilants_by_period_in_a_week(shifts, vigilantesByPeriod)
         cantNecesaryVigilantsInWeek = sum(necesaryVigilantsByPeriodInAWeek)
         porcentajeDeTrabajo = 3.5  # Un porcentaje obtenido de el trabajo promedio que se saca para una cantidad de turnos dependiendo de la cantidad usual de los dias que un guardia trabaja en el año
         cantVigilantsNecesaryInSite = math.floor(
