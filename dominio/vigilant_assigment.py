@@ -63,7 +63,7 @@ class VigilantAssigment:
                 shifts_by_site.append(self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work))
         return shifts_by_site
 
-    def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work: int) -> list[Shift]:
+    def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work: int) -> List[Shift]:
         shifts : list[Shift] = []
         work_last_day_all_day = False
         shift_start_time = -1
@@ -93,7 +93,7 @@ class VigilantAssigment:
                         shift_start_time += hours_amount_to_work
         return shifts
         
-    def create_shifts_in_special_site(self,site: Site) -> list[Shift]:
+    def create_shifts_in_special_site(self,site: Site) -> List[Shift]:
         shifts : list[Shift] = []
         is_same_shift_that_last_day = False
         for index_week, week in enumerate(site.weeks_schedule):

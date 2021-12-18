@@ -1,0 +1,7 @@
+import random
+
+
+
+WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE = 12
+SEED = 0
+SETTINGS = random.seed(SEED)
