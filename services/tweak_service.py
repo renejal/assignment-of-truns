@@ -1,4 +1,7 @@
+from utils import aleatory
+
 class tweak_service:
+
 
     @staticmethod
     def Tweak(self, solution):

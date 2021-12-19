@@ -7,7 +7,7 @@ from dominio.model.vigilant import Vigilant
 
 class Vigilant_assigment_service:
 
-    def get_possible_vigilant_to_assign(site: Site, vigilantes: List[Vigilant]) -> int:
+    def get_possible_vigilant_to_assign(site: int, vigilantes: List[Vigilant]) -> int:
         """
         obtain random vigilant for parametr the settings
         vigilantes: list de vigilantes total

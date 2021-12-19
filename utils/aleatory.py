@@ -1,7 +1,6 @@
 import random
 from typing import List
 
-@staticmethod
 def get_aleatory(parInit, parEnd, parNumber):
     '''
     generate n number aleatory between number init and number end
@@ -22,7 +21,6 @@ def get_aleatory(parInit, parEnd, parNumber):
             break
     return listAleatory
 
-@staticmethod
 def get_ramdon_for_list(init: int, end: int, list: List) -> int:
     numAletory = random.randint(init, end)
     return list[numAletory]

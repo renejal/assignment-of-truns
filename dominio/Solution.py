@@ -38,7 +38,7 @@ class Solution:
         components = List[Component]
         site_id: int = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.__problem.get_shifts_on_site(site_id)
-        possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id, shifts)
+        possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id)
         for component in range(0, components_new_amount):
             component = Component(site_id, shifts) #Verificar que los shifts no cambien por referencia si no crear copia
             site_schedule_service.get_schedule(component, shifts, copy.deepcopy(possible_vigilantes_to_assign))
