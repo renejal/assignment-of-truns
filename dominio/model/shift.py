@@ -1,5 +1,4 @@
 from typing import List
-from dominio.model.vigilant import Vigilant
 
 class Shift:
     shift_start: int
@@ -12,6 +11,6 @@ class Shift:
         self.shift_end = shift_end
         self.necesary_vigilantes = necesary_vigilantes
 
-    def add_vigilant(self, vigilant: Vigilant):
+    def add_vigilant(self, id_vigilant: int):
         #self.assigment_vigilantes.append(vigilant)
         pass

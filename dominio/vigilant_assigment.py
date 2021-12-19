@@ -42,7 +42,7 @@ class VigilantAssigment:
                     self.expectec_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out].append(vigilant.id)
                 else:
                     self.expectec_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out] = vigilant.id
-        self.shifts_by_sites = Shifts_generation_service().create_shifts_by_site(self.sites)
+        self.shifts_by_sites = Shifts_generation_service().create_shifts_by_site(self.sites,self.total_weeks)
         self.order_sites_by_id_vigilantes_amount = self.sorted_sites_by_vigilant_amount(self.shifts_by_sites)
 
     def sorted_sites_by_vigilant_amount(self, shifts_by_sites:List[List[Shift]] ):
