@@ -4,17 +4,12 @@
             "id": -1,
             "default_place_to_look_out": -1,
             "distances":[
-                -1,
-                -1
+                1,
+                1
             ],
-            "Shift":[
-                {
-                    "site": -1,
-                    "shift_start": -1,
-                    "shift_end": -1,
-                    "necesary_vigilantes": -1
-
-                }
+            "shifts": [
+                1,
+                2
             ]
         }
         ]
