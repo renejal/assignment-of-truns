@@ -5,9 +5,63 @@ from dominio.model.vigilant import Vigilant
 
 class Vigilant_assigment_service:
 
-    def is_vigilant_avaible(vigilant: Vigilant, shift:Shift) -> bool:
-        return false
-        
+    def is_vigilant_avaible(self,vigilant: Vigilant, shift:Shift) -> bool:
+        if self.is_available_on_shift(shift) == False:
+            return False           
+    
+    def isVigilantAvailable(self,startPeriod,endPeriod,maxWorkHoursPerWeek):
+        if self.hasEnoughHoursToWorkInThisShift(startPeriod,endPeriod,maxWorkHoursPerWeek) == False:
+            return False
+        if self.is_available_on_shift(startPeriod,endPeriod) == False:
+            return False        
+        return self.canWorkThisSunday(startPeriod,endPeriod)
+    
+    def is_available_on_shift(self,vigilant: Vigilant,shift: Shift):
+        if len(vigilant.shifts) ==0:
+            return True
+        for index,assigned_shift in enumerate(vigilant.shifts):
+            if shift.shift_end < assigned_shift.shift_start:
+                if index > 0:
+                    return shift.shift_end + 18 <  assigned_shift.shift_start and shift.shift_start - 18 > vigilant.shifts[index].shift_end
+                return shift.shift_end + 18 <  assigned_shift.shift_start
+        return shift.shift_start - 18 > vigilant.shifts[index].shift_end
+
+
+     #Check restrictions   
+    def hasEnoughHoursToWorkInThisShift(self,startPeriod,endPeriod,maxHours):
+        weekStarPeriod = math.floor(startPeriod/168)
+        weekEndPeriod  =  math.floor(endPeriod/168)
+        if weekStarPeriod == weekEndPeriod:
+            if  (self.HoursWeeks[weekStarPeriod]+(endPeriod - startPeriod)) <= maxHours:
+                return True
+            return False
+        else:
+            if (self.HoursWeeks[weekStarPeriod]+(168*weekEndPeriod)-startPeriod) <= maxHours and (self.HoursWeeks[weekEndPeriod]+endPeriod-(168*weekEndPeriod)) <= maxHours:
+                return True
+        return False
+    
+    def canWorkThisSunday(self,startPeriod,endPeriod):
+        weekToCheck = math.floor(startPeriod/168)
+        if self.thereIsAPeriodInSunday(startPeriod,endPeriod,weekToCheck):
+            return self.workLastSunday(weekToCheck)
+        return True
+    
+    def workLastSunday(self,week):
+        if week == 0:
+            return True
+        for period in range (168*week,(168*week)-24,-1):
+            if self.shifts[period] != 0:
+                return False
+        return True
+    
+    def thereIsAPeriodInSunday(self,startPeriod,endPeriod,week):
+        if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
+            return True
+        else:
+            if (endPeriod > 144+ (168*week)):
+              return True
+        return False
+   
 
     @staticmethod
     def get_possible_vigilant_to_assign(siteId, shifts):

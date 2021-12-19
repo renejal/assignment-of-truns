@@ -4,45 +4,37 @@ from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import random
 
+from services.vigilant_assigment_service import Vigilant_assigment_service
+
 class site_schedule_service:
     
-    @staticmethod
-    def get_schedule(self,component: Component, shifts: List[Shift] , possibleVigilantsToAssign: List[Vigilant]):
-            assignedVigilantsInActualShift: List[Vigilant] = []
-            for shift in shifts:
-                assignedVigilantsInActualShift.clear()
-                for iteration in range(0, shift.__necesary_vigilantes):
-                    vigilant = self.getAvaibleVigilant(shift, assignedVigilantsInActualShift, possibleVigilantsToAssign)
-                    if vigilant == None:
-                        continue
-                    self.assignVigilant(vigilant, shift, component)
-                    assignedVigilantsInActualShift.append(vigilant)
+    def get_site_schedule(self,site_id: int, shifts: List[Shift] , possible_vigilantes_to_assign_ordered_by_criteria: List[List[Vigilant]]) -> Component: 
+        assigned_vigilantes_in_actual_shift: List[Vigilant] = []
+        assigned_vigilantes: List[Vigilant] = []
+        for shift in shifts:
+            assigned_vigilantes_in_actual_shift.clear()
+            for iteration in range(0, shift.necesary_vigilantes):
+                vigilant = self.get_vigilant_avaiable(shift, assigned_vigilantes_in_actual_shift, possible_vigilantes_to_assign_ordered_by_criteria)
+                if vigilant != None:
+                    vigilant.assign_shift(shift)
+                    shift.add_vigilant(vigilant)
+                    assigned_vigilantes_in_actual_shift.append(vigilant)
+                    if vigilant not in assigned_vigilantes:
+                        assigned_vigilantes.append(vigilant)
+        return Component(site_id,shifts,assigned_vigilantes)
             
-    def assignVigilant(self, objVigilant, site, shift, component: Component):
-            """
-            assigment vigilantes with constraint number hours permanent for sites
-            """
 
-            if objVigilant not in component.assignedVigilants:
-                component.assignedVigilants.append(objVigilant)
-
-            """udpate shifts sites whit vigilantes"""
-
-            for i in range(shift[0], shift[1]+1):
-                objVigilant.setShift(i, site)
-                component.siteSchedule[i].append(objVigilant.id)
-        
-    def getAvaibleVigilant(self, shift: Shift, assignedVigilantsInShift, vigilantList: List[List[Vigilant]]):
-            ObjResultado = None
-            for vigilantes in vigilantList:
-                indexVigilants = [*range(len(vigilantes))]
-                while indexVigilants:
-                    rand = random.choice(indexVigilants)
-                    objVigilant = vigilantes[rand]
-                    if objVigilant not in assignedVigilantsInShift and objVigilant.isVigilantAvailable(shift , self.__problem.maxWorkHoursPerWeek):
-                        ObjResultado = objVigilant
-                        return ObjResultado
-                    indexVigilants.remove(rand)
-            return ObjResultado
+    @staticmethod    
+    def get_vigilant_avaiable(shift: Shift, assigned_vigilants_in_actual_shift, possible_vigilantes_to_assign_ordered_by_criteria: List[List[Vigilant]]):
+        for vigilantes in possible_vigilantes_to_assign_ordered_by_criteria:
+            index_vigilantes = [*range(len(vigilantes))]
+            while index_vigilantes:
+                index_vigilant = random.choice(index_vigilantes)
+                possible_vigilant_to_assing = vigilantes[index_vigilant]
+                if possible_vigilant_to_assing not in assigned_vigilants_in_actual_shift and Vigilant_assigment_service.is_vigilant_avaible(possible_vigilant_to_assing, shift, self.__problem.maxWorkHoursPerWeek):
+                    possible_vigilant_to_assing = possible_vigilant_to_assing
+                    return possible_vigilant_to_assing
+                index_vigilantes.remove(index_vigilant)
+        return None
 
    
