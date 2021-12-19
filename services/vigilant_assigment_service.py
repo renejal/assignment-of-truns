@@ -38,7 +38,7 @@ class Vigilant_assigment_service:
     def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
         start_week_of_shift = math.floor(shift.shift_start/168)
         end_week_of_shift  =  math.floor(shift.shift_end/168)
-        total_hours_worked_by_vigilant_each_week = vigilant._total_hours_worked_by_week
+        total_hours_worked_by_vigilant_each_week = vigilant.total_hours_worked_by_week
 
         if start_week_of_shift == end_week_of_shift:
             if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:

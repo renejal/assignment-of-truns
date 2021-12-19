@@ -15,7 +15,7 @@ class Vigilant(FromDictMixin):
         self._shifts.append(shift)
 
     def set_total_hours_worked_by_week(self,weeks_amount:int):
-        self._total_hours_worked_by_week = [0] * weeks_amount
+        self.total_hours_worked_by_week = [0] * weeks_amount
 
 
 
