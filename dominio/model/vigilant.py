@@ -1,17 +1,18 @@
 import dataclasses
 from typing import Any, List
+from dominio.model.shift import Shift
 from utils.dataclass_classmethod import FromDictMixin
 
 
 
 @dataclasses.dataclass
 class Vigilant(FromDictMixin):
-    _id: int = 0
-    _default_place_to_look_out: int = -1
-    _distance: List[int] = dataclasses.field(default_factory=list)
-    _shifts:  List[Any] = dataclasses.field(default_factory=list)
-    _total_hours_worked:int = 0
-    _total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
+    id: int = 0
+    default_place_to_look_out: int = -1
+    distance: List[int] = dataclasses.field(default_factory=list)
+    shifts:  List[Shift] = dataclasses.field(default_factory=list)
+    total_hours_worked:int = 0
+    total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
 
     def assign_shift(self, shift) -> None:
         self._shifts.append(shift)

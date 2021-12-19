@@ -23,7 +23,7 @@ class Vigilant_assigment_service:
         
     def is_available_on_shift(self, vigilant: Vigilant,shift: Shift):
         shifts_vigilant:List[Shift] = vigilant.shifts
-        if len(shifts_vigilant) ==0:
+        if len(shifts_vigilant) == 0:
             return True
         for index, assigned_shift in enumerate(shifts_vigilant):
             if shift.shift_end < assigned_shift.shift_start:
@@ -49,16 +49,16 @@ class Vigilant_assigment_service:
                 return True
         return False
     
-    def canWorkThisSunday(self,startPeriod,endPeriod):
+    def canWorkThisSunday(self, startPeriod, endPeriod):
         weekToCheck = math.floor(startPeriod/168)
-        if self.thereIsAPeriodInSunday(startPeriod,endPeriod,weekToCheck):
+        if self.thereIsAPeriodInSunday(startPeriod, endPeriod, weekToCheck):
             return self.workLastSunday(weekToCheck)
         return True
     
     def workLastSunday(self,week):
         if week == 0:
             return True
-        for period in range (168*week,(168*week)-24,-1):
+        for period in range(168*week, (168*week)-24, -1):
             if self.shifts[period] != 0:
                 return False
         return True
