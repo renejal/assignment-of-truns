@@ -397,7 +397,7 @@ from dominio.vigilant_assigment import VigilantAssigment
         ]
     )
 ])
-def test_create_normal_shifts_correctly(site, ideal_hours_amount_to_work, expected):
+def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: int, expected):
     VigilantAssigment.total_weeks= len(site.weeks_schedule)
     shifts = VigilantAssigment.create_shifts_in_normal_sites(VigilantAssigment,site,ideal_hours_amount_to_work)
     assert len(expected) == len(shifts)

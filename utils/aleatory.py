@@ -1,8 +1,10 @@
 import random
+from typing import List
 
-def getAleatory(parInit, parEnd, parNumber):
+@staticmethod
+def get_aleatory(parInit, parEnd, parNumber):
     '''
-    generate n number aleatory between  nunber init and number end
+    generate n number aleatory between number init and number end
     :param init: number init
     :param end: number end
     :param number: quantity the number aleatory
@@ -19,3 +21,8 @@ def getAleatory(parInit, parEnd, parNumber):
         else:
             break
     return listAleatory
+
+@staticmethod
+def get_ramdon_for_list(init: int, end: int, list: List) -> int:
+    numAletory = random.randint(init, end)
+    return list[numAletory]

@@ -16,9 +16,9 @@ class tweak_service:
 
     def tweakVigilants(self, solucion):
         if self.is_empty(solucion.vigilantesForPlaces):
-            listSite = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces)-1, 2)
-            vigilantOne = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces[listSite[0]]), 1)
-            vigilantTwo = aleatory.getAleatory(0, len(solucion.vigilantesForPlaces[listSite[1]]), 1)
+            listSite = aleatory.get_aleatory(0, len(solucion.vigilantesForPlaces) - 1, 2)
+            vigilantOne = aleatory.get_aleatory(0, len(solucion.vigilantesForPlaces[listSite[0]]), 1)
+            vigilantTwo = aleatory.get_aleatory(0, len(solucion.vigilantesForPlaces[listSite[1]]), 1)
             self.toExchageVigilants(listSite[0], vigilantOne[0], listSite[1], vigilantTwo[0], solucion)
         return solucion
 

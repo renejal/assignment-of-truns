@@ -3,7 +3,6 @@ from dominio.Component import Component
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import random
-
 from services.vigilant_assigment_service import Vigilant_assigment_service
 
 class site_schedule_service:
@@ -31,7 +30,7 @@ class site_schedule_service:
             while index_vigilantes:
                 index_vigilant = random.choice(index_vigilantes)
                 possible_vigilant_to_assing = vigilantes[index_vigilant]
-                if possible_vigilant_to_assing not in assigned_vigilants_in_actual_shift and Vigilant_assigment_service.is_vigilant_avaible(possible_vigilant_to_assing, shift, self.__problem.maxWorkHoursPerWeek):
+                if possible_vigilant_to_assing not in assigned_vigilants_in_actual_shift and Vigilant_assigment_service.is_vigilant_avaible(possible_vigilant_to_assing, shift):
                     possible_vigilant_to_assing = possible_vigilant_to_assing
                     return possible_vigilant_to_assing
                 index_vigilantes.remove(index_vigilant)
