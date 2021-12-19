@@ -9,24 +9,28 @@ import math
 
 class Vigilant_assigment_service:
 
-    def is_vigilant_avaible(self,vigilant: Vigilant, shift:Shift) -> bool:
-        if self.is_available_on_shift(vigilant,shift) == False:
-            return False 
+    _MINIMUN_BREAK_DURATION: int = 18
+    _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK=48
+
+
+    def is_vigilant_avaible(self, vigilant: Vigilant, shift:Shift) -> bool:
         if self.has_enough_hours_to_work_in_week(vigilant, shift) == False:
             return False
+        if self.is_available_on_shift(vigilant, shift) == False:
+            return False 
         #Check work on sunday
         return True          
         
-    def is_available_on_shift(self,vigilant: Vigilant,shift: Shift):
+    def is_available_on_shift(self, vigilant: Vigilant,shift: Shift):
         shifts_vigilant:List[Shift] = vigilant.shifts
         if len(shifts_vigilant) ==0:
             return True
         for index, assigned_shift in enumerate(shifts_vigilant):
             if shift.shift_end < assigned_shift.shift_start:
                 if index > 0:
-                    return shift.shift_end + 18 <  assigned_shift.shift_start and shift.shift_start - 18 > shifts_vigilant[index].shift_end
-                return shift.shift_end + 18 <  assigned_shift.shift_start
-        return shift.shift_start - 18 > shifts_vigilant[index].shift_end
+                    return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift_start and shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index-1].shift_end
+                return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift_start
+        return shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index].shift_end
 
 
      #Check restrictions   
@@ -37,11 +41,11 @@ class Vigilant_assigment_service:
         total_hours_worked_by_vigilant_each_week = vigilant._total_hours_worked_by_week
 
         if start_week_of_shift == end_week_of_shift:
-            if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start)) <= VigilantAssigment.maxWorkHoursPerWeek:
+            if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                 return True
             return False
         else:
-            if (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(168*end_week_of_shift)-shift.shift_start) <= VigilantAssigment.maxWorkHoursPerWeek and (total_hours_worked_by_vigilant_each_week[end_week_of_shift]+shift.shift_end-(168*end_week_of_shift)) <= VigilantAssigment.maxWorkHoursPerWeek:
+            if (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(168*end_week_of_shift)-shift.shift_start) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and (total_hours_worked_by_vigilant_each_week[end_week_of_shift]+shift.shift_end-(168*end_week_of_shift - 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                 return True
         return False
     

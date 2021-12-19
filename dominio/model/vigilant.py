@@ -16,6 +16,8 @@ class Vigilant(FromDictMixin):
     def assign_shift(self, shift) -> None:
         self._shifts.append(shift)
 
+    def set_total_hours_worked_by_week(self,weeks_amount:int):
+        self._total_hours_worked_by_week = [0] * weeks_amount
     # get
     @property
     def id(self):

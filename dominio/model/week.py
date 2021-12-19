@@ -1,7 +1,7 @@
 from utils.dataclass_classmethod import FromDictMixin
 import dataclasses
 from dominio.model.day import Day
-from typing import List, Dict
+from typing import List
 
 @dataclasses.dataclass
 class Week(FromDictMixin):

@@ -1,3 +1,4 @@
+from typing import List
 import pytest
 from dominio.model.day import Day
 from dominio.model.shift import Shift
@@ -5,6 +6,7 @@ from dominio.model.site import Site
 from dominio.model.week import Week
 from dominio.model.working_day import workingDay
 from dominio.vigilant_assigment import VigilantAssigment
+from services.shifts_generation_service import Shifts_generation_service
 
 @pytest.mark.parametrize("site, ideal_hours_amount_to_work, expected", [
     #Aleatory day case
@@ -397,9 +399,9 @@ from dominio.vigilant_assigment import VigilantAssigment
         ]
     )
 ])
-def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: int, expected):
+def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: int, expected: List[Shift]):
     VigilantAssigment.total_weeks= len(site.weeks_schedule)
-    shifts = VigilantAssigment.create_shifts_in_normal_sites(VigilantAssigment,site,ideal_hours_amount_to_work)
+    shifts = Shifts_generation_service.create_shifts_in_normal_sites(VigilantAssigment,site,ideal_hours_amount_to_work)
     assert len(expected) == len(shifts)
     for shiftIndex in range(len(shifts)):
         assert expected[shiftIndex].shift_start == shifts[shiftIndex].shift_start
@@ -675,9 +677,9 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
         ]
     )  
 ])
-def test_create_special_shifts_correctly(site,expected):
+def test_create_special_shifts_correctly(site: Site,expected: List[Shift]):
     VigilantAssigment.total_weeks= len(site.weeks_schedule)
-    shifts = VigilantAssigment.create_shifts_in_special_site(VigilantAssigment,site)
+    shifts = Shifts_generation_service.create_shifts_in_normal_sites(VigilantAssigment,site)
     assert len(expected) == len(shifts)
     for shiftIndex in range(len(shifts)):
         assert expected[shiftIndex].shift_start == shifts[shiftIndex].shift_start

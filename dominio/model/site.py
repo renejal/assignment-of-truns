@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Dict, List
+from typing import List
 from utils.dataclass_classmethod import FromDictMixin
 from dominio.model.week import Week
 

@@ -1,6 +1,6 @@
 from utils.dataclass_classmethod import FromDictMixin
 import dataclasses
-from typing import List, Dict
+from typing import List
 from dominio.model.working_day import workingDay
 
 @dataclasses.dataclass
