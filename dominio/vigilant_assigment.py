@@ -1,11 +1,8 @@
 from typing import Dict, List
-# from data.SiteDataFile import SiteDataFile
-# from data.VigilantsDataFile import VigilantsDataFile
 from dominio.model.site import Site
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import operator
-from dominio.model.week import Week
 
 
 class VigilantAssigment:
@@ -13,7 +10,7 @@ class VigilantAssigment:
     # minShiftDuration: int = 4
     # minBreakDuration: int = 18
     # maxOvertimeWorkHoursPerWeek=12
-    # maxWorkHoursPerWeek=48
+    maxWorkHoursPerWeek=48
     # minWorkHoursPerWeek=40
     # idealWorkHoursPerWeek=48
 

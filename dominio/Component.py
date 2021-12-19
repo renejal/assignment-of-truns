@@ -15,9 +15,10 @@ class Component:
     __extra_hours_fitness: int
     __assigned_vigilantes_fitness: int
 
-    def __init__(self, site_id : int , site_schedule : List[Shift]) -> None:   
+    def __init__(self, site_id : int , site_schedule : List[Shift], assigned_vigilantes: List[Vigilant]) -> None:   
         self.__site_id = site_id
         self.__site_schedule = site_schedule
+        self.__assigned_Vigilantes = assigned_vigilantes
 
     def calculate_fitness(self) -> None: #decraped
         #Calculate missing shifts

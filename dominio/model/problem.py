@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Dict, List
+from typing import List
 from dominio.model.site import Site
 from dominio.model.vigilant import Vigilant
 from utils.dataclass_classmethod import FromDictMixin
