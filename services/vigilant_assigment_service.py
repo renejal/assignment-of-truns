@@ -9,10 +9,7 @@ import math
 
 class Vigilant_assigment_service:
 
-<<<<<<< HEAD
-    def get_possible_vigilant_to_assign(site: int, vigilantes: List[Vigilant]) -> int:
-=======
-    def is_vigilant_avaible(self,vigilant: Vigilant, shift:Shift) -> bool:
+    def is_vigilant_avaible(self,vigilant: Vigilant, shift: Shift) -> bool:
         if self.is_available_on_shift(vigilant,shift) == False:
             return False 
         if self.has_enough_hours_to_work_in_week(vigilant, shift) == False:
@@ -22,7 +19,7 @@ class Vigilant_assigment_service:
         
     def is_available_on_shift(self,vigilant: Vigilant,shift: Shift):
         shifts_vigilant:List[Shift] = vigilant.shifts
-        if len(shifts_vigilant) ==0:
+        if len(shifts_vigilant) == 0:
             return True
         for index, assigned_shift in enumerate(shifts_vigilant):
             if shift.shift_end < assigned_shift.shift_start:
@@ -48,16 +45,16 @@ class Vigilant_assigment_service:
                 return True
         return False
     
-    def canWorkThisSunday(self,startPeriod,endPeriod):
+    def canWorkThisSunday(self, startPeriod, endPeriod):
         weekToCheck = math.floor(startPeriod/168)
-        if self.thereIsAPeriodInSunday(startPeriod,endPeriod,weekToCheck):
+        if self.thereIsAPeriodInSunday(startPeriod, endPeriod, weekToCheck):
             return self.workLastSunday(weekToCheck)
         return True
     
     def workLastSunday(self,week):
         if week == 0:
             return True
-        for period in range (168*week,(168*week)-24,-1):
+        for period in range(168*week, (168*week)-24, -1):
             if self.shifts[period] != 0:
                 return False
         return True
@@ -71,7 +68,6 @@ class Vigilant_assigment_service:
         return False
    
     def get_possible_vigilant_to_assign(site: Site, vigilantes: List[Vigilant]) -> int:
->>>>>>> 4d2a388f4a9dce52c4e09a5c053bd2fc2df1869c
         """
         obtain random vigilant for parametr the settings
         vigilantes: list de vigilantes total

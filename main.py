@@ -3,7 +3,7 @@ from views.general_shift_view import GenerateShiftView
 #Minimzar la distancia del vigilante al puesto de trabajo.
 #Minimizar la cantidad de guardias a utilizar para el problema.
 #Minimizar numero de horas extras trabajadas.
-
+from dominio.model.site import Site
 # Separar el fitness por funcion objetivo
 view = GenerateShiftView("views/sites.json","views/vigilantes.json")
 view.execute()
