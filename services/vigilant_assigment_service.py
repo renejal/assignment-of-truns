@@ -3,6 +3,7 @@ from conf import settings
 from dominio.vigilant_assigment import VigilantAssigment
 from utils import aleatory
 from typing import List, Dict
+import copy
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import math
@@ -71,35 +72,51 @@ class Vigilant_assigment_service:
               return True
         return False
    
-    def get_possible_vigilant_to_assign(site: Site, vigilantes: List[Vigilant]) -> int:
+    # def get_possible_vigilant_to_assign(site: Site, vigilantes: List[Vigilant],) -> int:
+    def get_possible_vigilant_to_assign(**kwargs):
         """
         obtain random vigilant for parametr the settings
-        vigilantes: list de vigilantes total
-        Site: sitio a vigilar
-        shift: los turnos del sitio a vigilar
+        vigilants: list de vigilantes total
+        site_id: sitio a vigilar
+        vigilants_temp : None
 
-        return the possible vigilantes avalaible for site
+        return the possible vigilant id avalaible for site
         """
+        vigilants_temp: List = kwargs.get("vigilants_temp")
+        vigilants: List[Vigilant] = kwargs.get("vigilants")
+        site_id: int = kwargs.get("site_id")
+        vigilants_id: int
+        dict_vigilants_distance: Dict
 
-        dict_vigilants_distance: Dict = Vigilant_assigment_service.__order_vigilants_in_place_by_distance(vigilantes, site)
-        vigilants_id: int = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE,
-                                                         dict_vigilants_distance)
-        return vigilants_id
+        if vigilants is not None:
+            print("no se encontraron vigilantes")
+            raise
+        if vigilants_temp is not None:
+            vigilants_id = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE, dict_vigilants_distance)
 
-    def __order_vigilants_in_place_by_distance(vigilantes: List[Vigilant], site_id: int) -> Dict:
+        vigilants_temp = copy.deepcopy(vigilants)
+        if vigilants_temp is not None:
+            dict_vigilants_distance = Vigilant_assigment_service.__order_vigilants_in_place_by_distance(vigilants_temp, site_id)
+            vigilants_id = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE, dict_vigilants_distance)
+
+
+        return vigilants_id, vigilants_temp
+
+    def __order_vigilants_in_place_by_distance(vigilants: List[Vigilant], site_id: int) -> Dict:
         """
-        :param vigilantes:
-        :param site:
+        :param vigilants:
+        :param site_id:
         :return: List the Dict {vigilans_id : vigilants.distancia }
         """
         dict_order_the_vigilants_for_distance: Dict = {}
         vigilant: Vigilant
-        for vigilant in range(0, len(vigilantes)):
+        for vigilant in range(0, len(vigilants)):
             dict_order_the_vigilants_for_distance[vigilant.id] = vigilant.distance[site_id]
+        dict_order_the_vigilants_for_distance = sorted(dict_order_the_vigilants_for_distance)
 
         return dict_order_the_vigilants_for_distance
 
-    def __obtain_vigilants_in_default_for_site(vigilants: List[Vigilant], site_id: int) -> List:
+    def obtain_vigilants_in_default_for_site(vigilants: List[Vigilant], site_id: int) -> List:
         """
         obtain vigilants for default for the site whit id = n
 
@@ -112,4 +129,5 @@ class Vigilant_assigment_service:
             if vigilant.default_place_to_look_out == site_id:
                 vigilant_for_default[vigilant.id] = vigilant.distance[site_id]
         settings.random.shuffle(vigilant_for_default)
-        return vigilant_for_default
+
+        return copy.deepcopy(vigilant_for_default)

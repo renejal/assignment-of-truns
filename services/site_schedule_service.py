@@ -8,7 +8,7 @@ from services.vigilant_assigment_service import Vigilant_assigment_service
 class site_schedule_service:
     
 
-    def get_site_schedule(self,site_id: int, shifts: List[Shift] , possible_vigilantes_to_assign_ordered_by_criteria: List[List[Vigilant]]) -> Component: 
+    def get_site_schedule(self,site_id: int, shifts: List[Shift] ,possible_vigilantes_to_assign_ordered_by_criteria: List[List[Vigilant]]) -> Component:
         assigned_vigilantes_in_actual_shift: List[Vigilant] = []
         assigned_vigilantes: List[Vigilant] = []
         for shift in shifts:
