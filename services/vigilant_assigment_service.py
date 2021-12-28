@@ -99,7 +99,7 @@ class Vigilant_assigment_service:
 
         return dict_order_the_vigilants_for_distance
 
-    def __obtain_vigilants_in_default_for_site(vigilants: List[Vigilant], site_id: int) -> List:
+    def obtain_vigilants_in_default_for_site(site_id: int) -> List:
         """
         obtain vigilants for default for the site whit id = n
 
@@ -107,9 +107,10 @@ class Vigilant_assigment_service:
         :param site_id: identy vigilants
         :return: vigilants for default
         """
-        vigilant_for_default: List = []
-        for vigilant in vigilants:
-            if vigilant.default_place_to_look_out == site_id:
-                vigilant_for_default[vigilant.id] = vigilant.distance[site_id]
-        settings.random.shuffle(vigilant_for_default)
-        return vigilant_for_default
+        # vigilant_for_default: List = []
+        # for vigilant in vigilants:
+        #     if vigilant.default_place_to_look_out == site_id:
+        #         vigilant_for_default[vigilant.id] = vigilant.distance[site_id]
+        # settings.random.shuffle(vigilant_for_default)
+        return VigilantAssigment.expectec_places_to_look_out_by_vigilants.get(site_id)
+

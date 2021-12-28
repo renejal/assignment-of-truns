@@ -1,10 +1,11 @@
+from dominio.Solution import Solution
 from utils import aleatory
 
-class tweak_service:
+class Tweak_service:
 
 
     @staticmethod
-    def Tweak(self, solution):
+    def Tweak(self, solution: Solution):
         solution = self.tweakMissingShifts(solution, True)
         self.__problem.maxWorkHoursPerWeek = 56
         solution = self.tweakMissingShifts(solution, False)

@@ -3,6 +3,7 @@ import random
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
+from services.tweak_service import Tweak_service
 import copy
 
 class Grasp(Algorithm):
@@ -25,9 +26,10 @@ class Grasp(Algorithm):
                 else:
                     BestRestrictedList = S.get_best_components(RestrictedList,1)
                     S.merge_component(BestRestrictedList)
+            
             for m in range(0,3):
                 print("TWEAKK:"+str(m))
-                newSolution = self.Tweak(copy.copy(S))
+                newSolution = Tweak_service.Tweak(copy.copy(S))
                 if newSolution.Fitness < S.__fitness:
                     S = newSolution
             if Best == None or S.__fitness < Best.__fitness:

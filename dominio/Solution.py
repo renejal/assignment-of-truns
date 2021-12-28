@@ -29,7 +29,7 @@ class Solution:
         random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
         self.__problem = problem
         self.__vigilantes = problem.vigilantes.copy()
-        self.__sitesSchedule = [[]]*(self.__problem.total_sites)
+        # self.__sitesSchedule = [[]]*(self.__problem.total_sites)
         self.vigilantesSchedule = self.__problem.vigilantes.copy()
         self.__iteration = 0
         self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
@@ -38,9 +38,10 @@ class Solution:
         components = List[Component]
         site_id: int = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.__problem.get_shifts_on_site(site_id)
-        possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id)
+        # possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id)
         for component in range(0, components_new_amount):
-            component = site_schedule_service.get_site_schedule(site_id, shifts, copy.deepcopy(possible_vigilantes_to_assign)) #Verificar que los shifts no cambien por referencia si no crear copia
+            # component = site_schedule_service.get_site_schedule(site_id, shifts, copy.deepcopy(possible_vigilantes_to_assign)) #Verificar que los shifts no cambien por referencia si no crear copia
+            component = site_schedule_service.get_site_schedule(site_id, shifts, self.vigilantesSchedule.copy()) #Verificar que los shifts no cambien por referencia si no crear copia
             component.calculate_fitness()
             components.append(component)
         return components
@@ -61,56 +62,23 @@ class Solution:
         restrictedList = components[:cantRestrictedComponets]
         return restrictedList[random.randint(0, cantRestrictedComponets-1)]
 
-    def merge_component(self, component):
-        for vigilant in component.assignedVigilantes:
+    def merge_component(self, component : Component):
+        for vigilant in component.__assigned_Vigilantes:
             self.vigilantesSchedule[vigilant.id-1] = vigilant
-            self.vigilantesForPlaces[component.siteId-1].append(vigilant)
-        self.sitesSchedule[component.siteId-1] = component.siteSchedule
-        self.missingShiftsBySite[component.siteId-1] = component.missingShfits
-        self.__fitness += component.fitness
+            self.vigilantesForPlaces[component.siteId-1].append(vigilant)        
+        self.__sitesSchedule.append(component)
+        # self.__fitness += component.fitness
         self.__iteration += 1
 
     def is_solution_complete(self):
-        if self.__iteration < len(self.__sitesSchedule):
+        if self.__iteration < len(self.__problem.total_sites):
             return True
         #self.missingShiftsFormat(self.missingShiftsBySite)
         return False
 
-    def calculate_fitness(self, solution):
-        solution.Fitness = 0
-        for site in range(0, len(solution.sitesSchedule)):
-            for period in range(0, len(solution.sitesSchedule[site])):
-                actualVigilantes = len(solution.sitesSchedule[site][period])
-                missingVigilantes = self.__problem.cantVigilantesByPeriod[site][period] - \
-                    actualVigilantes
-                solution.Fitness += missingVigilantes*10000
-        for vigilant in self.vigilantesSchedule:
-            for assignedPlace in vigilant.shifts:
-                if assignedPlace != 0:
-                    # calculate fitness distance
-                    if vigilant.expectedPlaceToWatch != assignedPlace:
-                        solution.Fitness += 500
-                    # calculate work hours
-                    for hourWeek in vigilant.HoursWeeks:
-                        if hourWeek < 40 and hourWeek != 0:
-                            solution.Fitness += 800
-                        if hourWeek > 48:
-                            solution.Fitness += 300
-                    # Calculate preferencias
-                    # TODO
-
     def update_Fitnees(self, objVigilantes: Vigilant, site, newSite,solucion):
         solucion.Fitness -= objVigilantes.distancesBetweenPlacesToWatch[site]
         solucion.Fitness += objVigilantes.distancesBetweenPlacesToWatch[newSite]
-
-    
-  
-    ##No puede encontrar coneccion
-    def getVigilantesForPlaceList(self, vigilantesForPlace):
-        listSite = []
-        for site in vigilantesForPlace:
-            listSite.append(vigilantesForPlace[site])
-        return listSite
 
     
 
