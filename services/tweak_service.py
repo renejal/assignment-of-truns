@@ -14,7 +14,7 @@ class Tweak_service:
         self.calculateFitness(solution)
         return solution
     
-    def tweakMissingShifts(self, solution, order):
+    def missing_shifts_tweak(self, solution, order):
         solution = self.tweakMissingHoursVigilants(solution,order)
         return solution
 

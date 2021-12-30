@@ -15,7 +15,7 @@ from services.vigilant_assigment_service import Vigilant_assigment_service
 # def get_necesary_vigilants_by_period_in_a_week
 # def test_get_possible_vigilant_to_assign(site_id,shifts):
 #     pass
-vigilantS = Vigilant_assigment_service()
+vigilantS = Vigilant_assigment_service(None)
 @pytest.mark.parametrize("vigilant, shift, expected",[
     #No shift case
     (
@@ -93,14 +93,12 @@ vigilantS = Vigilant_assigment_service()
       Shift(331,339,0),
       False
     ),
-     #has have exceeded the max hours work on third of four weeks
+    #has have exceeded the max hours work on third of four weeks
     (
       Vigilant(0,0,[],[],0,[0,44,44,0]),
       Shift(332,340,0),
       False
-    ),
-
-
+    )
 ])
 def test_should_check_if_vigilant_is_available_correctly(vigilant:Vigilant, shift: Shift, expected: bool):
     assert vigilantS.is_vigilant_avaible(vigilant,shift) == expected

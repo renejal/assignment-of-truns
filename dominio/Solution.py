@@ -10,9 +10,9 @@ from dominio.Algorithm import Algorithm
 from dominio.vigilant_assigment import VigilantAssigment
 import copy 
 import collections
-from utils import aleatory
-from services.site_schedule_service import site_schedule_service
 from services.vigilant_assigment_service import Vigilant_assigment_service
+from utils import aleatory
+from services.site_schedule_service import Site_schedule_service
 #Como se crea un individuo en NSGA-II
 
 
@@ -24,9 +24,11 @@ class Solution:
     __vigilantesSchedule: List[Vigilant] 
     __fitness: List[int]
     vigilantesForPlaces = [] ## cuestionar este atributo
+    site_schedule_service: Site_schedule_service
 
     def __init__(self, problem: VigilantAssigment , Aletory):
         random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
+        self.site_schedule_service = Site_schedule_service(problem)
         self.__problem = problem
         self.__vigilantes = problem.vigilantes.copy()
         # self.__sitesSchedule = [[]]*(self.__problem.total_sites)
@@ -35,14 +37,12 @@ class Solution:
         self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
     def create_components(self, components_new_amount: int):
-        components = List[Component]
+        components: List[Component] = []
         site_id: int = self.__problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.__problem.get_shifts_on_site(site_id)
-        # possible_vigilantes_to_assign = Vigilant_assigment_service.get_possible_vigilant_to_assign(site_id)
         for component in range(0, components_new_amount):
-            # component = site_schedule_service.get_site_schedule(site_id, shifts, copy.deepcopy(possible_vigilantes_to_assign)) #Verificar que los shifts no cambien por referencia si no crear copia
-            component = site_schedule_service.get_site_schedule(site_id, shifts, self.vigilantesSchedule.copy()) #Verificar que los shifts no cambien por referencia si no crear copia
-            component.calculate_fitness()
+            component = self.site_schedule_service.get_site_schedule(site_id, shifts,copy.deepcopy(self.vigilantesSchedule)) #Verificar que los shifts no cambien por referencia si no crear copia
+            # component.calculate_fitness()
             components.append(component)
         return components
 
@@ -71,7 +71,7 @@ class Solution:
         self.__iteration += 1
 
     def is_solution_complete(self):
-        if self.__iteration < len(self.__problem.total_sites):
+        if self.__iteration < self.__problem.total_sites:
             return True
         #self.missingShiftsFormat(self.missingShiftsBySite)
         return False

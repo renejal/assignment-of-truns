@@ -10,7 +10,8 @@ class Shift:
         self.shift_start = shift_start
         self.shift_end = shift_end
         self.necesary_vigilantes = necesary_vigilantes
+        self.assigment_vigilantes = []
 
     def add_vigilant(self, id_vigilant: int):
-        #self.assigment_vigilantes.append(vigilant)
-        pass
+        self.assigment_vigilantes.append(id_vigilant)
+        

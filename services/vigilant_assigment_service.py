@@ -3,6 +3,7 @@ from conf import settings
 from dominio.vigilant_assigment import VigilantAssigment
 from utils import aleatory
 from typing import List, Dict
+import copy
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import math
@@ -10,8 +11,12 @@ import math
 class Vigilant_assigment_service:
 
     _MINIMUN_BREAK_DURATION: int = 18
-    _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK=48
+    _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: int = 48
 
+    vigilant_assigment: VigilantAssigment
+
+    def __init__(self, vigilant_assigment: VigilantAssigment):
+        self.vigilant_assigment = vigilant_assigment
 
     def is_vigilant_avaible(self, vigilant: Vigilant, shift:Shift) -> bool:
         if self.has_enough_hours_to_work_in_week(vigilant, shift) == False:
@@ -71,46 +76,21 @@ class Vigilant_assigment_service:
               return True
         return False
    
-    def get_possible_vigilant_to_assign(site: Site, vigilantes: List[Vigilant]) -> int:
-        """
-        obtain random vigilant for parametr the settings
-        vigilantes: list de vigilantes total
-        Site: sitio a vigilar
-        shift: los turnos del sitio a vigilar
+    def get_possible_vigilant_to_assign_by_distance(self,vigilantes: List[Vigilant], order_vigilantes_index_in_place_by_distance:List[int], start_index: int , end_index) -> List[Vigilant]:
+        order_vigilants_by_distance = []
+        for vigilant_id in order_vigilantes_index_in_place_by_distance[start_index:end_index]:
+            order_vigilants_by_distance.append(vigilantes[vigilant_id-1])
+        # dict_vigilants_distance = Vigilant_assigment_service.get_order_vigilantes_index_in_place_by_distance(vigilantes, site_id)
+        # vigilants_id = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE, dict_vigilants_distance)
+        return order_vigilants_by_distance
 
-        return the possible vigilantes avalaible for site
-        """
+    def get_order_vigilantes_index_in_place_by_distance(self, site_id: int) -> Dict:
+        return self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id]
 
-        dict_vigilants_distance: Dict = Vigilant_assigment_service.__order_vigilants_in_place_by_distance(vigilantes, site)
-        vigilants_id: int = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE,
-                                                         dict_vigilants_distance)
-        return vigilants_id
-
-    def __order_vigilants_in_place_by_distance(vigilantes: List[Vigilant], site_id: int) -> Dict:
-        """
-        :param vigilantes:
-        :param site:
-        :return: List the Dict {vigilans_id : vigilants.distancia }
-        """
-        dict_order_the_vigilants_for_distance: Dict = {}
-        vigilant: Vigilant
-        for vigilant in range(0, len(vigilantes)):
-            dict_order_the_vigilants_for_distance[vigilant.id] = vigilant.distance[site_id]
-
-        return dict_order_the_vigilants_for_distance
-
-    def obtain_vigilants_in_default_for_site(site_id: int) -> List:
-        """
-        obtain vigilants for default for the site whit id = n
-
-        :param vigilants: list the vigilants
-        :param site_id: identy vigilants
-        :return: vigilants for default
-        """
-        # vigilant_for_default: List = []
-        # for vigilant in vigilants:
-        #     if vigilant.default_place_to_look_out == site_id:
-        #         vigilant_for_default[vigilant.id] = vigilant.distance[site_id]
-        # settings.random.shuffle(vigilant_for_default)
-        return VigilantAssigment.expectec_places_to_look_out_by_vigilants.get(site_id)
-
+    def obtain_vigilants_in_default_for_site(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
+        if site_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants:
+            expected_vigilantes_by_place: List[Vigilant] = []
+            for vigilant_id in  self.vigilant_assigment.expected_places_to_look_out_by_vigilants.get(site_id):
+                expected_vigilantes_by_place.append(vigilantes[vigilant_id-1])
+            return expected_vigilantes_by_place
+        return None
