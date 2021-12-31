@@ -37,7 +37,7 @@ class GenerateShiftView:
     def execute(self):
         print("Start")
         tic = time.perf_counter()
-        response: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 3)
+        response: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 200)
         toc = time.perf_counter()
         self.__generateResults(0, 10, response)
         print(f"Time {toc - tic:0.4f} seconds")

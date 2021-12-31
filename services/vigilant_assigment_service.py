@@ -85,7 +85,7 @@ class Vigilant_assigment_service:
         return order_vigilants_by_distance
 
     def get_order_vigilantes_index_in_place_by_distance(self, site_id: int) -> Dict:
-        return self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id]
+        return self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id -1 ]
 
     def obtain_vigilants_in_default_for_site(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
         if site_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants:

@@ -44,6 +44,8 @@ class Site_schedule_service:
         return None
     
     def get_vigilant_available_on_list(self, vigilantes: List[Vigilant], assigned_vigilants_in_actual_shift:List[int], shift: Shift) -> Vigilant:
+        if vigilantes == None:
+            return None
         index_vigilantes = [*range(len(vigilantes))]
         while index_vigilantes:
             index_vigilant = random.choice(index_vigilantes)

@@ -5,20 +5,23 @@ from dominio.model.vigilant import Vigilant
 
 class Component:
 
-    __site_id: int
-    __site_schedule: List[Shift]
-    __missing_shifts: List[Shift]
-    __assigned_Vigilantes: List[Vigilant]
+    site_id: int
+    site_schedule: List[Shift]
+    missing_shifts: List[Shift]
+    assigned_Vigilantes: List[Vigilant]
     
-    __missing_shifts_fitness: int
-    __distance_fitness: int
-    __extra_hours_fitness: int
-    __assigned_vigilantes_fitness: int
-
+    missing_shifts_fitness: int = 0
+    distance_fitness: int = 0
+    extra_hours_fitness: int = 0
+    assigned_vigilantes_fitness: int = 0
+    total_fitness:int = 0
+    
     def __init__(self, site_id : int , site_schedule : List[Shift], assigned_vigilantes: List[Vigilant]) -> None:   
-        self.__site_id = site_id
-        self.__site_schedule = site_schedule
-        self.__assigned_Vigilantes = assigned_vigilantes
+        self.site_id = site_id
+        self.site_schedule = site_schedule
+        self.assigned_Vigilantes = assigned_vigilantes
+        self.missing_shifts = []
+        self.calculate_inicial_fitness()
 
     def calculate_fitness(self) -> None: #decraped
         #Calculate missing shifts
@@ -41,16 +44,20 @@ class Component:
                     #Calculate preferencias 
                     #TODO 
 
-    def calculateFitness2(self) -> None:
-        for shift in self.__site_schedule:
-            if shift.__necesary_vigilantes != len(shift.__assigment_vigilantes):
-                self.__missing_shifts.append(shift)
-                self.__missing_shifts_fitness+= 1000   
-        for vigilant in self.__assigned_Vigilantes:
-            if vigilant.__expected_place_to_work !=0 and vigilant.__expected_place_to_work != self.__site_id:
-                self.__distance_fitness+= 500
-            for hour_week in vigilant.__hours_worked_by_week:
-                if hour_week > 48 :
-                    self.__extra_hours_fitness+= 200 * (hour_week- 48)
-                    
-##Verificar si __assigned_vigilantes_fitness tocaria incluirlo aqui.
+    def calculate_inicial_fitness(self) -> None:
+        for shift in self.site_schedule:
+            if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
+                self.missing_shifts.append(shift)
+                self.missing_shifts_fitness+= 1000
+                self.total_fitness+= 1000  
+        if self.assigned_Vigilantes == None:
+            return
+        for vigilant in self.assigned_Vigilantes:
+            if vigilant.default_place_to_look_out !=1 and vigilant.default_place_to_look_out != self.site_id and vigilant.closet_place != self.site_id:
+                self.distance_fitness+= 500
+                self.total_fitness+= 500  
+            for hour_by_week in vigilant.total_hours_worked_by_week:
+                if hour_by_week < 40:
+                    self.assigned_vigilantes_fitness += 300
+                    self.total_fitness+= 300  
+

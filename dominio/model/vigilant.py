@@ -11,6 +11,7 @@ class Vigilant(FromDictMixin):
     shifts:  List[Shift] = dataclasses.field(default_factory=list)
     total_hours_worked: int = 0
     total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
+    closet_place: int = -1
 
     def assign_shift(self, shift: Shift) -> None:
         self.shifts.append(shift)

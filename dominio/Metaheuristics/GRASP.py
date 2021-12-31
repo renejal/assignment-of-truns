@@ -24,15 +24,15 @@ class Grasp(Algorithm):
                 if RestrictedList == None:
                     continue
                 else:
-                    BestRestrictedList = S.get_best_components(RestrictedList,1)
+                    BestRestrictedList = S.get_best_components(RestrictedList,10)
                     S.merge_component(BestRestrictedList)
             
-            for m in range(0,3):
-                print("TWEAKK:"+str(m))
-                newSolution = Tweak_service.Tweak(copy.copy(S))
-                if newSolution.Fitness < S.__fitness:
-                    S = newSolution
-            if Best == None or S.__fitness < Best.__fitness:
+            # for m in range(0,3):
+            #     print("TWEAKK:"+str(m))
+            #     newSolution = Tweak_service.Tweak(copy.copy(S))
+            #     if newSolution.Fitness < S.total_fitness:
+            #         S = newSolution
+            if Best == None or S.total_fitness < Best.total_fitness:
                 Best = S
             self.CurrentEFOs+=1
             print("Nueva  iteracion")
