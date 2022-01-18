@@ -18,19 +18,19 @@ class VigilantAssigment:
     sites: List[Site]
     total_vigilantes: int
     total_sites: int
-    total_weeks: int 
     expected_places_to_look_out_by_vigilants: Dict[int, List[int]]
     order_sites_by_id_vigilantes_amount: List[int]
     order_sites_by_id_vigilantes_distance: List[List[int]]
     shifts_by_sites: List[List[Shift]]
 
+    last_week_is_not_complete: bool = False
+
     __DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
+    max_total_weeks = 2
 
-
-    def __init__(self, vigilantes: List[Vigilant], sites: List[Site], weeks) -> None:
+    def __init__(self, vigilantes: List[Vigilant], sites: List[Site]) -> None:
         self.vigilantes = vigilantes
         self.sites = sites
-        self.total_weeks = weeks
         self.total_sites = len(sites)
         self.expected_places_to_look_out_by_vigilants = {}
         self.order_sites_by_id_vigilantes_distance = []
@@ -38,13 +38,13 @@ class VigilantAssigment:
 
     def initProblem(self) -> None:
         for vigilant in self.vigilantes:
-            vigilant.set_total_hours_worked_by_week(self.total_weeks)
+            vigilant.set_total_hours_worked_by_week(self.max_total_weeks)
             if vigilant.default_place_to_look_out != self.__DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expected_places_to_look_out_by_vigilants:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out].append(vigilant.id)
                 else:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out] = [vigilant.id]
-        self.shifts_by_sites = Shifts_generation_service().create_shifts_by_site(self.sites,self.total_weeks)
+        self.shifts_by_sites = Shifts_generation_service().create_shifts_by_site(self.sites)
         self.order_sites_by_id_vigilantes_amount = self.sorted_sites_by_vigilant_amount(self.shifts_by_sites)
         self.order_sites_by_id_vigilantes_distance = self.order_sites_by_vigilantes_distance(self.vigilantes, self.total_sites)
 

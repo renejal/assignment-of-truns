@@ -8,7 +8,7 @@ import copy
 
 class Grasp(Algorithm):
     CurrentEFOs: int = 0
-    MaxEFOs: int = 10
+    MaxEFOs: int = 1
 
     def Execute(self, problem: VigilantAssigment, Aleatory, numComponets):
         random.seed(Aleatory)
@@ -25,24 +25,17 @@ class Grasp(Algorithm):
                     continue
                 else:
                     BestRestrictedList = S.get_best_components(RestrictedList,10)
-                    S.merge_component(BestRestrictedList)
-            
-            # for m in range(0,3):
-            #     print("TWEAKK:"+str(m))
-            #     newSolution = Tweak_service.Tweak(copy.copy(S))
-            #     if newSolution.Fitness < S.total_fitness:
-            #         S = newSolution
+                    S.merge_component(BestRestrictedList)            
+            for m in range(0,3):
+                print("TWEAKK:"+str(m))
+                newSolution:Solution = Tweak_service().Tweak(copy.copy(S))
+                if newSolution.total_fitness < S.total_fitness:
+                    S = newSolution
             if Best == None or S.total_fitness < Best.total_fitness:
                 Best = S
             self.CurrentEFOs+=1
             print("Nueva  iteracion")
         return Best
-
-    def Tweak(self,solution):
-        return solution.Tweak(solution)
-
-
-
 
 
 

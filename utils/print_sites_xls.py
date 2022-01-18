@@ -1,31 +1,25 @@
+import numpy as np
 import pandas as pd
+from dominio.Solution import Solution
 
-def generateResultBySite(cantVigilantsByPeriod, path, solution):
+PATH_FILE: str = "./results/Site.xlsx"
+TOTAL_HOURS:int = 24
+TOTAL_DAYS: int = 7
 
-    writer = pd.ExcelWriter(path + "Site.xlsx", engine='openpyxl')
+def generate_excel_site(solution : Solution):
+    writer = pd.ExcelWriter(PATH_FILE, engine='openpyxl')
     wb = writer.book
-    for sideId in range(0, len(solution.sitesSchedule)):
-        sheduleSite = {}
-        if len(solution.sitesSchedule[sideId]) > 0:
-            cantMissingVigilants = 0
-            numerDay = 1
-            period = 0
-            vigilantesByDay = []
-            siteSchedule = solution.sitesSchedule[sideId]
-            for assignedVigilantsInPeriod in range(0, len(siteSchedule)):
-                vigilantesByDay.append(siteSchedule[assignedVigilantsInPeriod])
-                cantMissingVigilants += cantVigilantsByPeriod[sideId][assignedVigilantsInPeriod] - len(
-                    siteSchedule[assignedVigilantsInPeriod])
-                period += 1
-                if period == 24:
-                    vigilantesByDay.append(cantMissingVigilants)
-                    sheduleSite['day' + str(numerDay)] = vigilantesByDay
-                    vigilantesByDay = []
-                    period = 0
-                    cantMissingVigilants = 0
-                    numerDay += 1
-        df = pd.DataFrame(sheduleSite)
-        df.to_excel(writer, sheet_name='site' + str(sideId + 1))
-        sideId += 1
-    wb.save(path + "Site.xlsx")
+    for site in solution.sites_schedule:
+        data = [[[]]*solution.problem.sites[site.site_id-1].total_weeks*TOTAL_DAYS]*TOTAL_HOURS
+        data.append([0]*solution.problem.sites[site.site_id-1].total_weeks*TOTAL_DAYS)
+        data = np.array(data, dtype=object).tolist()
+        for shift in site.site_schedule:
+            for period in range(shift.shift_start,shift.shift_end+1):
+                day = int(period/TOTAL_HOURS)
+                hour = period - day*TOTAL_HOURS
+                data[hour][day] = shift.assigment_vigilantes
+                data[TOTAL_HOURS][day] += shift.necesary_vigilantes - len(shift.assigment_vigilantes)
+        df = pd.DataFrame(data,columns=list("day"+str(day)  for day in range(1,day+2)))
+        df.to_excel(writer, sheet_name='site' + str(site.site_id))
+        wb.save(PATH_FILE)
     writer.close()

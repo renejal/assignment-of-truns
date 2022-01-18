@@ -4,17 +4,9 @@ from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
 from random import random
 import random
-import math
-import numpy as np
-from dominio.Algorithm import Algorithm
 from dominio.vigilant_assigment import VigilantAssigment
 import copy 
-import collections
-from services.vigilant_assigment_service import Vigilant_assigment_service
-from utils import aleatory
 from services.site_schedule_service import Site_schedule_service
-#Como se crea un individuo en NSGA-II
-
 
 class Solution:
 
@@ -22,11 +14,11 @@ class Solution:
     sites_schedule: List[Component]
     vigilantes_schedule: List[Vigilant] 
     site_schedule_service: Site_schedule_service
-    missing_shifts_fitness: int = 0
-    distance_fitness: int = 0
-    extra_hours_fitness: int = 0
-    assigned_vigilantes_fitness: int = 0
-    total_fitness: int = 0
+    missing_shifts_fitness: int
+    distance_fitness: int
+    extra_hours_fitness: int
+    assigned_vigilantes_fitness: int
+    total_fitness: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
         random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
@@ -41,8 +33,8 @@ class Solution:
         components: List[Component] = []
         site_id: int = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.problem.get_shifts_on_site(site_id)
-        for component in range(0, components_new_amount):
-            component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule)) #Verificar que los shifts no cambien por referencia si no crear copia
+        for component in range(components_new_amount):
+            component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
             components.append(component)
         return components
 
@@ -63,27 +55,44 @@ class Solution:
 
     def merge_component(self, component : Component):
         self.sites_schedule.append(component)
-        self.missing_shifts_fitness += component.missing_shifts_fitness
-        self.distance_fitness += component.distance_fitness
-        self.assigned_vigilantes_fitness += component.assigned_vigilantes_fitness
-        self.extra_hours_fitness += component.extra_hours_fitness
-        self.total_fitness += component.total_fitness
         self.__iteration += 1
         if component.assigned_Vigilantes == None:
             return
         for vigilant in component.assigned_Vigilantes:
             self.vigilantes_schedule[vigilant.id-1] = vigilant
-       #     self.vigilantesForPlaces[component.siteId-1].append(vigilant)        
+
+    def calculate_fitness(self):
+        self.missing_shifts_fitness = 0
+        self.distance_fitness = 0
+        self.extra_hours_fitness = 0
+        self.assigned_vigilantes_fitness = 0
+        self.total_fitness = 0
+        for site in self.sites_schedule:
+            for shift in site.missing_shifts:
+                if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
+                    self.missing_shifts_fitness+= 1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                    self.total_fitness+= 1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+        for vigilant in self.vigilantes_schedule:
+            for site_to_look_out in vigilant.sites_to_look_out:
+                if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
+                    self.distance_fitness+= 500    
+                    self.total_fitness+= 1000  
+            for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
+                if hour_by_week > 48:
+                    self.extra_hours_fitness += 100
+                    self.total_fitness += 100
+                if index+1 == len(vigilant.total_hours_worked_by_week) and self.problem.last_week_is_not_complete:
+                    break
+                if hour_by_week < 40:
+                    self.assigned_vigilantes_fitness += 300
+                    self.total_fitness+= 300  
 
     def is_solution_complete(self):
         if self.__iteration < self.problem.total_sites:
             return True
-        #self.missingShiftsFormat(self.missingShiftsBySite)
+        self.calculate_fitness()
         return False
 
-    def update_Fitnees(self, objVigilantes: Vigilant, site, newSite,solucion):
-        solucion.Fitness -= objVigilantes.distancesBetweenPlacesToWatch[site]
-        solucion.Fitness += objVigilantes.distancesBetweenPlacesToWatch[newSite]
 
     
 

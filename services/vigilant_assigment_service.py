@@ -27,7 +27,7 @@ class Vigilant_assigment_service:
         return True          
         
     def is_available_on_shift(self, vigilant: Vigilant,shift: Shift):
-        shifts_vigilant:List[Shift] = vigilant.shifts
+        shifts_vigilant:List[Shift] = list(vigilant.shifts.keys())
         if len(shifts_vigilant) == 0:
             return True
         for index, assigned_shift in enumerate(shifts_vigilant):
@@ -44,7 +44,6 @@ class Vigilant_assigment_service:
         start_week_of_shift = math.floor(shift.shift_start/168)
         end_week_of_shift  =  math.floor(shift.shift_end/168)
         total_hours_worked_by_vigilant_each_week = vigilant.total_hours_worked_by_week
-
         if start_week_of_shift == end_week_of_shift:
             if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                 return True
@@ -75,17 +74,16 @@ class Vigilant_assigment_service:
             if (endPeriod > 144+ (168*week)):
               return True
         return False
-   
-    def get_possible_vigilant_to_assign_by_distance(self,vigilantes: List[Vigilant], order_vigilantes_index_in_place_by_distance:List[int], start_index: int , end_index) -> List[Vigilant]:
-        order_vigilants_by_distance = []
-        for vigilant_id in order_vigilantes_index_in_place_by_distance[start_index:end_index]:
-            order_vigilants_by_distance.append(vigilantes[vigilant_id-1])
-        # dict_vigilants_distance = Vigilant_assigment_service.get_order_vigilantes_index_in_place_by_distance(vigilantes, site_id)
-        # vigilants_id = aleatory.get_ramdon_for_list(0, settings.WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE, dict_vigilants_distance)
-        return order_vigilants_by_distance
 
-    def get_order_vigilantes_index_in_place_by_distance(self, site_id: int) -> Dict:
-        return self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id -1 ]
+    def check_if_vigilant_has_missing_hours(self, vigilant: Vigilant):
+        for hour_by_week in vigilant.total_hours_worked_by_week:
+             if hour_by_week < 40:
+                 return True
+        return False
+
+    def get_order_vigilantes_index_in_place_by_distance(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
+        index_vigilants = [vID for vID in self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id -1] if vigilantes[vID-1].default_place_to_look_out == site_id or vigilantes[vID-1].default_place_to_look_out == -1]
+        return [v for v in vigilantes if v.id in index_vigilants]
 
     def obtain_vigilants_in_default_for_site(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
         if site_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants:

@@ -6,7 +6,7 @@ from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
 #from utils.print_sites_xls import generateResultBySite
 #from utils.print_vigilantes_xls import generateResultByVigilant
-#from utils.print_xls import generate_results
+from utils.print_xls import generate_results
 from dominio.model.problem import DataSites, DataVigilantes
 import time
 import json
@@ -15,7 +15,7 @@ class GenerateShiftView:
     def __init__(self, path_site: str, path_vigilantes: str):
         self.__data_sites = self.create_sites(path_site)
         self.__data_vigilantes = self.create_vigilantes(path_vigilantes)
-        self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites, 2)
+        self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites)
         self.__algoritmGrasp = Grasp()
         self.__algoritmNSGA = None
 
@@ -37,9 +37,9 @@ class GenerateShiftView:
     def execute(self):
         print("Start")
         tic = time.perf_counter()
-        response: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 200)
+        solution: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 10)
         toc = time.perf_counter()
-        self.__generateResults(0, 10, response)
+        generate_results(solution)
         print(f"Time {toc - tic:0.4f} seconds")
 
 """

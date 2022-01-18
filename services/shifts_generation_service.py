@@ -7,14 +7,14 @@ class Shifts_generation_service:
     __END_HOUR_TO_WORK: int = 23
     __MAX_HOURS_TO_WORK: int= 24 
 
-    def create_shifts_by_site(self, sites: List[Site], total_weeks:int) -> List[List[Shift]]:
+    def create_shifts_by_site(self, sites: List[Site]) -> List[List[Shift]]:
         ideal_hours_amount_to_work = self.create_ideal_hours_amount_to_work()
         shifts_by_site : List[List[Shift]] = [] 
         for site in sites:
             if site.is_special_site:
-                shifts_by_site.append(self.create_shifts_in_special_site(site, total_weeks))
+                shifts_by_site.append(self.create_shifts_in_special_site(site, site.total_weeks))
             else:
-                shifts_by_site.append(self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, total_weeks))
+                shifts_by_site.append(self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks))
         return shifts_by_site
 
     def create_ideal_hours_amount_to_work(self) -> Dict[int,List[int]]: 
