@@ -1,5 +1,4 @@
 import re
-from typing import Dict
 
 def camel_case_to_snake_case(value):
     return re.sub(r"(?<=[a-z])(?=[A-Z])", "_", value).lower()

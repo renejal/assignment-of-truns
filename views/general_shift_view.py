@@ -1,11 +1,6 @@
-#from dominio.Metaheuristics.GRASP import Grasp
-#from data.SiteDataFile import SiteDataFile
-#from data.VigilantsDataFile import VigilantsDataFile
 from dominio.Metaheuristics.GRASP import Grasp
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
-#from utils.print_sites_xls import generateResultBySite
-#from utils.print_vigilantes_xls import generateResultByVigilant
 from utils.print_xls import generate_results
 from dominio.model.problem import DataSites, DataVigilantes
 import time
@@ -26,7 +21,6 @@ class GenerateShiftView:
         json_file.close()
         return DataSites.from_dict(json_problem).data_sites
 
-
     def create_vigilantes(self, path):
         json_vigilantes = None
         with open(path) as json_file:
@@ -37,22 +31,7 @@ class GenerateShiftView:
     def execute(self):
         print("Start")
         tic = time.perf_counter()
-        solution: Solution = self.__algoritmGrasp.Execute(self.__myProblem, 0, 10)
+        solution: Solution = self.__algoritmGrasp.Execute(self.__myProblem)
         toc = time.perf_counter()
         generate_results(solution)
         print(f"Time {toc - tic:0.4f} seconds")
-
-"""
-    def __generateResults(self, CurrentEFOs, MaxEFOs, response: Solution):
-        if CurrentEFOs == 0:
-            self.__generateResults_xls('./views/FirstResult', response)
-        elif CurrentEFOs == MaxEFOs / 2:
-            self.__generateResults_xls('./views/FResults/HalfResult', response)
-        elif CurrentEFOs == MaxEFOs - 1:
-            self.__generateResults_xls('./views/Results/FinalResult', response)
-
-    def __generateResults_xls(self, path, solution):
-        generate_results(solution)
-        generateResultBySite(self.__vigilantes.cantVigilantsByPeriod, path, solution)
-        generateResultByVigilant(path, solution)
-"""

@@ -11,8 +11,8 @@ class Tweak_service:
 
 
     def Tweak(self, solution: Solution):
-        solution = self.missing_shifts_tweak(solution)
-        solution.calculate_fitness()
+        # solution = self.missing_shifts_tweak(solution)
+        # solution.calculate_fitness()
         #solution = self.tweakVigilants(solution)
         #self.calculateFitness(solution)
         return solution
@@ -33,6 +33,8 @@ class Tweak_service:
             for iteration in range(shift.necesary_vigilantes - len(shift.assigment_vigilantes)):
                 for vigilant in vigilantes:    
                     if vigilant is not assigned_vigilantes_in_actual_shift and self.vigilant_assigment_service.is_vigilant_avaible(vigilant, shift):
+                        if site_id not in vigilant.sites_to_look_out:
+                            vigilant.assign_site(site_id)
                         vigilant.assign_shift(shift, site_id)
                         shift.add_vigilant(vigilant.id)
                         assigned_vigilantes_in_actual_shift.append(vigilant.id)
@@ -60,6 +62,7 @@ class Tweak_service:
     def missing_shifts_tweak(self, solution: Solution) -> Solution:
         vigilantes_with_missing_hours: List[Vigilant] = self.get_vigilantes_with_missing_hours(solution.vigilantes_schedule)
         #Asignar a los turnos los vigilantes que tienen menos de 40 horas en el mismo sitio
+        self.vigilant_assigment_service._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = 48
         for site in solution.sites_schedule:
              vigilantes = [x for x in vigilantes_with_missing_hours if site.site_id in x.sites_to_look_out]
              self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)

@@ -3,10 +3,6 @@ import typing
 import datetime
 import enum
 from inspect import isclass
-import dateutil.parser
-from dateutil.tz import tzutc
-import re
-import isodate
 from .name_conversion import camel_case_to_snake_case, snake_case_to_camel_case
 from .datetime_parsing import iso_from_datetime, parse_iso_datetime
 
@@ -56,10 +52,7 @@ class FromDictMixin:
                 if matching_internal_field.type in built_in_types:
                     internal_value = value
                 elif matching_internal_field.type == datetime.datetime and value:
-                    #internal_value = dateutil.parser.isoparse(value)
                     internal_value = parse_iso_datetime(value)
-                    #internal_value = isodate.parse_datetime(value)
-                    #internal_value = dateutil.parser.isoparse(value)
                 elif isclass(matching_internal_field.type) and issubclass(matching_internal_field.type, enum.Enum):
                     internal_value = matching_internal_field.type(value)
                 elif (hasattr(matching_internal_field.type, 'from_dict') and callable(matching_internal_field.type.from_dict)):

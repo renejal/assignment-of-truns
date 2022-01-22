@@ -13,7 +13,7 @@ shifts_generation_service = Shifts_generation_service()
 @pytest.mark.parametrize("site, ideal_hours_amount_to_work, expected", [
     #Aleatory day case
     (      
-        Site("",1,False,[
+        Site("",1,1,False,[
             Week("", [
                 Day("",2, [
                     workingDay("",6,23,0)
@@ -32,7 +32,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #Full day working 24 hours case with start at 0 a.m
     (      
-        Site("",1,False,[
+        Site("",1,1,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",0,23,0)
@@ -52,7 +52,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #Full day working 24 hours case with start at 6 a.m
     (      
-        Site("",1,False,[
+        Site("",1,1,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",6,23,0)
@@ -75,7 +75,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #Full 2 week working ending at 6 from other day
     (      
-        Site("",1,False,[
+        Site("",1,3,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",6,23,0)
@@ -180,7 +180,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #Full 2 week working ending at end sunday
     (      
-        Site("",1,False,[
+        Site("",1,2,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",6,23,0)
@@ -279,7 +279,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #Full 2 week working ending at end sunday and startingn at 0
     (      
-        Site("",1,False,[
+        Site("",1,2,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",0,23,0)
@@ -379,7 +379,7 @@ shifts_generation_service = Shifts_generation_service()
     ),
     #create alatory strange schedule case
     (      
-        Site("",1,False,[
+        Site("",1,2,False,[
             Week("", [
                 Day("",0, [
                     workingDay("",6,23,0)
@@ -468,7 +468,7 @@ shifts_generation_service = Shifts_generation_service()
         ]
     ),
     (
-        Site("",1,False,[
+        Site("",1,2,False,[
             Week("", [
                 Day("",1, [
                     workingDay("",0,23,0)
@@ -510,7 +510,7 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
 @pytest.mark.parametrize("site, expected", [
     #Aleatory day case
     (
-        Site("",1,True,[
+        Site("",1,1,True,[
             Week("", [
                 Day("",1, [
                     workingDay("",6,14,0),
@@ -525,7 +525,7 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
     ),
     #Full day working 24 hours case with start at 0 a.m
     (
-        Site("",1,True,[
+        Site("",1,1,True,[
                 Week("", [
                     Day("",1, [
                         workingDay("",0,11,0),
@@ -540,7 +540,7 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
     ),
     #Full day working 24 hours case with start at 6 a.m
     (
-        Site("",1,True,[
+        Site("",1,1,True,[
                 Week("", [
                     Day("",0, [
                         workingDay("",6,17,0),
@@ -558,7 +558,7 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
     ),
     #Full 2 week working ending at 6 from other day
     (
-        Site("",1,True,[
+        Site("",1,3,True,[
                 Week("", [
                     Day("",0, [
                         workingDay("",6,17,0),
@@ -671,7 +671,7 @@ def test_create_normal_shifts_correctly(site: Site, ideal_hours_amount_to_work: 
     ),
     #Full 2 week working ending at end sunday
     (
-        Site("",1,True,[
+        Site("",1,2,True,[
                 Week("", [
                     Day("",0, [
                         workingDay("",6,17,0),

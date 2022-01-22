@@ -1,4 +1,3 @@
-import pytz
 import datetime
 import dateutil.parser
 

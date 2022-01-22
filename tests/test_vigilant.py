@@ -6,17 +6,17 @@ from dominio.model.shift import Shift
 
 @pytest.mark.parametrize("vigilant, shift, expected",[
     (
-        Vigilant(0,-1,[],[],0,[40,0],-1),
+        Vigilant(0,-1,[],[],[],0,[40,0],-1),
         Shift(0,7,3),
         [48,0]
     ),
     (
-        Vigilant(0,-1,[],[],0,[40,40],-1),
+        Vigilant(0,-1,[],[],[],0,[40,40],-1),
         Shift(166,173,3),
         [42,46]
     ),
     (
-        Vigilant(0,-1,[],[],0,[0,0],-1),
+        Vigilant(0,-1,[],[],[],0,[0,0],-1),
         Shift(164,173,3),
         [4,6]
     )

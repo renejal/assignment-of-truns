@@ -1,16 +1,13 @@
-from dominio.model.site import Site
-from conf import settings
+from dominio.model.shift_place import Shift_place
 from dominio.vigilant_assigment import VigilantAssigment
-from utils import aleatory
-from typing import List, Dict
-import copy
+from typing import List
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 import math
 
 class Vigilant_assigment_service:
 
-    _MINIMUN_BREAK_DURATION: int = 18
+    _MINIMUN_BREAK_DURATION: int = 16
     _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: int = 48
 
     vigilant_assigment: VigilantAssigment
@@ -23,23 +20,9 @@ class Vigilant_assigment_service:
             return False
         if self.is_available_on_shift(vigilant, shift) == False:
             return False 
-        #Check work on sunday
+        #TODO work on sunday
         return True          
-        
-    def is_available_on_shift(self, vigilant: Vigilant,shift: Shift):
-        shifts_vigilant:List[Shift] = list(vigilant.shifts.keys())
-        if len(shifts_vigilant) == 0:
-            return True
-        for index, assigned_shift in enumerate(shifts_vigilant):
-            if shift.shift_end < assigned_shift.shift_start:
-                if index > 0:
-                    return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift_start and shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index-1].shift_end
-                return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift_start
-        return shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index].shift_end
 
-
-     #Check restrictions   
-    
     def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
         start_week_of_shift = math.floor(shift.shift_start/168)
         end_week_of_shift  =  math.floor(shift.shift_end/168)
@@ -52,29 +35,18 @@ class Vigilant_assigment_service:
             if (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(168*end_week_of_shift)-shift.shift_start) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and (total_hours_worked_by_vigilant_each_week[end_week_of_shift]+shift.shift_end-(168*end_week_of_shift - 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                 return True
         return False
-    
-    def canWorkThisSunday(self, startPeriod, endPeriod):
-        weekToCheck = math.floor(startPeriod/168)
-        if self.thereIsAPeriodInSunday(startPeriod, endPeriod, weekToCheck):
-            return self.workLastSunday(weekToCheck)
-        return True
-    
-    def workLastSunday(self,week):
-        if week == 0:
+            
+    def is_available_on_shift(self, vigilant: Vigilant,shift: Shift):
+        shifts_vigilant:List[Shift_place] = vigilant.shifts
+        if len(shifts_vigilant) == 0:
             return True
-        for period in range(168*week, (168*week)-24, -1):
-            if self.shifts[period] != 0:
-                return False
-        return True
+        for index, assigned_shift in enumerate(shifts_vigilant):
+            if shift.shift_end < assigned_shift.shift.shift_start:
+                if index > 0:
+                    return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift.shift_start and shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index-1].shift.shift_end
+                return shift.shift_end + self._MINIMUN_BREAK_DURATION <  assigned_shift.shift.shift_start
+        return shift.shift_start - self._MINIMUN_BREAK_DURATION > shifts_vigilant[index].shift.shift_end
     
-    def thereIsAPeriodInSunday(self,startPeriod,endPeriod,week):
-        if (startPeriod > 144+ (168*week) and startPeriod < 168*(week+1)):
-            return True
-        else:
-            if (endPeriod > 144+ (168*week)):
-              return True
-        return False
-
     def check_if_vigilant_has_missing_hours(self, vigilant: Vigilant):
         for hour_by_week in vigilant.total_hours_worked_by_week:
              if hour_by_week < 40:
@@ -88,7 +60,7 @@ class Vigilant_assigment_service:
     def obtain_vigilants_in_default_for_site(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
         if site_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants:
             expected_vigilantes_by_place: List[Vigilant] = []
-            for vigilant_id in  self.vigilant_assigment.expected_places_to_look_out_by_vigilants.get(site_id):
+            for vigilant_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants.get(site_id):
                 expected_vigilantes_by_place.append(vigilantes[vigilant_id-1])
             return expected_vigilantes_by_place
         return None

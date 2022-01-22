@@ -1,19 +1,13 @@
+import operator
 from typing import Dict, List
 from dominio.model.site import Site
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
-import operator
 from services.shifts_generation_service import Shifts_generation_service
-
+from conf.settings import MAX_TOTAL_WEEKS
 
 class VigilantAssigment:
-    # maxShiftDuration: int = 12
-    # minShiftDuration: int = 4
-    # minBreakDuration: int = 18
-    # maxOvertimeWorkHoursPerWeek=12
-    # minWorkHoursPerWeek=40
-    # idealWorkHoursPerWeek=48
-
+    
     vigilantes: List[Vigilant]
     sites: List[Site]
     total_vigilantes: int
@@ -23,10 +17,8 @@ class VigilantAssigment:
     order_sites_by_id_vigilantes_distance: List[List[int]]
     shifts_by_sites: List[List[Shift]]
 
-    last_week_is_not_complete: bool = False
-
-    __DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
-    max_total_weeks = 2
+    DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
+    MAX_TOTAL_WEEKS = MAX_TOTAL_WEEKS
 
     def __init__(self, vigilantes: List[Vigilant], sites: List[Site]) -> None:
         self.vigilantes = vigilantes
@@ -38,8 +30,8 @@ class VigilantAssigment:
 
     def initProblem(self) -> None:
         for vigilant in self.vigilantes:
-            vigilant.set_total_hours_worked_by_week(self.max_total_weeks)
-            if vigilant.default_place_to_look_out != self.__DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
+            vigilant.set_total_hours_worked_by_week(self.MAX_TOTAL_WEEKS)
+            if vigilant.default_place_to_look_out != self.DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expected_places_to_look_out_by_vigilants:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out].append(vigilant.id)
                 else:

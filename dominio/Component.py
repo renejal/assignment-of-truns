@@ -1,4 +1,5 @@
 from dominio.model.shift import Shift
+from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List
 
 from dominio.model.vigilant import Vigilant
@@ -28,17 +29,18 @@ class Component:
         for shift in self.site_schedule:
             if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
                 self.missing_shifts.append(shift)
-                self.missing_shifts_fitness+=  1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-                self.total_fitness+= 1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))  
+                self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))  
         if self.assigned_Vigilantes == None:
             return
         for vigilant in self.assigned_Vigilantes:
             if vigilant.default_place_to_look_out !=1 and vigilant.default_place_to_look_out != self.site_id and vigilant.closet_place != self.site_id:
-                self.distance_fitness+= 500
-                self.total_fitness+= 500  
-            for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
-                if index-1 == len(vigilant.total_hours_worked_by_week) and VigilantAssigment.last_week_is_not_complete:
-                    break
-                if hour_by_week < 40:
-                    self.assigned_vigilantes_fitness += 300
-                    self.total_fitness+= 300  
+                self.distance_fitness+= DISTANCE_FITNESS_VALUE
+                self.total_fitness+= DISTANCE_FITNESS_VALUE  
+            #TODO Revisar si es mejor calcular las horas por semaana si trabajo o algo
+            for index,hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
+                # if index-1 == len(vigilant.total_hours_worked_by_week):
+                #     break
+                if hour_by_week < 40 and hour_by_week > 0:
+                    self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
+                    self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE

@@ -1,12 +1,12 @@
+import copy 
 from typing import List
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
-from random import random
 import random
 from dominio.vigilant_assigment import VigilantAssigment
-import copy 
 from services.site_schedule_service import Site_schedule_service
+from conf.settings import MISSING_FITNESS_VALUE,DISTANCE_FITNESS_VALUE,EXTRA_HOURS_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALUE
 
 class Solution:
 
@@ -21,7 +21,6 @@ class Solution:
     total_fitness: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
-        random.seed(Aletory) ## PROBAR SI AFECTA EL ALEATORIO Y SI NO ELIMINARLO
         self.site_schedule_service = Site_schedule_service(problem)
         self.problem = problem
         self.sites_schedule = []
@@ -38,8 +37,8 @@ class Solution:
             components.append(component)
         return components
 
-    def get_best_components(self, components: List[Component], cantRestrictedComponets: int):
-        for iteration in range(cantRestrictedComponets):
+    def get_best_components(self, components: List[Component], restricted_components_amount: int):
+        for iteration in range(restricted_components_amount):
             swapped = False
             for pos in range(len(components)-1-iteration):
                 if(components[pos + 1].total_fitness < components[pos].total_fitness):
@@ -50,8 +49,8 @@ class Solution:
             if swapped == False:
                 break
             pass
-        restrictedList = components[:cantRestrictedComponets]
-        return restrictedList[random.randint(0, cantRestrictedComponets-1)]
+        restrictedList = components[:restricted_components_amount]
+        return restrictedList[random.randint(0, restricted_components_amount-1)]
 
     def merge_component(self, component : Component):
         self.sites_schedule.append(component)
@@ -60,6 +59,12 @@ class Solution:
             return
         for vigilant in component.assigned_Vigilantes:
             self.vigilantes_schedule[vigilant.id-1] = vigilant
+
+    def is_solution_complete(self):
+        if self.__iteration < self.problem.total_sites:
+            return True
+        self.calculate_fitness()
+        return False
 
     def calculate_fitness(self):
         self.missing_shifts_fitness = 0
@@ -70,29 +75,22 @@ class Solution:
         for site in self.sites_schedule:
             for shift in site.missing_shifts:
                 if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
-                    self.missing_shifts_fitness+= 1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-                    self.total_fitness+= 1000*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                    self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                    self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
         for vigilant in self.vigilantes_schedule:
             for site_to_look_out in vigilant.sites_to_look_out:
                 if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
-                    self.distance_fitness+= 500    
-                    self.total_fitness+= 1000  
+                    self.distance_fitness+= DISTANCE_FITNESS_VALUE    
+                    self.total_fitness+= DISTANCE_FITNESS_VALUE  
             for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hour_by_week > 48:
-                    self.extra_hours_fitness += 100
-                    self.total_fitness += 100
-                if index+1 == len(vigilant.total_hours_worked_by_week) and self.problem.last_week_is_not_complete:
-                    break
-                if hour_by_week < 40:
-                    self.assigned_vigilantes_fitness += 300
-                    self.total_fitness+= 300  
-
-    def is_solution_complete(self):
-        if self.__iteration < self.problem.total_sites:
-            return True
-        self.calculate_fitness()
-        return False
-
+                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
+                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
+                # if index+1 == len(vigilant.total_hours_worked_by_week):
+                #     break
+                if hour_by_week < 40 and hour_by_week > 0:
+                    self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
+                    self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
 
     
 

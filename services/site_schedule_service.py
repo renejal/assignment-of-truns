@@ -18,23 +18,19 @@ class Site_schedule_service:
         assigned_vigilantes_in_actual_shift: List[int] = []
         assigned_vigilantes_on_place: List[Vigilant] = self.vigilant_assigment_service.obtain_vigilants_in_default_for_site(site_id, vigilantes)
         order_vigilantes_in_place_by_distance: List[Vigilant] = self.vigilant_assigment_service.get_order_vigilantes_index_in_place_by_distance(site_id, vigilantes)
-        #random.shuffle(shifts)
-        # my = shifts[:3]
-        # random.shuffle(my)
-        # shifts[:3] = my
+        # random.shuffle(shifts)
+        my = shifts[:15]
+        random.shuffle(my)
+        shifts[:15] = my
         for shift in shifts:
             assigned_vigilantes_in_actual_shift.clear()
             for iteration in range(shift.necesary_vigilantes):
                 vigilant_to_assign: Vigilant = self.get_vigilant_avaiable(shift, vigilantes, assigned_vigilantes_in_actual_shift , assigned_vigilantes_on_place , order_vigilantes_in_place_by_distance)
                 if vigilant_to_assign != None:
-                    vigilant_to_assign.assign_shift(shift, site_id)
-                    shift.add_vigilant(vigilant_to_assign.id)
-                    assigned_vigilantes_in_actual_shift.append(vigilant_to_assign.id)
-                    if vigilant_to_assign not in assigned_vigilantes_on_place:
-                        vigilant_to_assign.assign_site(site_id)
-                        assigned_vigilantes_on_place.append(vigilant_to_assign)
+                    self.assign_vigilant(site_id,shift,vigilant_to_assign, assigned_vigilantes_on_place)
+                    assigned_vigilantes_in_actual_shift.append(vigilant_to_assign.id)                    
         return Component(site_id,shifts,assigned_vigilantes_on_place)
-            
+    
     def get_vigilant_avaiable(self, shift: Shift, vigilantes : List[Vigilant], assigned_vigilants_in_actual_shift: List[int], assigned_vigilantes_on_place: List[Vigilant], order_vigilantes_in_place_by_distance: List[int]) -> Vigilant:                               
         vigilant_to_assign = self.get_vigilant_available_on_list(assigned_vigilantes_on_place, assigned_vigilants_in_actual_shift, shift)
         if vigilant_to_assign != None:
@@ -45,7 +41,7 @@ class Site_schedule_service:
             vigilant_to_assign = self.get_vigilant_available_on_list(possible_vigilantes_to_assign , assigned_vigilants_in_actual_shift, shift)
             if vigilant_to_assign != None:
                 return vigilant_to_assign
-            start_index_to_select_vigilantes+= WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE + 1
+            start_index_to_select_vigilantes+= WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE
         return None
     
     def get_vigilant_available_on_list(self, vigilantes: List[Vigilant], assigned_vigilants_in_actual_shift:List[int], shift: Shift) -> Vigilant:
@@ -55,4 +51,10 @@ class Site_schedule_service:
                 return possible_vigilant_to_assing
         return None
 
+    def assign_vigilant(self, site_id:int, shift: Shift, vigilant_to_assign: Vigilant, assigned_vigilantes_on_place: List[Vigilant]):
+        if vigilant_to_assign not in assigned_vigilantes_on_place:
+            vigilant_to_assign.assign_site(site_id)
+            assigned_vigilantes_on_place.append(vigilant_to_assign)
+        vigilant_to_assign.assign_shift(shift, site_id)
+        shift.add_vigilant(vigilant_to_assign.id)
    

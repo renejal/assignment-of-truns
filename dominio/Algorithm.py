@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class Algorithm(ABC):
     MaxEFOs = int
     CurrentEFOs = 0
