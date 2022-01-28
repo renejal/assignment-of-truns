@@ -92,7 +92,8 @@ class Solution:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
 
-    
+
+
 
    
 

@@ -3,18 +3,18 @@ from dominio.Solution import Solution
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from services.vigilant_assigment_service import Vigilant_assigment_service
+import random
 from utils import aleatory
 
 class Tweak_service:
 
     vigilant_assigment_service: Vigilant_assigment_service = Vigilant_assigment_service(None)
 
-
-    def Tweak(self, solution: Solution):
+    def Tweak(self, solution: Solution) -> Solution:
         # solution = self.missing_shifts_tweak(solution)
         # solution.calculate_fitness()
-        #solution = self.tweakVigilants(solution)
-        #self.calculateFitness(solution)
+        # solution = self.vigilants_tweak(solution)
+        # solution.calculate_fitness()
         return solution
     
     def get_vigilantes_with_missing_hours(self, vigilantes: List [Vigilant]) -> List[Vigilant]:
@@ -81,7 +81,7 @@ class Tweak_service:
             self.assign_extra_hours_on_vigilantes(vigilantes, site.site_id, site.missing_shifts)
         return solution
 
-    def tweakVigilants(self, solucion):
+    def vigilants_tweak(self, solucion):
         if self.is_empty(solucion.vigilantesForPlaces):
             listSite = aleatory.get_aleatory(0, len(solucion.vigilantesForPlaces) - 1, 2)
             vigilantOne = aleatory.get_aleatory(0, len(solucion.vigilantesForPlaces[listSite[0]]), 1)

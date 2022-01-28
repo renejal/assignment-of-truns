@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-from dominio.Solution import Solution
+from dominio.Solution import Solution 
 
 PATH_FILE: str = "./dataset/results/Site.xlsx"
 TOTAL_HOURS:int = 24
 TOTAL_DAYS: int = 7
 
-def generate_excel_site(solution : Solution):
+def generate_excel_site(solution :  Solution):
     writer = pd.ExcelWriter(PATH_FILE, engine='openpyxl')
     wb = writer.book
     for site in solution.sites_schedule:

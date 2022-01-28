@@ -66,7 +66,7 @@ class VigilantAssigment:
     def get_shifts_on_site(self, site_id:int) -> List[Shift]:
         return self.shifts_by_sites[site_id-1]
 
-    def order_sites_by_vigilantes_distance(self,vigilants: List[Vigilant], total_sites: int) -> None:
+    def order_sites_by_vigilantes_distance(self, vigilants: List[Vigilant], total_sites: int) -> None:
         order_sites_by_id_vigilantes_distance = []
         for site in range(total_sites):
             order_site_by_vigilantes_distance = self.order_site_by_vigilantes_distance(vigilants,site)
