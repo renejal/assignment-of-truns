@@ -19,6 +19,7 @@ class Solution:
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
+    id: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
         self.site_schedule_service = Site_schedule_service(problem)

@@ -1,6 +1,8 @@
 import random
 import copy
 from typing import List, Dict
+
+from isodate import D_DEFAULT
 from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
@@ -11,31 +13,55 @@ class Population:
     __soluction_list: List[SoluctionNsgaII]
     __decendets_list: List[SoluctionNsgaII]
     __population: List[SoluctionNsgaII]
-    __frentes: list[SoluctionNsgaII]
+    __frentes: Dict[int,List[SoluctionNsgaII]]
 
     def not_dominate_sort(self, population: List[SoluctionNsgaII]):
-        frentes: List[SoluctionNsgaII] = []
-        dominance_list: List[SoluctionNsgaII] = []
-        no_dominance_list: List[SoluctionNsgaII] = []
-        """ese metodo es el encarda de hacer la ordenameinto no dominad haciendo uso del concepto frente de pareto y reglas de dominancia"""
-        for i in range(len(population)):
+        self.calculate_soluction_dominated(population)
+        self.calculate_soluction_for_frentes(population)
+                 
+    def calculate_soluction_for_frentes(self,soluction):
+        range = 1
+        while self.get_soluction_the_frente_whit_range(range):
+            soluctions_of_range: List[SoluctionNsgaII] = self.get_soluction_the_frente_whit_range(range)
+            for soluction_dominate in soluctions_of_range:
+                for soluction in soluction_dominate.dominate: 
+                    soluction.dominate_me -=1
+                    if soluction.dominate_me == 0:
+                        soluction.range += 1
+                        self.add_frente(soluction, range + 1)
+            range += 1
+       
+    def calculate_soluction_dominated(self, population: List[SoluctionNsgaII]):
+         for i in range(len(population)):
             population[i].dominate = [] # nueva lista vacia
             population[i].__dominate_me_account= 0 # numero de solucion que la dominan
             population[i].range = -1
             for j in range(len(population)):
                 if i == j: continue
-                if population[i].is_dominate(population[j]):
-                    population[i].add_dominate(population[j])
+                if self.to_dominate(population[i],population[j]):
+                    population[i].add_dominate(population[j].id)
                 else:
-                    if population[j].is_dominate(population[i]):
+                    if self.to_dominate(population[j],population[i]):
                         population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
             if population[i].dominate_me == 0:
                 population[i].range = 1
-                # todo: enterner bie nel algoritmo saber en la linea 19 del libre el frente esta siendo asignado a la posion 1 del vector o
-                # como es que lo hace. homework
-                
+                self.add_frente(population[i],1)
 
+    def add_dominate(self, soluction_dominate: SoluctionNsgaII, soluction_dominate_me: SoluctionNsgaII):
+        "add tha dominate soluction a tha list of soluction that dominates it"
+    
+    def add_frente(self, soluction: SoluctionNsgaII, range: int):
+        dominate = self.__frentes.get(range) 
+        if not dominate:
+            self.__frentes[range] = [soluction]
+        else:
+            if soluction not in dominate:
+                dominate.append(soluction)
 
+    def get_soluction_the_frente_whit_range(self, range: int) -> SoluctionNsgaII:
+        return self.__frentes.get(range)
+        
+        
     def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[SoluctionNsgaII]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
@@ -63,12 +89,12 @@ class Population:
                 list_children.append(children)
         return list_children
 
-    def to_dominate(self, soluction_one, soluction_two):
-        """LA REGLA DE DOMINANCIA FUNCIOA COMO LA SOLUCION QUE MENORS TENGA VALOR DOMINA A LA OTRAST Y DADO
-        EL CASO UNO LLEGAR SER MAYOR NO SERIA DOMINADA"""
-        """se define is la solucion es dominada"""
-        
-        pass
+    def to_dominate(self, soluction_one: SoluctionNsgaII, soluction_two: SoluctionNsgaII):
+        "compare if tha soluction one dominate a the soluction two"
+        response = False
+        if soluction_one.calculate_fitness() < soluction_two.calculate_fitness:
+            response = True 
+        return response
 
     def order_by(self, R: List[SoluctionNsgaII]):
         """se ordenas las soluciones dependiendo del rango
