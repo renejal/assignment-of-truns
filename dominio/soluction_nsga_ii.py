@@ -7,16 +7,16 @@ class SoluctionNsgaII(Solution):
 
     __dominate: List[int] 
     __dominate_me_account: int 
-    __range: int
+    __range_soluction: int
 
     # def is_dominate(self, soluction: SoluctionNsgaII):
     #     # se obitene el finter y se compara si domina o no la solucioon
     #     if super().calculate_fitness < soluction.
     #     pass
 
-    def add_dominate(self, soluction_id):
-        if soluction_id is not self.__dominate:
-            self.__dominate.append(soluction_id)
+    def add_dominate(self, soluction):
+        if soluction is not self.__dominate:
+            self.__dominate.append(soluction)
 
     # get 
     
@@ -29,8 +29,8 @@ class SoluctionNsgaII(Solution):
         return self.__dominate_me
 
     @property
-    def range(self):
-        return self.__range
+    def range_soluction(self):
+        return self.__range_soluction
 
     # set
     @dominate.setter

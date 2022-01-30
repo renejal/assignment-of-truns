@@ -12,16 +12,15 @@ class NsgaII(Algorithm):
     num_decendents = 11
 
     def Execute(self, problem: VigilantAssigment):
-        P: List[SoluctionNsgaII] = []
-        population: List[SoluctionNsgaII] = []
-        population_service = Population()
-        parents = population_service.inicialize_population(problem, self.num_soluciones)
+        population = Population()
+        population_parents: List[SoluctionNsgaII] = population.inicialize_population(problem, self.num_soluciones)
         while self.CurrentEFOs < self.MaxEFOs:
-            children = population_service.generate_decendents(parents, self.num_decendents)
-            population = population_service.union_soluction(parents, children)
-            population = population_service.not_dominate_sort(population)
-            parents = None # rango = 1
-            for i in range(len(population)):
+            population_children = population.generate_decendents(population_parents, self.num_decendents)
+            union_populantion = population.union_soluction(population_parents, population_children)
+            population.not_dominate_sort(union_populantion)
+            population_parents = [] 
+            rango = 1
+            while population.is_soluction_complete(population_parents):
                 pass
                 
 
