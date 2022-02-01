@@ -1,4 +1,3 @@
-from curses.ascii import SO
 from typing import List, Dict
 from xmlrpc.client import Boolean
 from dominio.Solution import Solution
@@ -8,6 +7,7 @@ class SoluctionNsgaII(Solution):
     __dominate: List[int] 
     __dominate_me_account: int 
     __range_soluction: int
+    __objetives: int
 
     # def is_dominate(self, soluction: SoluctionNsgaII):
     #     # se obitene el finter y se compara si domina o no la solucioon
@@ -19,7 +19,10 @@ class SoluctionNsgaII(Solution):
             self.__dominate.append(soluction)
 
     # get 
-    
+    @property
+    def objectives_to_optimize(self):
+       return self.objetives_to_optimize 
+
     @property
     def dominate(self, position):
         return self.__dominate

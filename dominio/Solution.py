@@ -19,6 +19,7 @@ class Solution:
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
+    objectives_to_optimize: list[int]
     id: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
@@ -92,16 +93,4 @@ class Solution:
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
-
-
-
-
-   
-
-    
-
-    
-
-    
-
-    
+        self.objectives_to_optimize = [self.missing_shifts_fitness, self.distance_fitness,self.extra_hours_fitness,self.assigned_vigilantes_fitness]

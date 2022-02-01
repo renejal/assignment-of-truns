@@ -2,6 +2,8 @@ import random
 import copy
 from re import I
 from typing import List, Dict
+from urllib import response
+from xmlrpc.client import boolean
 from isodate import D_DEFAULT
 from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.vigilant_assigment import VigilantAssigment
@@ -12,58 +14,26 @@ from conf import settings
 class Population():
 
     __finnest: int
-    # __soluction_list: List[SoluctionNsgaII]
-    # __decendets_list: List[SoluctionNsgaII]
-    # __population: List[SoluctionNsgaII]
-    # __frentes: Dict[int,List[SoluctionNsgaII]]
-    def is_soluction_complete(self, population):
-        pass
-        
+    __soluction_list: List[SoluctionNsgaII]
+    __decendets_list: List[SoluctionNsgaII]
+    __populations: List[SoluctionNsgaII]
+    __num_soluction: int 
 
-    @staticmethod             
-    def not_dominate_sort(population: List[SoluctionNsgaII]):
-        population: List[SoluctionNsgaII]
-        frentes: Dict[int,List[SoluctionNsgaII]]
-        Population().calculate_soluction_dominated(population, frentes)
-        Population().calculate_soluction_for_frentes(population, frentes)
-        return frentes
+    def __init__(self, problem: VigilantAssigment, num_soluction: int):
+        self.__num_soluction = num_soluction
+        self.__populations= self.inicialize_population(problem, num_soluction)
+    
 
-    @staticmethod             
-    def calculate_soluction_for_frentes(soluction: SoluctionNsgaII, frentes: Dict[int, List[SoluctionNsgaII]]):
-        range_soluction = 1
-        while Population().get_soluction_the_frente_whit_range(range_soluction):
-            soluctions_of_range: List[SoluctionNsgaII] = Population().get_soluction_the_frente_whit_range(range_soluction)
-            for soluction_dominate in soluctions_of_range:
-                for soluction in soluction_dominate.dominate: 
-                    soluction.dominate_me -=1
-                    if soluction.dominate_me == 0:
-                        soluction.range += 1
-                        Population().add_frente(soluction, range_soluction+ 1)
-            range_soluction += 1
-
-        return frentes
-
-    @staticmethod 
-    def calculate_soluction_dominated(self, population: List[SoluctionNsgaII], frente: List[SoluctionNsgaII]):
-
-        for i in range(len(population)):
-            population[i].dominate = [] # nueva lista vacia
-            population[i].__dominate_me_account= 0 # numero de solucion que la dominan
-            population[i].range_soluction = -1
-            for j in range(len(population)):
-                if i == j: continue
-                if Population().to_dominate(population[i],population[j]):
-                    population[i].add_dominate(population[j].id)
-                else:
-                    if Population().to_dominate(population[j],population[i]):
-                        population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
-            if population[i].dominate_me == 0:
-                population[i].range_soluction = 1
-                Population().add_frente(population[i],1, frente)
+    def is_soluction_complete(self):
+        response = False 
+        if len(Population) < self.__num_soluction:
+           response = True 
+        return response
 
     def add_dominate(self, soluction_dominate: SoluctionNsgaII, soluction_dominate_me: SoluctionNsgaII):
-        "add tha dominate soluction a tha list of soluction that dominates it"
-        pass
+
+        "add tha domiNAte soluction a tha list oF soluction that dominates it"
+        pass 
     
     @staticmethod
     def add_frente(soluction: SoluctionNsgaII, soluction_range: int, frente: Dict[int,List[SoluctionNsgaII]]):
@@ -82,13 +52,15 @@ class Population():
     def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[SoluctionNsgaII]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
-        for k in range(soluction_number):
+        population: List[SoluctionNsgaII] = []
+        for i in range(soluction_number):
             S = SoluctionNsgaII(problem, settings)
             while S.is_solution_complete():
                 components = S.create_components(soluction_number)
-                component = components[random.randint(0, len(components))]
+                component = components[random.randint(0, len(components)-1)]
                 S.merge_component(component)
-            # self.population.append(S)
+            population.append(S)
+        return population 
 
     def generate_decendents(self, parents: List[SoluctionNsgaII], num_decendets_for_dad: int) -> List[SoluctionNsgaII]:
         """
@@ -107,11 +79,16 @@ class Population():
         return list_children
 
     @staticmethod
-    def to_dominate(soluction_one: SoluctionNsgaII, soluction_two: SoluctionNsgaII):
-        "compare if tha soluction one dominate a the soluction two"
+    def to_dominate(soluction_one: SoluctionNsgaII, soluction_two: SoluctionNsgaII)-> bool:
+        #TODO: test for method
         response = False
-        if soluction_one.calculate_fitness() < soluction_two.calculate_fitness:
-            response = True 
+        number_of_objetives = len(soluction_one.objectives_to_optimize)
+        for j in range(number_of_objetives):
+            if soluction_one.objectives_to_optimize[j] < soluction_two.objectives_to_optimize[j]:
+                response = True
+            else:
+                if soluction_one.objectives_to_optimize[j] < soluction_two.objectives_to_optimize[j]:
+                    return False
         return response
 
     def order_by(self, R: List[SoluctionNsgaII]):
@@ -121,13 +98,9 @@ class Population():
         TODO: ENTENDER EL ALGORITMO DE SHORTING PARA IMPELENTAR ESA FUNCION"""
         pass
 
-    def union_soluction(self, parents, children) -> List[SoluctionNsgaII]:
-        """se encarda de unir los padres y los hijos de una misma lista y luego la ordena porn RANGO"""
-        "return una lista unida de padres he hijos"
-        return  parents + children
-
-
-
+    @property
+    def populations(self):
+        return self.__populations
     def get_front_the_pareto(self):
         """el frende de pareto es se puede dividir en rangos
         rango 1 : para el conjunto de solucion del frente de pareto
