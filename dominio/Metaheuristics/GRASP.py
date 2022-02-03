@@ -10,7 +10,7 @@ class Grasp(Algorithm):
     MAX_EFOS: int = 10
     COMPONENTS_AMOUNT: int = 300
     RESTRICTED_LIST_AMOUNT_COMPONENT:int = 15
-    TWEAK_AMOUNT_REPETITIONS: int = 3
+    TWEAK_AMOUNT_REPETITIONS: int = 5
 
     def Execute(self, problem: VigilantAssigment):
         Best = None

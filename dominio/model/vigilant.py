@@ -39,10 +39,32 @@ class Vigilant(FromDictMixin):
         else:
             self.total_hours_worked_by_week[start_week_of_shift]+= (168*end_week_of_shift)-shift.shift_start
             self.total_hours_worked_by_week[end_week_of_shift]+= shift.shift_end - (168*end_week_of_shift - 1)
+    
+    def delete_hours_worked(self, shift:Shift) -> None:
+        self.total_hours_worked -= shift.shift_end - shift.shift_start + 1
+        start_week_of_shift = math.floor(shift.shift_start/168)
+        end_week_of_shift  =  math.floor(shift.shift_end/168)
+        if start_week_of_shift == end_week_of_shift:
+            self.total_hours_worked_by_week[start_week_of_shift]-= shift.shift_end - shift.shift_start + 1
+        else:
+            self.total_hours_worked_by_week[start_week_of_shift]-= (168*end_week_of_shift)-shift.shift_start
+            self.total_hours_worked_by_week[end_week_of_shift]-= shift.shift_end - (168*end_week_of_shift - 1)
 
     def set_total_hours_worked_by_week(self, weeks_amount:int):
         self.total_hours_worked_by_week = [0] * weeks_amount
 
+    def get_shifts_on_week(self,week) -> List[Shift_place]:
+        shifts_on_week = []
+        for shift in self.shifts:
+            actual_week = int(shift.shift.shift_start/168)+1
+            if actual_week > week:
+                return shifts_on_week
+            if actual_week == week:
+                shifts_on_week.append(shift)
+        return shifts_on_week
     
+    def remove_shift(self, shift: Shift_place):
+        self.delete_hours_worked(shift.shift)
+        self.shifts.remove(shift)
 
 
