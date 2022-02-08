@@ -34,9 +34,12 @@ class Grasp(Algorithm):
                 Best = S
             self.CURRENT_EFOS+=1
             print("Nueva  iteracion")
-        print(Best.total_fitness)
-        print(Best.distance_fitness)
-        print(Best.assigned_vigilantes_fitness)
+        
+        print("total:" + str(Best.total_fitness))
+        print("Missinig shifts:" + str(Best.missing_shifts_fitness))
+        print("Extra hours:" + str(Best.extra_hours_fitness))
+        print("Amount Vigilants:" + str(Best.assigned_vigilantes_fitness))
+        print("Distance:" + str(Best.distance_fitness))
         return Best
 
 

@@ -1,3 +1,4 @@
+from ast import Dict
 import dataclasses
 import math
 from typing import List
@@ -11,13 +12,16 @@ class Vigilant(FromDictMixin):
     default_place_to_look_out: int = -1
     distances: List[int] = dataclasses.field(default_factory=list)
     shifts: List[Shift_place] = dataclasses.field(default_factory=list)
-    sites_to_look_out: List[int] =  dataclasses.field(default_factory=list)
+    sites_to_look_out: dict[int, int] =  dataclasses.field(default_factory=dict)
     total_hours_worked: int = 0
     total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
     closet_place: int = -1
     last_shift: Shift = None
 
     def assign_shift(self, shift: Shift, site_id: int) -> None:
+        if site_id not in self.sites_to_look_out:
+            self.sites_to_look_out[site_id] = 0
+        self.sites_to_look_out[site_id] += 1
         self.assing_hours_worked(shift)
         if self.last_shift!= None and shift.shift_start < self.last_shift.shift_end:
             for index,shift_place in enumerate(self.shifts):
@@ -27,9 +31,6 @@ class Vigilant(FromDictMixin):
         self.shifts.append(Shift_place(shift,site_id))
         self.last_shift = shift
     
-    def assign_site(self, id_site: int) -> None:
-        self.sites_to_look_out.append(id_site)
-
     def assing_hours_worked(self, shift:Shift) -> None:
         self.total_hours_worked += shift.shift_end - shift.shift_start + 1
         start_week_of_shift = math.floor(shift.shift_start/168)
@@ -66,5 +67,8 @@ class Vigilant(FromDictMixin):
     def remove_shift(self, shift: Shift_place):
         self.delete_hours_worked(shift.shift)
         self.shifts.remove(shift)
+        self.sites_to_look_out[shift.site_id] -= 1
+        if self.sites_to_look_out[shift.site_id] == 0:
+            del self.sites_to_look_out[shift.site_id]
 
 

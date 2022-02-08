@@ -62,8 +62,6 @@ class Tweak_missing_shifts:
             for iteration in range(shift.necesary_vigilantes - len(shift.assigment_vigilantes)):
                 for vigilant in vigilantes:    
                     if vigilant is not assigned_vigilantes_in_actual_shift and self.vigilant_assigment_service.is_vigilant_avaible(vigilant, shift):
-                        if site_id not in vigilant.sites_to_look_out:
-                            vigilant.assign_site(site_id)
                         vigilant.assign_shift(shift, site_id)
                         shift.add_vigilant(vigilant.id)
                         assigned_vigilantes_in_actual_shift.append(vigilant.id)

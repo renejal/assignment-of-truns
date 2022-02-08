@@ -1,3 +1,4 @@
+import random
 from dominio.model.shift_place import Shift_place
 from dominio.vigilant_assigment import VigilantAssigment
 from typing import List
@@ -9,6 +10,7 @@ class Vigilant_assigment_service:
 
     _MINIMUN_BREAK_DURATION: int = 16
     _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: int = 48
+    _MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK: int = 56
 
     vigilant_assigment: VigilantAssigment
 
@@ -26,13 +28,14 @@ class Vigilant_assigment_service:
     def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
         start_week_of_shift = math.floor(shift.shift_start/168)
         end_week_of_shift  =  math.floor(shift.shift_end/168)
+        limit_working_hours = random.choice([self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,self._MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK])
         total_hours_worked_by_vigilant_each_week = vigilant.total_hours_worked_by_week
         if start_week_of_shift == end_week_of_shift:
-            if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+            if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= limit_working_hours:
                 return True
             return False
         else:
-            if (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(168*end_week_of_shift)-shift.shift_start) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and (total_hours_worked_by_vigilant_each_week[end_week_of_shift]+shift.shift_end-(168*end_week_of_shift - 1)) <= self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+            if (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(168*end_week_of_shift)-shift.shift_start) <= limit_working_hours and (total_hours_worked_by_vigilant_each_week[end_week_of_shift]+shift.shift_end-(168*end_week_of_shift - 1)) <= limit_working_hours:
                 return True
         return False
             

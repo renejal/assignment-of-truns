@@ -14,7 +14,7 @@ class Tweak_extra_hours:
     #deberia seguir con otro que quedo en menos prioridad.
     #Cuestionarse si shufleo y no les doy prioridad
     #Asignarle un shift a otro guardia con menos horas de trabajo
-    def extra_hours_tweak(self, solution: Solution):
+    def extra_hours_tweak(self, solution: Solution)-> Solution:
         #Empezar con aquellos guardias que tengan menos de 40 horas
         # con aquellos guardias que tengan entre 40 y 48 horas
         #Escoger guardias que tengan 0 horas trabajas.
