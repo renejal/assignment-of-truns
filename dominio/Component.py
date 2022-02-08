@@ -9,7 +9,7 @@ class Component:
     site_id: int
     site_schedule: List[Shift]
     missing_shifts: List[Shift]
-    assigned_Vigilantes: List[int] #No usar para futuras operaciones ya que este queda desactulizado, a medida de cada sitio, usar el vigilante de la solucion mejor
+    assigned_Vigilantes: List[Vigilant] #No usar para futuras operaciones ya que este queda desactulizado, a medida de cada sitio, usar el vigilante de la solucion mejor
     
     missing_shifts_fitness: int = 0
     distance_fitness: int = 0
