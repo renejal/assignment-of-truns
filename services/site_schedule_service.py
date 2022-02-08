@@ -53,7 +53,6 @@ class Site_schedule_service:
 
     def assign_vigilant(self, site_id:int, shift: Shift, vigilant_to_assign: Vigilant, assigned_vigilantes_on_place: List[Vigilant]):
         if vigilant_to_assign not in assigned_vigilantes_on_place:
-            vigilant_to_assign.assign_site(site_id)
             assigned_vigilantes_on_place.append(vigilant_to_assign)
         vigilant_to_assign.assign_shift(shift, site_id)
         shift.add_vigilant(vigilant_to_assign.id)

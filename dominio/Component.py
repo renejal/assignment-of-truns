@@ -1,9 +1,8 @@
 from dominio.model.shift import Shift
-from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, MISSING_FITNESS_VALUE
+from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List
 
 from dominio.model.vigilant import Vigilant
-from dominio.vigilant_assigment import VigilantAssigment
 
 class Component:
 
@@ -44,6 +43,9 @@ class Component:
             for index,hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
                 # if index-1 == len(vigilant.total_hours_worked_by_week):
                 #     break
+                if hour_by_week > 48:
+                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
+                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE
