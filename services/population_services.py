@@ -1,19 +1,64 @@
+import imp
 import copy
+import random
 from typing import List, Dict
+# from msilib.schema import Component
 from dominio.soluction_nsga_ii import SoluctionNsgaII
-from services.tweak_service import Tweak_service
+from dominio.Component import Component
+
 class PopulationServices:
 
     @staticmethod
-    def generate_decendents(parents: List[SoluctionNsgaII], num_decendets_for_fatherd: int) -> List[SoluctionNsgaII]:
-        list_children: list[SoluctionNsgaII] = []
-        for iteration in range(num_decendets_for_fatherd):
-            children: SoluctionNsgaII
-            for parent in parents:
-                "TODO: los hijos generados debe ser mejores que sus padres??"
-                children = Tweak_service().Tweak(copy.copy(parent))
-                list_children.append(children)
-        return list_children
+    def generate_decendents(population: List[SoluctionNsgaII], number_of_children: int) -> List[SoluctionNsgaII]:
+        childrens: list[SoluctionNsgaII] = []
+        while len(population)>1:
+            parents = PopulationServices.get_parents(population)
+            childrens.append(PopulationServices.mating_between_parents(copy.copy(parents[0]),copy.copy(parents[1]), number_of_children))
+        return childrens
+    
+    @staticmethod
+    def get_parents(parents: List[SoluctionNsgaII]) -> List[SoluctionNsgaII]:
+        response: List[SoluctionNsgaII] = []
+        response.append(parents.pop(random.randint(0, len(parents)-1)))
+        response.append(parents.pop(random.randint(0, len(parents)-1)))
+        return response
+
+    @staticmethod
+    def mating_between_parents(parent_one: SoluctionNsgaII, parent_two: SoluctionNsgaII, number_of_children) -> SoluctionNsgaII:
+        "maing between parent_one and parent"
+        childrens: List[SoluctionNsgaII] = []
+        for i in range(number_of_children):
+            id_get_parent_one: Component = parent_one.get_random_gen([])
+            id_get_parent_two: Component = parent_two.get_random_gen([id_get_parent_one.site_id])
+            childrens.append(PopulationServices.parent_crossing(parent_one, parent_two, id_get_parent_one, id_get_parent_two))  
+        return PopulationServices.get_best_children(childrens)
+        
+    @staticmethod
+    def get_best_children(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
+        best: SoluctionNsgaII  = None
+        for children in childrens:
+            if best == None:
+                best = children 
+                continue
+            if children.total_fitness > best.total_fitness:
+                best = children
+        return best
+
+            
+        pass
+    @staticmethod
+    def parent_crossing(children_one: SoluctionNsgaII, children_two: SoluctionNsgaII,
+                        id_gen_parent_one: Component, id_gen_parent_two: Component) -> SoluctionNsgaII:
+        "mulitple children are generaded for parent and select the best"
+        #2 se procedera a intercambiar los componentes, hay que tener en cuenta que cuadno se 
+        # haga el cruce los compoentes pueden estar repetidos en una misma soluction
+        #TODO: mira al forma de mejroa la obtecion de los genes que no sea tan aleatoria, podria ordenarse por los sitios los
+        #cuales no tiene sitios por default, tambien que los genes no se repitar cuado ya se an intercambiado si se necesita
+        children_one.mutation_component(id_gen_parent_two, id_gen_parent_one)
+        children_one.reparate_component(id_gen_parent_two, id_gen_parent_one)
+        children_two.mutation_component(id_gen_parent_one, id_gen_parent_two)
+        children_two.reparate_component(id_gen_parent_two, id_gen_parent_one)
+        return children_one, children_two
 
     @staticmethod
     def union_soluction(parents, children) -> List[SoluctionNsgaII]:

@@ -1,3 +1,5 @@
+from os import rename
+from pydoc import render_doc
 import random
 import copy
 from re import I
@@ -57,9 +59,13 @@ class Population():
             S = SoluctionNsgaII(problem, settings)
             while S.is_solution_complete():
                 components = S.create_components(soluction_number)
-                component = components[random.randint(0, len(components)-1)]
-                S.merge_component(component)
-            population.append(S)
+                restried_list = components 
+                if restried_list == None:
+                    continue
+                else:
+                    best_restricted_list = S.get_best_components(restried_list, settings.RESTRICTED_LIST_AMOUNT_COMPONENT)
+                    S.merge_component(best_restricted_list)            
+            population.append(S) 
         return population 
 
     def generate_decendents(self, parents: List[SoluctionNsgaII], num_decendets_for_dad: int) -> List[SoluctionNsgaII]:

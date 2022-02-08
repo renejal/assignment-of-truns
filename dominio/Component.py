@@ -11,7 +11,6 @@ class Component:
     site_schedule: List[Shift]
     missing_shifts: List[Shift]
     assigned_Vigilantes: List[Vigilant] #No usar para futuras operaciones ya que este queda desactulizado, a medida de cada sitio, usar el vigilante de la solucion mejor
-    
     missing_shifts_fitness: int = 0
     distance_fitness: int = 0
     extra_hours_fitness: int = 0
@@ -24,6 +23,10 @@ class Component:
         self.assigned_Vigilantes = assigned_vigilantes
         self.missing_shifts = []
         self.calculate_inicial_fitness()
+ 
+    def get_vigilantes(self):
+        for vigilant in self.vigilantes_schedule:
+            pass   
 
     def calculate_inicial_fitness(self) -> None:
         for shift in self.site_schedule:

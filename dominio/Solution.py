@@ -1,5 +1,5 @@
 import copy 
-from typing import List
+from typing import List, Literal
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
@@ -19,7 +19,7 @@ class Solution:
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
-    objectives_to_optimize: list[int]
+    objectives_to_optimize: List[int]
     id: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
@@ -28,6 +28,7 @@ class Solution:
         self.sites_schedule = []
         self.vigilantes_schedule = problem.vigilantes.copy()
         self.__iteration = 0
+        self.objectives_to_optimize: List[int]
         #self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
     def create_components(self, components_new_amount: int):
@@ -93,4 +94,6 @@ class Solution:
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
-        self.objectives_to_optimize = [self.missing_shifts_fitness, self.distance_fitness,self.extra_hours_fitness,self.assigned_vigilantes_fitness]
+        # self.objectives_to_optimize.append([self.missing_shifts_fitness, self.distance_fitness,self.extra_hours_fitness,self.assigned_vigilantes_fitness])
+
+    
