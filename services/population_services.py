@@ -10,10 +10,11 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[SoluctionNsgaII], number_of_children: int) -> List[SoluctionNsgaII]:
+        "a copy of tha populaton is received"
         childrens: list[SoluctionNsgaII] = []
         while len(population)>1:
             parents = PopulationServices.get_parents(population)
-            childrens.append(PopulationServices.mating_between_parents(copy.copy(parents[0]),copy.copy(parents[1]), number_of_children))
+            childrens.append(PopulationServices.mating_between_parents(parents[0],parents[1], number_of_children))
         return childrens
     
     @staticmethod
@@ -28,9 +29,9 @@ class PopulationServices:
         "maing between parent_one and parent"
         childrens: List[SoluctionNsgaII] = []
         for i in range(number_of_children):
-            id_get_parent_one: Component = parent_one.get_random_gen([])
-            id_get_parent_two: Component = parent_two.get_random_gen([id_get_parent_one.site_id])
-            childrens.append(PopulationServices.parent_crossing(parent_one, parent_two, id_get_parent_one, id_get_parent_two))  
+            gen_parent_one: Component = parent_one.get_random_gen([])
+            gen_parent_two: Component = parent_two.get_random_gen([gen_parent_one])
+            childrens.append(PopulationServices.parent_crossing(parent_one, parent_two, gen_parent_one, gen_parent_two))  
         return PopulationServices.get_best_children(childrens)
         
     @staticmethod
@@ -48,16 +49,11 @@ class PopulationServices:
         pass
     @staticmethod
     def parent_crossing(children_one: SoluctionNsgaII, children_two: SoluctionNsgaII,
-                        id_gen_parent_one: Component, id_gen_parent_two: Component) -> SoluctionNsgaII:
-        "mulitple children are generaded for parent and select the best"
-        #2 se procedera a intercambiar los componentes, hay que tener en cuenta que cuadno se 
-        # haga el cruce los compoentes pueden estar repetidos en una misma soluction
-        #TODO: mira al forma de mejroa la obtecion de los genes que no sea tan aleatoria, podria ordenarse por los sitios los
-        #cuales no tiene sitios por default, tambien que los genes no se repitar cuado ya se an intercambiado si se necesita
-        children_one.mutation_component(id_gen_parent_two, id_gen_parent_one)
-        children_one.reparate_component(id_gen_parent_two, id_gen_parent_one)
-        children_two.mutation_component(id_gen_parent_one, id_gen_parent_two)
-        children_two.reparate_component(id_gen_parent_two, id_gen_parent_one)
+                        gen_parent_one: Component, gen_parent_two: Component) -> SoluctionNsgaII:
+        children_one.mutation_component(gen_parent_two, gen_parent_one)
+        children_one.reparate_component(gen_parent_two, gen_parent_one)
+        children_two.mutation_component(gen_parent_one, gen_parent_two)
+        children_two.reparate_component(gen_parent_two, gen_parent_one)
         return children_one, children_two
 
     @staticmethod

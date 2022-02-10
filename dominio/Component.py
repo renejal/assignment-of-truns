@@ -1,7 +1,6 @@
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List
-
 from dominio.model.vigilant import Vigilant
 
 class Component:
@@ -23,9 +22,8 @@ class Component:
         self.missing_shifts = []
         self.calculate_inicial_fitness()
  
-    def get_vigilantes(self):
-        for vigilant in self.vigilantes_schedule:
-            pass   
+    def get_vigilantes(self) -> List[Vigilant]:
+        return self.assigned_Vigilantes
 
     def calculate_inicial_fitness(self) -> None:
         for shift in self.site_schedule:

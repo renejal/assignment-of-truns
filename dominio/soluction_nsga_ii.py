@@ -17,14 +17,14 @@ class SoluctionNsgaII(Solution):
     #     if super().calculate_fitness < soluction.
     #     pass
 
-    def get_random_gen(self, ids_gen_not_avaliable: List[int]):
+    def get_random_gen(self, ids_gen_not_avaliable: List[int]) -> Component:
         response = True
         while response:
-            gen =self.sites_schedule[random.randint(0,len(self.sites_schedule))]
+            gen =self.sites_schedule[random.randint(0,len(self.sites_schedule)-1)]
             if gen.site_id in ids_gen_not_avaliable:
                 print("el componente ya esta la lista")
                 continue
-            return gen.site_id
+            return gen
         
 
     def get_gen(self, gen_id: int):
@@ -54,39 +54,40 @@ class SoluctionNsgaII(Solution):
         return self.__range_soluction
 
     # set
-    def mutation_component(self, id_new_gen: Component, id_gen_change: Component):
-        """[mehtod mutation soluciton whit a new gen]
-
-        Args:
-            id_gen_add (Component): [new gen in the soluction]
-            id_gen_change (Component): [gen the change for id_gen_add]
-
-        Raises:
-            ValueError: [empty]
-        """
-        if (id_gen_change or id_new_gen) != None:
-            self.remove_gen(id_gen_change)
-            self.add_gen(id_new_gen)
+    def mutation_component(self, new_gen: Component, gen_change: Component):
+        "se resiven los objetos compoenete luego uno de ellos es de otra solucion y no se puede recupear de esta solucion"
+        "TODO: metodo antes que se encarge de validadr las restricciones"
+        # en pocas palabar los vigilanes debe intercambia en la misma solucion, pero teneidno en cuenta el orden del componente padre
+        if (gen_change or new_gen) != None:
+            if gen_change.site_id == new_gen.site_id:
+                "si los id son iguales se deberia poder intercambir solo sus vigilantes"
+                #intercambiar los vigilanes del componente
+            else:
+                #1. recuperamos el gen con el cual de va intercambiar el nuevo compotente de la otra solucion padre
+                recup_gen_change = copy.copy(gen_change)
+                # 1. recuperamos la conincidencia de el sitio y lo eliminamos de la solucion, o busqueda invertida para evitar la eliminacion del gen
+                gen_duplicate = self.remove_gen(new_gen.site_id)
+                #3. reemplazamos el nuevo gen en la solucion 
+                self.add_gen(new_gen)
+                #4. reemplazamos el gen 5B old en la coincidencia del nuevo gen de la solucion
+                "todo tener en cuentra que los vigilantes pueden etar en varios sitos"
+                self.replase(recup_gen_change, get_duplicate)
+                #5 agegarmos el gen 5B a la solucion.
+                
+                self.remove_gen(gen_change.site_id)
         else:
             raise ValueError("los componentes estan vacios")
 
     def reparate_component(self, gen_new: Component, gen_change: Component):
-        #1. obtener los vigilantes de los dos genes e dientificar que vigilantes son los que se van a intercambiar
-        vigilants: List[Vigilant] = gen_new.get_vigilants()
-
-
-
-        
-        # teniendo en cuenta que un vigilante puede trabajar en varios sitios, se procedek
-
-        pass
+        vigilants_new: List[Vigilant] = gen_new.get_vigilantes()
+        vigilants_change: List[Vigilant] = gen_change.get_vigilantes()
 
     def remove_gen(self, id_gen):
+        "return elimined component"
         gen = self.get_gen(id_gen)
-        self.sites_schedule.remove(gen)
+        return self.sites_schedule.pop(gen)
     
-    def add_gen(self, id_gen):
-        gen = self.get_gen(id_gen)
+    def add_gen(self, gen):
         self.sites_schedule.append(gen)
     
 
