@@ -26,7 +26,6 @@ class Solution:
         self.sites_schedule = []
         self.vigilantes_schedule = problem.vigilantes.copy()
         self.__iteration = 0
-        #self.vigilantesForPlaces = [[]]*(self.__problem.total_sites) ##Cuestiar si hay que moverlo al metodo o cambior por acceso al componente
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []
@@ -55,11 +54,15 @@ class Solution:
     def merge_component(self, component : Component):
         self.sites_schedule.append(component)
         self.__iteration += 1
-        if component.assigned_Vigilantes == None:
-            return
-        for vigilant in component.assigned_Vigilantes:
+        # if component.assigned_Vigilantes. == None:
+        #     return
+        for vigilant in component.assigned_Vigilantes.values():
             self.vigilantes_schedule[vigilant.id-1] = vigilant
-
+            if len(vigilant.sites_to_look_out) > 1:
+                for site in vigilant.sites_to_look_out:
+                    if site != component.site_id:
+                        self.sites_schedule[site-1].assigned_Vigilantes[vigilant.id] = vigilant
+    
     def is_solution_complete(self):
         if self.__iteration < self.problem.total_sites:
             return True

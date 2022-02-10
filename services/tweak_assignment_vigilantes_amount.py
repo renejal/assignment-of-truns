@@ -1,3 +1,4 @@
+import random
 from typing import List
 
 import numpy as np
@@ -17,12 +18,18 @@ class Tweak_assignment_vigilantes_amount:
         extra_vigilantes_by_week: List[List[Vigilant]] = self.get_extra_vigilantes_by_week(solution.vigilantes_schedule)
         available_vigilantes: List[List[Vigilant]] = self.get_available_vigilantes_by_week(solution.vigilantes_schedule)
         for index_week, extra_vigilantes_on_week in enumerate(extra_vigilantes_by_week):
+            random.shuffle(extra_vigilantes_on_week)
             for extra_vigilant in extra_vigilantes_on_week:
                 shifts = extra_vigilant.get_shifts_on_week(index_week+1)
                 for shift_place in shifts:
+                    random.shuffle(available_vigilantes[index_week])
                     for available_vigilant in available_vigilantes[index_week]:
                         if self.vigilant_assigment_service.is_vigilant_avaible(available_vigilant, shift_place.shift):
                             self.exchange_shift(shift_place,extra_vigilant,available_vigilant)
+                            if available_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
+                                solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[available_vigilant.id] = available_vigilant
+                            if shift_place.site_id not in extra_vigilant.sites_to_look_out:
+                                solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes.pop(extra_vigilant.id)
                             if available_vigilant.total_hours_worked_by_week[index_week] >= 56:
                                 available_vigilantes[index_week].remove(available_vigilant)
                             break

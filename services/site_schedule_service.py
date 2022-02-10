@@ -18,10 +18,7 @@ class Site_schedule_service:
         assigned_vigilantes_in_actual_shift: List[int] = []
         assigned_vigilantes_on_place: List[Vigilant] = self.vigilant_assigment_service.obtain_vigilants_in_default_for_site(site_id, vigilantes)
         order_vigilantes_in_place_by_distance: List[Vigilant] = self.vigilant_assigment_service.get_order_vigilantes_index_in_place_by_distance(site_id, vigilantes)
-        # random.shuffle(shifts)
-        my = shifts[:15]
-        random.shuffle(my)
-        shifts[:15] = my
+        self.shuffle_first_shifts(shifts)
         for shift in shifts:
             assigned_vigilantes_in_actual_shift.clear()
             for iteration in range(shift.necesary_vigilantes):
@@ -57,3 +54,7 @@ class Site_schedule_service:
         vigilant_to_assign.assign_shift(shift, site_id)
         shift.add_vigilant(vigilant_to_assign.id)
    
+    def shuffle_first_shifts(self, shifts:List[Shift]):
+        shuffle_first_shifts = shifts[:15]
+        random.shuffle(shuffle_first_shifts)
+        shifts[:15] = shuffle_first_shifts

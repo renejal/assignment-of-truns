@@ -25,7 +25,8 @@ class Grasp(Algorithm):
                     continue
                 else:
                     best_restricted_list = S.get_best_components(restricted_list,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
-                    S.merge_component(best_restricted_list)            
+                    S.merge_component(best_restricted_list)    
+                            
             for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
                 new_solution:Solution = Tweak_service().Tweak(copy.copy(S))
                 if new_solution.total_fitness < S.total_fitness:
