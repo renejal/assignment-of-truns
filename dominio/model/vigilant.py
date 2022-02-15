@@ -71,4 +71,6 @@ class Vigilant(FromDictMixin):
         if self.sites_to_look_out[shift.site_id] == 0:
             del self.sites_to_look_out[shift.site_id]
 
+    def set_id(self, id):
+        self.id = id
 
