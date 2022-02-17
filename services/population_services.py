@@ -4,7 +4,7 @@ import random
 from re import I
 from urllib import response
 from conf import settings 
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from dominio.model.vigilant import Vigilant
 # from msilib.schema import Component
 from dominio.soluction_nsga_ii import SoluctionNsgaII
@@ -34,7 +34,7 @@ class PopulationServices:
         "maing between parent_one and parent"
         childrens: List[SoluctionNsgaII] = []
         for i in range(number_of_children):
-            childrens.append(PopulationServices.parent_crossing(parent_for_exchange_one, parent_for_exchange_two))  
+            childrens.append(PopulationServices.parent_crossing(parent_for_exchange_one,parent_for_exchange_two))  
         return PopulationServices.get_best_children(childrens)
         
     @staticmethod
@@ -48,53 +48,48 @@ class PopulationServices:
                 best = children
         return best
 
-    def validation_size():
-        pass 
-
+    def remove_vigilants_default_the_site(gen: Component):
+        Vigilants: List[Vigilant] = gen.assigned_Vigilantes
+        for vigilant in Vigilants:
+            if vigilant.default_place_to_look_out == -1:
+                Vigilants.remove(vigilant)
+        
     @staticmethod
-    def is_validation_and_repartion(list_vigilants_one: List[Vigilant], list_vigilants_two: List[Vigilant]):
-        "validat and reparation of list for what are compatible"
-        validation_response = False
-        while True:
-            if (len(list_vigilants_one) == len(list_vigilants_two)) and (len(list_vigilants_two) and len(list_vigilants_one)) >0:
-                validation_response =  True
-                break
-            elif (len(list_vigilants_one) > len(list_vigilants_two)) and len(list_vigilants_one)>0:
-                list_vigilants_one.remove(random.randint(0,len(list_vigilants_one)-1))
-            elif (len(list_vigilants_one) < len(list_vigilants_two)) and len(list_vigilants_two) > 0:
-                list_vigilants_two.remove(random.randint(0,len(list_vigilants_two)-1))
-            else:
-                break
-        return validation_response
+    def is_validation_and_repartion(gen_new: Component, gen_of_exchange: Component): 
+        #return true si el methodos remove..(gen_..) retorna lista de vigilantes no vacias
+        status = False
+        if PopulationServices.remove_vigilants_default_the_site(gen_new):
+            if PopulationServices.remove_vigilants_default_the_site(gen_of_exchange):
+                status = True
+        return status
              
     @staticmethod
-    def get_random_gen_with_their_vigilant(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> Dict:
+    def get_random_gens(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> List[Component]:
+        "El metodo debe retornas la lista de vigilantes del componente y el componente del cual fue sacado"
+        gen_parent_for_exchange_new: Component = None
+        gen_parent_exchange: Component = None
         iteration = 0
         while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
-            gen_parent_for_exchange_one: Component = parent_for_exchange_one.get_random_gen([])
-            vigilants_new: List[Vigilant] = [vigilant for vigilant in gen_parent_for_exchange_one.assigned_Vigilantes if vigilant.fault_place_to_look_out != -1]
-            gen_parent_exchange_two: Component = parent_for_exchange_two.get_random_gen([gen_parent_for_exchange_one])
-            vigilants_exchange: List[Vigilant] = [vigilant for vigilant in gen_parent_exchange_two.assigned_Vigilantes if vigilant.default_place_to_look_out != -1]
-            if PopulationServices.is_validation_and_repartion(vigilants_new, vigilants_exchange):
-                return vigilants_new , vigilants_exchange
+            gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
+            gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new])
+            if PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange):
+                break
             iteration += 1
-        raise("error: NO found gens that accomplished constraint for site")
-
+        if gen_parent_exchange or gen_parent_for_exchange_new:
+            return [gen_parent_exchange, gen_parent_exchange]
+        raise("Error, no se encontro genes que cumplan con las requerimientos")
 
     @staticmethod
-    def parent_crossing(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> SoluctionNsgaII:
-        """_crossing of thow soluction parent, vigilantnew is the vigilants that arrive and they will be exchange for vigilants_exchange"""
-        # vigilant_new : list : vigilants of a site of tha soluction one
-        # vigilant_exchange: list: vigilants of a site of tha soluction two 
-        for vigilant_id_one, vigilant_id_two in zip(vigilants_new, vigilants_exchange):
-                PopulationServices.exchange_vigilant_between_soluction(
-                    gen_parent_for_exchange_one, vigilant_id_one,
-                    gen_parent_exchange_two, vigilant_id_two)
-
-        # Tweak_assignment_vigilantes_amount().exchange_shift(parent_for_exchange_one.shi, vigilants_new[i], vigilants_exchange[i])
-        # invercambiar vigilants(vigilant_di, vigilant_id)
-
-        return parent_for_exchange_one, parent_for_exchange_two
+    #todo debe resibir una copia de los parametros
+    def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> SoluctionNsgaII:
+        genes: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(parent_for_exchange))
+        for vigilant_new, vigilant_for_exchagen in zip(genes[0].assigned_Vigilantes, genes[1].assigned_Vigilantes):
+                #TODO: INTERCAMBIA RVIGILANTES, ya tenemos los vigialntes filtrados y listos, se debe mirar la forma de como intercambair 
+                #los vigilantes en el componente espesifico 
+                
+                PopulationServices.exchange_vigilant_between_soluction(vigilant_new.id, vigilant_for_exchagen.id)
+        else:
+            raise("error no se encontro vigilantes para cruse")    
 
     @staticmethod
     def exchange_vigilant_between_soluction(self, gen_parent_for_exchange_one: Component, exchange_vigilant_id_one: Vigilant, 
