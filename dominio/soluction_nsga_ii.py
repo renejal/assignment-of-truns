@@ -53,31 +53,23 @@ class SoluctionNsgaII(Solution):
     def range_soluction(self):
         return self.__range_soluction
 
+    
+    def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
+        for gen in self.sites_schedule:
+            for vigilant in gen.assigned_Vigilantes:
+                if vigilant.id == id_vigilant_exchange:
+                    vigilant.set_id(id_vigilant_new) 
+                    gen.modified = True
+                    
     # set
-    def mutation_component(self, new_gen: Component, exchange_gen: Component):
-        "se resiven los objetos compoenete luego uno de ellos es de otra solucion y no se puede recupear de esta solucion"
-        "TODO: metodo antes que se encarge de validadr las restricciones"
-        # en pocas palabar los vigilanes debe intercambia en la misma solucion, pero teneidno en cuenta el orden del componente padre
-        if (exchange_gen or new_gen) != None:
-            vigilants_new = [vigilant.id for vigilant in new_gen.assigned_Vigilantes if vigilant.fault_place_to_look_out != -1]
-            vigilants_exchange = [vigilant.id for vigilant in exchange_gen.assigned_Vigilantes if vigilant.default_place_to_look_out != -1]
-            #todo agregar restriocion que los vigilantes a intercambia no deben estar fijos
-            if (len(vigilants_new) and len(vigilants_exchange)) > 0:
-                # utilizar el tweak para intercmabiar vigilants
-
-                recup_gen_change = copy.copy(exchange_gen)
-                # 1. recuperamos la conincidencia de el sitio y lo eliminamos de la solucion, o busqueda invertida para evitar la eliminacion del gen
-                gen_duplicate = self.remove_gen(new_gen.site_id)
-                #3. reemplazamos el nuevo gen en la solucion 
-                self.add_gen(new_gen)
-                #4. reemplazamos el gen 5B old en la coincidencia del nuevo gen de la solucion
-                "todo tener en cuentra que los vigilantes pueden etar en varios sitos"
-                self.replase(recup_gen_change, get_duplicate)
-                #5 agegarmos el gen 5B a la solucion.
-                
-                self.remove_gen(exchange_gen.site_id)
-        else:
-            raise ValueError("los componentes estan vacios")
+    def reparate_soluction(self, id_vigilant_new: int, id_vigilant_exchange):
+        for gen in self.sites_schedule:
+            for vigilant in gen.assigned_Vigilantes:
+                if vigilant.id == id_vigilant_new and not gen.modified:
+                    vigilant.set_id(id_vigilant_exchange) 
+                    gen.modified = False
+                    break
+ 
 
     def reparate_component(self, gen_new: Component, gen_change: Component):
         vigilants_new: List[Vigilant] = gen_new.get_vigilantes()

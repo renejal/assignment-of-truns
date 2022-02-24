@@ -34,7 +34,7 @@ class PopulationServices:
         "maing between parent_one and parent"
         childrens: List[SoluctionNsgaII] = []
         for i in range(number_of_children):
-            childrens.append(PopulationServices.parent_crossing(parent_for_exchange_one,parent_for_exchange_two))  
+            childrens.append(PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two)))  
         return PopulationServices.get_best_children(childrens)
         
     @staticmethod
@@ -55,14 +55,14 @@ class PopulationServices:
                 Vigilants.remove(vigilant)
         
     @staticmethod
-    def is_validation_and_repartion(gen_new: Component, gen_of_exchange: Component): 
-        #return true si el methodos remove..(gen_..) retorna lista de vigilantes no vacias
-        status = False
-        if PopulationServices.remove_vigilants_default_the_site(gen_new):
-            if PopulationServices.remove_vigilants_default_the_site(gen_of_exchange):
-                status = True
-        return status
-             
+    def is_validation_and_repartion(gen_new: Component, gen_exchange: Component): 
+        """retorna true si se encontro vigilantes no por default y distintos entre los dos genes"""
+        vigilants_new: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes if vigilant.default_place_to_look_out == -1]
+        vigilants_exchange: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes if vigilant.default_place_to_look_out == -1]
+        vigilants_new_not_in_commont: List[int] = [vigilant_id for vigilant_id in vigilants_new if vigilant_id not in vigilants_exchange]
+        vigilants_exchange_not_in_commont: List[int] = [vigilant_id for vigilant_id in vigilants_exchange if vigilant_id not in vigilants_new]
+        return vigilants_new_not_in_commont, vigilants_exchange_not_in_commont
+
     @staticmethod
     def get_random_gens(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> List[Component]:
         "El metodo debe retornas la lista de vigilantes del componente y el componente del cual fue sacado"
@@ -72,56 +72,20 @@ class PopulationServices:
         while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
             gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
             gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new])
-            if PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange):
-                break
+            vigilants_new, vigilants_exchanges = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
+            if (vigilants_new and vigilants_exchanges) != []:
+                return [vigilants_new, vigilants_exchanges]
             iteration += 1
-        if gen_parent_exchange or gen_parent_for_exchange_new:
-            return [gen_parent_exchange, gen_parent_exchange]
-        raise("Error, no se encontro genes que cumplan con las requerimientos")
+        raise("Error no se encontro vigilantes disponibles")
 
     @staticmethod
     #todo debe resibir una copia de los parametros
     def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> SoluctionNsgaII:
-        genes: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(parent_for_exchange))
-        for vigilant_new, vigilant_for_exchagen in zip(genes[0].assigned_Vigilantes, genes[1].assigned_Vigilantes):
-                #TODO: INTERCAMBIA RVIGILANTES, ya tenemos los vigialntes filtrados y listos, se debe mirar la forma de como intercambair 
-                #los vigilantes en el componente espesifico 
-                
-                PopulationServices.exchange_vigilant_between_soluction(vigilant_new.id, vigilant_for_exchagen.id)
-        else:
-            raise("error no se encontro vigilantes para cruse")    
-
-    @staticmethod
-    def exchange_vigilant_between_soluction(self, gen_parent_for_exchange_one: Component, exchange_vigilant_id_one: Vigilant, 
-                                            gen_parent_exchange_two: Component, exchange_vigilant_id_two: Component):
-        exchange_vigilant_id_one.set_id(exchange_vigilant_id_two.id)
-        exchange_vigilant_id_two.set_id(exchange_vigilant_id_one.id)
- 
-    @staticmethod
-    def mutation_component(gen_for_exchange_one: Component, exchange_gen_before_two: Component):
-        if (gen_for_exchange_one and exchange_gen_before_two) != None:
-            vigilants_new = [vigilant.id for vigilant in gen_for_exchange_one.assigned_Vigilantes if vigilant.fault_place_to_look_out != -1]
-            vigilants_exchange = [vigilant.id for vigilant in exchange_gen_before_two.assigned_Vigilantes if vigilant.default_place_to_look_out != -1]
-            if (len(vigilants_new) and len(vigilants_exchange)) > 0:
-                for vigilant_id in vigilants_new:
-                    # Tweak_assignment_vigilantes_amount().exchange_shift(shif_place, vigilants_new[i], vigilants_exchange[i])
-                    recup_gen_change = copy.copy(exchange_gen_after)
-                    # 1. recuperamos la conincidencia de el sitio y lo eliminamos de la solucion, o busqueda invertida para evitar la eliminacion del gen
-                    gen_duplicate = self.remove_gen(new_gen_for_exchange.site_id)
-                    #3. reemplazamos elnuevo oen en la solucion 
-                    self.add_gen(new_gen_for_exchange)
-                    #4. reemplazamos el gen 5B old en la coincidencia del nuevo gen de la solucion
-                    "todo tener en cuentra que los vigilantes pueden etar en varios sitos"
-                    self.replase(recup_gen_change, get_duplicate)
-                    #5 agegarmos el gen 5B a la solucion.
-                    
-                    self.remove_gen(exchange_gen_after.site_id)
-        else:
-            raise ValueError("los componentes estan vacios")
-
-    def reparate_component(self, gen_new: Component, gen_change: Component):
-        vigilants_new: List[Vigilant] = gen_new.get_vigilantes()
-        vigilants_change: List[Vigilant] = gen_change.get_vigilantes()
+        "el hijo va hacer  una copia de la nueva solucion con su respectiva mutacion"
+        vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(parent_for_exchange)) #TODO: los vigilantes deven ser diferentes en las dos listas
+        for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
+                parent_for_exchange_new.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
+                parent_for_exchange_new.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
 
     @staticmethod
     def union_soluction(parents, children) -> List[SoluctionNsgaII]:

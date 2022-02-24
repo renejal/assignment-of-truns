@@ -68,7 +68,7 @@ class Solution:
             return True
         self.calculate_fitness()
         return False
-
+    
     def calculate_fitness(self):
         self.missing_shifts_fitness = 0
         self.distance_fitness = 0
@@ -94,6 +94,5 @@ class Solution:
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
-        # self.objectives_to_optimize.append([self.missing_shifts_fitness, self.distance_fitness,self.extra_hours_fitness,self.assigned_vigilantes_fitness])
 
     
