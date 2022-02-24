@@ -80,12 +80,13 @@ class PopulationServices:
 
     @staticmethod
     #todo debe resibir una copia de los parametros
-    def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> SoluctionNsgaII:
+    def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, children: SoluctionNsgaII) -> SoluctionNsgaII:
         "el hijo va hacer  una copia de la nueva solucion con su respectiva mutacion"
-        vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(parent_for_exchange)) #TODO: los vigilantes deven ser diferentes en las dos listas
+        vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
-                parent_for_exchange_new.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
-                parent_for_exchange_new.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
+                children.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
+                children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
+        return children
 
     @staticmethod
     def union_soluction(parents, children) -> List[SoluctionNsgaII]:
