@@ -23,7 +23,7 @@ class Component:
         self.site_schedule = site_schedule
         self.assigned_Vigilantes = assigned_vigilantes
         self.missing_shifts = []
-        self.calculate_inicial_fitness()
+        # self.calculate_inicial_fitness()
  
     def get_vigilantes(self) -> List[Vigilant]:
         return self.assigned_Vigilantes

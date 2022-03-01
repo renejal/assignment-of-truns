@@ -1,5 +1,6 @@
 import random
 import copy
+from tkinter.messagebox import NO
 from typing import List
 from dominio.Solution import Solution
 from dominio.model.vigilant import Vigilant
@@ -27,9 +28,9 @@ class SoluctionNsgaII(Solution):
             return gen
         
 
-    def get_gen(self, gen_id: int):
+    def get_gen(self, gen_id: int) -> Component:
         # note : gen_id = site_id 
-        response: Component
+        response: Component = None
         for gen in self.sites_schedule:
            if gen.site_id == gen_id:
               response = gen 
@@ -38,6 +39,10 @@ class SoluctionNsgaII(Solution):
             return response
         raise ValueError("not found gen whit:",gen_id)
             
+    def modification_status(self, value: bool):
+        for gen in self.sites_schedule:
+            if gen.modified:
+                gen.modified = value 
                
         self.sites_schedule
     # get 
@@ -59,7 +64,9 @@ class SoluctionNsgaII(Solution):
             for vigilant in gen.assigned_Vigilantes:
                 if vigilant.id == id_vigilant_exchange:
                     vigilant.set_id(id_vigilant_new) 
-                    gen.modified = True
+                elif vigilant.id == id_vigilant_new:
+                    vigilant.set_id(id_vigilant_exchange)
+            
                     
     # set
     def reparate_soluction(self, id_vigilant_new: int, id_vigilant_exchange):

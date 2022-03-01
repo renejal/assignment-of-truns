@@ -5,6 +5,7 @@ from dominio.vigilant_assigment import VigilantAssigment
 from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.population import Population
 from services.population_services import PopulationServices
+from tests import generate_pyckle 
 
 
 class NsgaII(Algorithm):
@@ -14,9 +15,13 @@ class NsgaII(Algorithm):
     num_decendents = 11
     frentes: Dict[int,List[SoluctionNsgaII]]
 
+        
+
     def Execute(self, problem: VigilantAssigment):
 
         population =  Population(problem, self.num_soluciones)
+        # generate_pyckle.save_object("tests/population.pickle", population)
+        # object = generate_pyckle.read_file('tests/population.pickle')
         population_parents: List[SoluctionNsgaII] = population.populations
         while self.CurrentEFOs < self.MaxEFOs:
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents), self.num_decendents) 

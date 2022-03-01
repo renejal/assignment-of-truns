@@ -57,10 +57,14 @@ class PopulationServices:
     @staticmethod
     def is_validation_and_repartion(gen_new: Component, gen_exchange: Component): 
         """retorna true si se encontro vigilantes no por default y distintos entre los dos genes"""
-        vigilants_new: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes if vigilant.default_place_to_look_out == -1]
-        vigilants_exchange: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes if vigilant.default_place_to_look_out == -1]
-        vigilants_new_not_in_commont: List[int] = [vigilant_id for vigilant_id in vigilants_new if vigilant_id not in vigilants_exchange]
-        vigilants_exchange_not_in_commont: List[int] = [vigilant_id for vigilant_id in vigilants_exchange if vigilant_id not in vigilants_new]
+        vigilants_new: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes]
+        vigilants_exchange: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes]
+        diference = list(set(vigilants_new) - set(vigilants_exchange))
+        diference += list(set(vigilants_exchange) - set(vigilants_new))
+        if not diference:
+            return None
+        vigilants_new_not_in_commont: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes if vigilant.id in diference and vigilant.default_place_to_look_out == -1]
+        vigilants_exchange_not_in_commont: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes if vigilant.id in diference and vigilant.default_place_to_look_out == -1]
         return vigilants_new_not_in_commont, vigilants_exchange_not_in_commont
 
     @staticmethod
@@ -85,7 +89,10 @@ class PopulationServices:
         vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
                 children.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
-                children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
+                #reparacion contengra la actulizacion del fitness
+                #children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
+
+                # children.modification_status(False)
         return children
 
     @staticmethod
