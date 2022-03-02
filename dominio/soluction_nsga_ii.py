@@ -70,13 +70,8 @@ class SoluctionNsgaII(Solution):
                     
     # set
     def reparate_soluction(self, id_vigilant_new: int, id_vigilant_exchange):
-        for gen in self.sites_schedule:
-            for vigilant in gen.assigned_Vigilantes:
-                if gen.modified:# si el gen ya fue modificado continue con el otro
-                    continue
-                if vigilant.id == id_vigilant_new:
-                    vigilant.set_id(id_vigilant_exchange) 
-                    gen.modified = False
+        #recalcualr el fines de la solucion
+        pass
  
 
     def reparate_component(self, gen_new: Component, gen_change: Component):

@@ -14,12 +14,15 @@ from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilan
 class PopulationServices:
 
     @staticmethod
-    def generate_decendents(population: List[SoluctionNsgaII], number_of_children: int) -> List[SoluctionNsgaII]:
+    def generate_decendents(population: List[SoluctionNsgaII]) -> List[SoluctionNsgaII]:
+        i=0
+        j=0
         "a copy of tha populaton is received"
         childrens: list[SoluctionNsgaII] = []
-        while len(population)>1:
+        while population: 
             parents = PopulationServices.get_parents(population)
-            childrens.append(PopulationServices.mating_between_parents(parents[0],parents[1], number_of_children))
+            #TODO: GENEAR DOS HIJOS POR DOS PADRES, 
+            childrens.append(PopulationServices.mating_between_parents(parents[0],parents[1]))
         return childrens
     
     @staticmethod
@@ -30,12 +33,19 @@ class PopulationServices:
         return response
 
     @staticmethod
-    def mating_between_parents(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII, number_of_children) -> SoluctionNsgaII:
+    def mating_between_parents(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> SoluctionNsgaII:
         "maing between parent_one and parent"
         childrens: List[SoluctionNsgaII] = []
-        for i in range(number_of_children):
-            childrens.append(PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two)))  
-        return PopulationServices.get_best_children(childrens)
+        for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
+            #TODO: VALDIAR QUE TAN ALEATORIA GENEAR EL SEGUNDO HIJO
+            child = PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
+            # si la funcioar no encuetra mas hijos returna false
+            if child:
+                childrens.append(child)  
+            elif childrens:
+                return PopulationServices.get_best_children(childrens)
+            else:
+                raise("No fue posible encontrar ningun children para estos padres")
         
     @staticmethod
     def get_best_children(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
@@ -75,11 +85,12 @@ class PopulationServices:
         iteration = 0
         while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
             gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
-            gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new])
+            gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new.site_id])
             vigilants_new, vigilants_exchanges = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
             if (vigilants_new and vigilants_exchanges) != []:
                 return [vigilants_new, vigilants_exchanges]
             iteration += 1
+        return False
         raise("Error no se encontro vigilantes disponibles")
 
     @staticmethod
@@ -87,12 +98,11 @@ class PopulationServices:
     def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, children: SoluctionNsgaII) -> SoluctionNsgaII:
         "el hijo va hacer  una copia de la nueva solucion con su respectiva mutacion"
         vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
+        if not vigilants:
+            return False
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
                 children.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
-                #reparacion contengra la actulizacion del fitness
-                #children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id)
-
-                # children.modification_status(False)
+                # children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id) # TODO: RECALCULAR FIENES Y REFPACION
         return children
 
     @staticmethod

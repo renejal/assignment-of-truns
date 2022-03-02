@@ -24,7 +24,7 @@ class NsgaII(Algorithm):
         # object = generate_pyckle.read_file('tests/population.pickle')
         population_parents: List[SoluctionNsgaII] = population.populations
         while self.CurrentEFOs < self.MaxEFOs:
-            pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents), self.num_decendents) 
+            pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             union_populantion = PopulationServices.union_soluction(population_parents, pulation_children)
             self.frente = PopulationServices.not_dominate_sort(union_populantion) # return frent de pareto
             population_parents = [] 

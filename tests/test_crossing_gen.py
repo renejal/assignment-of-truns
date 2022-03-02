@@ -11,6 +11,7 @@ population: Population = generate_pyckle.read_file("tests/population.pickle")
 children_for_comparate = None
 
 def test_parent_crossing():
+    #valida si al momento de hacer el cruce los vigilantes queda correctamente cruzados
     Soluction_children:SoluctionNsgaII = PopulationServices.parent_crossing(population.populations[0], population.populations[1])
     vigilants_sites = []
     for gen in Soluction_children.sites_schedule:
@@ -20,6 +21,8 @@ def test_parent_crossing():
     
     assert len(vigilants_sites[0]) == len(set(vigilants_sites[0]))
     assert len(vigilants_sites[1]) == len(set(vigilants_sites[1]))
+
+
        
 
     
