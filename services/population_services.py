@@ -33,6 +33,12 @@ class PopulationServices:
         response.append(parents.pop(random.randint(0, len(parents)-1)))
         response.append(parents.pop(random.randint(0, len(parents)-1)))
         return response
+    
+    @staticmethod
+    def calculate_fitness(childrens: List[SoluctionNsgaII]):
+        # calcular fitness para cada solucion de la lista childrens
+        for children in childrens:
+            children.calculate_fitness()
 
     @staticmethod
     def mating_between_parents(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> SoluctionNsgaII:
@@ -43,6 +49,7 @@ class PopulationServices:
                 childrens.append(child)  
             elif childrens:
                 #retorna la dos mejores soluciones
+                PopulationServices.calculate_fitness(childrens)
                 childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
             else:
                 # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
@@ -57,12 +64,8 @@ class PopulationServices:
             if best.total_fitness < (parent_for_exchange_one.total_fitness or parent_for_exchange_two.total_fitness):
                 childrens.append(best)
         if len(childrens) == 1:
-            # si encuentra almenos un hijo mejor, retorna el padre menos malo para completar la solucion.
-            # if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness:
-            #     best = parent_for_exchange_one
             best = parent_for_exchange_one if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness else parent_for_exchange_two.total_fitness
             childrens.append(best)
-        # si childrens zise es == 2 return los dos hijos los cuales deben ser mejores que sus padres.
         return childrens
 
         
