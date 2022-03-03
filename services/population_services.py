@@ -3,6 +3,8 @@ import copy
 import random
 from re import I
 from urllib import response
+
+from numpy import append
 from conf import settings 
 from typing import List, Dict, Tuple
 from dominio.model.vigilant import Vigilant
@@ -15,14 +17,14 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[SoluctionNsgaII]) -> List[SoluctionNsgaII]:
-        i=0
-        j=0
         "a copy of tha populaton is received"
         childrens: list[SoluctionNsgaII] = []
         while population: 
             parents = PopulationServices.get_parents(population)
             #TODO: GENEAR DOS HIJOS POR DOS PADRES, 
-            childrens.append(PopulationServices.mating_between_parents(parents[0],parents[1]))
+            children = PopulationServices.mating_between_parents(parents[0],parents[1])
+            childrens.append(children[0])
+            childrens.append(children[1])
         return childrens
     
     @staticmethod
@@ -34,21 +36,38 @@ class PopulationServices:
 
     @staticmethod
     def mating_between_parents(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> SoluctionNsgaII:
-        "maing between parent_one and parent"
         childrens: List[SoluctionNsgaII] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
-            #TODO: VALDIAR QUE TAN ALEATORIA GENEAR EL SEGUNDO HIJO
             child = PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
-            # si la funcioar no encuetra mas hijos returna false
             if child:
                 childrens.append(child)  
             elif childrens:
-                return PopulationServices.get_best_children(childrens)
+                #retorna la dos mejores soluciones
+                childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
             else:
-                raise("No fue posible encontrar ningun children para estos padres")
+                # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
+                childrens.append(parent_for_exchange_one)
+                childrens.append(parent_for_exchange_two)
+        return childrens
+
+    @staticmethod
+    def get_best_Soluction(childrens: List[SoluctionNsgaII], parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII):
+        for i in range(1):
+            best = PopulationServices.get_best_children_of_childrens_list(childrens)
+            if best.total_fitness < (parent_for_exchange_one.total_fitness or parent_for_exchange_two.total_fitness):
+                childrens.append(best)
+        if len(childrens) == 1:
+            # si encuentra almenos un hijo mejor, retorna el padre menos malo para completar la solucion.
+            # if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness:
+            #     best = parent_for_exchange_one
+            best = parent_for_exchange_one if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness else parent_for_exchange_two.total_fitness
+            childrens.append(best)
+        # si childrens zise es == 2 return los dos hijos los cuales deben ser mejores que sus padres.
+        return childrens
+
         
     @staticmethod
-    def get_best_children(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
+    def get_best_children_of_childrens_list(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
         best: SoluctionNsgaII  = None
         for children in childrens:
             if best == None:
@@ -56,6 +75,7 @@ class PopulationServices:
                 continue
             if children.total_fitness > best.total_fitness:
                 best = children
+        childrens.remove(best)
         return best
 
     def remove_vigilants_default_the_site(gen: Component):
