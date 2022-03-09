@@ -26,6 +26,7 @@ class Tweak_extra_hours:
             random.shuffle(vigilantes_with_extra_hours_on_week)
             for vigilant_with_extra_hours_on_week in vigilantes_with_extra_hours_on_week:
                 shifts_by_week = vigilant_with_extra_hours_on_week.get_shifts_on_week(index_week+1)
+                random.shuffle(shifts_by_week)
                 for index_priority, vigilantes_by_priority_on_week in enumerate(vigilantes_with_hours_to_work[index_week]):
                     random.shuffle(vigilantes_by_priority_on_week)
                     for available_vigilant_on_week in vigilantes_by_priority_on_week:

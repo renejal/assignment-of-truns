@@ -27,7 +27,7 @@ class Tweak_missing_shifts:
             vigilantes = self.get_vigilantes_from_other_sites( vigilantes_with_missing_hours, site.assigned_Vigilantes)
             assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
             for v in assigned_vigilantes:
-                if v not in site.assigned_Vigilantes:
+                if v.id not in site.assigned_Vigilantes:
                     site.assigned_Vigilantes[v.id] = v
                 if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
                      vigilantes_with_missing_hours.remove(v)
@@ -64,7 +64,7 @@ class Tweak_missing_shifts:
 
     def assign_vigilantes_on_missing_shifts(self, vigilantes:List[Vigilant], site_id: int, shifts: List[Shift])-> List[Vigilant] :
         random.shuffle(vigilantes)
-        #Shuflear shits?
+        random.shuffle(shifts)
         assigned_vigilantes: List[Vigilant] = []
         assigned_vigilantes_in_actual_shift: List[int] = []
         for shift in shifts:

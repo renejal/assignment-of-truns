@@ -21,6 +21,7 @@ class Tweak_assignment_vigilantes_amount:
             random.shuffle(extra_vigilantes_on_week)
             for extra_vigilant in extra_vigilantes_on_week:
                 shifts = extra_vigilant.get_shifts_on_week(index_week+1)
+                random.shuffle(shifts)
                 for shift_place in shifts:
                     random.shuffle(available_vigilantes[index_week])
                     for available_vigilant in available_vigilantes[index_week]:
@@ -33,6 +34,7 @@ class Tweak_assignment_vigilantes_amount:
                             if available_vigilant.total_hours_worked_by_week[index_week] >= 56:
                                 available_vigilantes[index_week].remove(available_vigilant)
                             break
+        #Quitarle los shifts y asignarselos a algun otro guardia con 40 horas o mas
         return solution
     
     def exchange_shift(self,shift: Shift_place, vigilant_to_remove_shift: Vigilant, vigilant_to_add_shift: Vigilant) -> None:

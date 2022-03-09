@@ -34,6 +34,8 @@ class Component:
             return
         for vigilant in self.assigned_Vigilantes.values():
             if vigilant.default_place_to_look_out !=1 and vigilant.default_place_to_look_out != self.site_id and vigilant.closet_place != self.site_id:
+                # self.distance_fitness+= vigilant.distances[self.site_id-1]
+                # self.total_fitness+= vigilant.distances[self.site_id-1]  
                 self.distance_fitness+= DISTANCE_FITNESS_VALUE
                 self.total_fitness+= DISTANCE_FITNESS_VALUE  
             #TODO Revisar si es mejor calcular las horas por semaana si trabajo o algo

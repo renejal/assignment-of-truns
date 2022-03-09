@@ -71,4 +71,24 @@ class Vigilant(FromDictMixin):
         if self.sites_to_look_out[shift.site_id] == 0:
             del self.sites_to_look_out[shift.site_id]
 
+    def get_index_sites_by_distance(self):
+        return sorted(range(len(self.distances)), key=lambda k: self.distances[k])
+
+    def get_shifts_by_site(self) -> dict[int,List[Shift]]:
+        shifts_by_site: dict[int,List[Shift]] = {}
+        for shift in self.shifts:
+            if shift.site_id in shifts_by_site:
+                shifts_by_site[shift.site_id].append(shift.shift)
+            else:
+                shifts_by_site[shift.site_id] = [shift.shift]
+        return shifts_by_site
+
+    def find_shift_place(self, shift:Shift):
+        for shift_place in self.shifts:
+            if shift_place.shift == shift:
+                return shift_place
+        return None
+
+    
+
 

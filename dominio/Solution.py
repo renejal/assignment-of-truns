@@ -14,6 +14,7 @@ class Solution:
     sites_schedule: List[Component]
     vigilantes_schedule: List[Vigilant] 
     site_schedule_service: Site_schedule_service
+    fitness = [0,0,0,0]
     missing_shifts_fitness: int
     distance_fitness: int
     extra_hours_fitness: int
@@ -24,7 +25,7 @@ class Solution:
         self.site_schedule_service = Site_schedule_service(problem)
         self.problem = problem
         self.sites_schedule = []
-        self.vigilantes_schedule = problem.vigilantes.copy()
+        self.vigilantes_schedule = copy.deepcopy(problem.vigilantes)
         self.__iteration = 0
 
     def create_components(self, components_new_amount: int):
@@ -57,12 +58,18 @@ class Solution:
         # if component.assigned_Vigilantes. == None:
         #     return
         for vigilant in component.assigned_Vigilantes.values():
-            self.vigilantes_schedule[vigilant.id-1] = vigilant
             if len(vigilant.sites_to_look_out) > 1:
+                for shift in self.vigilantes_schedule[vigilant.id-1].shifts:
+                    for updated_shift in vigilant.shifts:
+                        if updated_shift.shift.shift_start == shift.shift.shift_start:
+                            updated_shift.shift = shift.shift
+                            updated_shift = shift
+                            break
                 for site in vigilant.sites_to_look_out:
                     if site != component.site_id:
                         self.sites_schedule[site-1].assigned_Vigilantes[vigilant.id] = vigilant
-    
+            self.vigilantes_schedule[vigilant.id-1] = vigilant
+
     def is_solution_complete(self):
         if self.__iteration < self.problem.total_sites:
             return True
@@ -79,21 +86,28 @@ class Solution:
             for shift in site.missing_shifts:
                 if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
                     self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                    self.fitness[0] = self.missing_shifts_fitness
                     self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
         for vigilant in self.vigilantes_schedule:
             for site_to_look_out in vigilant.sites_to_look_out:
                 if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
-                    self.distance_fitness+= DISTANCE_FITNESS_VALUE    
+                    # self.distance_fitness+= vigilant.distances[site_to_look_out-1]    
+                    # self.total_fitness+= vigilant.distances[site_to_look_out-1]
+                    self.distance_fitness+= DISTANCE_FITNESS_VALUE
+                    self.fitness[1] = self.distance_fitness
                     self.total_fitness+= DISTANCE_FITNESS_VALUE  
             for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hour_by_week > 48:
                     self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
                     self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
+                    self.fitness[2] = self.extra_hours_fitness
+
                 # if index+1 == len(vigilant.total_hours_worked_by_week):
                 #     break
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
+                    self.fitness[3] = self.assigned_vigilantes_fitness
 
     
 

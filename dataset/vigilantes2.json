@@ -6,8 +6,8 @@
             "closet_place": 1,
             "distances":[
                 0,
-                1,
-                3
+                1
+                
             ]
         },
         {
@@ -16,8 +16,8 @@
             "closet_place": 1,
             "distances":[
                 1,
-                2,
                 2
+                
             ]
         },
         {
@@ -26,8 +26,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                3
+                1
+                
             ]
         },
         {
@@ -36,18 +36,18 @@
             "closet_place": 2,
             "distances":[
                 3,
-                1,
-                2
+                1
+                
             ]
         },
         {
             "id": 5,
             "default_place_to_look_out": -1,
-            "closet_place": 3,
+            "closet_place": 1,
             "distances":[
                 2,
-                3,
-                1
+                3
+                
             ]
         },
         {
@@ -56,8 +56,8 @@
             "closet_place": 1,
             "distances":[
                 1,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -66,8 +66,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -76,8 +76,8 @@
             "closet_place": 2,
             "distances":[
                 1,
-                1,
-                3
+                1
+                
             ]
         },
         {
@@ -86,8 +86,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -96,8 +96,8 @@
             "closet_place": 2,
             "distances":[
                 1,
-                0,
-                2
+                0
+                
             ]
         },
         {
@@ -106,8 +106,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -116,8 +116,8 @@
             "closet_place": 1,
             "distances":[
                 1,
-                1,
                 1
+                
             ]
         },
         {
@@ -126,8 +126,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -136,8 +136,8 @@
             "closet_place": 1,
             "distances":[
                 1,
-                1,
-                4
+                1
+                
             ]
         },
         {
@@ -146,8 +146,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                4
+                1
+                
             ]
         },
         {
@@ -156,8 +156,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -166,8 +166,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
-                2
+                1
+                
             ]
         },
         {
@@ -176,8 +176,8 @@
             "closet_place": 1,
             "distances":[
                 1,
-                1,
                 1
+                
             ]
         },
         {
@@ -186,8 +186,8 @@
             "closet_place": 2,
             "distances":[
                 2,
-                1,
                 1
+                
             ]
         },
         {
@@ -196,9 +196,108 @@
             "closet_place": 2,
             "distances":[
                 1,
+                0
+                
+            ]
+        },
+        {
+            "id": 21,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                10
+                
+            ]
+        },
+        {
+            "id": 22,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                20
+                
+            ]
+        },
+        {
+            "id": 23,
+            "default_place_to_look_out": 1,
+            "closet_place": 1,
+            "distances":[
                 0,
-                2
+                30
+                
+            ]
+        },
+        {
+            "id": 24,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                15,
+                5
+                
+            ]
+        },
+        {
+            "id": 25,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                15,
+                20
+            ]
+        },
+        {
+            "id": 26,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                11,
+                13
+                
+            ]
+        },
+        {
+            "id": 27,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                21,
+                7
+                
+            ]
+        },
+        {
+            "id": 28,
+            "default_place_to_look_out": 1,
+            "closet_place": 1,
+            "distances":[
+               0,
+               22
+                
+            ]
+        },
+        {
+            "id": 29,
+            "default_place_to_look_out": 1,
+            "closet_place": 1,
+            "distances":[
+                0,
+                20
+                
+            ]
+        },
+        {
+            "id": 30,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                19,
+                17
             ]
         }
+        
         ]
 }
