@@ -25,6 +25,7 @@ class NsgaII(Algorithm):
         population_parents: List[SoluctionNsgaII] = population.populations
         while self.CurrentEFOs < self.MaxEFOs:
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
+            #TODO: Continuear con la union y le que implica la dominancia de la solcuion
             union_populantion = PopulationServices.union_soluction(population_parents, pulation_children)
             self.frente = PopulationServices.not_dominate_sort(union_populantion) # return frent de pareto
             population_parents = [] 

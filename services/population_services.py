@@ -3,7 +3,6 @@ import copy
 import random
 from re import I
 from urllib import response
-
 from numpy import append
 from conf import settings 
 from typing import List, Dict, Tuple
@@ -67,7 +66,6 @@ class PopulationServices:
             best = parent_for_exchange_one if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness else parent_for_exchange_two.total_fitness
             childrens.append(best)
         return childrens
-
         
     @staticmethod
     def get_best_children_of_childrens_list(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
@@ -155,9 +153,6 @@ class PopulationServices:
             range_soluction += 1
 
         return frentes
-
-
-
     @staticmethod
     def calculate_soluction_dominated(population: List[SoluctionNsgaII], frente: List[SoluctionNsgaII]):
 

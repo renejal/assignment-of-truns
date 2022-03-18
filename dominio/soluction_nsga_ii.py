@@ -23,7 +23,7 @@ class SoluctionNsgaII(Solution):
         while response:
             gen =self.sites_schedule[random.randint(0,len(self.sites_schedule)-1)]
             if gen.site_id in ids_gen_not_avaliable:
-                print("el componente ya esta la lista")
+                #"el componente ya esta la lista"
                 continue
             return gen
         
