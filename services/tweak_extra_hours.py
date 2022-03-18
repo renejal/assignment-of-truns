@@ -29,7 +29,9 @@ class Tweak_extra_hours:
                 random.shuffle(shifts_by_week)
                 for index_priority, vigilantes_by_priority_on_week in enumerate(vigilantes_with_hours_to_work[index_week]):
                     random.shuffle(vigilantes_by_priority_on_week)
-                    for available_vigilant_on_week in vigilantes_by_priority_on_week:
+                    index = 0
+                    while index < len(vigilantes_by_priority_on_week):
+                        available_vigilant_on_week = vigilantes_by_priority_on_week[index]
                         for shift in shifts_by_week:
                             if self.vigilant_assigment_service.is_vigilant_avaible(available_vigilant_on_week,shift.shift):
                                 self.exchange_shift(shift,vigilant_with_extra_hours_on_week,available_vigilant_on_week)
@@ -40,16 +42,19 @@ class Tweak_extra_hours:
                                 #Chequar si el vigilante ya no puede trabajar mas horas en la semana
                                 if available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 48:
                                     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
+                                    index -= 1
+                                    break
+                                if index_priority == 0 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 40:
+                                    vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
+                                    index -= 1
+                                    vigilantes_with_hours_to_work[index_week][1].append(available_vigilant_on_week)
                                     break
                                 #Chequear si el vigilante con extra horas ya no tiene horas extras
                                 if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48:
                                     break
-                                if index_priority == 0 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 40:
-                                    vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
-                                    vigilantes_with_hours_to_work[index_week][1].append(available_vigilant_on_week)
-                                    break
                         if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
                             break        
+                        index += 1
                     else:
                         continue
                     break

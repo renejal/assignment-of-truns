@@ -1,6 +1,8 @@
 from random import shuffle
 import random
 from typing import List
+
+from scipy.fftpack import shift
 from dominio.Solution import Solution
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -67,7 +69,9 @@ class Tweak_missing_shifts:
         random.shuffle(shifts)
         assigned_vigilantes: List[Vigilant] = []
         assigned_vigilantes_in_actual_shift: List[int] = []
-        for shift in shifts:
+        index = 0
+        while index < len(shifts):
+            shift = shifts[index]
             assigned_vigilantes_in_actual_shift.clear()
             for iteration in range(shift.necesary_vigilantes - len(shift.assigment_vigilantes)):
                 for vigilant in vigilantes:    
@@ -79,7 +83,10 @@ class Tweak_missing_shifts:
                             assigned_vigilantes.append(vigilant)
                         if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(vigilant)!= True:
                             vigilantes.remove(vigilant)
+                            #Mejorar porque ese repite el proveso
                         break
             if shift.necesary_vigilantes == len(shift.assigment_vigilantes):
                 shifts.remove(shift)
+                index-=1
+            index+=1
         return assigned_vigilantes    

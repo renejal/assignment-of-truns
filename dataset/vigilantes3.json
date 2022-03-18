@@ -1,0 +1,195 @@
+{
+    "data_vigilantes":[
+        {
+            "id": 1,
+            "default_place_to_look_out": 1,
+            "closet_place": 1,
+            "distances":[
+                0,
+                1
+                
+            ]
+        },
+        {
+            "id": 2,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                2
+                
+            ]
+        },
+        {
+            "id": 3,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 4,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                3,
+                1
+                
+            ]
+        },
+        {
+            "id": 5,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                2,
+                3
+                
+            ]
+        },
+        {
+            "id": 6,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                1
+                
+            ]
+        },
+        {
+            "id": 7,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 8,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                1,
+                1
+                
+            ]
+        },
+        {
+            "id": 9,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 10,
+            "default_place_to_look_out": 2,
+            "closet_place": 2,
+            "distances":[
+                1,
+                0
+                
+            ]
+        },
+        {
+            "id": 11,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 12,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                1
+                
+            ]
+        },
+        {
+            "id": 13,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 14,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                1
+                
+            ]
+        },
+        {
+            "id": 15,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 16,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 17,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        },
+        {
+            "id": 18,
+            "default_place_to_look_out": -1,
+            "closet_place": 1,
+            "distances":[
+                1,
+                1
+                
+            ]
+        },
+        {
+            "id": 19,
+            "default_place_to_look_out": -1,
+            "closet_place": 2,
+            "distances":[
+                2,
+                1
+                
+            ]
+        }
+        
+        ]
+}

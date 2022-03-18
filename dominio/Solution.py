@@ -14,7 +14,7 @@ class Solution:
     sites_schedule: List[Component]
     vigilantes_schedule: List[Vigilant] 
     site_schedule_service: Site_schedule_service
-    fitness = [0,0,0,0]
+    fitness:List[int]
     missing_shifts_fitness: int
     distance_fitness: int
     extra_hours_fitness: int
@@ -82,6 +82,7 @@ class Solution:
         self.extra_hours_fitness = 0
         self.assigned_vigilantes_fitness = 0
         self.total_fitness = 0
+        self.fitness = [0,0,0,0]
         for site in self.sites_schedule:
             for shift in site.missing_shifts:
                 if shift.necesary_vigilantes != len(shift.assigment_vigilantes):

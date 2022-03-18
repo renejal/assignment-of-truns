@@ -1,5 +1,6 @@
 import copy
 import math
+from pickle import NONE
 import random
 from typing import List
 from dominio.Component import Component
@@ -15,10 +16,57 @@ class Tweak_distance():
     def tweak_distance(self, solution: Solution):
         vigilantes_with_wrong_assigned_place: List[List[Vigilant]] = self.get_vigilantes_with_wrong_assigned_place(solution.vigilantes_schedule)
         vigilantes_with_one_wrong_assigned_place = vigilantes_with_wrong_assigned_place[0]
-         #Case solo pertenecen a un sitio
+        #Case solo pertenecen a un sitio
+        self.change_place_vigilantes_assigned_to_one_place(solution,vigilantes_with_one_wrong_assigned_place)        
+        #Case pertenecen a varios sitios
+        vigilantes_with_assigned_place_and_wrong_assigned_places = vigilantes_with_wrong_assigned_place[1]
+        random.shuffle(vigilantes_with_assigned_place_and_wrong_assigned_places)
+        index = 0
+        while index < len(vigilantes_with_assigned_place_and_wrong_assigned_places) and len(vigilantes_with_assigned_place_and_wrong_assigned_places) > 1:
+            vigilant = vigilantes_with_assigned_place_and_wrong_assigned_places[index]
+            if len(vigilant.sites_to_look_out) == 1 or vigilant.closet_place not in vigilant.sites_to_look_out:
+                index+=1
+                continue
+            total_assigment_shifts = len(vigilant.shifts)
+            assigment_amount_on_closets_place = vigilant.sites_to_look_out.get(vigilant.closet_place)
+            if assigment_amount_on_closets_place / total_assigment_shifts > 0.8:
+                if self.change_vigilant_with_most_shifts_in_close_place(solution,vigilant,vigilantes_with_one_wrong_assigned_place):
+                    vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                index+=1
+            elif assigment_amount_on_closets_place/total_assigment_shifts < 0.2:
+                #Cambiar los shifts con un vigilante que se encuentre en un solo sitio y sea el el sitio requerido o mas cercano
+
+                #Cambiar los shifts con un vigilante que contenga su sitio requerido o sitios mas cercano
+                if self.change_shifts_from_incorrect_place(vigilant, solution):
+                    vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                #Cambiar con vigilantes con sitios mas cercanos
+                index+=1
+            else:
+                #Cambiarlo con un vigilante que tenga solo su sitio rquerido
+                #Cambiar los shifts de los que no son el requerido con otros mas cercanos
+                if self.change_shifts_from_incorrect_place(vigilant, solution):
+                    vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                index+=1
+
+
+       
+        #Cambiar un shift donde este trabajando en otro sitio a su mas cercano
+        #Cambiar algunos shifts
+        return solution
+
+    def change_vigilant_with_most_shifts_in_close_place(self,solution,vigilant, vigilantes_with_one_wrong_assigned_place) -> bool:
+        #Cambiarlo con un vigilante que tenga solo su sitio requerido
+        if self.change_vigilant_with_multiple_places_with_vigilant_with_one_place(solution, vigilant , vigilantes_with_one_wrong_assigned_place):
+            return True
+        #Cambiar Solo los shifts
+        if self.change_shifts_from_incorrect_place(vigilant, solution):
+            return True
+        return False
+
+    def change_place_vigilantes_assigned_to_one_place(self,solution: Solution, vigilantes_with_one_wrong_assigned_place: List[Vigilant]) -> NONE:
         random.shuffle(vigilantes_with_one_wrong_assigned_place)
         index = 0
-        while index < len(vigilantes_with_one_wrong_assigned_place) and len(vigilantes_with_one_wrong_assigned_place) > 1:
+        while index+1 < len(vigilantes_with_one_wrong_assigned_place):
             vigilant = vigilantes_with_one_wrong_assigned_place[index]
             assigned_site = list(vigilant.sites_to_look_out.keys())[0]
             vigilant_to_change = vigilant
@@ -33,85 +81,49 @@ class Tweak_distance():
                 self.change_assinged_vigilantes_on_site(solution.sites_schedule[assigned_site-1],vigilant,solution.sites_schedule[closest_place_to_assign-1],vigilant_to_change)
                 self.change_vigilantes_schedule(vigilant, vigilant_to_change)
                 vigilantes_with_one_wrong_assigned_place.remove(vigilant)
-                index-=1
-            index+=1
-        vigilantes_with_assigned_place_and_wrong_assigned_places = vigilantes_with_wrong_assigned_place[1]
-        random.shuffle(vigilantes_with_assigned_place_and_wrong_assigned_places)
-        #Cambiar un vigilante con el horario de otro vigilante
-            #Case pertenecen a varios sitios
-        index = 0
-        while index < len(vigilantes_with_assigned_place_and_wrong_assigned_places) and len(vigilantes_with_assigned_place_and_wrong_assigned_places) > 1:
-            total_assigment_shifts = len(vigilantes_with_assigned_place_and_wrong_assigned_places[index].shifts)
-            assigment_amount_on_closets_place = vigilantes_with_assigned_place_and_wrong_assigned_places[index].sites_to_look_out.get(vigilantes_with_assigned_place_and_wrong_assigned_places[index].closet_place)
-            vigilant = vigilantes_with_assigned_place_and_wrong_assigned_places[index]
-            if assigment_amount_on_closets_place / total_assigment_shifts > 0.8:
-                #Cambiarlo con un vigilante que tenga solo su sitio rquerido
-                if self.change_place(solution, vigilant , vigilantes_with_one_wrong_assigned_place):
-                    vigilantes_with_assigned_place_and_wrong_assigned_places.remove(vigilant)  
-                    continue
-                #Cambiar Solo los shifts
-                if self.change_shifts(vigilant, solution):
-                    vigilantes_with_assigned_place_and_wrong_assigned_places.remove(vigilant)
-                    vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
-                index+=1
-            elif assigment_amount_on_closets_place/total_assigment_shifts < 0.2:
-                #Cambiar los shifts con un vigilante que se encuentre en un solo sitio y sea el el sitio requerido o mas cercano
-
-                #Cambiar los shifts con un vigilante que contenga su sitio requerido o sitios mas cercano
-                self.change_shifts(vigilant, solution)
-                vigilantes_with_assigned_place_and_wrong_assigned_places.remove(vigilant)
-                vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
-                #Cambiar con vigilantes con sitios mas cercanos
-                index+=1
-
-            else:
-                #Cambiarlo con un vigilante que tenga solo su sitio rquerido
-                #Cambiar los shifts de los que no son el requerido con otros mas cercanos
-                self.change_shifts(vigilant, solution)
-                vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
-                vigilantes_with_assigned_place_and_wrong_assigned_places.remove(vigilant)
-                index+=1
-
-
-       
-        #Cambiar un shift donde este trabajando en otro sitio a su mas cercano
-        #Cambiar algunos shifts
-        return solution
-
-    def change_place(self, solution:Solution, vigilant: Vigilant, vigilantes_with_one_wrong_assigned_place: List[Vigilant]):
-        for index_wrong_vigilant in range(len(vigilantes_with_one_wrong_assigned_place)):
-                vigilant_to_change = vigilantes_with_one_wrong_assigned_place[index_wrong_vigilant]
-                assigned_site_to_change = list(vigilant_to_change.sites_to_look_out.keys())[0]
-                if assigned_site_to_change == vigilant.closet_place:
-                    solution.sites_schedule[assigned_site_to_change-1].assigned_Vigilantes.pop(vigilant_to_change.id)
-                    for site_to_look_out in vigilant.sites_to_look_out:
-                        solution.sites_schedule[site_to_look_out-1].assigned_Vigilantes[vigilant_to_change.id] = vigilant_to_change
-                        solution.sites_schedule[site_to_look_out-1].assigned_Vigilantes.pop(vigilant.id)             
-                    solution.sites_schedule[assigned_site_to_change-1].assigned_Vigilantes[vigilant.id] = vigilant
-                    self.change_vigilantes_schedule(vigilant,vigilant_to_change)
+                if list(vigilant_to_change.sites_to_look_out.keys())[0] == vigilant_to_change.default_place_to_look_out:
                     vigilantes_with_one_wrong_assigned_place.remove(vigilant_to_change)
-                    return True
+            else:
+                index+=1
+
+    def change_vigilant_with_multiple_places_with_vigilant_with_one_place(self, solution:Solution, vigilant: Vigilant, vigilantes_with_one_wrong_assigned_place: List[Vigilant]) -> bool:
+        for index_wrong_vigilant in range(len(vigilantes_with_one_wrong_assigned_place)):
+            vigilant_to_change = vigilantes_with_one_wrong_assigned_place[index_wrong_vigilant]
+            assigned_site_to_change = list(vigilant_to_change.sites_to_look_out.keys())[0]
+            if assigned_site_to_change == vigilant.closet_place:
+                assigned_place_from_vigilant_to_change = solution.sites_schedule[assigned_site_to_change-1]
+                assigned_place_from_vigilant_to_change.assigned_Vigilantes.pop(vigilant_to_change.id)
+                for site_to_look_out in vigilant.sites_to_look_out:
+                    solution.sites_schedule[site_to_look_out-1].assigned_Vigilantes[vigilant_to_change.id] = vigilant_to_change
+                    solution.sites_schedule[site_to_look_out-1].assigned_Vigilantes.pop(vigilant.id)             
+                solution.sites_schedule[assigned_site_to_change-1].assigned_Vigilantes[vigilant.id] = vigilant
+                self.change_vigilantes_schedule(vigilant,vigilant_to_change)
+                return True
         return False
 
-    def change_shifts(self, vigilant: Vigilant, solution: Solution):
+    def change_shifts_from_incorrect_place(self, vigilant: Vigilant, solution: Solution):
+        change_vigilant = False
         for shift in vigilant.shifts:
             var = False
-            if shift.site_id != vigilant.closet_place:
+            site_shift = shift.site_id
+            if site_shift != vigilant.closet_place:
                 for site_by_distance in vigilant.get_index_sites_by_distance():
-                    if vigilant.distances[shift.site_id -1] < vigilant.distances[site_by_distance] or shift.site_id == site_by_distance+1:
+                    if site_shift == site_by_distance+1 or vigilant.distances[site_shift -1] < vigilant.distances[site_by_distance] :
                         break
                     for shift_schedule in solution.sites_schedule[site_by_distance].site_schedule:
                         if shift.shift.shift_start == shift_schedule.shift_start and shift.shift.shift_end == shift_schedule.shift_end:
                             for vigilant_on_shift in shift_schedule.assigment_vigilantes:
-                                if vigilant_on_shift != vigilant.id and solution.vigilantes_schedule[vigilant_on_shift-1].closet_place != site_by_distance+1:
+                                if solution.vigilantes_schedule[vigilant_on_shift-1].closet_place != site_by_distance+1:
                                     shift_to_change = solution.vigilantes_schedule[vigilant_on_shift-1].find_shift_place(shift_schedule)
                                     self.change_shifts_vigilantes(solution.sites_schedule[shift.site_id-1], solution.sites_schedule[site_by_distance], shift, shift_to_change, vigilant, solution.vigilantes_schedule[vigilant_on_shift-1])
                                     var = True
+                                    change_vigilant = True
                                     break
                         if var:
                             break
                     if var:
-                        break        
+                        break
+        return change_vigilant        
 
 
 
@@ -160,7 +172,7 @@ class Tweak_distance():
                 vigilantes_with_wrong_assigned_place[1].append(vigilant)
         return vigilantes_with_wrong_assigned_place
     
-    def get_vigilantes_with_one_wrong_assigned_place(self, vigilantes: List[Vigilant]) -> List[List[Vigilant]]:
+    def get_vigilantes_with_one_wrong_assigned_place(self, vigilantes: List[Vigilant]) -> List[Vigilant]:
         vigilantes_with_wrong_assigned_place = []
         for vigilant in vigilantes:
             if vigilant.closet_place not in vigilant.sites_to_look_out:
