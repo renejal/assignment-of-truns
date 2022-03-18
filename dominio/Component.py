@@ -1,7 +1,8 @@
+from pickle import FALSE
+from xml.dom import ValidationErr
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List
-
 from dominio.model.vigilant import Vigilant
 
 class Component:
@@ -15,6 +16,7 @@ class Component:
     distance_fitness: int = 0
     extra_hours_fitness: int = 0
     assigned_vigilantes_fitness: int = 0
+    modified = False
     total_fitness:int = 0
     
     def __init__(self, site_id : int , site_schedule : List[Shift], assigned_vigilantes: List[Vigilant]) -> None:   
@@ -22,7 +24,21 @@ class Component:
         self.site_schedule = site_schedule
         self.assigned_Vigilantes = {x.id: x for x in assigned_vigilantes}
         self.missing_shifts = []
-        self.calculate_inicial_fitness()
+        # self.calculate_inicial_fitness()
+ 
+    def get_vigilantes(self) -> List[Vigilant]:
+        return self.assigned_Vigilantes
+    
+    def get_vigilant(self, id: int)-> Vigilant:
+        for vigilant in self.assigned_Vigilantes:
+            if vigilant.id == id:
+                return vigilant 
+    def set_remove_vigilant(self, vigilants: List[int]):
+        for vigilant in self.assigned_Vigilantes:
+            if vigilant.id in vigilants:
+                self.assigned_Vigilantes.remove(vigilant)
+    def exchange_vigilant(self, id_vigilant_new, id_vigilant_exchange):
+        self.get_vigilant(id_vigilant_exchange).set_id(id_vigilant_new)
 
     def calculate_inicial_fitness(self) -> None:
         for shift in self.site_schedule:

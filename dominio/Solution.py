@@ -1,5 +1,5 @@
 import copy 
-from typing import List
+from typing import List, Literal
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
@@ -20,6 +20,8 @@ class Solution:
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
+    objectives_to_optimize: List[int]
+    id: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
         self.site_schedule_service = Site_schedule_service(problem)
@@ -75,7 +77,7 @@ class Solution:
             return True
         self.calculate_fitness()
         return False
-
+    
     def calculate_fitness(self):
         self.missing_shifts_fitness = 0
         self.distance_fitness = 0
@@ -109,15 +111,5 @@ class Solution:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
                     self.fitness[3] = self.assigned_vigilantes_fitness
-
-    
-
-   
-
-    
-
-    
-
-    
 
     

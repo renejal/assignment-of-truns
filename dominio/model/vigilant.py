@@ -91,4 +91,6 @@ class Vigilant(FromDictMixin):
 
     
 
+    def set_id(self, id):
+        self.id = id
 

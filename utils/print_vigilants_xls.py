@@ -1,11 +1,11 @@
 import pandas as pd
 
-from dominio.Solution import Solution
+from dominio.Solution import Solution 
 
 PATH_FILE: str = "./dataset/results/Vigilantes.xlsx"
 TOTAL_HOURS: int = 24
 
-def generate_excel_vigilantes(solution: Solution):
+def generate_excel_vigilantes(solution:  Solution):
     writer = pd.ExcelWriter(PATH_FILE, engine='openpyxl')
     wb = writer.book
     columnas = ["Hours Week"] + list("day"+str(day) for day in range(1,solution.problem.MAX_TOTAL_WEEKS*7+1))

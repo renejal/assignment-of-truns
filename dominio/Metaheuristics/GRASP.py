@@ -3,7 +3,7 @@ import random
 from typing import List
 
 from dominio.Algorithm import Algorithm
-from dominio.Solution import Solution
+from dominio.Solution import Solution 
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
 from utils.graph import Graph
