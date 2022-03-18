@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import parallel_coordinates
-import plotly.express as px
+# import plotly.express as px
 
 from dominio.Solution import Solution
 
