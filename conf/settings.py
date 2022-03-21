@@ -13,3 +13,5 @@ EXTRA_HOURS_FITNESS_VALUE = 1
 NUMBER_ITERATION_SELECTION_COMPONENTE = 10
 NUMBER_OF_CHILDREN_GENERATE = 11 # se generarn 11 hijos para tener en cuenta y de estos se toma el mejor
 NUMBER_OF_CHILDREN_FOR_PARENTS= 2 # se negera 2 hijos por cadas dos padres
+RESTRICTED_LIST_AMOUNT_COMPONENT = 10
+

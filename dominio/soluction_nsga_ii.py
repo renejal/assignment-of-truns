@@ -10,7 +10,6 @@ class SoluctionNsgaII(Solution):
 
     __dominate: List[int] 
     __dominate_me_account: int 
-    __range_soluction: int
     __objetives: int
 
     # def is_dominate(self, soluction: SoluctionNsgaII):
@@ -54,11 +53,6 @@ class SoluctionNsgaII(Solution):
     def dominate_me(self):
         return self.__dominate_me
 
-    @property
-    def range_soluction(self):
-        return self.__range_soluction
-
-    
     def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
         for gen in self.sites_schedule:
             for vigilant in gen.assigned_Vigilantes:

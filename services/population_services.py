@@ -7,8 +7,10 @@ from numpy import append
 from conf import settings 
 from typing import List, Dict, Tuple
 from dominio.model.vigilant import Vigilant
+from dominio.population import Population
 # from msilib.schema import Component
 from dominio.soluction_nsga_ii import SoluctionNsgaII
+from dominio.Solution import Solution
 from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
 
@@ -128,46 +130,43 @@ class PopulationServices:
 
     @staticmethod
     def union_soluction(parents, children) -> List[SoluctionNsgaII]:
-        """se encarda de unir los padres y los hijos de una misma lista y luego la ordena porn RANGO"""
-        "return una lista unida de padres he hijos"
         return  parents + children
     
     @staticmethod
-    def not_dominate_sort(population: List[SoluctionNsgaII])-> Dict[int,List[SoluctionNsgaII]]:
-        population: List[SoluctionNsgaII]
-        frentes: Dict[int,List[SoluctionNsgaII]]
-        PopulationServices.calculate_soluction_dominated(population, frentes)
-        PopulationServices.calculate_soluction_for_frentes(population, frentes)
-        return frentes
+    def not_dominate_sort(population: Population):
+        # frentes: Dict[int,List[Solution]]
+        PopulationServices.calculate_dominance(population)
+        PopulationServices.calculate_range(population)
 
-    def calculate_soluction_for_frentes(self, soluction: SoluctionNsgaII, frentes: Dict[int, List[SoluctionNsgaII]]):
-        range_soluction = 1
-        while self.get_soluction_the_frente_whit_range(range_soluction):
-            soluctions_of_range: List[SoluctionNsgaII] = self.get_soluction_the_frente_whit_range(range_soluction)
-            for soluction_dominate in soluctions_of_range:
-               for soluction in soluction_dominate.dominate: 
-                    soluction.dominate_me -=1
-                    if soluction.dominate_me == 0:
-                        soluction.range += 1
-                        self.add_frente(soluction, range_soluction+ 1)
-            range_soluction += 1
-
-        return frentes
     @staticmethod
-    def calculate_soluction_dominated(population: List[SoluctionNsgaII], frente: List[SoluctionNsgaII]):
+    def calculate_range(population: Population):
+        range = 1
+        while population.frente(range):
+            solutions: List[Solution] = population.get_soluction_the_frente_whit_range(range)
+            for dominated_solution in solutions:
+               for solution_id in dominated_solution.dominated: 
+                    solution = population.get_solution(solution_id)
+                    solution.dominate_me -=1
+                    if solution.dominate_me == 0:
+                        solution.range += 1
+                        population.add_frente(solution, range+ 1)
+            range += 1
 
+    @staticmethod
+    # def calculate_dominance(population: List[Solution], frente: List[Solution]):
+    def calculate_dominance(population: Population):
         for i in range(len(population)):
             population[i].dominate = [] # nueva lista vacia
             population[i].__dominate_me_account= 0 # numero de solucion que la dominan
             population[i].range_soluction = -1
             for j in range(len(population)):
                 if i == j: continue
-                if self.to_dominate(population[i],population[j]):
+                if population[i].to_dominate(population[j]):
                     population[i].add_dominate(population[j].id)
                 else:
-                    if self.to_dominate(population[j],population[i]):
+                    if population[j].to_dominate(population[i]):
                         population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
             if population[i].dominate_me == 0:
                 population[i].range_soluction = 1
-                self.add_frente(population[i],1, frente)
+                population.add_frente(population[i])
 

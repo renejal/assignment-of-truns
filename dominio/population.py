@@ -7,6 +7,7 @@ from typing import List, Dict
 from urllib import response
 from xmlrpc.client import boolean
 from isodate import D_DEFAULT
+from dominio.Solution import Solution
 from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
@@ -18,8 +19,9 @@ class Population():
     __finnest: int
     __soluction_list: List[SoluctionNsgaII]
     __decendets_list: List[SoluctionNsgaII]
-    __populations: List[SoluctionNsgaII]
+    __populations: List[Solution]
     __num_soluction: int 
+    __frente: int
 
     def __init__(self, problem: VigilantAssigment, num_soluction: int):
         self.__num_soluction = num_soluction
@@ -46,11 +48,6 @@ class Population():
             if soluction not in dominate:
                 dominate.append(soluction)
 
-    @staticmethod
-    def get_soluction_the_frente_whit_range(range: int) -> SoluctionNsgaII:
-        return frente.get(range)
-        
-        
     def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[SoluctionNsgaII]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
@@ -84,6 +81,20 @@ class Population():
                 list_children.append(children)
         return list_children
 
+    def get_solution(self,id: int):
+        return self.__populations[id]
+
+    def get_Solutions_of_range(self, id):
+        frents: List[Solution]  = []
+        for solution in self.__populations:
+            if solution.range == id:
+                frents.append(solution)
+        if frents:
+            return frents
+        else:
+            raise(f"Error: frente con range {id} esta vacio")
+            
+            
     @staticmethod
     def to_dominate(soluction_one: SoluctionNsgaII, soluction_two: SoluctionNsgaII)-> bool:
         #TODO: test for method
@@ -96,6 +107,10 @@ class Population():
                 if soluction_one.objectives_to_optimize[j] < soluction_two.objectives_to_optimize[j]:
                     return False
         return response
+    def get_soluction_the_frente_whit_range(self, range: int):
+        for solution in self.__populations:
+            if solution.range_soluction == 1:
+                return solution
 
     def order_by(self, R: List[SoluctionNsgaII]):
         """se ordenas las soluciones dependiendo del rango
@@ -107,14 +122,10 @@ class Population():
     @property
     def populations(self):
         return self.__populations
-    def get_front_the_pareto(self):
-        """el frende de pareto es se puede dividir en rangos
-        rango 1 : para el conjunto de solucion del frente de pareto
-        rango 2 : para el conjunt ode soluciones que estan mas serca al confunto de rango 1 del frente de pareto
-        """
-        pass
-
-
+    @property
+    def frente(self):
+        return self.__frente
+   
     def evaluate_solucion(self, soluction: SoluctionNsgaII):
         """
         la funcion debe guarda en cada atributo de la solucion le valor fitness

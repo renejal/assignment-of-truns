@@ -21,6 +21,8 @@ class Solution:
     assigned_vigilantes_fitness: int
     total_fitness: int
     objectives_to_optimize: List[int]
+    dominated: List[int]
+    range: int
     id: int
 
     def __init__(self, problem: VigilantAssigment , Aletory):
@@ -77,7 +79,7 @@ class Solution:
             return True
         self.calculate_fitness()
         return False
-    
+
     def calculate_fitness(self):
         self.missing_shifts_fitness = 0
         self.distance_fitness = 0
