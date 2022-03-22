@@ -31,8 +31,8 @@ class Component:
     
     def get_vigilant(self, id: int)-> Vigilant:
         for vigilant in self.assigned_Vigilantes:
-            if vigilant.id == id:
-                return vigilant 
+            if vigilant == id:
+                return self.assigned_Vigilantes.get(id) 
     def set_remove_vigilant(self, vigilants: List[int]):
         for vigilant in self.assigned_Vigilantes:
             if vigilant.id in vigilants:

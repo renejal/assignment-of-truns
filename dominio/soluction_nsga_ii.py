@@ -12,11 +12,6 @@ class SoluctionNsgaII(Solution):
     __dominate_me_account: int 
     __objetives: int
 
-    # def is_dominate(self, soluction: SoluctionNsgaII):
-    #     # se obitene el finter y se compara si domina o no la solucioon
-    #     if super().calculate_fitness < soluction.
-    #     pass
-
     def get_random_gen(self, ids_gen_not_avaliable: List[int]) -> Component:
         response = True
         while response:
@@ -55,11 +50,11 @@ class SoluctionNsgaII(Solution):
 
     def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
         for gen in self.sites_schedule:
-            for vigilant in gen.assigned_Vigilantes:
-                if vigilant.id == id_vigilant_exchange:
-                    vigilant.set_id(id_vigilant_new) 
-                elif vigilant.id == id_vigilant_new:
-                    vigilant.set_id(id_vigilant_exchange)
+            for vigilant_id in gen.assigned_Vigilantes:
+                if vigilant_id== id_vigilant_exchange:
+                    gen.assigned_Vigilantes.get(vigilant_id).set_id(id_vigilant_new) 
+                elif vigilant_id== id_vigilant_new:
+                    gen.assigned_Vigilantes.get(vigilant_id).set_id(id_vigilant_exchange)
             
                     
     # set
@@ -79,12 +74,6 @@ class SoluctionNsgaII(Solution):
     
     def add_gen(self, gen):
         self.sites_schedule.append(gen)
-    
-
-    @dominate.setter
-    def dominate(self, soluction_id):
-       if soluction_id not in self.__dominate:
-           self.__dominate.append(soluction_id)
     
     @dominate.setter
     def dominate_me(self, dominate_me_account):

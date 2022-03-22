@@ -94,19 +94,6 @@ class Population():
         else:
             raise(f"Error: frente con range {id} esta vacio")
             
-            
-    @staticmethod
-    def to_dominate(soluction_one: SoluctionNsgaII, soluction_two: SoluctionNsgaII)-> bool:
-        #TODO: test for method
-        response = False
-        number_of_objetives = len(soluction_one.objectives_to_optimize)
-        for j in range(number_of_objetives):
-            if soluction_one.objectives_to_optimize[j] < soluction_two.objectives_to_optimize[j]:
-                response = True
-            else:
-                if soluction_one.objectives_to_optimize[j] < soluction_two.objectives_to_optimize[j]:
-                    return False
-        return response
     def get_soluction_the_frente_whit_range(self, range: int):
         for solution in self.__populations:
             if solution.range_soluction == 1:

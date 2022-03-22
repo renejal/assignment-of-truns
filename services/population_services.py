@@ -52,10 +52,10 @@ class PopulationServices:
                 #retorna la dos mejores soluciones
                 PopulationServices.calculate_fitness(childrens)
                 childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
-            else:
-                # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
-                childrens.append(parent_for_exchange_one)
-                childrens.append(parent_for_exchange_two)
+        else:
+            # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
+            childrens.append(parent_for_exchange_one)
+            childrens.append(parent_for_exchange_two)
         return childrens
 
     @staticmethod
@@ -90,14 +90,14 @@ class PopulationServices:
     @staticmethod
     def is_validation_and_repartion(gen_new: Component, gen_exchange: Component): 
         """retorna true si se encontro vigilantes no por default y distintos entre los dos genes"""
-        vigilants_new: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes]
-        vigilants_exchange: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes]
+        vigilants_new: List[int] = [vigilant for vigilant in gen_new.assigned_Vigilantes]
+        vigilants_exchange: List[int] = [vigilant for vigilant in gen_exchange.assigned_Vigilantes]
         diference = list(set(vigilants_new) - set(vigilants_exchange))
         diference += list(set(vigilants_exchange) - set(vigilants_new))
         if not diference:
             return None
-        vigilants_new_not_in_commont: List[int] = [vigilant.id for vigilant in gen_new.assigned_Vigilantes if vigilant.id in diference and vigilant.default_place_to_look_out == -1]
-        vigilants_exchange_not_in_commont: List[int] = [vigilant.id for vigilant in gen_exchange.assigned_Vigilantes if vigilant.id in diference and vigilant.default_place_to_look_out == -1]
+        vigilants_new_not_in_commont: List[int] = [vigilant for vigilant in gen_new.assigned_Vigilantes if vigilant in diference and gen_new.get_vigilant(vigilant).default_place_to_look_out == -1]
+        vigilants_exchange_not_in_commont: List[int] = [vigilant for vigilant in gen_exchange.assigned_Vigilantes if vigilant in diference and gen_exchange.get_vigilant(vigilant).default_place_to_look_out == -1]
         return vigilants_new_not_in_commont, vigilants_exchange_not_in_commont
 
     @staticmethod
@@ -129,17 +129,38 @@ class PopulationServices:
         return children
 
     @staticmethod
-    def union_soluction(parents, children) -> List[SoluctionNsgaII]:
+    def union_soluction(parents, children) -> List[Solution]:
         return  parents + children
     
+
     @staticmethod
-    def not_dominate_sort(population: Population):
+    def to_dominate(soluction_one: Solution, soluction_two: Solution)-> bool:
+        #TODO: test for method
+        response = False
+        number_of_objetives = len(soluction_one.fitness)
+        for j in range(number_of_objetives):
+            if soluction_one.fitness[j] < soluction_two.fitness[j]:
+                response = True
+            else:
+                if soluction_one.fitness[j] < soluction_two.fitness[j]:
+                    return False
+        return response
+
+    @staticmethod
+    def not_dominate_sort(population: List[Solution]):
         # frentes: Dict[int,List[Solution]]
+        PopulationServices.add_ids_solution(population)
         PopulationServices.calculate_dominance(population)
         PopulationServices.calculate_range(population)
 
     @staticmethod
-    def calculate_range(population: Population):
+    def add_ids_solution(population: List[Solution]):
+        for index, solution in enumerate(population):
+            solution.id = index + 1
+
+            
+    @staticmethod
+    def calculate_range(population: List[Solution]):
         range = 1
         while population.frente(range):
             solutions: List[Solution] = population.get_soluction_the_frente_whit_range(range)
@@ -153,18 +174,17 @@ class PopulationServices:
             range += 1
 
     @staticmethod
-    # def calculate_dominance(population: List[Solution], frente: List[Solution]):
-    def calculate_dominance(population: Population):
+    def calculate_dominance(population: List[Solution]):
         for i in range(len(population)):
-            population[i].dominate = [] # nueva lista vacia
+            population[i].dominated=[] # nueva lista vacia
             population[i].__dominate_me_account= 0 # numero de solucion que la dominan
             population[i].range_soluction = -1
             for j in range(len(population)):
                 if i == j: continue
-                if population[i].to_dominate(population[j]):
+                if PopulationServices.to_dominate(population[i],population[j]): # la solucion i domina a la solucion j ?
                     population[i].add_dominate(population[j].id)
                 else:
-                    if population[j].to_dominate(population[i]):
+                    if PopulationServices.to_dominate(population[i],population[i]):
                         population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
             if population[i].dominate_me == 0:
                 population[i].range_soluction = 1

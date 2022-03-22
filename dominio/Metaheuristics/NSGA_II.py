@@ -1,6 +1,7 @@
 import copy
 from typing import List, Dict
 from dominio.Algorithm import Algorithm
+from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.population import Population
