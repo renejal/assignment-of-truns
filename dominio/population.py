@@ -8,7 +8,7 @@ from urllib import response
 from xmlrpc.client import boolean
 from isodate import D_DEFAULT
 from dominio.Solution import Solution
-from dominio.soluction_nsga_ii import SoluctionNsgaII
+# from dominio.soluction_nsga_ii import Solution
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
 from conf import settings
@@ -17,11 +17,11 @@ from conf import settings
 class Population():
 
     __finnest: int
-    __soluction_list: List[SoluctionNsgaII]
-    __decendets_list: List[SoluctionNsgaII]
+    __soluction_list: List[Solution]
+    __decendets_list: List[Solution]
     __populations: List[Solution]
-    __num_soluction: int 
-    __frente: int
+    __num_soluction: int
+    __frente: List[int]
 
     def __init__(self, problem: VigilantAssigment, num_soluction: int):
         self.__num_soluction = num_soluction
@@ -34,26 +34,18 @@ class Population():
            response = True 
         return response
 
-    def add_dominate(self, soluction_dominate: SoluctionNsgaII, soluction_dominate_me: SoluctionNsgaII):
+    def add_dominate(self, soluction_dominate: Solution, soluction_dominate_me: Solution):
 
         "add tha domiNAte soluction a tha list oF soluction that dominates it"
         pass 
     
-    @staticmethod
-    def add_frente(soluction: SoluctionNsgaII, soluction_range: int, frente: Dict[int,List[SoluctionNsgaII]]):
-        dominate = frente.get(soluction_range) 
-        if not dominate:
-            frente[soluction_range] = [soluction]
-        else:
-            if soluction not in dominate:
-                dominate.append(soluction)
 
-    def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[SoluctionNsgaII]:
+    def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[Solution]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
-        population: List[SoluctionNsgaII] = []
+        population: List[Solution] = []
         for i in range(soluction_number):
-            S = SoluctionNsgaII(problem, settings)
+            S = Solution(problem, settings)
             while S.is_solution_complete():
                 components = S.create_components(soluction_number)
                 restried_list = components 
@@ -65,16 +57,16 @@ class Population():
             population.append(S) 
         return population 
 
-    def generate_decendents(self, parents: List[SoluctionNsgaII], num_decendets_for_dad: int) -> List[SoluctionNsgaII]:
+    def generate_decendents(self, parents: List[Solution], num_decendets_for_dad: int) -> List[Solution]:
         """
         se obtiene a partir de una metodo de mutacion, de cruce y de selección
         genera un numero determinado de desendientes a partir de un conjunto de soluciónes del self.soluction_list
         :param soluction:
         :return:
         """
-        list_children: list[SoluctionNsgaII] = []
+        list_children: list[Solution] = []
         for iteration in range(num_decendets_for_dad):
-            children: SoluctionNsgaII
+            children: Solution
             for parent in parents:
                 "TODO: los hijos generados debe ser mejores que sus padres??"
                 children = Tweak_service().Tweak(copy.copy(parent))
@@ -99,7 +91,7 @@ class Population():
             if solution.range_soluction == 1:
                 return solution
 
-    def order_by(self, R: List[SoluctionNsgaII]):
+    def order_by(self, R: List[Solution]):
         """se ordenas las soluciones dependiendo del rango
         o basado en el numero del frente"""
         """Aquie es donde dentra el ordenamiento no dominda o shorting 
@@ -113,7 +105,7 @@ class Population():
     def frente(self):
         return self.__frente
    
-    def evaluate_solucion(self, soluction: SoluctionNsgaII):
+    def evaluate_solucion(self, soluction: Solution):
         """
         la funcion debe guarda en cada atributo de la solucion le valor fitness
         hay que tener en cuenta la funcion de clounding

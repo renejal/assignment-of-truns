@@ -3,7 +3,7 @@ from typing import List, Dict
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
-from dominio.soluction_nsga_ii import SoluctionNsgaII
+# from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.population import Population
 from services.population_services import PopulationServices
 from tests import generate_pyckle 
@@ -14,7 +14,7 @@ class NsgaII(Algorithm):
     MaxEFOs: int = 10
     num_soluciones = 10
     num_decendents = 11
-    frentes: Dict[int,List[SoluctionNsgaII]]
+    # frentes: Dict[int,List[SoluctionNsgaII]]
 
         
 
@@ -23,7 +23,7 @@ class NsgaII(Algorithm):
         population =  Population(problem, self.num_soluciones)
         # generate_pyckle.save_object("tests/population.pickle", population)
         # object = generate_pyckle.read_file('tests/population.pickle')
-        population_parents: List[SoluctionNsgaII] = population.populations
+        population_parents: List[Solution] = population.populations
         while self.CurrentEFOs < self.MaxEFOs:
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             #TODO: Continuear con la union y le que implica la dominancia de la solcuion

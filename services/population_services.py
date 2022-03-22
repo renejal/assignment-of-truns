@@ -9,7 +9,8 @@ from typing import List, Dict, Tuple
 from dominio.model.vigilant import Vigilant
 from dominio.population import Population
 # from msilib.schema import Component
-from dominio.soluction_nsga_ii import SoluctionNsgaII
+# from dominio.soluction_nsga_ii import Solution
+from dominio.Solution import Solution
 from dominio.Solution import Solution
 from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
@@ -17,9 +18,9 @@ from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilan
 class PopulationServices:
 
     @staticmethod
-    def generate_decendents(population: List[SoluctionNsgaII]) -> List[SoluctionNsgaII]:
+    def generate_decendents(population: List[Solution]) -> List[Solution]:
         "a copy of tha populaton is received"
-        childrens: list[SoluctionNsgaII] = []
+        childrens: list[Solution] = []
         while population: 
             parents = PopulationServices.get_parents(population)
             #TODO: GENEAR DOS HIJOS POR DOS PADRES, 
@@ -29,21 +30,21 @@ class PopulationServices:
         return childrens
     
     @staticmethod
-    def get_parents(parents: List[SoluctionNsgaII]) -> List[SoluctionNsgaII]:
-        response: List[SoluctionNsgaII] = []
+    def get_parents(parents: List[Solution]) -> List[Solution]:
+        response: List[Solution] = []
         response.append(parents.pop(random.randint(0, len(parents)-1)))
         response.append(parents.pop(random.randint(0, len(parents)-1)))
         return response
     
     @staticmethod
-    def calculate_fitness(childrens: List[SoluctionNsgaII]):
+    def calculate_fitness(childrens: List[Solution]):
         # calcular fitness para cada solucion de la lista childrens
         for children in childrens:
             children.calculate_fitness()
 
     @staticmethod
-    def mating_between_parents(parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII) -> SoluctionNsgaII:
-        childrens: List[SoluctionNsgaII] = []
+    def mating_between_parents(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> Solution:
+        childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
             child = PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
             if child:
@@ -59,7 +60,7 @@ class PopulationServices:
         return childrens
 
     @staticmethod
-    def get_best_Soluction(childrens: List[SoluctionNsgaII], parent_for_exchange_one: SoluctionNsgaII, parent_for_exchange_two: SoluctionNsgaII):
+    def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
         for i in range(1):
             best = PopulationServices.get_best_children_of_childrens_list(childrens)
             if best.total_fitness < (parent_for_exchange_one.total_fitness or parent_for_exchange_two.total_fitness):
@@ -70,8 +71,8 @@ class PopulationServices:
         return childrens
         
     @staticmethod
-    def get_best_children_of_childrens_list(childrens: List[SoluctionNsgaII]) -> SoluctionNsgaII:
-        best: SoluctionNsgaII  = None
+    def get_best_children_of_childrens_list(childrens: List[Solution]) -> Solution:
+        best: Solution  = None
         for children in childrens:
             if best == None:
                 best = children 
@@ -101,7 +102,7 @@ class PopulationServices:
         return vigilants_new_not_in_commont, vigilants_exchange_not_in_commont
 
     @staticmethod
-    def get_random_gens(parent_for_exchange_new: SoluctionNsgaII, parent_for_exchange: SoluctionNsgaII) -> List[Component]:
+    def get_random_gens(parent_for_exchange_new: Solution, parent_for_exchange: Solution) -> List[Component]:
         "El metodo debe retornas la lista de vigilantes del componente y el componente del cual fue sacado"
         gen_parent_for_exchange_new: Component = None
         gen_parent_exchange: Component = None
@@ -118,7 +119,7 @@ class PopulationServices:
 
     @staticmethod
     #todo debe resibir una copia de los parametros
-    def parent_crossing(parent_for_exchange_new: SoluctionNsgaII, children: SoluctionNsgaII) -> SoluctionNsgaII:
+    def parent_crossing(parent_for_exchange_new: Solution, children: Solution) -> Solution:
         "el hijo va hacer  una copia de la nueva solucion con su respectiva mutacion"
         vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         if not vigilants:
@@ -142,16 +143,16 @@ class PopulationServices:
             if soluction_one.fitness[j] < soluction_two.fitness[j]:
                 response = True
             else:
-                if soluction_one.fitness[j] < soluction_two.fitness[j]:
+                if soluction_two.fitness[j] < soluction_one.fitness[j]:
                     return False
         return response
 
     @staticmethod
-    def not_dominate_sort(population: List[Solution]):
-        # frentes: Dict[int,List[Solution]]
+    def not_dominate_sort(population: List[Solution]) -> List[Solution]:
+        frente: List[Solution]
         PopulationServices.add_ids_solution(population)
-        PopulationServices.calculate_dominance(population)
-        PopulationServices.calculate_range(population)
+        frente = PopulationServices.calculate_dominance(population)
+        return PopulationServices.calculate_range(population, frente)
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
@@ -160,33 +161,49 @@ class PopulationServices:
 
             
     @staticmethod
-    def calculate_range(population: List[Solution]):
+    def calculate_range(population: List[Solution], frente):
         range = 1
-        while population.frente(range):
-            solutions: List[Solution] = population.get_soluction_the_frente_whit_range(range)
+        # frente = PopulationServices.get_frente(population, range)
+        while frente:
+            solutions: List[Solution] = PopulationServices.get_frente(population, range)
             for dominated_solution in solutions:
                for solution_id in dominated_solution.dominated: 
-                    solution = population.get_solution(solution_id)
+                    solution = PopulationServices.get_solution(population,solution_id)
                     solution.dominate_me -=1
                     if solution.dominate_me == 0:
-                        solution.range += 1
+                        solution.range += 1 #TODO: erro con el objetivo 0
                         population.add_frente(solution, range+ 1)
             range += 1
 
     @staticmethod
+    def get_solution(population: List[Solution], id_solution: int):
+        for solution in population:
+            if solution.id == id_solution:
+                return solution
+    @staticmethod
+    def get_frente(population: List[Solution], range):
+        frente: List[Solution] = []
+        for solution in population:
+            if solution.range == range:
+                frente.append(solution)
+        return frente 
+
+    @staticmethod
     def calculate_dominance(population: List[Solution]):
+        frente: List[Solution]= []
         for i in range(len(population)):
             population[i].dominated=[] # nueva lista vacia
             population[i].__dominate_me_account= 0 # numero de solucion que la dominan
-            population[i].range_soluction = -1
+            population[i].range= -1
             for j in range(len(population)):
                 if i == j: continue
                 if PopulationServices.to_dominate(population[i],population[j]): # la solucion i domina a la solucion j ?
                     population[i].add_dominate(population[j].id)
                 else:
-                    if PopulationServices.to_dominate(population[i],population[i]):
+                    if PopulationServices.to_dominate(population[j],population[i]):
                         population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
             if population[i].dominate_me == 0:
-                population[i].range_soluction = 1
-                population.add_frente(population[i])
+                population[i].range= 1
+                frente.append(population[i])
+        return frente
 
