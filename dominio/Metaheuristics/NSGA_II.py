@@ -20,18 +20,19 @@ class NsgaII(Algorithm):
 
     def Execute(self, problem: VigilantAssigment):
 
-        population =  Population(problem, self.num_soluciones)
+        population_obj =  Population(problem, self.num_soluciones)
         # generate_pyckle.save_object("tests/population.pickle", population)
         # object = generate_pyckle.read_file('tests/population.pickle')
-        population_parents: List[Solution] = population.populations
+        population_parents: List[Solution] = population_obj.populations
         while self.CurrentEFOs < self.MaxEFOs:
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
-            #TODO: Continuear con la union y le que implica la dominancia de la solcuion
-            union_populantion = PopulationServices.union_soluction(population_parents, pulation_children)
-            self.frente = PopulationServices.not_dominate_sort(union_populantion) # return frent de pareto
+            union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
+            population_obj.populations = union_populantion
+            PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
+            frente=population_obj.frente
             population_parents = [] 
             rango = 1
-            while population.is_soluction_complete(population_parents):
+            while population_obj.is_soluction_complete(population_parents):
                 # TODO: ESTUDIAR LA DIANTACIA DE CROWDING para continuar y terminal
                 pass
                 

@@ -2,6 +2,7 @@ import imp
 import copy
 import random
 from re import I
+from socket import SO_USELOOPBACK
 from urllib import response
 from numpy import append
 from conf import settings 
@@ -148,11 +149,11 @@ class PopulationServices:
         return response
 
     @staticmethod
-    def not_dominate_sort(population: List[Solution]) -> List[Solution]:
-        frente: List[Solution]
-        PopulationServices.add_ids_solution(population)
-        frente = PopulationServices.calculate_dominance(population)
-        return PopulationServices.calculate_range(population, frente)
+    def not_dominate_sort(population: Population) -> List[Solution]:
+        PopulationServices.add_ids_solution(population.populations)
+        PopulationServices.calculate_dominance(population)
+        PopulationServices.calculate_range(population)
+        return population.frente
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
@@ -161,18 +162,18 @@ class PopulationServices:
 
             
     @staticmethod
-    def calculate_range(population: List[Solution], frente):
+    def calculate_range(population: Population):
         range = 1
-        # frente = PopulationServices.get_frente(population, range)
-        while frente:
-            solutions: List[Solution] = PopulationServices.get_frente(population, range)
+        while population.frente.get(range):
+            solutions: List[Solution] = population.frente.get(range)
             for dominated_solution in solutions:
                for solution_id in dominated_solution.dominated: 
-                    solution = PopulationServices.get_solution(population,solution_id)
+                    solution = PopulationServices.get_solution(population.populations,solution_id)
                     solution.dominate_me -=1
                     if solution.dominate_me == 0:
-                        solution.range += 1 #TODO: erro con el objetivo 0
-                        population.add_frente(solution, range+ 1)
+                        range +=1
+                        solution.range = range
+                        population.add_frente(key=range,value=solution)
             range += 1
 
     @staticmethod
@@ -189,8 +190,8 @@ class PopulationServices:
         return frente 
 
     @staticmethod
-    def calculate_dominance(population: List[Solution]):
-        frente: List[Solution]= []
+    def calculate_dominance(population_object: Population):
+        population = population_object.populations
         for i in range(len(population)):
             population[i].dominated=[] # nueva lista vacia
             population[i].__dominate_me_account= 0 # numero de solucion que la dominan
@@ -204,6 +205,5 @@ class PopulationServices:
                         population[i].dominate_me += 1 #se incrementar le numero de soluciones que me dominar o domina a esta solucion
             if population[i].dominate_me == 0:
                 population[i].range= 1
-                frente.append(population[i])
-        return frente
+                population_object.add_frente(key=1,value=population[i])
 

@@ -13,7 +13,6 @@ from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
 from conf import settings
 
-
 class Population():
 
     __finnest: int
@@ -21,12 +20,13 @@ class Population():
     __decendets_list: List[Solution]
     __populations: List[Solution]
     __num_soluction: int
-    __frente: List[int]
+    __frente: Dict[int,List[Solution]] # el indice del la lista representa el rango del frente 0: rango 0 del frente de pareto
 
     def __init__(self, problem: VigilantAssigment, num_soluction: int):
         self.__num_soluction = num_soluction
         self.__populations= self.inicialize_population(problem, num_soluction)
-    
+        self.__frente = {} 
+ 
 
     def is_soluction_complete(self):
         response = False 
@@ -64,7 +64,7 @@ class Population():
         :param soluction:
         :return:
         """
-        list_children: list[Solution] = []
+        list_children: List[Solution] = []
         for iteration in range(num_decendets_for_dad):
             children: Solution
             for parent in parents:
@@ -101,10 +101,26 @@ class Population():
     @property
     def populations(self):
         return self.__populations
+
+    @populations.setter
+    def populations(self, population: List[Solution]):
+        self.__populations = population
+
     @property
     def frente(self):
         return self.__frente
-   
+    
+    def add_frente(self, key, value):
+        solutions = self.__frente.get(key)
+        if solutions:
+            self.__frente[key].append(value)
+        else:
+            self.__frente[key]=[value]
+
+    @frente.setter
+    def frente(self, list_soluction: List[Solution]):
+        self.__frente = list_soluction
+     
     def evaluate_solucion(self, soluction: Solution):
         """
         la funcion debe guarda en cada atributo de la solucion le valor fitness
