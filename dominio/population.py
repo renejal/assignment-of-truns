@@ -24,7 +24,8 @@ class Population():
 
     def __init__(self, problem: VigilantAssigment, num_soluction: int):
         self.__num_soluction = num_soluction
-        self.__populations= self.inicialize_population(problem, num_soluction)
+        self.problem = problem
+        # self.__populations= self.inicialize_population(problem, num_soluction)
         self.__frente = {} 
  
 
@@ -40,14 +41,14 @@ class Population():
         pass 
     
 
-    def inicialize_population(self, problem: VigilantAssigment, soluction_number: int) -> List[Solution]:
+    def inicialize_population(self) -> List[Solution]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
         population: List[Solution] = []
-        for i in range(soluction_number):
-            S = Solution(problem, settings)
+        for i in range(self.__num_soluction):
+            S = Solution(self.problem, settings)
             while S.is_solution_complete():
-                components = S.create_components(soluction_number)
+                components = S.create_components(self.__num_soluction)
                 restried_list = components 
                 if restried_list == None:
                     continue
@@ -55,7 +56,7 @@ class Population():
                     best_restricted_list = S.get_best_components(restried_list, settings.RESTRICTED_LIST_AMOUNT_COMPONENT)
                     S.merge_component(best_restricted_list)            
             population.append(S) 
-        return population 
+        self.populations = population 
 
     def generate_decendents(self, parents: List[Solution], num_decendets_for_dad: int) -> List[Solution]:
         """
@@ -113,7 +114,7 @@ class Population():
     def add_frente(self, key, value):
         solutions = self.__frente.get(key)
         if solutions:
-            self.__frente[key].append(value)
+            solutions.append(value)
         else:
             self.__frente[key]=[value]
 

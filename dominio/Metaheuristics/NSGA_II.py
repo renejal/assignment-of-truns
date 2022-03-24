@@ -21,6 +21,7 @@ class NsgaII(Algorithm):
     def Execute(self, problem: VigilantAssigment):
 
         population_obj =  Population(problem, self.num_soluciones)
+        population_obj.inicialize_population()
         # generate_pyckle.save_object("tests/population.pickle", population)
         # object = generate_pyckle.read_file('tests/population.pickle')
         population_parents: List[Solution] = population_obj.populations
