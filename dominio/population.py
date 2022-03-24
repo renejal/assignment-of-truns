@@ -22,10 +22,9 @@ class Population():
     __num_soluction: int
     __frente: Dict[int,List[Solution]] # el indice del la lista representa el rango del frente 0: rango 0 del frente de pareto
 
-    def __init__(self, problem: VigilantAssigment, num_soluction: int):
+    def __init__(self, problem: VigilantAssigment = None, num_soluction: int = None):
         self.__num_soluction = num_soluction
         self.problem = problem
-        # self.__populations= self.inicialize_population(problem, num_soluction)
         self.__frente = {} 
  
 

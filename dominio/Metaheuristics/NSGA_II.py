@@ -14,7 +14,6 @@ class NsgaII(Algorithm):
     MaxEFOs: int = 10
     num_soluciones = 10
     num_decendents = 11
-    # frentes: Dict[int,List[SoluctionNsgaII]]
 
         
 
