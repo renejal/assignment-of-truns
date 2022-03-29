@@ -1,6 +1,7 @@
 import copy
 from typing import List, Dict
 from dominio.Algorithm import Algorithm
+from utils.graph import Graph
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
 # from dominio.soluction_nsga_ii import SoluctionNsgaII
@@ -29,16 +30,19 @@ class NsgaII(Algorithm):
             union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
             population_obj.populations = union_populantion
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
-            frente=population_obj.frente
             population_parents = [] 
+            PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
             rango = 1
-            while population_obj.is_soluction_complete(population_parents):
-                # TODO: ESTUDIAR LA DIANTACIA DE CROWDING para continuar y terminal
-                pass
-                
+            index_solution = 0
+            while population_obj.is_soluction_complete():
+                print("rango",rango)
+                population_parents.append(PopulationServices.get_solution_of_range(population_obj, rango, index_solution))
+                rango +=1
+                index_solution +=1
+            population_obj.populations = population_parents
+            PopulationServices.not_dominate_sort(population_obj)
+            return population_obj.get_Solutions_of_range(1)
 
-            # cree una poblacion de Q de N hijos usando como operador de selección de padres el torneo
-            # binario, cruece mutacion, cruece de punto etc y evalue los O objetivos de todos los hijos
 
 
 

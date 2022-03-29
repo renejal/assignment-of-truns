@@ -19,6 +19,7 @@ class Solution:
     distance_fitness: int
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
+    crowding_distance:int
     total_fitness: int
     fitnness: List[int]
     dominated: List[int]
@@ -35,6 +36,7 @@ class Solution:
         self.dominate_me = 0
         self.range = -1
         self.id = 0
+        self.crowding_distance = 0
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []

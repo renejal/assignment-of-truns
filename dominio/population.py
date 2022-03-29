@@ -23,14 +23,14 @@ class Population():
     __frente: Dict[int,List[Solution]] # el indice del la lista representa el rango del frente 0: rango 0 del frente de pareto
 
     def __init__(self, problem: VigilantAssigment = None, num_soluction: int = None):
-        self.__num_soluction = num_soluction
+        self.__num_soluction = settings.SIZE_POPULATION
         self.problem = problem
         self.__frente = {} 
  
 
     def is_soluction_complete(self):
         response = False 
-        if len(Population) < self.__num_soluction:
+        if len(self.populations) > self.__num_soluction:
            response = True 
         return response
 
@@ -76,15 +76,15 @@ class Population():
     def get_solution(self,id: int):
         return self.__populations[id]
 
-    def get_Solutions_of_range(self, id):
+    def get_Solutions_of_range(self, rango):
         frents: List[Solution]  = []
         for solution in self.__populations:
-            if solution.range == id:
+            if solution.range == rango:
                 frents.append(solution)
         if frents:
             return frents
         else:
-            raise(f"Error: frente con range {id} esta vacio")
+            raise(f"Error: frente con range {rango} esta vacio")
             
     def get_soluction_the_frente_whit_range(self, range: int):
         for solution in self.__populations:

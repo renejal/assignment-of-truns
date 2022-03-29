@@ -1,14 +1,16 @@
-class primary():
-    valor: int
-    def __init__(self, name):
+class Student:
+    def __init__(self, name, grade, age):
         self.name = name
-    
-    @classmethod
-    def from_init(cls, number):
-        cls(number)
-        valor = number +1
+        self.grade = grade
+        self.age = age
+    def __repr__(self):
+        return repr((self.name, self.grade, self.age))
 
-        
-        
-    
-    
+student_objects = [
+    Student('john', 'A', 15),
+    Student('jane', 'B', 12),
+    Student('dave', 'B', 10),
+]
+a = sorted(student_objects, key=lambda student: student.age) 
+print(a)
+

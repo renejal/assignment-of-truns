@@ -1,3 +1,5 @@
+from audioop import reverse
+import enum
 import imp
 import copy
 import random
@@ -163,24 +165,29 @@ class PopulationServices:
             
     @staticmethod
     def calculate_range(population: Population):
-        range = 1
-        while population.frente.get(range):
-            solutions: List[Solution] = population.frente.get(range)
+        rango = 1
+        while population.frente.get(rango): # rango 1 del frente de pareto
+            solutions: List[Solution] = population.frente.get(rango)
             for dominated_solution in solutions:
-               for solution_id in dominated_solution.dominated: 
+               for solution_id in dominated_solution.dominated:
+                    print("id",solution_id)
+                    if solution_id == 5:
+                        print("soluction 3 ")
                     solution = PopulationServices.get_solution(population.populations,solution_id)
+                    print("solution",solution)
                     solution.dominate_me -=1
                     if solution.dominate_me == 0:
-                        range +=1
-                        solution.range = range
+                        r=rango+1
+                        solution.range=r 
                         population.add_frente(key=range,value=solution)
-            range += 1
+            rango +=1
 
     @staticmethod
     def get_solution(population: List[Solution], id_solution: int):
         for solution in population:
             if solution.id == id_solution:
                 return solution
+        raise(f"error: no se encontro la solution o la population is null, {id_solution}")
     @staticmethod
     def get_frente(population: List[Solution], range):
         frente: List[Solution] = []
@@ -206,4 +213,51 @@ class PopulationServices:
             if population[i].dominate_me == 0:
                 population[i].range= 1
                 population_object.add_frente(key=1,value=population[i])
+    
+    def distance_crowding(population: Population):
+        frente = population.populations
+        rango = PopulationServices.get_range_of_objective(frente)
+        for solution in frente:
+            solution.crowding_distance = 0
+        for j in range(settings.NUMBER_OBJECTIVE_AT_OBTIMIZATE): # la lista de objetivos posiblemente se una lita de enteros 
+            PopulationServices.order_solution_of_objetive_value(frente, j)
+            frente[0].crowding_distance = settings.INFINITE_POSITIVE
+            for i in range(1, len(frente)-1):
+                value = (frente[i+1].fitness[j] - frente[i-1].fitness[j])
+                if rango[j]!= 0:
+                   value = value/rango[j]
+                frente[i].crowding_distance += value
+            frente[-1].crowding_distance = settings.INFINITE_NEGATIVE
+            
+    
+    def get_range_of_objective(frente: List[Solution]) -> List[int]:
+        # para cada objetivo se calcula el max y el mix y se guarda el rango (max- min)
+        # return list rangos, max y min por objetivo [[max-minx],[max,min]..]
+        rango: List[int] = []
+        min = settings.INFINITE_POSITIVE
+        max = settings.INFINITE_NEGATIVE
+        #1 recoer la solucion
+        for index_objective in range(len(frente[0].fitness)):
+            for solution in frente:
+                if min > solution.fitness[index_objective]:
+                    min = solution.fitness[index_objective]
+                if max < solution.fitness[index_objective]:
+                    max = solution.fitness[index_objective]
+            rango.append(max-min)
+        return rango
+            
+    @staticmethod
+    def get_solution_of_range(population: Population, range: int, index_solution: int):
+        solution = population.get_Solutions_of_range(range)
+        return solution[index_solution]
+        
+        # return solution.fitness[index_objective]
+
+    @staticmethod
+    def order_solution_of_objetive_value(frente, index_objective):
+        result = sorted(frente, key = lambda solution : solution.fitness[index_objective], reverse=True) # reserve = True: ordena descendente
+        return result
+
+    
+        
 
