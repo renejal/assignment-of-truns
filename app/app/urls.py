@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app.views import index
+from app.views import CSVUploadHandler
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',index)
+    path(r'csv-upload/',CSVUploadHandler.as_view(), name='csv-upload'),
+    # path('',index)
 ]

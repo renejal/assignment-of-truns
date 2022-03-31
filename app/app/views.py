@@ -1,7 +1,13 @@
-from curses.ascii import HT
-import imp
-from django.http import HttpResponse
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.request import Request
+from rest_framework.response import Response
 
-def index(request):
-    return HttpResponse("Hello world")
-    
+
+class CSVUploadHandler(APIView):
+    def get(self, request: Request) -> Response:
+        return Response({}, status=status.HTTP_200_OK)
+
+    def post(self, request: Request) -> Response:
+        print("llego",Request.data)
+        return Response({}, status=status.HTTP_201_CREATED)
