@@ -35,12 +35,16 @@ class NsgaII(Algorithm):
             rango = 1
             index_solution = 0
             while population_obj.is_soluction_complete():
-                print("rango",rango)
-                population_parents.append(PopulationServices.get_solution_of_range(population_obj, rango, index_solution))
+                range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango, index_solution)
+                if range_of_solution:
+                    population_parents.append(range_of_solution)
+                else:
+                   break 
                 rango +=1
                 index_solution +=1
             population_obj.populations = population_parents
             PopulationServices.not_dominate_sort(population_obj)
+            Graph([population_obj.populations])
             return population_obj.get_Solutions_of_range(1)
 
 

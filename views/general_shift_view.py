@@ -2,6 +2,7 @@ from dominio.Metaheuristics.GRASP import Grasp
 from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
+from utils.graph import Graph
 from utils.print_xls import generate_results
 from dominio.model.problem import DataSites, DataVigilantes
 import time

@@ -170,11 +170,8 @@ class PopulationServices:
             solutions: List[Solution] = population.frente.get(rango)
             for dominated_solution in solutions:
                for solution_id in dominated_solution.dominated:
-                    print("id",solution_id)
-                    if solution_id == 5:
-                        print("soluction 3 ")
                     solution = PopulationServices.get_solution(population.populations,solution_id)
-                    print("solution",solution)
+                    if not solution: break # no ecuentra la solution 5
                     solution.dominate_me -=1
                     if solution.dominate_me == 0:
                         r=rango+1
@@ -187,7 +184,7 @@ class PopulationServices:
         for solution in population:
             if solution.id == id_solution:
                 return solution
-        raise(f"error: no se encontro la solution o la population is null, {id_solution}")
+        return False
     @staticmethod
     def get_frente(population: List[Solution], range):
         frente: List[Solution] = []
@@ -249,9 +246,11 @@ class PopulationServices:
     @staticmethod
     def get_solution_of_range(population: Population, range: int, index_solution: int):
         solution = population.get_Solutions_of_range(range)
-        return solution[index_solution]
+        if solution:
+            return solution[index_solution]
+        else:
+            return solution
         
-        # return solution.fitness[index_objective]
 
     @staticmethod
     def order_solution_of_objetive_value(frente, index_objective):

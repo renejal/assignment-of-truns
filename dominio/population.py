@@ -84,7 +84,7 @@ class Population():
         if frents:
             return frents
         else:
-            raise(f"Error: frente con range {rango} esta vacio")
+            return False
             
     def get_soluction_the_frente_whit_range(self, range: int):
         for solution in self.__populations:
