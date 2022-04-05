@@ -214,9 +214,11 @@ class PopulationServices:
     def distance_crowding(population: Population):
         frente = population.populations
         rango = PopulationServices.get_range_of_objective(frente)
+        print("rango",rango)
         for solution in frente:
             solution.crowding_distance = 0
         for j in range(settings.NUMBER_OBJECTIVE_AT_OBTIMIZATE): # la lista de objetivos posiblemente se una lita de enteros 
+            print("j",j)
             PopulationServices.order_solution_of_objetive_value(frente, j)
             frente[0].crowding_distance = settings.INFINITE_POSITIVE
             for i in range(1, len(frente)-1):
@@ -233,8 +235,7 @@ class PopulationServices:
         rango: List[int] = []
         min = settings.INFINITE_POSITIVE
         max = settings.INFINITE_NEGATIVE
-        #1 recoer la solucion
-        for index_objective in range(len(frente[0].fitness)):
+        for index_objective in range(settings.NUM_OBJECTIVE):
             for solution in frente:
                 if min > solution.fitness[index_objective]:
                     min = solution.fitness[index_objective]

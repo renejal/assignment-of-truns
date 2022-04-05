@@ -1,4 +1,6 @@
 import copy
+from locale import currency
+from operator import setitem
 from typing import List, Dict
 from dominio.Algorithm import Algorithm
 from utils.graph import Graph
@@ -8,29 +10,29 @@ from dominio.vigilant_assigment import VigilantAssigment
 from dominio.population import Population
 from services.population_services import PopulationServices
 from tests import generate_pyckle 
-
+from conf import settings
+# generate_pyckle.save_object("tests/population.pickle", population)
+# object = generate_pyckle.read_file('tests/population.pickle')
 
 class NsgaII(Algorithm):
-    CurrentEFOs: int = 0
-    MaxEFOs: int = 10
-    num_soluciones = 10
-    num_decendents = 11
-
-        
+    currency_efos = 0
+    Evoluction_soluction: List[Solution]= []
 
     def Execute(self, problem: VigilantAssigment):
-
-        population_obj =  Population(problem, self.num_soluciones)
-        population_obj.inicialize_population()
-        # generate_pyckle.save_object("tests/population.pickle", population)
-        # object = generate_pyckle.read_file('tests/population.pickle')
-        population_parents: List[Solution] = population_obj.populations
-        while self.CurrentEFOs < self.MaxEFOs:
+        while self.currency_efos < settings.MAX_EFOS:
+            population_obj =  Population(problem, settings.NUM_SOLUTION)
+            population_obj.inicialize_population()
+            print(f"iteration N. {self.currency_efos}")
+            population_parents: List[Solution] = population_obj.populations
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
             population_obj.populations = union_populantion
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
             population_parents = [] 
+            print("efos",self.currency_efos)
+            if not population_obj.populations:
+                raise("population not found")
+                
             PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
             rango = 1
             index_solution = 0
@@ -43,9 +45,11 @@ class NsgaII(Algorithm):
                 rango +=1
                 index_solution +=1
             population_obj.populations = population_parents
-            PopulationServices.not_dominate_sort(population_obj)
-            Graph([population_obj.populations])
-            return population_obj.get_Solutions_of_range(1)
+            self.currency_efos +=1
+            # PopulationServices.not_dominate_sort(population_obj)
+            self.Evoluction_soluction.append(population_obj.populations)
+        Graph(self.Evoluction_soluction)
+        return population_obj.get_Solutions_of_range(1)
 
 
 
