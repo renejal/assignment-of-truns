@@ -2,6 +2,7 @@ from audioop import reverse
 import enum
 import imp
 import copy
+from pprint import pprint
 import random
 from re import I
 from socket import SO_USELOOPBACK
@@ -159,10 +160,12 @@ class PopulationServices:
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
-        for index, solution in enumerate(population):
-            solution.id = index + 1
+        try:
+            for index, solution in enumerate(population):
+                solution.id = index + 1
+        except:
+            raise("error population",population)
 
-            
     @staticmethod
     def calculate_range(population: Population):
         rango = 1

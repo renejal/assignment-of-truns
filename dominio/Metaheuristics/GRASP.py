@@ -5,6 +5,8 @@ from typing import List
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution 
 from dominio.vigilant_assigment import VigilantAssigment
+from services.population_services import PopulationServices
+from dominio.population import Population
 from services.tweak_service import Tweak_service
 from utils.graph import Graph
 
@@ -31,11 +33,12 @@ class Grasp(Algorithm):
                     tweak = random.randint(1,4)      
                     new_solution = Tweak_service().Tweak(new_solution,tweak)
                 poblation.append(new_solution)
+                # PopulationServices.not_dominate_sort(population)
             data.append(poblation)
-            poblation = self.get_new_poblation(poblation)
+            poblation = self.best_population(poblation)
             self.CURRENT_EFOS+=1   
         Graph(data)
-        return Best
+        return poblation
 
     def get_initial_poblation(self,problem) -> List[Solution]:
         print("Getting started poblation")
@@ -54,7 +57,7 @@ class Grasp(Algorithm):
             print("new iteration")
         return poblation
 
-    def get_new_poblation(self, poblation: List[Solution]) -> List[Solution]:
+    def best_population(self, poblation: List[Solution]) -> List[Solution]:
         #TODO ordenamiento no dominadoa
         newpoblation = []
         while len(newpoblation) != self.AMOUNT_POBLATION:

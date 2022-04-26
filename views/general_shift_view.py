@@ -35,8 +35,8 @@ class GenerateShiftView:
     def execute(self):
         print("Start")
         tic = time.perf_counter()
-        solutions: List[Solution] = self.__algoritmNSGA.Execute(self.__myProblem)
-        Hipervolumen.calculate_hipervolumen(solutions)
+        solution: List[Solution] = self.__algoritmNSGA.Execute(self.__myProblem)
+        Hipervolumen.calculate_hipervolumen(solution)
         solution: Solution = self.__algoritmGrasp.Execute(self.__myProblem)
         toc = time.perf_counter()
         # generate_results(solution)
