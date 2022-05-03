@@ -1,7 +1,7 @@
 from ast import Dict
 import dataclasses
 import math
-from typing import List
+from typing import List, Dict
 from dominio.model.shift import Shift
 from dominio.model.shift_place import Shift_place
 from utils.dataclass_classmethod import FromDictMixin
@@ -12,7 +12,7 @@ class Vigilant(FromDictMixin):
     default_place_to_look_out: int = -1
     distances: List[int] = dataclasses.field(default_factory=list)
     shifts: List[Shift_place] = dataclasses.field(default_factory=list)
-    sites_to_look_out: dict[int, int] =  dataclasses.field(default_factory=dict)
+    sites_to_look_out: Dict[int, int] = dataclasses.field(default_factory=dict)
     total_hours_worked: int = 0
     total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
     closet_place: int = -1
@@ -74,7 +74,7 @@ class Vigilant(FromDictMixin):
     def get_index_sites_by_distance(self):
         return sorted(range(len(self.distances)), key=lambda k: self.distances[k])
 
-    def get_shifts_by_site(self) -> dict[int,List[Shift]]:
+    def get_shifts_by_site(self) -> Dict[int,List[Shift]]:
         shifts_by_site: dict[int,List[Shift]] = {}
         for shift in self.shifts:
             if shift.site_id in shifts_by_site:
