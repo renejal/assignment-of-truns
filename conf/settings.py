@@ -1,6 +1,6 @@
 import random
-JSON_SITES_DATA = "dataset/sites2.json"
-JSON_VIGILANTES_DATA = "dataset/vigilantes3.json"
+JSON_SITES_DATA = "dataset/sitesReal.json"
+JSON_VIGILANTES_DATA = "dataset/vigilantReal.json"
 MAX_TOTAL_WEEKS = 4
 WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE = 5
 SEED = 0

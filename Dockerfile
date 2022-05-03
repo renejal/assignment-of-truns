@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9.10-alpine3.14 
+FROM python:3.9
 
 EXPOSE 8000
 
@@ -9,9 +9,11 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+RUN pip install --upgrade pip
 # Install pip requirements
-COPY requirements.txt .
-RUN python -m pip install -r requirements.txt
+COPY requirements .
+RUN python -m pip install -r develop.txt
+RUN python -m pip install -r common.txt
 
 COPY ./app /app  
 
