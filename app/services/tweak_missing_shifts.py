@@ -1,6 +1,6 @@
 from random import shuffle
 import random
-from typing import List
+from typing import List, Dict
 
 from scipy.fftpack import shift
 from dominio.Solution import Solution
@@ -51,7 +51,7 @@ class Tweak_missing_shifts:
                     vigilantes_with_missing_hours.append(vigilant)
         return vigilantes_with_missing_hours
 
-    def get_vigilantes_from_other_sites(self, vigilantes: List[Vigilant], assigned_vigilants_on_site: dict[int,Vigilant] ):
+    def get_vigilantes_from_other_sites(self, vigilantes: List[Vigilant], assigned_vigilants_on_site: Dict[int,Vigilant] ):
         vigilantes_from_other_sites: List[Vigilant] = []
         for vigilant in vigilantes:
             if vigilant.id not in assigned_vigilants_on_site:  

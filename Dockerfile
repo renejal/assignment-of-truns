@@ -23,6 +23,7 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 WORKDIR /app
+COPY ./app /app  
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.wsgi"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

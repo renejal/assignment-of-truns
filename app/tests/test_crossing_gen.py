@@ -28,7 +28,6 @@ def test_parent_crossing():
     #compara si los hijo que se genear deben ser mejores que sus padres
     for index in range(len(population.populations) -1):
         childrens:List[SoluctionNsgaII] = PopulationServices.mating_between_parents(population.populations[index], population.populations[index + 1])
-        print(index)
         assert childrens[0].total_fitness <= population.populations[index].total_fitness
         assert childrens[1].total_fitness <= population.populations[index + 1].total_fitness
 

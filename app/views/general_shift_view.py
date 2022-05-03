@@ -3,8 +3,10 @@ from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
 from utils.graph import Graph
+from utils.hipervolumen import Hipervolumen
 from utils.print_xls import generate_results
 from dominio.model.problem import DataSites, DataVigilantes
+import pprint
 import time
 import json
 class GenerateShiftView:
@@ -33,9 +35,10 @@ class GenerateShiftView:
     def execute(self):
         print("Start")
         tic = time.perf_counter()
-        solution: Solution = self.__algoritmNSGA.Execute(self.__myProblem)
-        # generate_results(solution)
-        solution: Solution = self.__algoritmGrasp.Execute(self.__myProblem)
+        best_solutions= self.__algoritmNSGA.Execute(self.__myProblem)
+        Hipervolumen.calculate_hipervolumen(best_solutions)
+        best_solutions = self.__algoritmGrasp.Execute(self.__myProblem)
+        Hipervolumen.calculate_hipervolumen(best_solutions)
         toc = time.perf_counter()
         # generate_results(solution)
         print(f"Time {toc - tic:0.4f} seconds")

@@ -27,12 +27,11 @@ class NsgaII(Algorithm):
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
             population_obj.populations = union_populantion
+            
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
             population_parents = [] 
-            print("efos",self.currency_efos)
             if not population_obj.populations:
                 raise("population not found")
-                
             PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
             rango = 1
             index_solution = 0

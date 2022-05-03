@@ -2,6 +2,7 @@ from audioop import reverse
 import enum
 import imp
 import copy
+from pprint import pprint
 import random
 from re import I
 from socket import SO_USELOOPBACK
@@ -159,10 +160,12 @@ class PopulationServices:
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
-        for index, solution in enumerate(population):
-            solution.id = index + 1
+        try:
+            for index, solution in enumerate(population):
+                solution.id = index + 1
+        except:
+            raise("error population",population)
 
-            
     @staticmethod
     def calculate_range(population: Population):
         rango = 1
@@ -214,11 +217,9 @@ class PopulationServices:
     def distance_crowding(population: Population):
         frente = population.populations
         rango = PopulationServices.get_range_of_objective(frente)
-        print("rango",rango)
         for solution in frente:
             solution.crowding_distance = 0
         for j in range(settings.NUMBER_OBJECTIVE_AT_OBTIMIZATE): # la lista de objetivos posiblemente se una lita de enteros 
-            print("j",j)
             PopulationServices.order_solution_of_objetive_value(frente, j)
             frente[0].crowding_distance = settings.INFINITE_POSITIVE
             for i in range(1, len(frente)-1):

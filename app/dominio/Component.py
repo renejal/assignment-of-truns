@@ -2,7 +2,7 @@ from pickle import FALSE
 from xml.dom import ValidationErr
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
-from typing import List
+from typing import List, Dict
 from dominio.model.vigilant import Vigilant
 
 class Component:
@@ -10,7 +10,7 @@ class Component:
     site_id: int
     site_schedule: List[Shift]
     missing_shifts: List[Shift]
-    assigned_Vigilantes: dict[int,Vigilant] 
+    assigned_Vigilantes: Dict[int,Vigilant] 
     
     missing_shifts_fitness: int = 0
     distance_fitness: int = 0
