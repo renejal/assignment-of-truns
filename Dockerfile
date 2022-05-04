@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9.10-alpine3.14 
+FROM python:3.9
 
 EXPOSE 8000
 
@@ -9,8 +9,13 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
-RUN /bin/sh -c python3 -m  pip install -r requirements.txt
+RUN pip install --upgrade pip
+# Install pip requirements
+COPY requirements .
+RUN python -m pip install -r develop.txt
+RUN python -m pip install -r common.txt
+
+COPY ./app /app  
 
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers

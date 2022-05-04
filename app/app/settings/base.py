@@ -17,16 +17,19 @@ BASE_APPS= [
 ]
 THIRD_APPS= [
    'rest_framework', 
+    'corsheaders',
 ]
+
 
 LOCAL_APPS = [
     # 'apps.upload',   
 ]
 
-INSTALLED_APPS = BASE_APPS + THIRD_APPS + LOCAL_APPS
+INSTALLED_APPS = BASE_APPS + THIRD_APPS + LOCAL_APPS 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -34,6 +37,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8080',
+]
+CORS_ORIGIN_WHITELIST = (
+'http://localhost:8080',  # for localhost (REACT Default)
+'http://192.168.10.45:3000', # for network
+)
 
 ROOT_URLCONF = 'app.urls'
 
