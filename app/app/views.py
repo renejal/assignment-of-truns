@@ -11,5 +11,5 @@ class CSVUploadHandler(APIView):
         return Response({}, status=status.HTTP_200_OK)
 
     def post(self, request: Request) -> Response:
-        print("post",Request.data)
+        converted_request = Request(request._request, parsers=[JSONParser()])
         return Response({}, status=status.HTTP_201_CREATED)
