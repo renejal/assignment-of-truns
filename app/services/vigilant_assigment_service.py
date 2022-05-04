@@ -66,4 +66,4 @@ class Vigilant_assigment_service:
             for vigilant_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants.get(site_id):
                 expected_vigilantes_by_place.append(vigilantes[vigilant_id-1])
             return expected_vigilantes_by_place
-        return None
+        return []

@@ -10,7 +10,8 @@ class Shifts_generation_service:
     def create_shifts_by_site(self, sites: List[Site]) -> List[List[Shift]]:
         ideal_hours_amount_to_work = self.create_ideal_hours_amount_to_work()
         shifts_by_site : List[List[Shift]] = [] 
-        for site in sites:
+        for index, site in enumerate(sites):
+            site.id = index + 1 
             if site.is_special_site:
                 shifts_by_site.append(self.create_shifts_in_special_site(site, site.total_weeks))
             else:

@@ -29,7 +29,8 @@ class VigilantAssigment:
         self.initProblem()
 
     def initProblem(self) -> None:
-        for vigilant in self.vigilantes:
+        for index, vigilant in enumerate(self.vigilantes):
+            vigilant.id = index + 1
             vigilant.set_total_hours_worked_by_week(self.MAX_TOTAL_WEEKS)
             if vigilant.default_place_to_look_out != self.DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expected_places_to_look_out_by_vigilants:
@@ -67,6 +68,7 @@ class VigilantAssigment:
         return self.shifts_by_sites[site_id-1]
 
     def order_sites_by_vigilantes_distance(self, vigilants: List[Vigilant], total_sites: int) -> None:
+        print("total_sites",total_sites)
         order_sites_by_id_vigilantes_distance = []
         for site in range(total_sites):
             order_site_by_vigilantes_distance = self.order_site_by_vigilantes_distance(vigilants,site)
@@ -74,6 +76,7 @@ class VigilantAssigment:
         return order_sites_by_id_vigilantes_distance
 
     def order_site_by_vigilantes_distance(self,vigilantes: List[Vigilant], site_id: int) -> Dict:
+        print(site_id)
         dict_order_the_vigilants_for_distance: Dict[int, int] = {}
         for vigilant in vigilantes:
             dict_order_the_vigilants_for_distance[vigilant.id] = vigilant.distances[site_id-1]

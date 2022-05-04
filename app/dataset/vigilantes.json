@@ -1,204 +1,466 @@
 {
-    "data_vigilantes":[
-        {
-            "id": 1,
-            "default_place_to_look_out": 1,
-            "closet_place": 1,
-            "distances":[
-                0,
-                1,
-                3
-            ]
-        },
-        {
-            "id": 2,
-            "default_place_to_look_out": -1,
-            "closet_place": 1,
-            "distances":[
-                1,
-                2,
-                2
-            ]
-        },
-        {
-            "id": 3,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                3
-            ]
-        },
-        {
-            "id": 4,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                3,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 5,
-            "default_place_to_look_out": -1,
-            "closet_place": 3,
-            "distances":[
-                2,
-                3,
-                1
-            ]
-        },
-        {
-            "id": 6,
-            "default_place_to_look_out": -1,
-            "closet_place": 1,
-            "distances":[
-                1,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 7,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 8,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                1,
-                1,
-                3
-            ]
-        },
-        {
-            "id": 9,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 10,
-            "default_place_to_look_out": 2,
-            "closet_place": 2,
-            "distances":[
-                1,
-                0,
-                2
-            ]
-        },
-        {
-            "id": 11,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 12,
-            "default_place_to_look_out": -1,
-            "closet_place": 1,
-            "distances":[
-                1,
-                1,
-                1
-            ]
-        },
-        {
-            "id": 13,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 14,
-            "default_place_to_look_out": -1,
-            "closet_place": 1,
-            "distances":[
-                1,
-                1,
-                4
-            ]
-        },
-        {
-            "id": 15,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                4
-            ]
-        },
-        {
-            "id": 16,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 17,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                2
-            ]
-        },
-        {
-            "id": 18,
-            "default_place_to_look_out": -1,
-            "closet_place": 1,
-            "distances":[
-                1,
-                1,
-                1
-            ]
-        },
-        {
-            "id": 19,
-            "default_place_to_look_out": -1,
-            "closet_place": 2,
-            "distances":[
-                2,
-                1,
-                1
-            ]
-        },
-        {
-            "id": 20,
-            "default_place_to_look_out": 2,
-            "closet_place": 2,
-            "distances":[
-                1,
-                0,
-                2
-            ]
-        }
-        ]
+"data_vigilantes": [
+    {
+      "description": 1,
+      "default_place_to_look_out": 2,
+      "closestPlace": 2,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new1",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new2",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new3",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new4",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new5",
+      "default_place_to_look_out": 3,
+      "closestPlace": 3,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new6",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new7",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new8",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new9",
+      "default_place_to_look_out": -1,
+      "closestPlace": 1,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "description": "new10",
+      "default_place_to_look_out": 3,
+      "closestPlace": 3,
+      "distances": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
 }
