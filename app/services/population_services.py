@@ -1,13 +1,6 @@
-from audioop import reverse
-import enum
-import imp
 import copy
-from pprint import pprint
 import random
 from re import I
-from socket import SO_USELOOPBACK
-from urllib import response
-from numpy import append
 from conf import settings 
 from typing import List, Dict, Tuple
 from dominio.model.vigilant import Vigilant

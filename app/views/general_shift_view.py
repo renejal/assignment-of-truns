@@ -3,7 +3,7 @@ from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from dominio.Solution import Solution
 from utils.graph import Graph
-from utils.hipervolumen import Hipervolumen
+# from utils.hipervolumen import Hipervolumen
 from utils.print_xls import generate_results
 from dominio.model.problem import DataSites, DataVigilantes
 import pprint
@@ -11,26 +11,26 @@ import time
 import json
 class GenerateShiftView:
 
-    def __init__(self, path_site: str, path_vigilantes: str):
-        self.__data_sites = self.create_sites(path_site)
-        self.__data_vigilantes = self.create_vigilantes(path_vigilantes)
+    def __init__(self, data: object):
+        self.__data_sites = self.create_sites(data)
+        self.__data_vigilantes = self.create_vigilantes(data)
         self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites)
         self.__algoritmGrasp = Grasp()
         self.__algoritmNSGA = NsgaII()
 
-    def create_sites(self, path) -> json:
-        json_problem = None
-        with open(path) as json_file:
-            json_problem = json.load(json_file)
-        json_file.close()
-        return DataSites.from_dict(json_problem).data_sites
+    def create_sites(self, data) -> json:
+        # json_problem = None
+        # with open(path) as json_file:
+        #     json_problem = json.load(json_file)
+        # json_file.close()
+        return DataSites.from_dict(data).data_sites
 
-    def create_vigilantes(self, path):
-        json_vigilantes = None
-        with open(path) as json_file:
-            json_vigilantes = json.load(json_file)
-            json_file.close()
-            return DataVigilantes.from_dict(json_vigilantes).data_vigilantes
+    def create_vigilantes(self, data):
+        # json_vigilantes = None
+        # with open(path) as json_file:
+        #     json_vigilantes = json.load(json_file)
+        #     json_file.close()
+        return DataVigilantes.from_dict(data).data_vigilantes
 
     def execute(self):
         print("Start")
