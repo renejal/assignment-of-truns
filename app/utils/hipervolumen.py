@@ -3,7 +3,7 @@ from typing import List
 from dominio.Solution import Solution
 from pymoo.visualization.scatter import Scatter
 from pymoo.factory import get_performance_indicator
-from pymoo.factory import get_problem
+
 class Hipervolumen:
     @staticmethod
     def calculate_hipervolumen(frente: List[Solution]):

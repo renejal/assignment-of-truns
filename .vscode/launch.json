@@ -7,7 +7,7 @@
             "name": "Python: main",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/app/main.py",
+            "program": "${workspaceFolder}/app/maintest.py",
             "console": "integratedTerminal"
         }
     ]

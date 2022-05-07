@@ -1,3 +1,4 @@
+from django.conf import settings
 from dominio.Metaheuristics.GRASP import Grasp
 from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
@@ -11,26 +12,35 @@ import time
 import json
 class GenerateShiftView:
 
-    def __init__(self, path_site: str, path_vigilantes: str):
-        self.__data_sites = self.create_sites(path_site)
-        self.__data_vigilantes = self.create_vigilantes(path_vigilantes)
+    def __init__(self, data: object):
+        # self.__data_sites = self.create_sites(data)
+        # self.__data_vigilantes = self.create_vigilantes(data)
+        self.__data_sites = self.create_sites_test(data)
+        self.__data_vigilantes = self.create_vigilantes_test(data)
+
         self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites)
         self.__algoritmGrasp = Grasp()
         self.__algoritmNSGA = NsgaII()
 
-    def create_sites(self, path) -> json:
+    def create_sites(self, data) -> json:
+        return DataSites.from_dict(data).data_sites
+    
+    def create_vigilantes(self, data):
+        return DataVigilantes.from_dict(data).data_vigilantes
+
+    def create_sites_test(self, data) -> json:
         json_problem = None
-        with open(path) as json_file:
+        with open("app/dataset/sites.json") as json_file:
             json_problem = json.load(json_file)
         json_file.close()
         return DataSites.from_dict(json_problem).data_sites
 
-    def create_vigilantes(self, path):
+    def create_vigilantes_test(self, data):
         json_vigilantes = None
-        with open(path) as json_file:
+        with open("app/dataset/vigilantes.json") as json_file:
             json_vigilantes = json.load(json_file)
             json_file.close()
-            return DataVigilantes.from_dict(json_vigilantes).data_vigilantes
+        return DataVigilantes.from_dict(json_vigilantes).data_vigilantes
 
     def execute(self):
         print("Start")

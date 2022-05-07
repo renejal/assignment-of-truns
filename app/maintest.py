@@ -5,8 +5,4 @@ class Main:
         view = GenerateShiftView(data)
         view.execute()
 
-
-
-
-
-
+a = Main(None)
