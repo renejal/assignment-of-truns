@@ -2,7 +2,7 @@ import copy
 import random
 from re import I
 from conf import settings 
-from typing import List, Dict, Tuple
+from typing import List, Tuple
 from dominio.model.vigilant import Vigilant
 from dominio.population import Population
 # from msilib.schema import Component
@@ -87,9 +87,12 @@ class PopulationServices:
         
     @staticmethod
     def is_validation_and_repartion(gen_new: Component, gen_exchange: Component): 
-        """retorna true si se encontro vigilantes no por default y distintos entre los dos genes"""
         vigilants_new: List[int] = [vigilant for vigilant in gen_new.assigned_Vigilantes]
         vigilants_exchange: List[int] = [vigilant for vigilant in gen_exchange.assigned_Vigilantes]
+
+        if (vigilants_new and vigilants_exchange) == []:
+            return None
+
         diference = list(set(vigilants_new) - set(vigilants_exchange))
         diference += list(set(vigilants_exchange) - set(vigilants_new))
         if not diference:
@@ -107,9 +110,15 @@ class PopulationServices:
         while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
             gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
             gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new.site_id])
-            vigilants_new, vigilants_exchanges = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
-            if (vigilants_new and vigilants_exchanges) != []:
-                return [vigilants_new, vigilants_exchanges]
+            # vigilants_new, vigilants_exchanges = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
+            result = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
+            if not result:
+                return False
+            if (result[0] and result[1]) != [] and (result[0] and result[1]) is not None:
+                return result[0], result[1]
+
+            # if (resultvigilants_new and vigilants_exchanges) != [] and (vigilants_new and vigilants_exchanges) is not None:
+            #     return [vigilants_new, vigilants_exchanges]
             iteration += 1
         return False
         raise("Error no se encontro vigilantes disponibles")

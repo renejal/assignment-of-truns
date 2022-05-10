@@ -12,7 +12,7 @@ class Normalize:
     extra_hours_fitnessMin:int = 0
     distance_fitnessMin:int = 0
 
-    def normalize(self, solutions: List[Solution]) -> List[Solution]:
+    def normalizeFitness(self, solutions: List[Solution]) -> List[Solution]:
         fitnessMax = [self.missing_shifts_fitnessMax, self.assigned_vigilantes_fitnessMax, self.extra_hours_fitnessMax, self.distance_fitnessMax]
         fitnessMin = [self.missing_shifts_fitnessMin, self.assigned_vigilantes_fitnessMin, self.extra_hours_fitnessMin, self.distance_fitnessMin]
         solutionsNormalizated: List[Solution] = []

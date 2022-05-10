@@ -7,13 +7,13 @@ from pymoo.factory import get_performance_indicator
 class Hipervolumen:
     @staticmethod
     def calculate_hipervolumen(frente: List[Solution]):
-        pf = Hipervolumen.generate_matriz_fitness(frente)
-        pf = np.array(pf)
+        # pf = Hipervolumen.generate_matriz_fitness(frente)
+        pf = np.array(frente)
         # A = pf *1
         # Scatter(legend=True).add(pf, label="Pareto-front").add(A, label="Result").show()
         Scatter(legend=True).add(pf, label="Pareto-front").show()
-        hv = get_performance_indicator("hv", ref_point=np.array([1, 1]))
-        print("hv", hv.do(pf))
+        hv = get_performance_indicator("hv", ref_point=np.array([1, 1, 1,1]))
+        return hv.do(pf)
 
     @staticmethod  
     def generate_matriz_fitness(frente: List[Solution]):

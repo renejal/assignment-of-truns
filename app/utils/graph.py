@@ -15,7 +15,7 @@ class Graph:
         dataG = []
 
         for index,evolution in enumerate(data):
-            solutionsNormalized:List[Solution] = Normalize(evolution)
+            solutionsNormalized:List[Solution] = Normalize().normalizeFitness(evolution)
             for solution in solutionsNormalized:
                 dataG.append([solution[0],solution[1],solution[2],solution[3],index+1])
 

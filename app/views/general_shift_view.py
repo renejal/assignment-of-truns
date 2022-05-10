@@ -4,7 +4,6 @@ from utils.normalize import Normalize
 from dominio.Metaheuristics.GRASP import Grasp
 from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
-from utils.graph import Graph
 from utils.hipervolumen import Hipervolumen
 from dominio.model.problem import DataSites, DataVigilantes
 import time
@@ -23,17 +22,9 @@ class GenerateShiftView:
         self.__algoritmNSGA = NsgaII()
 
     def create_sites(self, data) -> json:
-        # json_problem = None
-        # with open(path) as json_file:
-        #     json_problem = json.load(json_file)
-        # json_file.close()
         return DataSites.from_dict(data).data_sites
-
+    
     def create_vigilantes(self, data):
-        # json_vigilantes = None
-        # with open(path) as json_file:
-        #     json_vigilantes = json.load(json_file)
-        #     json_file.close()
         return DataVigilantes.from_dict(data).data_vigilantes
 
     def executeGrasp(self):
@@ -52,9 +43,9 @@ class GenerateShiftView:
         tocNsga = time.perf_counter()
         return self.getMetrics(best_solutionsNsga,ticNsga,tocNsga)
        
-    def getMetrics(solutions:List[Solution],tic:int,toc:int):
+    def getMetrics(self,solutions:List[Solution],tic:int,toc:int):
         metrics = {}
-        solutionsNormalized = Normalize(solutions)
+        solutionsNormalized = Normalize().normalizeFitness(solutions)
         hv = Hipervolumen.calculate_hipervolumen(solutionsNormalized)
         igd = get_performance_indicator("igd", np.array(solutionsNormalized))
         metrics["solutions"] = solutions
@@ -63,3 +54,18 @@ class GenerateShiftView:
         metrics["igd"] = igd
         metrics["time"] = toc - tic
         return metrics
+
+    def create_sites_test(self, data) -> json:
+        json_problem = None
+        with open("app/dataset/sites.json") as json_file:
+            json_problem = json.load(json_file)
+        json_file.close()
+        return DataSites.from_dict(json_problem).data_sites
+
+    def create_vigilantes_test(self, data):
+        json_vigilantes = None
+        with open("app/dataset/vigilantes.json") as json_file:
+            json_vigilantes = json.load(json_file)
+            json_file.close()
+        return DataVigilantes.from_dict(json_vigilantes).data_vigilantes
+
