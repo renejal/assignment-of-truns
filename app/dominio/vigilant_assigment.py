@@ -31,12 +31,9 @@ class VigilantAssigment:
 
     def initProblem(self) -> None:
         sitesDict = self.mapSites(self.sites)
-        print("sitesdict", sitesDict)
         for index, vigilant in enumerate(self.vigilantes):
             vigilant.set_id(index+1)
             if vigilant.default_place_to_look_out!= -1:
-                print(vigilant.default_place_to_look_out)
-                print(sitesDict[vigilant.default_place_to_look_out])
                 vigilant.default_place_to_look_out = sitesDict[vigilant.default_place_to_look_out]
             vigilant.closet_place = sitesDict[vigilant.closet_place]
             vigilant.set_total_hours_worked_by_week(self.MAX_TOTAL_WEEKS)
