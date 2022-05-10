@@ -30,14 +30,14 @@ class GenerateShiftView:
 
     def create_sites_test(self, data) -> json:
         json_problem = None
-        with open("dataset/sites.json") as json_file:
+        with open("app/dataset/sites.json") as json_file:
             json_problem = json.load(json_file)
         json_file.close()
         return DataSites.from_dict(json_problem).data_sites
 
     def create_vigilantes_test(self, data):
         json_vigilantes = None
-        with open("dataset/vigilantes.json") as json_file:
+        with open("app/dataset/vigilantes.json") as json_file:
             json_vigilantes = json.load(json_file)
             json_file.close()
         return DataVigilantes.from_dict(json_vigilantes).data_vigilantes

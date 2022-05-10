@@ -6,6 +6,7 @@ from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 from services.shifts_generation_service import Shifts_generation_service
 from conf.settings import MAX_TOTAL_WEEKS
+from pprint import pprint
 
 class VigilantAssigment:
     
@@ -31,11 +32,12 @@ class VigilantAssigment:
 
     def initProblem(self) -> None:
         sitesDict = self.mapSites(self.sites)
+        print("site", type(sitesDict))
         for index, vigilant in enumerate(self.vigilantes):
             vigilant.set_id(index+1)
             if vigilant.default_place_to_look_out!= -1:
-                vigilant.default_place_to_look_out = sitesDict[vigilant.default_place_to_look_out]
-            vigilant.closet_place = sitesDict[vigilant.closet_place]
+                vigilant.default_place_to_look_out = sitesDict.get(vigilant.default_place_to_look_out)
+            vigilant.closet_place = sitesDict.get(vigilant.closet_place)
             vigilant.set_total_hours_worked_by_week(self.MAX_TOTAL_WEEKS)
             if vigilant.default_place_to_look_out != self.DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expected_places_to_look_out_by_vigilants:
