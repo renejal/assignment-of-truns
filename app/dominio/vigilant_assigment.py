@@ -86,7 +86,6 @@ class VigilantAssigment:
         return order_sites_by_id_vigilantes_distance
 
     def order_site_by_vigilantes_distance(self,vigilantes: List[Vigilant], site_id: int) -> Dict:
-        print(site_id)
         dict_order_the_vigilants_for_distance: Dict[int, int] = {}
         for vigilant in vigilantes:
             dict_order_the_vigilants_for_distance[vigilant.id] = vigilant.distances[site_id-1]
