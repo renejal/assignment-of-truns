@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import List
 from dominio.Solution import Solution
 from utils.normalize import Normalize
@@ -30,7 +31,7 @@ class GenerateShiftView:
     def executeGrasp(self):
         print("Start Grasp")
         ticGrasp = time.perf_counter()
-        best_solutionsGrasp = self.__algoritmGrasp.Execute(self.__myProblem)
+        best_solutionsGrasp = self.__algoritmGrasp.Execute(deepcopy(self.__myProblem))
         tocGrasp = time.perf_counter()
         return self.getMetrics(best_solutionsGrasp,ticGrasp,tocGrasp)
 
@@ -39,15 +40,17 @@ class GenerateShiftView:
     def executeNsga(self):
         print("Start Nsga")
         ticNsga = time.perf_counter()
-        best_solutionsNsga= self.__algoritmNSGA.Execute(self.__myProblem)
+        best_solutionsNsga= self.__algoritmNSGA.Execute(deepcopy(self.__myProblem))
         tocNsga = time.perf_counter()
         return self.getMetrics(best_solutionsNsga,ticNsga,tocNsga)
        
     def getMetrics(self,solutions:List[Solution],tic:int,toc:int):
         metrics = {}
         solutionsNormalized = Normalize().normalizeFitness(solutions)
-        hv = Hipervolumen.calculate_hipervolumen(solutionsNormalized)
-        igd = get_performance_indicator("igd", np.array(solutionsNormalized))
+        pf = np.array(solutionsNormalized)
+        hv = Hipervolumen.calculate_hipervolumen(pf)
+        igd = get_performance_indicator("igd", pf)
+        igd = igd.do(np.array([[1,1,1,1]]))
         metrics["solutions"] = solutions
         metrics["fitnesses"] = solutionsNormalized
         metrics["hv"] = hv

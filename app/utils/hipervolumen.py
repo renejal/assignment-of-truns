@@ -6,9 +6,9 @@ from pymoo.factory import get_performance_indicator
 
 class Hipervolumen:
     @staticmethod
-    def calculate_hipervolumen(frente: List[Solution]):
+    def calculate_hipervolumen(pf: List[List[int]]):
         # pf = Hipervolumen.generate_matriz_fitness(frente)
-        pf = np.array(frente)
+        # pf = np.array(frente)
         # A = pf *1
         # Scatter(legend=True).add(pf, label="Pareto-front").add(A, label="Result").show()
         Scatter(legend=True).add(pf, label="Pareto-front").show()
