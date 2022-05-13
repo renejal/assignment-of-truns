@@ -32,7 +32,7 @@ class Grasp(Algorithm):
         Best = None
         data = []
         poblation: List[Solution] = self.get_initial_poblation(problem)
-        # population = Population(None, None, self.get_initial_poblation(problem))
+        # population = Population(None, None, self.get_initial_poblation(problem)) 
         while self.CURRENT_EFOS < self.MAX_EFOS:
             print("evolution:"+ str(self.CURRENT_EFOS+1))
             for index_solution in range(self.AMOUNT_POBLATION):
