@@ -199,6 +199,21 @@ class PopulationServices:
         return frente 
 
     @staticmethod
+    def get_solutions_by_frente(population: List[Solution], amount:int):
+        frente: List[Solution] = []
+        if len(population) < amount:
+            amount= len(population)
+        range = 1
+        while len(frente) < amount:
+            for solution in population:
+                if solution.range == range:
+                    frente.append(solution)
+                    if len(frente) == amount:
+                        return frente
+            range+=1 
+        return frente
+
+    @staticmethod
     def calculate_dominance(population_object: Population):
         population = population_object.populations
         for i in range(len(population)):

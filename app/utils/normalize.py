@@ -15,7 +15,7 @@ class Normalize:
     def normalizeFitness(self, solutions: List[Solution]) -> List[Solution]:
         fitnessMax = [self.missing_shifts_fitnessMax, self.assigned_vigilantes_fitnessMax, self.extra_hours_fitnessMax, self.distance_fitnessMax]
         fitnessMin = [self.missing_shifts_fitnessMin, self.assigned_vigilantes_fitnessMin, self.extra_hours_fitnessMin, self.distance_fitnessMin]
-        solutionsNormalizated: List[Solution] = []
+        solutionsNormalizated: List[List[int]] = []
 
         #Eliminar este for y calcular el verdadero maximoFitness para cada objetivo
         for solution in solutions:

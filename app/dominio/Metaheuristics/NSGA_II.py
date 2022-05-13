@@ -1,7 +1,5 @@
 import copy
-from locale import currency
-from operator import setitem
-from typing import List, Dict
+from typing import List
 from dominio.Algorithm import Algorithm
 from utils.graph import Graph
 from dominio.Solution import Solution
@@ -47,7 +45,7 @@ class NsgaII(Algorithm):
             self.currency_efos +=1
             # PopulationServices.not_dominate_sort(population_obj)
             self.Evoluction_soluction.append(population_obj.populations)
-        Graph(self.Evoluction_soluction)
+        # Graph(self.Evoluction_soluction)
         return population_obj.get_Solutions_of_range(1)
 
 

@@ -11,7 +11,7 @@ class Hipervolumen:
         # pf = np.array(frente)
         # A = pf *1
         # Scatter(legend=True).add(pf, label="Pareto-front").add(A, label="Result").show()
-        Scatter(legend=True).add(pf, label="Pareto-front").show()
+        # Scatter(legend=True).add(pf, label="Pareto-front").show()
         hv = get_performance_indicator("hv", ref_point=np.array([1, 1, 1,1]))
         return hv.do(pf)
 

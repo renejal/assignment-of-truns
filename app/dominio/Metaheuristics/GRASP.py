@@ -17,29 +17,35 @@ class Grasp(Algorithm):
     MAX_EFOS: int = 10
     # COMPONENTS_AMOUNT: int = 300
     COMPONENTS_AMOUNT: int = 50
-    # RESTRICTED_LIST_AMOUNT_COMPONENT:int = 15
-    RESTRICTED_LIST_AMOUNT_COMPONENT:int = 5
+    RESTRICTED_LIST_AMOUNT_COMPONENT:int = 10
+    # RESTRICTED_LIST_AMOUNT_COMPONENT:int = 5
     TWEAK_AMOUNT_REPETITIONS: int = 10
     AMOUNT_POBLATION: int = 5
+
+    # MAX_EFOS: int = 2
+    # COMPONENTS_AMOUNT: int = 10
+    # RESTRICTED_LIST_AMOUNT_COMPONENT:int = 1
+    # TWEAK_AMOUNT_REPETITIONS: int = 5
+    # AMOUNT_POBLATION: int = 1
 
     def Execute(self, problem: VigilantAssigment):
         Best = None
         data = []
-        # poblation: List[Solution] = self.get_initial_poblation(problem)
-        population = Population(None, None, self.get_initial_poblation(problem))
+        poblation: List[Solution] = self.get_initial_poblation(problem)
+        # population = Population(None, None, self.get_initial_poblation(problem))
         while self.CURRENT_EFOS < self.MAX_EFOS:
             print("evolution:"+ str(self.CURRENT_EFOS+1))
             for index_solution in range(self.AMOUNT_POBLATION):
-                new_solution:Solution = copy.deepcopy(population.populations[index_solution])
+                new_solution:Solution = copy.deepcopy(poblation[index_solution])
                 for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
                     tweak = random.randint(1,4)      
                     new_solution = Tweak_service().Tweak(new_solution,tweak)
-                population.populations.append(new_solution)
-            data.append(population.populations)
-            best = self.best_population(population)
+                poblation.append(new_solution)
+            data.append(poblation)
+            poblation = self.best_population(poblation)
             self.CURRENT_EFOS+=1   
-        Graph(data)
-        return best 
+        # Graph(data)
+        return poblation
 
     def get_initial_poblation(self,problem) -> List[Solution]:
         print("Getting started poblation")
@@ -58,16 +64,10 @@ class Grasp(Algorithm):
             print("new iteration")
         return poblation
 
-    def best_population(self, population: Population) -> List[Solution]:
+    def best_population(self, poblation: List[Solution]) -> List[Solution]:
         #TODO ordenamiento no dominadoa
-        PopulationServices.not_dominate_sort(population)
-        population.populations = PopulationServices.get_frente(population.populations,1)
-        return population.populations
-        # newpoblation = []
-        # while len(newpoblation) != self.AMOUNT_POBLATION:
-        #     rand = random.randint(0,self.AMOUNT_POBLATION*2)
-        #     solution = population.populations[rand-1]
-        #     if solution not in newpoblation:
-        #         newpoblation.append(solution)
-        # return newpoblation
+
+        PopulationServices.not_dominate_sort(Population(None, None, poblation))
+        poblation = PopulationServices.get_solutions_by_frente(poblation,len(poblation)/2)
+        return poblation
 

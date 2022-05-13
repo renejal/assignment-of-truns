@@ -1,12 +1,5 @@
-from os import rename
-from pydoc import render_doc
-import random
 import copy
-from re import I
 from typing import List, Dict
-from urllib import response
-from xmlrpc.client import boolean
-from isodate import D_DEFAULT
 from dominio.Solution import Solution
 # from dominio.soluction_nsga_ii import Solution
 from dominio.vigilant_assigment import VigilantAssigment

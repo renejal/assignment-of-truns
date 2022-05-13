@@ -1,8 +1,5 @@
-from random import shuffle
 import random
 from typing import List, Dict
-
-from scipy.fftpack import shift
 from dominio.Solution import Solution
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -16,6 +13,8 @@ class Tweak_missing_shifts:
         vigilantes_with_missing_hours: List[Vigilant] = self.get_vigilantes_with_missing_hours(solution.vigilantes_schedule)
         #Asignar a los turnos los vigilantes que tienen menos de 40 horas en el mismo sitio
         for site in solution.sites_schedule:
+             if len(site.missing_shifts) == 0:
+                 continue
              vigilantes = [x for x in vigilantes_with_missing_hours if site.site_id in x.sites_to_look_out]
              assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
              for v in assigned_vigilantes:
@@ -23,9 +22,13 @@ class Tweak_missing_shifts:
                      vigilantes_with_missing_hours.remove(v)
         #Asignar horas extras a los vigilantes en el mismo sitio
         for site in solution.sites_schedule:
+            if len(site.missing_shifts) == 0:
+                 continue
             self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
         #Asignar a los turnos los vigilantes que tienen menos de 40 horas en algun otro sitio
-        for site in solution.sites_schedule:            
+        for site in solution.sites_schedule:      
+            if len(site.missing_shifts) == 0:
+                 continue      
             vigilantes = self.get_vigilantes_from_other_sites( vigilantes_with_missing_hours, site.assigned_Vigilantes)
             assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
             for v in assigned_vigilantes:
@@ -35,6 +38,8 @@ class Tweak_missing_shifts:
                      vigilantes_with_missing_hours.remove(v)
         #Asignar horas extras a los vigilantes en otro sitio
         for site in solution.sites_schedule:
+            if len(site.missing_shifts) == 0:
+                 continue
             vigilantes = self.get_vigilantes_from_other_sites( solution.vigilantes_schedule, site.assigned_Vigilantes)    
             assigned_vigilantes = self.assign_extra_hours_on_vigilantes(vigilantes, site.site_id, site.missing_shifts)
             for v in assigned_vigilantes:

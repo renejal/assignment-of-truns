@@ -2,12 +2,11 @@ import numpy as np
 import pandas as pd
 from dominio.Solution import Solution 
 
-PATH_FILE: str = "./dataset/results/Site.xlsx"
 TOTAL_HOURS:int = 24
 TOTAL_DAYS: int = 7
 
-def generate_excel_site(solution :  Solution):
-    writer = pd.ExcelWriter(PATH_FILE, engine='openpyxl')
+def generate_excel_site(solution:Solution, path:str):
+    writer = pd.ExcelWriter(path+".xlsx", engine='openpyxl')
     wb = writer.book
     for site in solution.sites_schedule:
         data = [[[]]*solution.problem.sites[site.site_id-1].total_weeks*TOTAL_DAYS]*TOTAL_HOURS
@@ -21,5 +20,5 @@ def generate_excel_site(solution :  Solution):
                 data[TOTAL_HOURS][day] += shift.necesary_vigilantes - len(shift.assigment_vigilantes)
         df = pd.DataFrame(data,columns=list("day"+str(day)  for day in range(1,day+2)))
         df.to_excel(writer, sheet_name='site' + str(site.site_id))
-        wb.save(PATH_FILE)
+        wb.save(path+".xlsx")
     writer.close()

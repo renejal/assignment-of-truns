@@ -11,3 +11,8 @@ class DataSites(FromDictMixin):
 @dataclasses.dataclass
 class DataVigilantes(FromDictMixin):
     data_vigilantes: List[Vigilant] = dataclasses.field(default_factory=list)
+
+@dataclasses.dataclass
+class DataUser(FromDictMixin):
+    id_user: str = dataclasses.field(default_factory=list)
+
