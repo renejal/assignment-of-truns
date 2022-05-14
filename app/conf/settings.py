@@ -1,4 +1,6 @@
 import random
+# import environ
+
 JSON_SITES_DATA = "app/dataset/sites.json"
 JSON_VIGILANTES_DATA = "app/dataset/vigilantes.json"
 MAX_TOTAL_WEEKS = 4

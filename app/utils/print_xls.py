@@ -1,13 +1,13 @@
-
 import os
 import pandas as pd
 from utils.print_sites_xls import generate_excel_site
 from utils.print_vigilants_xls import generate_excel_vigilantes
 from conf.settings import PATH_RESULTS
+from typing import Dict
 import datetime
 
 
-def generate_results(dataGrasp: dict[str, object], dataNsga: dict[str, object], idUser: str):
+def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], idUser: str):
     time = datetime.datetime.now()
     time = str(time.year)+"-"+str(time.month)+"-"+str(time.day)+"-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
     path = PATH_RESULTS+idUser+"/"+time
@@ -23,7 +23,7 @@ def generate_results(dataGrasp: dict[str, object], dataNsga: dict[str, object], 
             generate_excel_vigilantes(solution, path+"/nsgaii/vigilantSolution"+str(index))
     generate_metrics(dataGrasp, dataNsga, path)
 
-def generate_metrics(dataGrasp: dict[str, object], dataNsga: dict[str, object],path:str) -> None:
+def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object],path:str) -> None:
     writer = pd.ExcelWriter(path+"/metrics.xlsx", engine='openpyxl')
     wb = writer.book
     colums= ["solution","turnosFalGrasp","vigilantesExGrasp","horasExFrasp","distanceGrasp",
