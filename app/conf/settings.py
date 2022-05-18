@@ -3,11 +3,18 @@ import environ
 
 JSON_SITES_DATA = "app/dataset/sites.json"
 JSON_VIGILANTES_DATA = "app/dataset/vigilantes.json"
+#result
+PATH_RESULTS="dataset/results/"
+#Nsga2 Constant
+INFINITE_POSITIVE = 100000000000000
+INFINITE_NEGATIVE = -100000000000000
+# Gras Constant
+
 # SETTINGS=random.seed(0) #SEED
 env1 = environ.Env(
+    SETTINGS=(int, random.seed(0)), #SEED
     MAX_TOTAL_WEEKS=(int, 4), 
     WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE=(int, 5),
-    SETTINGS=(int, random.seed(0)), #SEED
     MISSING_FITNESS_VALUE=(int, 100),
     ASSIGNED_VIGILANTES_FITNESS_VALUE=(int, 20),
     DISTANCE_FITNESS_VALUE=(int, 1), 
@@ -22,11 +29,8 @@ env1 = environ.Env(
     NUMBER_OF_CHILDREN_FOR_PARENTS=(int, 2),  # se negera 2 hijos por cadas dos padres
     RESTRICTED_LIST_AMOUNT_COMPONENT=(int, 10),
     SIZE_POPULATION=(int, 10),  # Tamaño de la poblacion final
-    INFINITE_POSITIVE=(int, 100000000000000), 
-    INFINITE_NEGATIVE =(int, -100000000000000),
     NUMBER_OBJECTIVE_AT_OBTIMIZATE=(int, 4),
     #Results
-    PATH_RESULTS =(str, "dataset/results/"),
 )
 env2 = environ.Env(
     SETTINGS=(int, random.seed(0)),
@@ -46,11 +50,8 @@ env2 = environ.Env(
     NUMBER_OF_CHILDREN_FOR_PARENTS=(int, 2),  # se negera 2 hijos por cadas dos padres
     RESTRICTED_LIST_AMOUNT_COMPONENT=(int, 10),
     SIZE_POPULATION=(int, 10),  # Tamaño de la poblacion final
-    INFINITE_POSITIVE=(int, 100000000000000), 
-    INFINITE_NEGATIVE =(int, -100000000000000),
     NUMBER_OBJECTIVE_AT_OBTIMIZATE=(int, 4),
     #Results
-    PATH_RESULTS =(str, "dataset/results/"),
 )
 
 # envirom exect
@@ -75,8 +76,5 @@ NUMBER_ITERATION_SELECTION_COMPONENTE = env("NUMBER_ITERATION_SELECTION_COMPONEN
 NUMBER_OF_CHILDREN_FOR_PARENTS = env("NUMBER_OF_CHILDREN_FOR_PARENTS")
 RESTRICTED_LIST_AMOUNT_COMPONENT = env("RESTRICTED_LIST_AMOUNT_COMPONENT")
 SIZE_POPULATION = env("SIZE_POPULATION")
-INFINITE_POSITIVE = env("INFINITE_POSITIVE")
-INFINITE_NEGATIVE = env("INFINITE_NEGATIVE")
 NUMBER_OBJECTIVE_AT_OBTIMIZATE = env("NUMBER_OBJECTIVE_AT_OBTIMIZATE")
 #Results,
-PATH_RESULTS=env("PATH_RESULTS")
