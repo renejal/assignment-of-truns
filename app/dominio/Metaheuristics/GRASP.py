@@ -50,7 +50,7 @@ class Grasp(Algorithm):
         print("Getting started poblation")
         poblation:List[Solution] = []
         for i in range(self.AMOUNT_POBLATION):
-            S = Solution(problem, self.ALEATORY)
+            S = Solution(problem)
             while S.is_solution_complete():
                 components = S.create_components(self.COMPONENTS_AMOUNT)
                 restricted_list = components

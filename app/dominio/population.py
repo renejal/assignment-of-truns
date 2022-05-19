@@ -20,7 +20,6 @@ class Population():
         self.__populations = population
         self.problem = problem
         self.__frente = {} 
- 
 
     def is_soluction_complete(self):
         response = False 
@@ -39,7 +38,7 @@ class Population():
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
         population: List[Solution] = []
         for i in range(self.__num_soluction):
-            S = Solution(self.problem, settings)
+            S = Solution(self.problem)
             while S.is_solution_complete():
                 components = S.create_components(self.__num_soluction)
                 restried_list = components 

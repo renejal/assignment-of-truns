@@ -4,6 +4,7 @@ from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilan
 from services.tweak_distance import Tweak_distance
 from services.tweak_extra_hours import Tweak_extra_hours
 from services.tweak_missing_shifts import Tweak_missing_shifts
+from conf.settings import MISSING_SHIFT_TWEAK_PROBABILITY, ASSIGNED_VIGILANTES_TWEAK_PROBABILITY, EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY
 
 class Tweak_service:
 
@@ -13,7 +14,7 @@ class Tweak_service:
     tweak_distance: Tweak_distance = Tweak_distance()
 
     def Tweak(self, solution: Solution):
-        tweak = random.choice([1,2,3,4], weights = (SHIFTS_GRASP,VIGILANTS_GRASP,EXTRA_GRASP,DISTANCE_GRASP))[0]
+        tweak = random.choices([1,2,3,4], weights = (MISSING_SHIFT_TWEAK_PROBABILITY,ASSIGNED_VIGILANTES_TWEAK_PROBABILITY,EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY))[0]
         if tweak == 1:
             solution = self.tweak_missing_shifts.missing_shifts_tweak(solution)
         elif tweak == 2:

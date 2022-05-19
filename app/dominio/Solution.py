@@ -1,6 +1,5 @@
 import copy
-from tokenize import String 
-from typing import List, Literal
+from typing import List
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
@@ -41,9 +40,9 @@ class Solution:
         self.crowding_distance = 0
         self.fitnessToOptimize = self.get_fitness_to_optimize()
 
-    def get_fitness_to_optimize() -> str:
+    def get_fitness_to_optimize(self) -> str:
         objectives = ["missing_shifts","necesary_vigilantes","extra_hours","distance"]
-        return random.choice(objectives, weights = (SHIFTS,VIGILANTS,EXTRA,DISTANCE))[0]
+        return random.choices(objectives, weights =(MISSING_SHIFT_PROBABILITY,ASSIGNED_VIGILANTES_PROBABILITY,EXTRA_HOURS_PROBABILITY,DISTANCE_GRASP_PROBABILITY))[0]
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []
