@@ -72,7 +72,7 @@ class Population():
     def get_Solutions_of_range(self, rango):
         frents: List[Solution]  = []
         for solution in self.__populations:
-            if solution.range == rango:
+            if solution.range == rango and len(frents) < settings.AMOUNT_POBLATION_TO_CREATE:
                 frents.append(solution)
         if frents:
             return frents
