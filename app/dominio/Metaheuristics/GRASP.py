@@ -10,6 +10,7 @@ from services.population_services import PopulationServices
 from dominio.population import Population
 from services.tweak_service import Tweak_service
 from utils.graph import Graph
+from conf.settings import AMOUNT_POBLATION_TO_CREATE
 
 class Grasp(Algorithm):
     ALEATORY:int = 0
@@ -20,7 +21,7 @@ class Grasp(Algorithm):
     RESTRICTED_LIST_AMOUNT_COMPONENT:int = 10
     # RESTRICTED_LIST_AMOUNT_COMPONENT:int = 5
     TWEAK_AMOUNT_REPETITIONS: int = 10
-    AMOUNT_POBLATION: int = 5
+    AMOUNT_POBLATION: int = AMOUNT_POBLATION_TO_CREATE
 
     # MAX_EFOS: int = 2
     # COMPONENTS_AMOUNT: int = 10

@@ -26,7 +26,7 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     print(dataGrasp.get("fitnesses"))
     print("FITNESS NSGAII")
     print(dataNsga.get("fitnesses"))
-    # generate_metrics(dataGrasp, dataNsga, path)
+    generate_metrics(dataGrasp, dataNsga, path)
 
 def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object],path:str) -> None:
     writer = pd.ExcelWriter(path+"/metrics.xlsx", engine='openpyxl')
