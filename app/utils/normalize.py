@@ -1,26 +1,25 @@
+import math
 from typing import List
 from dominio.Solution import Solution
+from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALUE,DISTANCE_FITNESS_VALUE,EXTRA_HOURS_FITNESS_VALUE
 
 class Normalize:
 
-    missing_shifts_fitnessMax: int = 10
-    assigned_vigilantes_fitnessMax:int =  10
-    extra_hours_fitnessMax:int = 20
-    distance_fitnessMax:int = 100
-    missing_shifts_fitnessMin: int = 0
-    assigned_vigilantes_fitnessMin:int =  0
-    extra_hours_fitnessMin:int = 0
-    distance_fitnessMin:int = 0
+    missing_shifts_fitness_acceptable_porcentage: float = 0.9
+    assigned_vigilantes_acceptable_porcentage: float = 0.8
+    extra_hours_acceptable_porcentage: float = 0.7
+    distance_acceptable_porcentage: float = 0.1
 
     def normalizeFitness(self, solutions: List[Solution]) -> List[Solution]:
-        fitnessMax = [self.missing_shifts_fitnessMax, self.assigned_vigilantes_fitnessMax, self.extra_hours_fitnessMax, self.distance_fitnessMax]
-        fitnessMin = [self.missing_shifts_fitnessMin, self.assigned_vigilantes_fitnessMin, self.extra_hours_fitnessMin, self.distance_fitnessMin]
+        fitnessMax = solutions[0].problem.max_possible_fitness
+        fitnessMin = [0,0,0,0]
+        print(fitnessMax)
+        fitnessMax[0] = math.ceil(MISSING_FITNESS_VALUE*fitnessMax[0]*(1-self.missing_shifts_fitness_acceptable_porcentage))
+        fitnessMax[1] = math.ceil(ASSIGNED_VIGILANTES_FITNESS_VALUE*fitnessMax[1]*(1-self.assigned_vigilantes_acceptable_porcentage))
+        fitnessMax[2] = math.ceil(EXTRA_HOURS_FITNESS_VALUE*fitnessMax[2]*(1-self.extra_hours_acceptable_porcentage))
+        print(fitnessMax)
         solutionsNormalizated: List[List[int]] = []
-
-        #Eliminar este for y calcular el verdadero maximoFitness para cada objetivo
-        for solution in solutions:
-            self.getMaxFitnessSolution(solution,fitnessMax)
-
+        solutionsNormalizated.append(fitnessMax)
         for solution in solutions:
             missing_shifts_fitness = self.normalize(
                 solution.missing_shifts_fitness, fitnessMax[0], fitnessMin[0])
@@ -31,7 +30,7 @@ class Normalize:
             distance_fitness = self.normalize(
                 solution.distance_fitness, fitnessMax[3], fitnessMin[3])
             solutionsNormalizated.append([missing_shifts_fitness, assigned_vigilantes_fitness,
-                         extra_hours_fitness, distance_fitness])
+                                          extra_hours_fitness, distance_fitness])
         return solutionsNormalizated
 
     def normalize(self, valor, maximo, minimo):

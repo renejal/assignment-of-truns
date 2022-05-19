@@ -38,8 +38,7 @@ class Grasp(Algorithm):
             for index_solution in range(self.AMOUNT_POBLATION):
                 new_solution:Solution = copy.deepcopy(poblation[index_solution])
                 for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
-                    tweak = random.randint(1,4)      
-                    new_solution = Tweak_service().Tweak(new_solution,tweak)
+                    new_solution = Tweak_service().Tweak(new_solution)
                 poblation.append(new_solution)
             data.append(poblation)
             poblation = self.best_population(poblation)

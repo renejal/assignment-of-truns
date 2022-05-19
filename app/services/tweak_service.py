@@ -12,7 +12,8 @@ class Tweak_service:
     tweak_assignment_vigilantes_amount: Tweak_assignment_vigilantes_amount = Tweak_assignment_vigilantes_amount()
     tweak_distance: Tweak_distance = Tweak_distance()
 
-    def Tweak(self, solution: Solution, tweak):
+    def Tweak(self, solution: Solution):
+        tweak = random.choice([1,2,3,4], weights = (SHIFTS_GRASP,VIGILANTS_GRASP,EXTRA_GRASP,DISTANCE_GRASP))[0]
         if tweak == 1:
             solution = self.tweak_missing_shifts.missing_shifts_tweak(solution)
         elif tweak == 2:

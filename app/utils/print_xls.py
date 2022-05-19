@@ -21,7 +21,8 @@ def generate_results(dataGrasp: dict[str, object], dataNsga: dict[str, object], 
         for index, solution in enumerate(dataNsga.get("solutions")):
             generate_excel_site(solution, path+"/nsgaii/siteSolution"+str(index))
             generate_excel_vigilantes(solution, path+"/nsgaii/vigilantSolution"+str(index))
-    generate_metrics(dataGrasp, dataNsga, path)
+    print(dataGrasp.get("fitnesses"))
+    # generate_metrics(dataGrasp, dataNsga, path)
 
 def generate_metrics(dataGrasp: dict[str, object], dataNsga: dict[str, object],path:str) -> None:
     writer = pd.ExcelWriter(path+"/metrics.xlsx", engine='openpyxl')
@@ -31,8 +32,6 @@ def generate_metrics(dataGrasp: dict[str, object], dataNsga: dict[str, object],p
     data = []
     fitnesssGrasp = dataGrasp.get("fitnesses")
     fitnesssNsga = dataNsga.get("fitnesses")
-    print(fitnesssGrasp)
-    print(fitnesssNsga)
     for i in range(len(fitnesssGrasp)):
         data.append([i+1,fitnesssGrasp[i][0],fitnesssGrasp[i][1],fitnesssGrasp[i][2],fitnesssGrasp[i][3]
                 ,fitnesssNsga[i][0],fitnesssNsga[i][1],fitnesssNsga[i][2],fitnesssNsga[i][3]

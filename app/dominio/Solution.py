@@ -1,4 +1,5 @@
-import copy 
+import copy
+from tokenize import String 
 from typing import List, Literal
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -6,7 +7,7 @@ from dominio.Component import Component
 import random
 from dominio.vigilant_assigment import VigilantAssigment
 from services.site_schedule_service import Site_schedule_service
-from conf.settings import MISSING_FITNESS_VALUE,DISTANCE_FITNESS_VALUE,EXTRA_HOURS_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALUE
+from conf.settings import *
 
 class Solution:
 
@@ -26,8 +27,9 @@ class Solution:
     dominate_me: int
     range: int
     id: int
+    fitnessToOptimize: str
 
-    def __init__(self, problem: VigilantAssigment , Aletory):
+    def __init__(self, problem: VigilantAssigment):
         self.site_schedule_service = Site_schedule_service(problem)
         self.problem = problem
         self.sites_schedule = []
@@ -37,6 +39,11 @@ class Solution:
         self.range = -1
         self.id = 0
         self.crowding_distance = 0
+        self.fitnessToOptimize = self.get_fitness_to_optimize()
+
+    def get_fitness_to_optimize() -> str:
+        objectives = ["missing_shifts","necesary_vigilantes","extra_hours","distance"]
+        return random.choice(objectives, weights = (SHIFTS,VIGILANTS,EXTRA,DISTANCE))[0]
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []
@@ -51,7 +58,7 @@ class Solution:
         for iteration in range(restricted_components_amount):
             swapped = False
             for pos in range(len(components)-1-iteration):
-                if(components[pos + 1].total_fitness < components[pos].total_fitness):
+                if(components[pos + 1].get_fitness_by_criteria(self.fitnessToOptimize) < components[pos].get_fitness_by_criteria(self.fitnessToOptimize)):
                     aux = components[pos]
                     components[pos] = components[pos+1]
                     components[pos + 1] = aux

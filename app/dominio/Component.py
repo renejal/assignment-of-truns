@@ -64,3 +64,13 @@ class Component:
                 if hour_by_week < 40 and hour_by_week > 0:
                     self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
                     self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE
+
+    def get_fitness_by_criteria(self, fitnessToOptimize:str) -> int:
+        if fitnessToOptimize == "missing_shifts":
+            return self.missing_shifts_fitness
+        if fitnessToOptimize == "necesary_vigilantes":
+            return self.assigned_vigilantes_fitness
+        if fitnessToOptimize == "extra_hours":
+            return self.extra_hours_fitness
+        if fitnessToOptimize == "distance":
+            return self.distance_fitness

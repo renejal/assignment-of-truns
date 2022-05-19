@@ -1,3 +1,4 @@
+import math
 from typing import Dict, List
 from dominio.model.site import Site
 from dominio.model.shift import Shift
@@ -15,7 +16,9 @@ class Shifts_generation_service:
             if site.is_special_site:
                 shifts_by_site.append(self.create_shifts_in_special_site(site, site.total_weeks))
             else:
-                shifts_by_site.append(self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks))
+                shifts_data = self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks)
+                shifts_by_site.append(shifts_data[0])
+                self.calculate_max_fitness(site,shifts_data[1],shifts_data[2])
         return shifts_by_site
 
     def create_ideal_hours_amount_to_work(self) -> Dict[int,List[int]]: 
@@ -24,6 +27,8 @@ class Shifts_generation_service:
 
     def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work: int, total_weeks:int) -> List[Shift]:
         shifts : list[Shift] = []
+        total_missing_shifts = 0
+        minimum_necessary_vigilantes = 0
         last_shift_finished_at_end_day = False
         shift_start_time = -1
         for index_week , week in enumerate(site.weeks_schedule):
@@ -52,7 +57,9 @@ class Shifts_generation_service:
                     for hours_amount_to_work in hours_amount_to_work_by_shift:
                         shifts.append(Shift( shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
                         shift_start_time += hours_amount_to_work
-        return shifts
+                        total_missing_shifts+=shift.num_vigilantes
+                        minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
+        return shifts,total_missing_shifts,minimum_necessary_vigilantes
         
     def create_shifts_in_special_site(self,site: Site, total_weeks : int) -> List[Shift]:
         shifts : list[Shift] = []
@@ -73,3 +80,8 @@ class Shifts_generation_service:
                         is_same_shift_that_last_day = True
                     shifts.append(Shift( shift_start_time , shift_end_time , shift.num_vigilantes))
         return shifts
+
+    def calculate_max_fitness(self,site: Site, total_missing_shifts,minimum_necessary_vigilantes) -> None:
+        site.total_missing_shifts = total_missing_shifts
+        site.minimum_necessary_vigilantes = math.ceil(minimum_necessary_vigilantes/(40*site.total_weeks))
+        site.calculate_max_extra_hours()
