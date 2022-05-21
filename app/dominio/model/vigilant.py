@@ -17,6 +17,7 @@ class Vigilant(FromDictMixin):
     total_hours_worked_by_week: List[int] = dataclasses.field(default_factory=list)
     closet_place: int = -1
     last_shift: Shift = None
+    order_distances: Dict[int,int] =  dataclasses.field(default_factory=dict)
 
     def assign_shift(self, shift: Shift, site_id: int) -> None:
         if site_id not in self.sites_to_look_out:
@@ -70,6 +71,11 @@ class Vigilant(FromDictMixin):
         self.sites_to_look_out[shift.site_id] -= 1
         if self.sites_to_look_out[shift.site_id] == 0:
             del self.sites_to_look_out[shift.site_id]
+
+    def set_order_sites_by_distance(self):
+        order_sites_by_distance = sorted(range(len(self.distances)), key=lambda k: self.distances[k])
+        for index, order_site in enumerate(order_sites_by_distance):
+            self.order_distances[order_site+1] = index
 
     def get_index_sites_by_distance(self):
         return sorted(range(len(self.distances)), key=lambda k: self.distances[k])

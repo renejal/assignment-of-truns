@@ -182,6 +182,9 @@ class PopulationServices:
                         r=rango+1
                         solution.range=r 
                         population.add_frente(key=range,value=solution)
+                    print("solution_id")
+                    print(solution.id)
+                    print(solution.range)
             rango +=1
 
     @staticmethod
@@ -202,7 +205,7 @@ class PopulationServices:
     def get_solutions_by_frente(population: List[Solution], amount:int):
         frente: List[Solution] = []
         if len(population) < amount:
-            amount= len(population)
+            amount = len(population)
         range = 1
         while len(frente) < amount:
             for solution in population:

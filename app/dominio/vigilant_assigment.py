@@ -43,12 +43,13 @@ class VigilantAssigment:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out].append(vigilant.id)
                 else:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out] = [vigilant.id]
+            vigilant.set_order_sites_by_distance()
         self.shifts_by_sites = Shifts_generation_service().create_shifts_by_site(self.sites)
         self.order_sites_by_id_vigilantes_amount = self.sorted_sites_by_vigilant_amount(self.shifts_by_sites)
         self.order_sites_by_id_vigilantes_distance = self.order_sites_by_vigilantes_distance(self.vigilantes, self.total_sites)
-        self.calculalte_max_possible_fitness(self.sites)
+        self.calculalte_max_possible_fitness(self.sites, self.vigilantes)
 
-    def calculalte_max_possible_fitness(self, sites: List[Site]) -> None:
+    def calculalte_max_possible_fitness(self, sites: List[Site], vigilantes: List [Vigilant]) -> None:
         total_missing_shifts = 0
         minimum_necessary_vigilantes = 0
         max_extra_hours = 0
@@ -59,12 +60,14 @@ class VigilantAssigment:
         self.max_possible_fitness[0] = total_missing_shifts
         self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = 1000
+        self.max_possible_fitness[3] = len(vigilantes) * (len(sites)-1)
 
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}
-        for site in sites:
+        for index, site in enumerate(sites):
+            # site.id = index + 1 
             sitesDict[site.description] = site.id
+            print(site.id)
         return sitesDict
 
     def sorted_sites_by_vigilant_amount(self, shifts_by_sites:List[List[Shift]] ):

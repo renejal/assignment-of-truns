@@ -18,10 +18,11 @@ class Tweak_service:
         if tweak == 1:
             solution = self.tweak_missing_shifts.missing_shifts_tweak(solution)
         elif tweak == 2:
-            solution = self.tweak_distance.tweak_distance(solution)
+            solution = self.tweak_assignment_vigilantes_amount.assignment_vigilantes_amount(solution)
         elif tweak == 3:
             solution = self.tweak_extra_hours.extra_hours_tweak(solution)
         else:
-            solution = self.tweak_assignment_vigilantes_amount.assignment_vigilantes_amount(solution)
+            solution = self.tweak_distance.tweak_distance(solution)
         solution.calculate_fitness()
+       
         return solution

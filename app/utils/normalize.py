@@ -17,7 +17,7 @@ class Normalize:
         fitnessMax[0] = math.ceil(MISSING_FITNESS_VALUE*fitnessMax[0]*(1-self.missing_shifts_fitness_acceptable_porcentage))
         fitnessMax[1] = math.ceil(ASSIGNED_VIGILANTES_FITNESS_VALUE*fitnessMax[1]*(1-self.assigned_vigilantes_acceptable_porcentage))
         fitnessMax[2] = math.ceil(EXTRA_HOURS_FITNESS_VALUE*fitnessMax[2]*(1-self.extra_hours_acceptable_porcentage))
-        print(fitnessMax)
+        fitnessMax[3] = math.ceil(DISTANCE_FITNESS_VALUE*fitnessMax[3]*(1-self.distance_acceptable_porcentage))
         solutionsNormalizated: List[List[int]] = []
         solutionsNormalizated.append(fitnessMax)
         for solution in solutions:

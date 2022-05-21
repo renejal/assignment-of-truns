@@ -74,7 +74,38 @@ env2 = environ.Env(
     EXTRA_HOURS_TWEAK_PROBABILITY = (int, 15),
     DISTANCE_TWEAK_PROBABILITY = (int, 5)
 )
-
+env3 = environ.Env(
+    SETTINGS=(int, random.seed(0)), #SEED
+    MAX_TOTAL_WEEKS=(int, 4), 
+    WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE=(int, 5),
+    MISSING_FITNESS_VALUE=(int, 1),
+    ASSIGNED_VIGILANTES_FITNESS_VALUE=(int, 1),
+    DISTANCE_FITNESS_VALUE=(int, 1), 
+    EXTRA_HOURS_FITNESS_VALUE=(int, 1),
+    AMOUNT_POBLATION_TO_CREATE = (int, 5),
+    #NUMBER ITERACTION FOR THA SELECCION OF RANDOM COMPONENTE IN THE CROOSIN
+    #NSGA2 
+    NUM_OBJECTIVE=(int, 4),  # 0 -3 = 4 objetive
+    MAX_EFOS=(int, 10), 
+    NUM_SOLUTION=(int, 20),
+    NUMBER_OF_CHILDREN_GENERATE=(int, 20),
+    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
+    NUMBER_OF_CHILDREN_FOR_PARENTS=(int, 2),  # se negera 2 hijos por cadas dos padres
+    RESTRICTED_LIST_AMOUNT_COMPONENT=(int, 10),
+    SIZE_POPULATION=(int, 10),  # Tamaño de la poblacion final
+    NUMBER_OBJECTIVE_AT_OBTIMIZATE=(int, 4),
+    #Results
+    #PorcetanjeSolution
+    MISSING_SHIFT_PROBABILITY = (int, 1),
+    ASSIGNED_VIGILANTES_PROBABILITY = (int, 1),
+    EXTRA_HOURS_PROBABILITY = (int, 1),
+    DISTANCE_GRASP_PROBABILITY = (int, 97),
+    #PorcetanjeTweaksGRASP
+    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 1),
+    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 1),
+    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 1),
+    DISTANCE_TWEAK_PROBABILITY = (int, 97),
+)
 # envirom exect
 
 env = env1

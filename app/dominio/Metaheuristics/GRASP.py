@@ -66,8 +66,9 @@ class Grasp(Algorithm):
 
     def best_population(self, poblation: List[Solution]) -> List[Solution]:
         #TODO ordenamiento no dominadoa
-
+        print("llegooooooooooooooooooooooooooo")
         PopulationServices.not_dominate_sort(Population(None, None, poblation))
+        print("no salioooooooooooooooo")
         poblation = PopulationServices.get_solutions_by_frente(poblation,len(poblation)/2)
         return poblation
 
