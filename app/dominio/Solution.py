@@ -170,8 +170,8 @@ class Solution:
                 if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
                     # self.distance_fitness+= vigilant.distances[site_to_look_out-1]    
                     # self.total_fitness+= vigilant.distances[site_to_look_out-1]
-                    self.distance_fitness+= DISTANCE_FITNESS_VALUE
-                    self.fitness[1] = self.distance_fitness
+                    self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(site_to_look_out)
+                    self.fitness[1] = self.distance_fitness * vigilant.order_distances.get(site_to_look_out)
                     self.total_fitness+= DISTANCE_FITNESS_VALUE  
             for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hour_by_week > 48:

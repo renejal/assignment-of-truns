@@ -202,7 +202,7 @@ class PopulationServices:
     def get_solutions_by_frente(population: List[Solution], amount:int):
         frente: List[Solution] = []
         if len(population) < amount:
-            amount= len(population)
+            amount = len(population)
         range = 1
         while len(frente) < amount:
             for solution in population:
