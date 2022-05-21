@@ -263,12 +263,13 @@ class PopulationServices:
         return rango
             
     @staticmethod
-    def get_solution_of_range(population: Population, range: int, index_solution: int):
-        solution = population.get_Solutions_of_range(range)
-        if solution:
-            return solution[index_solution]
+    def get_solution_of_range(population: Population, range: int):
+        "return soluction of range x"
+        soluctions = population.get_Solutions_of_range(range)
+        if soluctions:
+            return soluctions
         else:
-            return solution
+            return soluctions
         
 
     @staticmethod

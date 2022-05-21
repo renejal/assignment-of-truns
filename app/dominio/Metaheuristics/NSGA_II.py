@@ -25,28 +25,30 @@ class NsgaII(Algorithm):
             pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
             population_obj.populations = union_populantion
-            
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
             population_parents = [] 
             if not population_obj.populations:
                 raise("population not found")
             PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
             rango = 1
-            index_solution = 0
             while population_obj.is_soluction_complete():
-                range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango, index_solution)
+                range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango)
                 if range_of_solution:
-                    population_parents.append(range_of_solution)
+                    population_parents=population_parents+range_of_solution
                 else:
                    break 
                 rango +=1
-                index_solution +=1
             population_obj.populations = population_parents
             self.currency_efos +=1
-            # PopulationServices.not_dominate_sort(population_obj)
+            PopulationServices.not_dominate_sort(population_obj)
             self.Evoluction_soluction.append(population_obj.populations)
-        # Graph(self.Evoluction_soluction)
-        return population_obj.get_Solutions_of_range(1)
+        Graph(self.Evoluction_soluction)
+        population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
+        return population_obj.populations
+
+
+
+
 
 
 

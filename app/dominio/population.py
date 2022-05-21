@@ -1,10 +1,13 @@
 import copy
 from typing import List, Dict
+
+from numpy import var
 from dominio.Solution import Solution
 # from dominio.soluction_nsga_ii import Solution
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
 from conf import settings
+import pprint
 
 class Population():
 
@@ -72,13 +75,24 @@ class Population():
     def get_Solutions_of_range(self, rango):
         frents: List[Solution]  = []
         for solution in self.__populations:
-            if solution.range == rango and len(frents) < settings.AMOUNT_POBLATION_TO_CREATE:
+            if solution.range == rango:
                 frents.append(solution)
         if frents:
             return frents
         else:
             return False
-            
+    
+    def get_populations(self, num_soluction):
+        print(self.__populations)
+        population = []
+        rango = 1
+        while len(population) < num_soluction:
+            population = population + self.get_Solutions_of_range(rango)
+            rango = +1
+        if len(population) <= num_soluction:
+            raise("No se encontro el numero de soluciones requeridas")
+        return population[:num_soluction]
+
     def get_soluction_the_frente_whit_range(self, range: int):
         for solution in self.__populations:
             if solution.range_soluction == 1:

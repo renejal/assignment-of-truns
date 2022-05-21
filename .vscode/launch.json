@@ -1,14 +1,15 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
-
         {
-            "name": "Python: main",
+            "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/app/maintest.py",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/app/manage.py",
+            "args":[
+                "runserver"
+            ],
+            "django": true
         }
     ]
 }

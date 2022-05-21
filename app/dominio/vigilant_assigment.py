@@ -1,3 +1,4 @@
+from cgi import print_arguments
 import operator
 from typing import Dict, List
 from dominio.model.site import Site
@@ -64,6 +65,7 @@ class VigilantAssigment:
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}
         for site in sites:
+            print(site.id)
             sitesDict[site.description] = site.id
         return sitesDict
 
