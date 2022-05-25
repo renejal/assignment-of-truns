@@ -20,7 +20,6 @@ class PopulationServices:
         childrens: list[Solution] = []
         while population: 
             parents = PopulationServices.get_parents(population)
-            #TODO: GENEAR DOS HIJOS POR DOS PADRES, 
             children = PopulationServices.mating_between_parents(parents[0],parents[1])
             childrens.append(children[0])
             childrens.append(children[1])
@@ -35,7 +34,6 @@ class PopulationServices:
     
     @staticmethod
     def calculate_fitness(childrens: List[Solution]):
-        # calcular fitness para cada solucion de la lista childrens
         for children in childrens:
             children.calculate_fitness()
 
@@ -47,11 +45,9 @@ class PopulationServices:
             if child:
                 childrens.append(child)  
             elif childrens:
-                #retorna la dos mejores soluciones
                 PopulationServices.calculate_fitness(childrens)
                 childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
         else:
-            # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
             childrens.append(parent_for_exchange_one)
             childrens.append(parent_for_exchange_two)
         return childrens
@@ -181,7 +177,7 @@ class PopulationServices:
                     if solution.dominate_me == 0:
                         r=rango+1
                         solution.range=r 
-                        population.add_frente(key=range,value=solution)
+                        population.add_frente(key=rango,value=solution)
             rango +=1
 
     @staticmethod
