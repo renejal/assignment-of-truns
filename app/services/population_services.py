@@ -20,10 +20,7 @@ class PopulationServices:
         childrens: list[Solution] = []
         while population: 
             parents = PopulationServices.get_parents(population)
-            #TODO: GENEAR DOS HIJOS POR DOS PADRES, 
-            children = PopulationServices.mating_between_parents(parents[0],parents[1])
-            childrens.append(children[0])
-            childrens.append(children[1])
+            childrens = childrens + PopulationServices.crossings(parents[0],parents[1])
         return childrens
     
     @staticmethod
@@ -35,26 +32,38 @@ class PopulationServices:
     
     @staticmethod
     def calculate_fitness(childrens: List[Solution]):
-        # calcular fitness para cada solucion de la lista childrens
         for children in childrens:
             children.calculate_fitness()
-
     @staticmethod
-    def mating_between_parents(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> Solution:
+    def exchanges_vigilantes(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
         childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
             child = PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
             if child:
                 childrens.append(child)  
             elif childrens:
-                #retorna la dos mejores soluciones
                 PopulationServices.calculate_fitness(childrens)
                 childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
         else:
-            # si no encuetra soluciones mejores retorna los padres iniciales TODO: MIAR LA FORMA DE MEJORA ESTO, TAL VEZ RESTRINGIENDO ESTAS SOLUCIONES
             childrens.append(parent_for_exchange_one)
             childrens.append(parent_for_exchange_two)
         return childrens
+
+    @staticmethod
+    def exchanges_shift(parent_for_exchange_one, parent_for_exchange_two):
+
+        #1 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
+        #2 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
+        return []
+
+    @staticmethod
+    def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
+        children_exchanges_vigilantes = PopulationServices.exchanges_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
+        children_exchanges_shift = PopulationServices.exchanges_shift(parent_for_exchange_one, parent_for_exchange_two)
+        return children_exchanges_shift + children_exchanges_vigilantes
+    
+
+
 
     @staticmethod
     def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
@@ -110,29 +119,22 @@ class PopulationServices:
         while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
             gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
             gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new.site_id])
-            # vigilants_new, vigilants_exchanges = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
             result = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
             if not result:
                 return False
             if (result[0] and result[1]) != [] and (result[0] and result[1]) is not None:
                 return result[0], result[1]
-
-            # if (resultvigilants_new and vigilants_exchanges) != [] and (vigilants_new and vigilants_exchanges) is not None:
-            #     return [vigilants_new, vigilants_exchanges]
             iteration += 1
         return False
         raise("Error no se encontro vigilantes disponibles")
 
     @staticmethod
-    #todo debe resibir una copia de los parametros
     def parent_crossing(parent_for_exchange_new: Solution, children: Solution) -> Solution:
-        "el hijo va hacer  una copia de la nueva solucion con su respectiva mutacion"
         vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         if not vigilants:
             return False
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
                 children.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
-                # children.reparate_soluction(vigilant_new_id, vigilant_for_exchagen_id) # TODO: RECALCULAR FIENES Y REFPACION
         return children
 
     @staticmethod
@@ -181,7 +183,7 @@ class PopulationServices:
                     if solution.dominate_me == 0:
                         r=rango+1
                         solution.range=r 
-                        population.add_frente(key=rango,value=solution)     
+                        population.add_frente(key=rango,value=solution)
             rango +=1
 
     @staticmethod

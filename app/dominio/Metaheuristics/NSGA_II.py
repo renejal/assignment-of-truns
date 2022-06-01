@@ -22,8 +22,8 @@ class NsgaII(Algorithm):
             population_obj.inicialize_population()
             print(f"iteration N. {self.currency_efos}")
             population_parents: List[Solution] = population_obj.populations
-            pulation_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
-            union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), pulation_children)
+            population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
+            union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), population_children)
             population_obj.populations = union_populantion
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
             population_parents = [] 
@@ -45,6 +45,7 @@ class NsgaII(Algorithm):
         fig = Graph(self.Evoluction_soluction)
         population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
         return population_obj.populations, fig
+
 
 
 
