@@ -1,3 +1,5 @@
+kaleido
+plotly
 openpyxl
 numpy
 pandas

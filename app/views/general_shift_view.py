@@ -1,5 +1,6 @@
 from copy import deepcopy
 from typing import List
+from services.reference_point import Reference_point
 from dominio.Solution import Solution
 from utils.normalize import Normalize
 from dominio.Metaheuristics.GRASP import Grasp
@@ -21,6 +22,7 @@ class GenerateShiftView:
             self.__data_vigilantes, self.__data_sites)
         self.__algoritmGrasp = Grasp()
         self.__algoritmNSGA = NsgaII()
+        self.__reference_points_IGD = Reference_point().get_reference_points_from_IGD()
 
     def create_sites(self, data) -> json:
         return DataSites.from_dict(data).data_sites
@@ -31,31 +33,30 @@ class GenerateShiftView:
     def executeGrasp(self):
         print("Start Grasp")
         ticGrasp = time.perf_counter()
-        best_solutionsGrasp = self.__algoritmGrasp.Execute(deepcopy(self.__myProblem))
+        data_grasp = self.__algoritmGrasp.Execute(deepcopy(self.__myProblem))
         tocGrasp = time.perf_counter()
-        return self.getMetrics(best_solutionsGrasp,ticGrasp,tocGrasp)
+        return self.getMetrics(data_grasp[0],data_grasp[1],ticGrasp,tocGrasp)
 
-
-    
     def executeNsga(self):
         print("Start Nsga")
         ticNsga = time.perf_counter()
-        best_solutionsNsga= self.__algoritmNSGA.Execute(deepcopy(self.__myProblem))
+        data_nsgaii= self.__algoritmNSGA.Execute(deepcopy(self.__myProblem))
         tocNsga = time.perf_counter()
-        return self.getMetrics(best_solutionsNsga,ticNsga,tocNsga)
+        return self.getMetrics(data_nsgaii[0],data_nsgaii[1],ticNsga,tocNsga)
        
-    def getMetrics(self,solutions:List[Solution],tic:int,toc:int):
+    def getMetrics(self,solutions:List[Solution],fig, tic:int,toc:int):
         metrics = {}
         solutionsNormalized = Normalize().normalizeFitness(solutions)
         pf = np.array(solutionsNormalized)
         hv = Hipervolumen.calculate_hipervolumen(pf)
         igd = get_performance_indicator("igd", pf)
-        igd = igd.do(np.array([[1,1,1,1]]))
+        igd = igd.do(np.array(self.__reference_points_IGD))
         metrics["solutions"] = solutions
         metrics["fitnesses"] = solutionsNormalized
         metrics["hv"] = hv
         metrics["igd"] = igd
         metrics["time"] = toc - tic
+        metrics["fig"] = fig
         return metrics
 
     def create_sites_test(self, data) -> json:

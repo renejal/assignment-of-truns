@@ -181,7 +181,7 @@ class PopulationServices:
                     if solution.dominate_me == 0:
                         r=rango+1
                         solution.range=r 
-                        population.add_frente(key=range,value=solution)
+                        population.add_frente(key=rango,value=solution)     
             rango +=1
 
     @staticmethod

@@ -44,8 +44,8 @@ class Grasp(Algorithm):
             data.append(poblation)
             poblation = self.best_population(poblation)
             self.CURRENT_EFOS+=1   
-        # Graph(data)
-        return poblation
+        fig = Graph(data).get_fig()
+        return poblation,fig
 
     def get_initial_poblation(self,problem) -> List[Solution]:
         print("Getting started poblation")

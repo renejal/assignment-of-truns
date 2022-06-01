@@ -19,9 +19,9 @@ class Solution:
     distance_fitness: int
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
-    crowding_distance:int
     total_fitness: int
     fitnness: List[int]
+    crowding_distance:int
     dominated: List[int]
     dominate_me: int
     range: int

@@ -1,3 +1,4 @@
+from copy import copy
 import math
 from typing import List
 from dominio.Solution import Solution
@@ -6,20 +7,20 @@ from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALU
 class Normalize:
 
     missing_shifts_fitness_acceptable_porcentage: float = 0.9
-    assigned_vigilantes_acceptable_porcentage: float = 0.8
-    extra_hours_acceptable_porcentage: float = 0.7
+    assigned_vigilantes_acceptable_porcentage: float = 0.2
+    extra_hours_acceptable_porcentage: float = 0.2
     distance_acceptable_porcentage: float = 0.1
+    fitnessMax: List[int]
 
     def normalizeFitness(self, solutions: List[Solution]) -> List[Solution]:
-        fitnessMax = solutions[0].problem.max_possible_fitness
+        fitnessMax = copy(solutions[0].problem.max_possible_fitness) 
         fitnessMin = [0,0,0,0]
-        print(fitnessMax)
         fitnessMax[0] = math.ceil(MISSING_FITNESS_VALUE*fitnessMax[0]*(1-self.missing_shifts_fitness_acceptable_porcentage))
         fitnessMax[1] = math.ceil(ASSIGNED_VIGILANTES_FITNESS_VALUE*fitnessMax[1]*(1-self.assigned_vigilantes_acceptable_porcentage))
         fitnessMax[2] = math.ceil(EXTRA_HOURS_FITNESS_VALUE*fitnessMax[2]*(1-self.extra_hours_acceptable_porcentage))
         fitnessMax[3] = math.ceil(DISTANCE_FITNESS_VALUE*fitnessMax[3]*(1-self.distance_acceptable_porcentage))
         solutionsNormalizated: List[List[int]] = []
-        solutionsNormalizated.append(fitnessMax)
+        # solutionsNormalizated.append(fitnessMax)
         for solution in solutions:
             missing_shifts_fitness = self.normalize(
                 solution.missing_shifts_fitness, fitnessMax[0], fitnessMin[0])
@@ -31,6 +32,7 @@ class Normalize:
                 solution.distance_fitness, fitnessMax[3], fitnessMin[3])
             solutionsNormalizated.append([missing_shifts_fitness, assigned_vigilantes_fitness,
                                           extra_hours_fitness, distance_fitness])
+        self.fitnessMax = fitnessMax
         return solutionsNormalizated
 
     def normalize(self, valor, maximo, minimo):
@@ -57,3 +59,6 @@ class Normalize:
             fitnessMin[2] = solution.extra_hours_fitness
         if solution.distance_fitness < fitnessMin[3]:
             fitnessMin[3] = solution.distance_fitness
+
+    def get_fitness_max(self):
+        return self.fitnessMax
