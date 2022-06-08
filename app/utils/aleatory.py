@@ -21,6 +21,9 @@ def get_aleatory(parInit, parEnd, parNumber):
             break
     return listAleatory
 
-def get_ramdon_for_list(init: int, end: int, list: List) -> int:
+def get_object_ramdon_for_list(init: int, end: int, list: List) -> int:
     numAletory = random.randint(init, end)
-    return list[numAletory]
+    if list[numAletory]:
+        return list[numAletory]
+    else:
+        raise(f"error: no se encontro el objeto con el indice {numAletory}")
