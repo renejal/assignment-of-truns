@@ -3,14 +3,14 @@ import random
 from re import I
 from conf import settings 
 from typing import List, Tuple
+from utils import aleatory
 from dominio.model.vigilant import Vigilant
 from dominio.population import Population
-# from msilib.schema import Component
-# from dominio.soluction_nsga_ii import Solution
 from dominio.Solution import Solution
 from dominio.Solution import Solution
 from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
+from services.NSGAII.tweak_shift import TweakShift
 
 class PopulationServices:
 
@@ -50,20 +50,12 @@ class PopulationServices:
         return childrens
 
     @staticmethod
-    def exchanges_shift(parent_for_exchange_one, parent_for_exchange_two):
-
-        #1 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
-        #2 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
-        return []
-
-    @staticmethod
     def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
         children_exchanges_vigilantes = PopulationServices.exchanges_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
-        children_exchanges_shift = PopulationServices.exchanges_shift(parent_for_exchange_one, parent_for_exchange_two)
-        return children_exchanges_shift + children_exchanges_vigilantes
-    
-
-
+        TweakShift.tweak_shift(parent_for_exchange_one, parent_for_exchange_two) 
+        # children_exchangeS_shift = PopulationServices.exchanges_shift(parent_for_exchange_one, parent_for_exchange_two)
+        children_exchangeS_shift = [] 
+        return children_exchangeS_shift + children_exchanges_vigilantes
 
     @staticmethod
     def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
