@@ -1,10 +1,12 @@
 from ast import arg
-from scipy.fftpack import shift
+from numpy import inner
 from dominio.model.shift import Shift
 import pandas as pd
 
 def ConvertWorkingDay(par_function):
     def function_inter(*args):
+        if not isinstance(args[0],Shift):
+            return par_function(args[0], args[1])
         list = []
         for i in args:
             list.append(convert_continue(i))
@@ -50,20 +52,26 @@ def function_inner(list_a, list_b):
     return inner
 
 def calculate(list_a, list_b):
-    var_inner = function_inner(list_a, list_b)
+    print(vars(list_a))
+    print(vars(list_b))
     var_left = function_left(list_a, list_b)
+    var_inner = function_inner(list_a, list_b)
     var_right = function_ringht(list_a, list_b)
-    return var_left, var_inner, var_right
-    
-# i = inner(Shift(0,0,4,0),Shift(0,4,10,0))
-# print("inner",i)
-# l = left(Shift(0,0,4,0),Shift(0,4,10,0))
-# print("left", l)
-# r = right(Shift(0,0,4,0),Shift(0,4,10,0))
-# print("ringth", r)
-# # la = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-# # lb = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-# # a = inner(la,lb)
+    var_right.sort()
+    var_inner.sort()
+    var_left.sort()
+    return var_left,var_inner,var_right
+
+
+# test whit list
+# la = [1,2,3,4,5,6]
+# lb = [1,2,3,4,5,6,7,8,9]
+# a = calculate(la,lb)
+
+# test whit shift
+# la = Shift(None,1,6,0)
+# lb = Shift(None,1,9,0)
+# a = calculate(la,lb)
 # print(a)
 
 
