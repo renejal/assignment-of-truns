@@ -55,6 +55,18 @@ from services.NSGAII.tweak_shift import TweakShift
     ],
         Shift(None,7,17,2)
     ),
+    #caso 5
+    (
+    [
+        Shift(None,1,8,2),
+        Shift(None,9,15,2),
+        Shift(None,16,25,2),
+        Shift(None,26,38,2),
+        Shift(None,35,43,2),
+        Shift(None,44,51,2)
+    ],
+        Shift(None,7,17,2)
+    ),
     ]
     )
 def test_exchage_shift(shifts: List[Shift], new_working_day: Shift):
