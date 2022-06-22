@@ -5,11 +5,12 @@ import pandas as pd
 
 def ConvertWorkingDay(par_function):
     def function_inter(*args):
-        if not isinstance(args[0],Shift):
-            return par_function(args[0], args[1])
         list = []
         for i in args:
-            list.append(convert_continue(i))
+            if not isinstance(i,Shift):
+                list.append(i)
+            else:
+                list.append(convert_continue(i))
         return par_function(list[0], list[1])
     return function_inter
 
@@ -52,8 +53,6 @@ def function_inner(list_a, list_b):
     return inner
 
 def calculate(list_a, list_b):
-    print(vars(list_a))
-    print(vars(list_b))
     var_left = function_left(list_a, list_b)
     var_inner = function_inner(list_a, list_b)
     var_right = function_ringht(list_a, list_b)
@@ -61,6 +60,13 @@ def calculate(list_a, list_b):
     var_inner.sort()
     var_left.sort()
     return var_left,var_inner,var_right
+
+def print_working_day(shift):
+    if isinstance(shift,Shift):
+        return convert_continue(shift)
+    else:
+        return shift
+    
 
 
 # test whit list
