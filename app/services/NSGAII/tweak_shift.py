@@ -1,30 +1,41 @@
 from cgi import print_arguments
 import sched
 from typing import List
-
+import copy
 from pkg_resources import working_set
 from dominio.model.shift import Shift
 from utils import aleatory
 from utils import union
 from dominio.Solution import Solution
 from dominio.Component import Component
+from conf import settings
 class TweakShift:
     
     @classmethod
-    def tweak_shift(self, soluction_A: Solution , Soluction_B: Solution):
-        """exchange shift of component
-        Args:
-            soluction_A :  solution what have the new shift
-            Soluction_B :  solution what have the shfit of exchange (new child)
-        """
-        component_a: Component = soluction_A.get_random_gen([])
-        working_day=aleatory.get_object_ramdon_for_list(0,len(component_a.site_schedule)-1, component_a.site_schedule)
-        # ordenar component b
-        component_b: Component = Soluction_B.get_random_gen([])
-        component_b.order_workings_days()
-        schedules = component_b.site_schedule
-        self.add_new_working_day(schedules, working_day)
-        self.validate_working_day(schedules, working_day)
+    def tweak_shift(self, solution_A: Solution , solution_B: Solution):
+        childs = []
+        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        childs.append(child)
+        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        childs.append(child)
+        return childs
+
+    @classmethod
+    def exchange_shift(self, soluction_A: Solution, soluction_B: Solution) -> Solution:
+        """exchange shift of soluciton A for shift soluction B"""
+        list_random = [] 
+        for i in range(settings.NUMBER_OF_CHILDREN_FOR_PARENTS):
+            component_a: Component = soluction_A.get_random_gen([])
+            random_number = aleatory.get_random_int(0,len(component_a.site_schedule)-1, list_random)
+            list_random.append(random_number)
+            working_day = component_a.site_schedule[random_number]
+            # ordenar component b
+            component_b: Component=soluction_B.get_random_gen([])
+            component_b.order_workings_days()
+            schedules = component_b.site_schedule
+            self.add_new_working_day(schedules, working_day)
+            self.validate_working_day(schedules, working_day)
+            return soluction_B
 
     @classmethod
     def validate_working_day(self, schedules : List[Shift], shift: Shift):

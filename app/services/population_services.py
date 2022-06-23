@@ -34,6 +34,7 @@ class PopulationServices:
     def calculate_fitness(childrens: List[Solution]):
         for children in childrens:
             children.calculate_fitness()
+
     @staticmethod
     def exchanges_vigilantes(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
         childrens: List[Solution] = []
@@ -52,11 +53,8 @@ class PopulationServices:
     @staticmethod
     def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
         children_exchanges_vigilantes = PopulationServices.exchanges_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
-        TweakShift.tweak_shift(parent_for_exchange_one, parent_for_exchange_two) 
-        # children_exchangeS_shift = PopulationServices.exchanges_shift(parent_for_exchange_one, parent_for_exchange_two)
-        children_exchangeS_shift = [] 
+        children_exchangeS_shift = TweakShift.tweak_shift(parent_for_exchange_one, parent_for_exchange_two) 
         return children_exchangeS_shift + children_exchanges_vigilantes
-
     @staticmethod
     def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
         for i in range(1):
