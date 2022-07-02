@@ -9,7 +9,7 @@ from utils import union
 from dominio.Solution import Solution
 from dominio.Component import Component
 from conf import settings
-class TweakShift:
+class Crossing:
     
     @classmethod
     def tweak_shift(self, solution_A: Solution , solution_B: Solution):

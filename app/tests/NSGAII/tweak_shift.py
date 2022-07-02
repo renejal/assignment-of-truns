@@ -1,7 +1,7 @@
 from typing import List
 import pytest
 from dominio.model.shift import Shift
-from services.NSGAII.tweak_shift import TweakShift
+from services.NSGAII.tweak_shift import Crossing
 
 
 #caso 1
@@ -70,7 +70,7 @@ from services.NSGAII.tweak_shift import TweakShift
     ]
     )
 def test_exchage_shift(shifts: List[Shift], new_working_day: Shift):
-    workings_day = TweakShift().add_new_working_day(shifts, new_working_day)
+    workings_day = Crossing().add_new_working_day(shifts, new_working_day)
     for i in workings_day:
         print("working_day")
         print("shift start", i.shift_start)

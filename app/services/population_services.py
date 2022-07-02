@@ -10,7 +10,7 @@ from dominio.Solution import Solution
 from dominio.Solution import Solution
 from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
-from services.NSGAII.tweak_shift import TweakShift
+from services.NSGAII.tweak_shift import Crossing
 
 class PopulationServices:
 
@@ -52,8 +52,9 @@ class PopulationServices:
 
     @staticmethod
     def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
+        # objecti distancce
         children_exchanges_vigilantes = PopulationServices.exchanges_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
-        children_exchangeS_shift = TweakShift.tweak_shift(parent_for_exchange_one, parent_for_exchange_two) 
+        children_exchangeS_shift = Crossing.tweak_shift(parent_for_exchange_one, parent_for_exchange_two) 
         return children_exchangeS_shift + children_exchanges_vigilantes
     @staticmethod
     def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
