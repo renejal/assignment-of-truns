@@ -9,10 +9,10 @@ from utils import union
 from dominio.Solution import Solution
 from dominio.Component import Component
 from conf import settings
-class Crossing:
+class CrossingShift:
     
     @classmethod
-    def tweak_shift(self, solution_A: Solution , solution_B: Solution):
+    def crossing_shift(self, solution_A: Solution , solution_B: Solution):
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
         childs.append(child)
