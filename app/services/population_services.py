@@ -12,6 +12,8 @@ from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
 from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
+from services.crossing_missing_shift import CrosssingMissinShift
+from services.crossing_vigilant_assigment import CrossingVigilantAssigmend
 
 class PopulationServices:
 
@@ -25,6 +27,37 @@ class PopulationServices:
         return childrens
     
     @staticmethod
+    def get_parents_by_constrains(objective_key):
+        objective_dict ={
+            1:PopulationServices.objective_distance,
+            2:PopulationServices.hours_extra,
+            3:PopulationServices.missing_shift,
+            4:PopulationServices.vigilant_assigmend
+            }
+        return objective_dict.get(objective_key)
+
+    @staticmethod
+    def objective_distance(population: List[Solution]):
+        # obtener las solucion con mayor distancia
+        population_order = copy.copy(population)
+
+
+
+        pass
+
+    @staticmethod
+    def hours_extra(population):
+        pass
+
+    @staticmethod
+    def missing_shift(population):
+        pass
+
+    @staticmethod
+    def vigilant_assigmend(population):
+        pass
+    
+    @staticmethod
     def get_parents(parents: List[Solution]) -> List[Solution]:
         response: List[Solution] = []
         response.append(parents.pop(random.randint(0, len(parents)-1)))
@@ -33,9 +66,15 @@ class PopulationServices:
 
     @staticmethod
     def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
+        # 1 intercambio de vigilants (disminicuon de distancias) Todo: buscar los componente con mayor y menor distancias
         children_exchanges_vigilantes = CrossingVigilant.crossing_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
-        children_exchangeS_shift = CrossingShift.crossing_shift(parent_for_exchange_one, parent_for_exchange_two) 
-        return children_exchangeS_shift + children_exchanges_vigilantes
+        # 2 intercambiod de shift (disminucion de horas extras) Todo : buscar los sites que mas horas extra tienen y los que menos horas extras tienen
+        children_exchanges_shift = CrossingShift.crossing_shift(parent_for_exchange_one, parent_for_exchange_two) 
+        # 3 missign shift (disminucion de turnos sin asignar) Todo: Buscar los sitos que mas huecos tienen 
+        missing_shift = CrosssingMissinShift.crossing_missing_shift(parent_for_exchange_one, parent_for_exchange_two)
+        # 4 vigilant assigmend (disminuir vigilantes assginados) Todo: Minimizar vigilantes asignados
+        vigilantes_assigment = CrossingVigilantAssigmend.crossing_vigilant_assigment(parent_for_exchange_one, parent_for_exchange_two)
+        return children_exchanges_shift + children_exchanges_vigilantes + missing_shift + vigilantes_assigment
 
     def remove_vigilants_default_the_site(gen: Component):
         Vigilants: List[Vigilant] = gen.assigned_Vigilantes
@@ -152,7 +191,6 @@ class PopulationServices:
                    value = value/rango[j]
                 frente[i].crowding_distance += value
             frente[-1].crowding_distance = settings.INFINITE_NEGATIVE
-            
     
     def get_range_of_objective(frente: List[Solution]) -> List[int]:
         # para cada objetivo se calcula el max y el mix y se guarda el rango (max- min)
@@ -178,10 +216,9 @@ class PopulationServices:
         else:
             return soluctions
         
-
     @staticmethod
-    def order_solution_of_objetive_value(frente, index_objective):
-        result = sorted(frente, key = lambda solution : solution.fitness[index_objective], reverse=True) # reserve = True: ordena descendente
+    def order_solution_of_objetive_value(frente, index_objective, par_reverse=True):
+        result = sorted(frente, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
         return result
 
     
