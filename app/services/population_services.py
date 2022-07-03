@@ -21,9 +21,13 @@ class PopulationServices:
     def generate_decendents(population: List[Solution]) -> List[Solution]:
         "a copy of tha populaton is received"
         childrens: list[Solution] = []
-        while population: 
-            parents = PopulationServices.get_parents(population)
+        while len(childrens)<len(population): 
+            print(f"{len(childrens)} < {len(population)}")
+            parents = PopulationServices.get_parents_by_objetive(population,1)
+            print("parents",parents)
             childrens = childrens + PopulationServices.crossings(parents[0],parents[1])
+            print("childrene",len(childrens))
+        print("salio")
         return childrens
     
     @staticmethod
@@ -37,12 +41,9 @@ class PopulationServices:
         return objective_dict.get(objective_key)
 
     @staticmethod
-    def objective_distance(population: List[Solution]):
+    def objective_distance(population: List[Solution], objective_index):
         # obtener las solucion con mayor distancia
-        population_order = copy.copy(population)
-
-
-
+        ordered_population = PopulationServices.order_solution_of_objetive_value(population,objective_index)
         pass
 
     @staticmethod
@@ -58,10 +59,14 @@ class PopulationServices:
         pass
     
     @staticmethod
-    def get_parents(parents: List[Solution]) -> List[Solution]:
+    def get_parents_by_objetive(parents: List[Solution], objective_index) -> List[Solution]:
+        population_order = PopulationServices.order_solution_of_objetive_value(parents,objective_index,True) # order True: descendente
+        num_solutions = int(len(population_order)* settings.NUM_PARENTS_OF_ORDERED_POPULATION)
+        first_solutions = population_order[:num_solutions]
+        end_solutions = population_order[-num_solutions:]
         response: List[Solution] = []
-        response.append(parents.pop(random.randint(0, len(parents)-1)))
-        response.append(parents.pop(random.randint(0, len(parents)-1)))
+        response.append(first_solutions.pop(random.randint(0, len(first_solutions)-1)))
+        response.append(end_solutions.pop(random.randint(0, len(end_solutions)-1)))
         return response
 
     @staticmethod
@@ -217,8 +222,8 @@ class PopulationServices:
             return soluctions
         
     @staticmethod
-    def order_solution_of_objetive_value(frente, index_objective, par_reverse=True):
-        result = sorted(frente, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
+    def order_solution_of_objetive_value(population: List[Solution], index_objective, par_reverse=True):
+        result = sorted(population, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
         return result
 
     
