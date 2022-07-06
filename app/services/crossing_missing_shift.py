@@ -1,8 +1,7 @@
 from dominio.Solution import Solution
+from typing import List
 class CrosssingMissinShift:
-    def __init__(self) -> None:
-         pass
 
     @classmethod
-    def crossing_missing_shift(self, parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
+    def crossing_missing_shift(self, population: List[Solution], index_objective):
         return []

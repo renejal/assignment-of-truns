@@ -8,11 +8,13 @@ from utils import aleatory
 from utils import union
 from dominio.Solution import Solution
 from dominio.Component import Component
+from services.crossing import Crossing
 from conf import settings
 class CrossingShift:
     
     @classmethod
-    def crossing_shift(self, solution_A: Solution , solution_B: Solution):
+    def crossing_hours_extras(self, population:  List[Solution], objective_index):
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
         childs.append(child)

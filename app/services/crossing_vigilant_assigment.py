@@ -1,5 +1,7 @@
+from typing import List
+from dominio.Solution import Solution
 class CrossingVigilantAssigmend: 
 
     @classmethod
-    def crossing_vigilant_assigment(self, parent_for_exchange_one, parent_for_exchange_two):
+    def crossing_vigilant_assigment(self, population: List[Solution], index_objective):
         return []
