@@ -13,7 +13,7 @@ from conf import settings
 class CrossingShift:
     
     @classmethod
-    def crossing_hours_extras(self, population:  List[Solution], objective_index):
+    def crossing_hours_extras(self, population:  List[Solution], objective_index=2):
         solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))

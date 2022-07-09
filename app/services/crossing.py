@@ -13,10 +13,10 @@ class Crossing:
         first_solutions = population_order[:num_solutions]
         end_solutions = population_order[-num_solutions:]
         parent_one = first_solutions.pop(random.randint(0, len(first_solutions)-1))
-        parent_two = first_solutions.pop(random.randint(0, len(end_solutions)-1))
+        parent_two = end_solutions.pop(random.randint(0, len(end_solutions)-1))
         return parent_one, parent_two
         
     @classmethod
-    def order_solution_of_objetive_value(population: List[Solution], index_objective, par_reverse=True):
+    def order_solution_of_objetive_value(self, population: List[Solution], index_objective, par_reverse=True):
         result = sorted(population, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
         return result

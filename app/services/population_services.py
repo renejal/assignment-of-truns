@@ -2,7 +2,7 @@ import copy
 import random
 from re import I
 import statistics
-from conf import settings 
+from conf import settings
 from typing import List, Tuple
 from utils import aleatory
 from dominio.model.vigilant import Vigilant
@@ -21,28 +21,26 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[Solution]) -> List[Solution]:
-        "a copy of tha populaton is received"
+        print("size population",len(population))
         childrens: list[Solution] = []
         while len(childrens)<len(population): 
-            print(f"{len(childrens)} < {len(population)}")
-            # parents = PopulationServices.get_parents_by_objetive(population,1)
             function_crossing = PopulationServices.get_crossing()
-            childrens = function_crossing(population)
-            # resiva la funcon y sea invocada 
-            # childrens = childrens + PopulationServices.crossings(parents[0],parents[1])
+            childrens = childrens + function_crossing(population)
         return childrens
     
-    @staticmethod
-    def get_parents_by_objective(population, index_objective):
-        #1 ordena la poblacio por objectives
-        population_ordered = PopulationServices.order_solution_of_objetive_value(population, index_objective)
-        #2 tomo de los n priemer una solucion y de los n ultimos otras
+    # @staticmethod
+    # def get_parent_random_probability():
+    #     objectives = ["missing_shifts","necesary_vigilantes","extra_hours","distance"]
+    #     return random.choices(objectives, weights =
+    #                           (settings.MISSING_SHIFT_PROBABILITY,
+    #                            settings.ASSIGNED_VIGILANTES_PROBABILITY,
+    #                            settings.EXTRA_HOURS_PROBABILITY,
+    #                            settings.DISTANCE_GRASP_PROBABILITY))[0]
 
-        #3 return parents
-    
     @staticmethod
     def get_crossing():
-        objective = random.randint(1,4)
+        # todo implementar la probabilidad para selecion de objetivos
+        objective = random.randint(1,1)
         objective_dict ={
             1:CrossingVigilant.crossing_vigilantes,
             2:CrossingShift.crossing_hours_extras,
@@ -54,13 +52,13 @@ class PopulationServices:
     @staticmethod
     def crossings(population: List[Solution], index_objective) -> List[Solution]:
         # 1 intercambio de vigilants (disminicuon de distancias) Todo: buscar los componente con mayor y menor distancias
-        children_exchanges_vigilantes = CrossingVigilant.crossing_vigilantes(population, index_objective)
+        children_exchanges_vigilantes = CrossingVigilant.crossing_vigilantes(population)
         # 2 intercambiod de shift (disminucion de horas extras) Todo : buscar los sites que mas horas extra tienen y los que menos horas extras tienen
-        children_exchanges_shift = CrossingShift.crossing_hours_extras(population, index_objective) 
+        children_exchanges_shift = CrossingShift.crossing_hours_extras(population) 
         # 3 missign shift (disminucion de turnos sin asignar) Todo: Buscar los sitos que mas huecos tienen 
-        missing_shift = CrosssingMissinShift.crossing_missing_shift(population, index_objective)
+        missing_shift = CrosssingMissinShift.crossing_missing_shift(population)
         # 4 vigilant assigmend (disminuir vigilantes assginados) Todo: Minimizar vigilantes asignados
-        vigilantes_assigment = CrossingVigilantAssigmend.crossing_vigilant_assigment(population, index_objective)
+        vigilantes_assigment = CrossingVigilantAssigmend.crossing_vigilant_assigment(population)
         return children_exchanges_shift + children_exchanges_vigilantes + missing_shift + vigilantes_assigment
 
     def remove_vigilants_default_the_site(gen: Component):
