@@ -27,39 +27,17 @@ class PopulationServices:
             function_crossing = PopulationServices.get_crossing()
             childrens = childrens + function_crossing(population)
         return childrens
-    
-    # @staticmethod
-    # def get_parent_random_probability():
-    #     objectives = ["missing_shifts","necesary_vigilantes","extra_hours","distance"]
-    #     return random.choices(objectives, weights =
-    #                           (settings.MISSING_SHIFT_PROBABILITY,
-    #                            settings.ASSIGNED_VIGILANTES_PROBABILITY,
-    #                            settings.EXTRA_HOURS_PROBABILITY,
-    #                            settings.DISTANCE_GRASP_PROBABILITY))[0]
 
     @staticmethod
     def get_crossing():
-        # todo implementar la probabilidad para selecion de objetivos
-        objective = random.randint(1,1)
+        objective = random.randint(0,1)
         objective_dict ={
-            1:CrossingVigilant.crossing_vigilantes,
-            2:CrossingShift.crossing_hours_extras,
-            3:CrosssingMissinShift.crossing_missing_shift,
-            4:CrossingVigilantAssigmend.crossing_vigilant_assigment
+            0:CrossingVigilant.crossing_vigilantes,
+            1:CrossingShift.crossing_hours_extras,
+            2:CrossingShift.crossing_missing_shift,
+            3:CrossingShift.crossing_vigilant_assigment
             }
         return objective_dict.get(objective)
-
-    @staticmethod
-    def crossings(population: List[Solution], index_objective) -> List[Solution]:
-        # 1 intercambio de vigilants (disminicuon de distancias) Todo: buscar los componente con mayor y menor distancias
-        children_exchanges_vigilantes = CrossingVigilant.crossing_vigilantes(population)
-        # 2 intercambiod de shift (disminucion de horas extras) Todo : buscar los sites que mas horas extra tienen y los que menos horas extras tienen
-        children_exchanges_shift = CrossingShift.crossing_hours_extras(population) 
-        # 3 missign shift (disminucion de turnos sin asignar) Todo: Buscar los sitos que mas huecos tienen 
-        missing_shift = CrosssingMissinShift.crossing_missing_shift(population)
-        # 4 vigilant assigmend (disminuir vigilantes assginados) Todo: Minimizar vigilantes asignados
-        vigilantes_assigment = CrossingVigilantAssigmend.crossing_vigilant_assigment(population)
-        return children_exchanges_shift + children_exchanges_vigilantes + missing_shift + vigilantes_assigment
 
     def remove_vigilants_default_the_site(gen: Component):
         Vigilants: List[Vigilant] = gen.assigned_Vigilantes

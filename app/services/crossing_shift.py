@@ -11,9 +11,30 @@ from dominio.Component import Component
 from services.crossing import Crossing
 from conf import settings
 class CrossingShift:
-    
+
+
     @classmethod
-    def crossing_hours_extras(self, population:  List[Solution], objective_index=2):
+    def crossing_hours_extras(self, population:  List[Solution], objective_index=1):
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
+        childs = []
+        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        childs.append(child)
+        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        childs.append(child)
+        return childs
+
+    @classmethod
+    def crossing_missing_shift(self, population:  List[Solution], objective_index=2):
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
+        childs = []
+        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        childs.append(child)
+        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        childs.append(child)
+        return childs
+
+    @classmethod
+    def crossing_vigilant_assigment(self, population:  List[Solution], objective_index=3):
         solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
