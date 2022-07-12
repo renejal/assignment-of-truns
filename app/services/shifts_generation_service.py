@@ -24,7 +24,7 @@ class Shifts_generation_service:
         return { 0:[], 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6], 7:[7],8:[8],9:[9],10:[10],11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],18:[9,9],19:[10,9],20:[10,10],21:[7,7,7],22:[8,7,7],
                       23:[8,8,7],24:[8,8,8]}
 
-    def create_shifts_in_normal_sites(self,site: Site , ideal_hours_amount_to_work: int, total_weeks:int) -> List[Shift]:
+    def create_shifts_in_normal_sites(self, site: Site , ideal_hours_amount_to_work: int, total_weeks:int) -> List[Shift]:
         shifts : list[Shift] = []
         total_missing_shifts = 0
         minimum_necessary_vigilantes = 0
@@ -53,8 +53,8 @@ class Shifts_generation_service:
                         working_hours_amount =  shift_end_time - shift_start_time + 1
                         last_shift_finished_at_end_day = False
                     hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
-                    for hours_amount_to_work in hours_amount_to_work_by_shift:
-                        shifts.append(Shift( shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
+                    for index_shift, hours_amount_to_work in enumerate(hours_amount_to_work_by_shift):
+                        shifts.append(Shift(index_shift, shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
                         shift_start_time += hours_amount_to_work
                         total_missing_shifts+=shift.num_vigilantes
                         minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
@@ -65,7 +65,7 @@ class Shifts_generation_service:
         is_same_shift_that_last_day = False
         for index_week, week in enumerate(site.weeks_schedule):
             for index_day,day in enumerate(week.days):
-                for shift in day.working_day:
+                for index_shift, shift in enumerate(day.working_day):
                     if is_same_shift_that_last_day:
                         is_same_shift_that_last_day = False
                         continue                        
@@ -77,7 +77,7 @@ class Shifts_generation_service:
                     elif day.id == 6 and shift.working_end == self.__END_HOUR_TO_WORK and index_week + 1 < total_weeks and  site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
                         shift_end_time = site.weeks_schedule[index_week+1].days[0].working_day[0].working_end + (index_week+1) * 168
                         is_same_shift_that_last_day = True
-                    shifts.append(Shift( shift_start_time , shift_end_time , shift.num_vigilantes))
+                    shifts.append(Shift(index_shift, shift_start_time , shift_end_time , shift.num_vigilantes))
         return shifts
 
     def calculate_max_fitness(self,site: Site, total_missing_shifts,minimum_necessary_vigilantes) -> None:

@@ -1,150 +1,56 @@
 import copy
 import random
 from re import I
-from conf import settings 
+import statistics
+from conf import settings
 from typing import List, Tuple
+from utils import aleatory
 from dominio.model.vigilant import Vigilant
 from dominio.population import Population
-# from msilib.schema import Component
-# from dominio.soluction_nsga_ii import Solution
 from dominio.Solution import Solution
 from dominio.Solution import Solution
 from dominio.Component import Component
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
+from services.crossing_shift import CrossingShift
+from services.crossing_vigilant import CrossingVigilant
+from services.crossing_missing_shift import CrosssingMissinShift
+from services.crossing_vigilant_assigment import CrossingVigilantAssigmend
+
 
 class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[Solution]) -> List[Solution]:
-        "a copy of tha populaton is received"
+        print("size population",len(population))
         childrens: list[Solution] = []
-        while population: 
-            parents = PopulationServices.get_parents(population)
-            childrens = childrens + PopulationServices.crossings(parents[0],parents[1])
-        return childrens
-    
-    @staticmethod
-    def get_parents(parents: List[Solution]) -> List[Solution]:
-        response: List[Solution] = []
-        response.append(parents.pop(random.randint(0, len(parents)-1)))
-        response.append(parents.pop(random.randint(0, len(parents)-1)))
-        return response
-    
-    @staticmethod
-    def calculate_fitness(childrens: List[Solution]):
-        for children in childrens:
-            children.calculate_fitness()
-    @staticmethod
-    def exchanges_vigilantes(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
-        childrens: List[Solution] = []
-        for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
-            child = PopulationServices.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
-            if child:
-                childrens.append(child)  
-            elif childrens:
-                PopulationServices.calculate_fitness(childrens)
-                childrens = PopulationServices.get_best_Soluction(childrens, parent_for_exchange_one, parent_for_exchange_two)
-        else:
-            childrens.append(parent_for_exchange_one)
-            childrens.append(parent_for_exchange_two)
+        while len(childrens)<len(population): 
+            function_crossing = PopulationServices.get_crossing()
+            childrens = childrens + function_crossing(population)
         return childrens
 
     @staticmethod
-    def exchanges_shift(parent_for_exchange_one, parent_for_exchange_two):
-
-        #1 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
-        #2 obtener el vigilanteA del sitio A que solo este trabajand en el sitio A
-        return []
-
-    @staticmethod
-    def crossings(parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
-        children_exchanges_vigilantes = PopulationServices.exchanges_vigilantes(parent_for_exchange_one, parent_for_exchange_two)
-        children_exchanges_shift = PopulationServices.exchanges_shift(parent_for_exchange_one, parent_for_exchange_two)
-        return children_exchanges_shift + children_exchanges_vigilantes
-    
-
-
-
-    @staticmethod
-    def get_best_Soluction(childrens: List[Solution], parent_for_exchange_one: Solution, parent_for_exchange_two: Solution):
-        for i in range(1):
-            best = PopulationServices.get_best_children_of_childrens_list(childrens)
-            if best.total_fitness < (parent_for_exchange_one.total_fitness or parent_for_exchange_two.total_fitness):
-                childrens.append(best)
-        if len(childrens) == 1:
-            best = parent_for_exchange_one if parent_for_exchange_one.total_fitness < parent_for_exchange_two.total_fitness else parent_for_exchange_two.total_fitness
-            childrens.append(best)
-        return childrens
-        
-    @staticmethod
-    def get_best_children_of_childrens_list(childrens: List[Solution]) -> Solution:
-        best: Solution  = None
-        for children in childrens:
-            if best == None:
-                best = children 
-                continue
-            if children.total_fitness > best.total_fitness:
-                best = children
-        childrens.remove(best)
-        return best
+    def get_crossing():
+        objective = random.randint(0,1)
+        objective_dict ={
+            0:CrossingVigilant.crossing_vigilantes,
+            1:CrossingShift.crossing_hours_extras,
+            2:CrossingShift.crossing_missing_shift,
+            3:CrossingShift.crossing_vigilant_assigment
+            }
+        return objective_dict.get(objective)
 
     def remove_vigilants_default_the_site(gen: Component):
         Vigilants: List[Vigilant] = gen.assigned_Vigilantes
         for vigilant in Vigilants:
             if vigilant.default_place_to_look_out == -1:
                 Vigilants.remove(vigilant)
-        
-    @staticmethod
-    def is_validation_and_repartion(gen_new: Component, gen_exchange: Component): 
-        vigilants_new: List[int] = [vigilant for vigilant in gen_new.assigned_Vigilantes]
-        vigilants_exchange: List[int] = [vigilant for vigilant in gen_exchange.assigned_Vigilantes]
-
-        if (vigilants_new and vigilants_exchange) == []:
-            return None
-
-        diference = list(set(vigilants_new) - set(vigilants_exchange))
-        diference += list(set(vigilants_exchange) - set(vigilants_new))
-        if not diference:
-            return None
-        vigilants_new_not_in_commont: List[int] = [vigilant for vigilant in gen_new.assigned_Vigilantes if vigilant in diference and gen_new.get_vigilant(vigilant).default_place_to_look_out == -1]
-        vigilants_exchange_not_in_commont: List[int] = [vigilant for vigilant in gen_exchange.assigned_Vigilantes if vigilant in diference and gen_exchange.get_vigilant(vigilant).default_place_to_look_out == -1]
-        return vigilants_new_not_in_commont, vigilants_exchange_not_in_commont
-
-    @staticmethod
-    def get_random_gens(parent_for_exchange_new: Solution, parent_for_exchange: Solution) -> List[Component]:
-        "El metodo debe retornas la lista de vigilantes del componente y el componente del cual fue sacado"
-        gen_parent_for_exchange_new: Component = None
-        gen_parent_exchange: Component = None
-        iteration = 0
-        while iteration <= settings.NUMBER_ITERATION_SELECTION_COMPONENTE:
-            gen_parent_for_exchange_new = parent_for_exchange_new.get_random_gen([])
-            gen_parent_exchange = parent_for_exchange.get_random_gen([gen_parent_for_exchange_new.site_id])
-            result = PopulationServices.is_validation_and_repartion(gen_parent_for_exchange_new, gen_parent_exchange)
-            if not result:
-                return False
-            if (result[0] and result[1]) != [] and (result[0] and result[1]) is not None:
-                return result[0], result[1]
-            iteration += 1
-        return False
-        raise("Error no se encontro vigilantes disponibles")
-
-    @staticmethod
-    def parent_crossing(parent_for_exchange_new: Solution, children: Solution) -> Solution:
-        vigilants: List[Component] = PopulationServices.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
-        if not vigilants:
-            return False
-        for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
-                children.crossing_vigilant(vigilant_new_id, vigilant_for_exchagen_id)
-        return children
 
     @staticmethod
     def union_soluction(parents, children) -> List[Solution]:
         return  parents + children
     
-
     @staticmethod
     def to_dominate(soluction_one: Solution, soluction_two: Solution)-> bool:
-        #TODO: test for method
         response = False
         number_of_objetives = len(soluction_one.fitness)
         for j in range(number_of_objetives):
@@ -247,7 +153,6 @@ class PopulationServices:
                    value = value/rango[j]
                 frente[i].crowding_distance += value
             frente[-1].crowding_distance = settings.INFINITE_NEGATIVE
-            
     
     def get_range_of_objective(frente: List[Solution]) -> List[int]:
         # para cada objetivo se calcula el max y el mix y se guarda el rango (max- min)
@@ -273,10 +178,9 @@ class PopulationServices:
         else:
             return soluctions
         
-
     @staticmethod
-    def order_solution_of_objetive_value(frente, index_objective):
-        result = sorted(frente, key = lambda solution : solution.fitness[index_objective], reverse=True) # reserve = True: ordena descendente
+    def order_solution_of_objetive_value(population: List[Solution], index_objective, par_reverse=True):
+        result = sorted(population, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
         return result
 
     

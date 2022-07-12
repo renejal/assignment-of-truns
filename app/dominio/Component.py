@@ -72,3 +72,26 @@ class Component:
             return self.extra_hours_fitness
         if fitnessToOptimize == "distance":
             return self.distance_fitness
+
+    def order_workings_days(self):
+        "ordenamiento por seleccios"
+        for i in range(len(self.site_schedule)):
+            temp = i
+            for j in range(i+1, len(self.site_schedule)):
+                if self.site_schedule[j].shift_start < self.site_schedule[temp].shift_start:
+                    temp = j
+            self.site_schedule[i], self.site_schedule[temp] = self.site_schedule[temp], self.site_schedule[i]
+        
+        self.assigment_id_order()
+    def assigment_id_order(self):
+        pass
+
+            
+            
+
+
+
+        
+
+
+            
