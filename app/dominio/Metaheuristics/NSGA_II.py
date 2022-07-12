@@ -42,7 +42,7 @@ class NsgaII(Algorithm):
             self.currency_efos +=1
             PopulationServices.not_dominate_sort(population_obj)
             self.Evoluction_soluction.append(population_obj.populations)
-        fig = Graph(self.Evoluction_soluction)
+        fig = Graph(self.Evoluction_soluction).get_fig()
         population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
         return population_obj.populations, fig
 

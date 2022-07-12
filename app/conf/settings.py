@@ -25,12 +25,12 @@ env1 = environ.Env(
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.1),
     NUM_OBJECTIVE=(int, 4),  # 0 -3 = 4 objetive
     MAX_EFOS=(int, 10), 
-    NUM_SOLUTION=(int, 20),
-    NUMBER_OF_CHILDREN_GENERATE=(int, 20),
-    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 20),
+    NUM_SOLUTION=(int, 10),
+    NUMBER_OF_CHILDREN_GENERATE=(int, 10),
+    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
     NUMBER_OF_CHILDREN_FOR_PARENTS=(int, 2),  # se negera 2 hijos por cadas dos padres
-    RESTRICTED_LIST_AMOUNT_COMPONENT=(int, 10),
-    SIZE_POPULATION=(int, 20),  # Tamaño de la poblacion final
+    RESTRICTED_LIST_AMOUNT_COMPONENT=(int, 5),
+    SIZE_POPULATION=(int, 10),  # Tamaño de la poblacion final
     NUMBER_OBJECTIVE_AT_OBTIMIZATE=(int, 4),
     #Results
     #PorcetanjeSolution
