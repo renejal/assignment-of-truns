@@ -17,6 +17,7 @@ class Site_schedule_service:
     def get_site_schedule(self,site_id: int, shifts: List[Shift], vigilantes: List[Vigilant]) -> Component: 
         assigned_vigilantes_in_actual_shift: List[int] = []
         assigned_vigilantes_on_place: List[Vigilant] = self.vigilant_assigment_service.obtain_vigilants_in_default_for_site(site_id, vigilantes)
+        #TODO revisar que pasa en el caso de que ya todos los vigilantes esten en uso!
         order_vigilantes_in_place_by_distance: List[Vigilant] = self.vigilant_assigment_service.get_order_vigilantes_index_in_place_by_distance(site_id, vigilantes)
         self.shuffle_first_shifts(shifts)
         for shift in shifts:
@@ -25,7 +26,8 @@ class Site_schedule_service:
                 vigilant_to_assign: Vigilant = self.get_vigilant_avaiable(shift, vigilantes, assigned_vigilantes_in_actual_shift , assigned_vigilantes_on_place , order_vigilantes_in_place_by_distance)
                 if vigilant_to_assign != None:
                     self.assign_vigilant(site_id,shift,vigilant_to_assign, assigned_vigilantes_on_place)
-                    assigned_vigilantes_in_actual_shift.append(vigilant_to_assign.id)                    
+                    assigned_vigilantes_in_actual_shift.append(vigilant_to_assign.id)    
+                break                
         return Component(site_id,shifts,assigned_vigilantes_on_place)
     
     def get_vigilant_avaiable(self, shift: Shift, vigilantes : List[Vigilant], assigned_vigilants_in_actual_shift: List[int], 
@@ -46,6 +48,7 @@ class Site_schedule_service:
         if not vigilantes:
             return None
         random.shuffle(vigilantes)
+        #TODO validar que no se puedan asignar vigilantes que tengan sitio por defecto
         for possible_vigilant_to_assing in vigilantes:
             if possible_vigilant_to_assing.id not in assigned_vigilants_in_actual_shift and self.vigilant_assigment_service.is_vigilant_avaible(possible_vigilant_to_assing, shift):
                 return possible_vigilant_to_assing
