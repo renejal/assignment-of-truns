@@ -19,8 +19,8 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/grasp/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/grasp/vigilantSolution"+str(index))
-        dataGrasp.get("fig").write_image(path+"/fig.png")
-        dataGrasp.get("fig").write_html(path+"/fightml.html")
+        dataGrasp.get("fig").write_image(path+"/figGrasp.png")
+        dataGrasp.get("fig").write_html(path+"/figGraspHtml.html")
     if(dataNsga != None):
         os.makedirs(path+"/nsgaii")
         for index, solution in enumerate(dataNsga.get("solutions")):
@@ -28,6 +28,8 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/nsgaii/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/nsgaii/vigilantSolution"+str(index))
+        dataNsga.get("fig").write_image(path+"/figNsga.png")
+        dataNsga.get("fig").write_html(path+"/figNsgaHtml.html")
     generate_metrics(dataGrasp, dataNsga, path)
 
 
