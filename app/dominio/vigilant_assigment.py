@@ -61,7 +61,7 @@ class VigilantAssigment:
         self.max_possible_fitness[0] = total_missing_shifts
         self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = len(vigilantes) * (len(sites)-1)
+        self.max_possible_fitness[3] = len(vigilantes) * (len(sites)-1) * 2
 
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}

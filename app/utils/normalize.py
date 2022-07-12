@@ -6,7 +6,7 @@ from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALU
 
 class Normalize:
 
-    missing_shifts_fitness_acceptable_porcentage: float = 0.9
+    missing_shifts_fitness_acceptable_porcentage: float = 0.95
     assigned_vigilantes_acceptable_porcentage: float = 0.2
     extra_hours_acceptable_porcentage: float = 0.2
     distance_acceptable_porcentage: float = 0.1

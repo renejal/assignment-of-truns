@@ -49,8 +49,11 @@ class GenerateShiftView:
         solutionsNormalized = Normalize().normalizeFitness(solutions)
         pf = np.array(solutionsNormalized)
         hv = Hipervolumen.calculate_hipervolumen(pf)
-        igd = get_performance_indicator("igd", pf)
-        igd = igd.do(np.array(self.__reference_points_IGD))
+        igd = get_performance_indicator("igd", np.array(self.__reference_points_IGD))
+        igd = igd.do(np.array(pf))
+        # igd = get_performance_indicator("igd", pf)
+        # igd = igd.do(np.array(self.__reference_points_IGD))
+        print(igd)
         metrics["solutions"] = solutions
         metrics["fitnesses"] = solutionsNormalized
         metrics["hv"] = hv

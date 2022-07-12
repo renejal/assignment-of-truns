@@ -1,5 +1,3 @@
-from pickle import FALSE
-from xml.dom import ValidationErr
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List, Dict

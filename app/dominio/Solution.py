@@ -20,7 +20,6 @@ class Solution:
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
-    fitnness: List[int]
     crowding_distance:int
     dominated: List[int]
     dominate_me: int
