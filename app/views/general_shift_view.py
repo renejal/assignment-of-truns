@@ -20,7 +20,7 @@ class GenerateShiftView:
         self.__data_vigilantes = self.create_vigilantes(data)
         self.__myProblem: VigilantAssigment = VigilantAssigment(
             self.__data_vigilantes, self.__data_sites)
-        self.__algoritmGrasp = Grasp()
+        self.algoritmGrasp = Grasp()
         self.__algoritmNSGA = NsgaII()
         self.__reference_points_IGD = Reference_point().get_reference_points_from_IGD()
 
@@ -33,9 +33,14 @@ class GenerateShiftView:
     def executeGrasp(self):
         print("Start Grasp")
         ticGrasp = time.perf_counter()
-        data_grasp = self.__algoritmGrasp.Execute(deepcopy(self.__myProblem))
+        data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
         tocGrasp = time.perf_counter()
         return self.getMetrics(data_grasp[0],data_grasp[1],ticGrasp,tocGrasp)
+    
+    def executeGraspToOptimize(self):
+        print("Start Grasp")
+        data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
+        return data_grasp[0]
 
     def executeNsga(self):
         print("Start Nsga")

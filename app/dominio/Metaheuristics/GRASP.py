@@ -13,13 +13,13 @@ from utils.graph import Graph
 from conf.settings import AMOUNT_POBLATION_TO_CREATE
 
 class Grasp(Algorithm):
+    
     ALEATORY:int = 0
     CURRENT_EFOS: int = 0
     MAX_EFOS: int = 10
-    # COMPONENTS_AMOUNT: int = 300
+    
     COMPONENTS_AMOUNT: int = 50
     RESTRICTED_LIST_AMOUNT_COMPONENT:int = 10
-    # RESTRICTED_LIST_AMOUNT_COMPONENT:int = 5
     TWEAK_AMOUNT_REPETITIONS: int = 10
     AMOUNT_POBLATION: int = AMOUNT_POBLATION_TO_CREATE
 
@@ -29,8 +29,19 @@ class Grasp(Algorithm):
     # TWEAK_AMOUNT_REPETITIONS: int = 5
     # AMOUNT_POBLATION: int = 1
 
+    def setParameters(self,components_amount,restricted_list
+    ,tweak_amount_repetitions, amount_poblation) -> None:
+        self.COMPONENTS_AMOUNT = components_amount
+        if restricted_list >= components_amount:
+            self.RESTRICTED_LIST_AMOUNT_COMPONENT = components_amount-1
+        else:    
+            self.RESTRICTED_LIST_AMOUNT_COMPONENT = restricted_list
+        self.TWEAK_AMOUNT_REPETITIONS = tweak_amount_repetitions
+        self.AMOUNT_POBLATION = amount_poblation
+
     def Execute(self, problem: VigilantAssigment):
         Best = None
+        self.CURRENT_EFOS = 0
         data = []
         poblation: List[Solution] = self.get_initial_poblation(problem)
         # population = Population(None, None, self.get_initial_poblation(problem)) 
