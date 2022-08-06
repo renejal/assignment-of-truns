@@ -14,6 +14,7 @@ class Main:
         # dataGrasp = None
         # dataGrasp = None
         generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        print("salio")
 
 
 

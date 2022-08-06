@@ -56,6 +56,7 @@ class Grasp(Algorithm):
             poblation = self.best_population(poblation)
             self.CURRENT_EFOS+=1   
         fig = Graph(data).get_fig()
+        print("len gras", len(poblation))
         return poblation,fig
 
     def get_initial_poblation(self,problem) -> List[Solution]:
