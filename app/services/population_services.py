@@ -21,7 +21,6 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[Solution]) -> List[Solution]:
-        print("size population",len(population))
         childrens: list[Solution] = []
         while len(childrens)<len(population): 
             function_crossing = PopulationServices.get_crossing()
@@ -30,7 +29,7 @@ class PopulationServices:
 
     @staticmethod
     def get_crossing():
-        objective = random.randint(0,1)
+        objective = random.randint(0,3)
         objective_dict ={
             0:CrossingVigilant.crossing_vigilantes,
             1:CrossingShift.crossing_hours_extras,
@@ -46,8 +45,8 @@ class PopulationServices:
                 Vigilants.remove(vigilant)
 
     @staticmethod
-    def union_soluction(parents, children) -> List[Solution]:
-        return  parents + children
+    def union_soluction(parents, childrens) -> List[Solution]:
+        return  parents + childrens
     
     @staticmethod
     def to_dominate(soluction_one: Solution, soluction_two: Solution)-> bool:

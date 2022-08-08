@@ -17,9 +17,9 @@ class NsgaII(Algorithm):
     Evoluction_soluction: List[Solution]= []
 
     def Execute(self, problem: VigilantAssigment):
+        population_obj =  Population(problem, settings.NUM_SOLUTION)
+        population_obj.inicialize_population()
         while self.currency_efos < settings.MAX_EFOS:
-            population_obj =  Population(problem, settings.NUM_SOLUTION)
-            population_obj.inicialize_population()
             print(f"iteration N. {self.currency_efos}")
             population_parents: List[Solution] = population_obj.populations
             population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
@@ -41,10 +41,13 @@ class NsgaII(Algorithm):
             population_obj.populations = population_parents
             self.currency_efos +=1
             PopulationServices.not_dominate_sort(population_obj)
-            self.Evoluction_soluction.append(population_obj.populations)
+            self.Evoluction_soluction.append(population_obj.populations) 
+            population_obj.populations = population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
+        print("len evoluction",len(self.Evoluction_soluction))
+        print("datas evoluction",self.Evoluction_soluction)
+        for i in self.Evoluction_soluction:
+            print("len", len(i))
         fig = Graph(self.Evoluction_soluction).get_fig()
-        population_obj.populations = population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
-        # fitnesssNsga = dataNsga.get("fitnesses")
         return population_obj.populations, fig
 
 

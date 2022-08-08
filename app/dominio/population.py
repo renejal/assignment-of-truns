@@ -83,7 +83,6 @@ class Population():
             return False
     
     def get_populations(self, num_soluction):
-        print(self.__populations)
         population = []
         rango = 1
         while len(population) < num_soluction:
