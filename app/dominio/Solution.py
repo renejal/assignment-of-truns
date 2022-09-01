@@ -132,13 +132,6 @@ class Solution:
                 elif vigilant_id== id_vigilant_new:
                     gen.assigned_Vigilantes.get(vigilant_id).set_id(id_vigilant_exchange)
             
-                    
-    # set
-    def reparate_soluction(self, id_vigilant_new: int, id_vigilant_exchange):
-        #recalcualr el fines de la solucion
-        pass
- 
-
     def reparate_component(self, gen_new: Component, gen_change: Component):
         vigilants_new: List[Vigilant] = gen_new.get_vigilantes()
         vigilants_change: List[Vigilant] = gen_change.get_vigilantes()
