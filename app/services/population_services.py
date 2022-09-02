@@ -15,7 +15,10 @@ from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
 from services.crossing_missing_shift import CrosssingMissinShift
 from services.crossing_vigilant_assigment import CrossingVigilantAssigmend
-from conf.settings import MISSING_SHIFT_TWEAK_PROBABILITY, ASSIGNED_VIGILANTES_TWEAK_PROBABILITY, EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY
+from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY, 
+                           ASSIGNED_VIGILANTES_CROSSING_PROBABILITY, 
+                           EXTRA_HOURS_CROSSING_PROBABILITY,
+                           DISTANCE_CROSSING_PROBABILITY)
 
 
 class PopulationServices:
@@ -30,12 +33,15 @@ class PopulationServices:
 
     @staticmethod
     def get_crossing():
-        objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_TWEAK_PROBABILITY,ASSIGNED_VIGILANTES_TWEAK_PROBABILITY,EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY))[0]
+        objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
+                                                         ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
+                                                         EXTRA_HOURS_CROSSING_PROBABILITY,
+                                                         DISTANCE_CROSSING_PROBABILITY))[0]
         objective_dict ={
-            0:CrossingVigilant.crossing_vigilantes,
-            1:CrossingShift.crossing_hours_extras,
-            2:CrossingShift.crossing_missing_shift,
-            3:CrossingShift.crossing_vigilant_assigment
+            1:CrossingVigilant.crossing_vigilantes,
+            2:CrossingShift.crossing_hours_extras,
+            3:CrossingShift.crossing_missing_shift,
+            4:CrossingShift.crossing_vigilant_assigment
             }
         return objective_dict.get(objective)
 

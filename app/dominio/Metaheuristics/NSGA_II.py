@@ -43,11 +43,8 @@ class NsgaII(Algorithm):
             PopulationServices.not_dominate_sort(population_obj)
             self.Evoluction_soluction.append(population_obj.populations) 
             population_obj.populations = population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
-        print("len evoluction",len(self.Evoluction_soluction))
-        print("datas evoluction",self.Evoluction_soluction)
         for i in self.Evoluction_soluction:
-            print("len", len(i))
-        fig = Graph(self.Evoluction_soluction).get_fig()
+            fig = Graph(self.Evoluction_soluction).get_fig()
         return population_obj.populations, fig
 
 

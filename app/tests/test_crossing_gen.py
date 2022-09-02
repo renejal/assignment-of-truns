@@ -19,7 +19,6 @@ def test_parent_crossing():
     for gen in Soluction_children.sites_schedule:
         Vigilants_id = [vigilant.id for vigilant in gen.assigned_Vigilantes]
         vigilants_sites.append(Vigilants_id)
-        print(Vigilants_id)
     
     assert len(vigilants_sites[0]) == len(set(vigilants_sites[0]))
     assert len(vigilants_sites[1]) == len(set(vigilants_sites[1]))

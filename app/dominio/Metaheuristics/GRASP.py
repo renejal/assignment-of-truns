@@ -55,13 +55,10 @@ class Grasp(Algorithm):
             data.append(poblation)
             poblation = self.best_population(poblation)
             self.CURRENT_EFOS+=1   
-        for i in data:
-            print("len grasp data", len(i))
         fig = Graph(data).get_fig()
         return poblation,fig
 
     def get_initial_poblation(self,problem) -> List[Solution]:
-        print("Getting started poblation")
         poblation:List[Solution] = []
         for i in range(self.AMOUNT_POBLATION):
             S = Solution(problem)
@@ -74,7 +71,6 @@ class Grasp(Algorithm):
                     best_restricted_list = S.get_best_components(restricted_list,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
                     S.merge_component(best_restricted_list)    
             poblation.append(S)
-            print("new iteration")
         return poblation
 
     def best_population(self, poblation: List[Solution]) -> List[Solution]:
