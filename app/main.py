@@ -14,6 +14,16 @@ class Main:
         generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
         # OptimizerParamets().calculate_best_parameters(view)
 
+<<<<<<< HEAD
+=======
+        # dataGrasp = view.executeGrasp()
+        dataNsga = view.executeNsga()
+        # dataGrasp = None
+        dataGrasp = None
+        generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        print("salio")
+
+>>>>>>> fb59b2d362de5153e8c710200048b1229ddd1e8e
 
 
 

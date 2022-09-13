@@ -10,10 +10,8 @@ def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_ge
     # Defining the population size.
     # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
     pop_size = (sol_per_pop, num_weights)
-    print(new_population)
     best_outputs = []
     for generation in range(num_generations):
-        print("Generation : ", generation)
         # Measuring the fitness of each chromosome in the population.
         fitness = cal_pop_fitness(new_population, view, algorithm)
         print("Fitness")
@@ -48,10 +46,14 @@ def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_ge
     # Then return the index of that solution corresponding to the best fitness.
     best_match_idx = numpy.where(fitness == numpy.min(fitness))
     best_solution = new_population[best_match_idx, :]
+<<<<<<< HEAD
     print("Best solution : ", best_solution)
     print("Best solution fitness : ", fitness[best_match_idx])
     best_outputs.append(fitness[best_match_idx])
     return best_solution, fitness[best_match_idx], best_outputs
+=======
+    return best_solution, fitness[best_match_idx]
+>>>>>>> fb59b2d362de5153e8c710200048b1229ddd1e8e
 
 
 def cal_pop_fitness(population, view: GenerateShiftView, algorithm: str):

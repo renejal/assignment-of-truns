@@ -51,10 +51,9 @@ class NsgaII(Algorithm):
                 rango +=1
             population_obj.populations = population_parents
             population_obj.populations = population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
-            self.Evoluction_soluction.append(population_obj.populations)
+            self.Evoluction_soluction.append(population_obj.populations) 
             self.currency_efos +=1
-        fig = Graph(self.Evoluction_soluction).get_fig()
-        return self.Evoluction_soluction, fig
+        return self.Evoluction_soluction
 
 
 

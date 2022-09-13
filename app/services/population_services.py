@@ -15,13 +15,16 @@ from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
 from services.crossing_missing_shift import CrosssingMissinShift
 from services.crossing_vigilant_assigment import CrossingVigilantAssigmend
+from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY, 
+                           ASSIGNED_VIGILANTES_CROSSING_PROBABILITY, 
+                           EXTRA_HOURS_CROSSING_PROBABILITY,
+                           DISTANCE_CROSSING_PROBABILITY)
 
 
 class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[Solution]) -> List[Solution]:
-        print("size population",len(population))
         childrens: list[Solution] = []
         while len(childrens)<len(population): 
             #TODO
@@ -31,12 +34,15 @@ class PopulationServices:
 
     @staticmethod
     def get_crossing():
-        objective = random.randint(0,1)
+        objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
+                                                         ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
+                                                         EXTRA_HOURS_CROSSING_PROBABILITY,
+                                                         DISTANCE_CROSSING_PROBABILITY))[0]
         objective_dict ={
-            0:CrossingVigilant.crossing_vigilantes,
-            1:CrossingShift.crossing_hours_extras,
-            2:CrossingShift.crossing_missing_shift,
-            3:CrossingShift.crossing_vigilant_assigment
+            1:CrossingVigilant.crossing_vigilantes,
+            2:CrossingShift.crossing_hours_extras,
+            3:CrossingShift.crossing_missing_shift,
+            4:CrossingShift.crossing_vigilant_assigment
             }
         return objective_dict.get(objective)
 
@@ -47,8 +53,8 @@ class PopulationServices:
                 Vigilants.remove(vigilant)
 
     @staticmethod
-    def union_soluction(parents, children) -> List[Solution]:
-        return  parents + children
+    def union_soluction(parents, childrens) -> List[Solution]:
+        return  parents + childrens
     
     @staticmethod
     def to_dominate(soluction_one: Solution, soluction_two: Solution)-> bool:
