@@ -14,12 +14,23 @@ from conf import settings
 
 class NsgaII(Algorithm):
     currency_efos = 0
-    Evoluction_soluction: List[Solution]= []
+    Evoluction_soluction: List[List[Solution]]= []
+
+    
+    def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
+    ,tweak_amount_repetitions, amount_population) -> None:
+    #TODO cambiar semilla
+        self.CHILDREN_AMOUNT_TO_GENERATE = children_amount_to_generate
+        self.AMOUNT_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
+        self.TWEAK_AMOUNT_REPETITIONS = tweak_amount_repetitions
+        self.AMOUNT_POPULATION = amount_population
+
 
     def Execute(self, problem: VigilantAssigment):
+        population_obj =  Population(problem, settings.NUM_SOLUTION)
+        population_obj.inicialize_population()
         while self.currency_efos < settings.MAX_EFOS:
-            population_obj =  Population(problem, settings.NUM_SOLUTION)
-            population_obj.inicialize_population()
+            #TODO BREAK TIMER
             print(f"iteration N. {self.currency_efos}")
             population_parents: List[Solution] = population_obj.populations
             population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
@@ -39,12 +50,11 @@ class NsgaII(Algorithm):
                    break 
                 rango +=1
             population_obj.populations = population_parents
-            self.currency_efos +=1
-            PopulationServices.not_dominate_sort(population_obj)
+            population_obj.populations = population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
             self.Evoluction_soluction.append(population_obj.populations)
+            self.currency_efos +=1
         fig = Graph(self.Evoluction_soluction).get_fig()
-        population_obj.get_populations(settings.AMOUNT_POBLATION_TO_CREATE)
-        return population_obj.populations, fig
+        return self.Evoluction_soluction, fig
 
 
 

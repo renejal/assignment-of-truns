@@ -81,8 +81,8 @@ class Component:
                 if self.site_schedule[j].shift_start < self.site_schedule[temp].shift_start:
                     temp = j
             self.site_schedule[i], self.site_schedule[temp] = self.site_schedule[temp], self.site_schedule[i]
-        
         self.assigment_id_order()
+    
     def assigment_id_order(self):
         pass
 

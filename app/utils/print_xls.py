@@ -14,13 +14,15 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     path = PATH_RESULTS+idUser+"/"+time
     if(dataGrasp != None):
         os.makedirs(path+"/grasp")
-        for index, solution in enumerate(dataGrasp.get("solutions")):
+        population = dataGrasp.get("population")
+        graspLen = len(population)-1
+        for index, solution in enumerate(population[graspLen]):
             generate_excel_site(
                 solution, path+"/grasp/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/grasp/vigilantSolution"+str(index))
-        dataGrasp.get("fig").write_image(path+"/figGrasp.png")
-        dataGrasp.get("fig").write_html(path+"/figGraspHtml.html")
+        dataGrasp.get("fig")[graspLen].write_image(path+"/figGrasp.png")
+        dataGrasp.get("fig")[graspLen].write_html(path+"/figGraspHtml.html")
     if(dataNsga != None):
         os.makedirs(path+"/nsgaii")
         for index, solution in enumerate(dataNsga.get("solutions")):

@@ -24,6 +24,7 @@ class PopulationServices:
         print("size population",len(population))
         childrens: list[Solution] = []
         while len(childrens)<len(population): 
+            #TODO
             function_crossing = PopulationServices.get_crossing()
             childrens = childrens + function_crossing(population)
         return childrens

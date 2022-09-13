@@ -29,6 +29,7 @@ class Tweak_distance():
                 continue
             total_assigment_shifts = len(vigilant.shifts)
             assigment_amount_on_closets_place = vigilant.sites_to_look_out.get(vigilant.closet_place)
+            #Caso en que la mayoaria de los turnos esta asignado a un solo sitio
             if assigment_amount_on_closets_place / total_assigment_shifts > 0.8:
                 if self.change_vigilant_with_most_shifts_in_close_place(solution,vigilant,vigilantes_with_one_wrong_assigned_place):
                     vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
