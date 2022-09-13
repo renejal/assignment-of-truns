@@ -41,13 +41,14 @@ def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     colums = ["solution"]
     fitnesssGrasp = None
     fitnesssNsga = None
-    amountSolutions = None
+    amountPopulationGrasp = None
+    amountPopulationNsga = None
 
     if dataGrasp != None:
         colums.extend(["turnosFalGrasp", "vigilantesExGrasp",
                       "horasExFrasp", "distanceGrasp"])
         fitnesssGrasp = dataGrasp.get("fitnesses")
-        amountSolutions = len(fitnesssGrasp)
+        amountPopulationGrasp = len(fitnesssGrasp)
     if dataNsga != None:
         colums.extend(["turnosFalNsgaII", "vigilantesExNsgaII",
                       "horasExNsgaII", "distanceNsgaII"])

@@ -70,14 +70,9 @@ class Grasp(Algorithm):
         return data
 
     def get_initial_poblation(self,problem) -> List[Solution]:
-<<<<<<< HEAD
         print("Getting started population")
         population:List[Solution] = []
         for i in range(self.AMOUNT_POPULATION):
-=======
-        poblation:List[Solution] = []
-        for i in range(self.AMOUNT_POBLATION):
->>>>>>> fb59b2d362de5153e8c710200048b1229ddd1e8e
             S = Solution(problem)
             self.CURRENT_TIMEOUT = time.time()
             if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
@@ -85,22 +80,11 @@ class Grasp(Algorithm):
                 return population
             while S.is_solution_complete():
                 components = S.create_components(self.COMPONENTS_AMOUNT)
-<<<<<<< HEAD
                 restricted_list = S.get_best_components(components,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
                 S.merge_component(restricted_list)    
             population.append(S)
             print("new iteration")
         return population
-=======
-                restricted_list = components
-                if restricted_list == None:
-                    continue
-                else:
-                    best_restricted_list = S.get_best_components(restricted_list,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
-                    S.merge_component(best_restricted_list)    
-            poblation.append(S)
-        return poblation
->>>>>>> fb59b2d362de5153e8c710200048b1229ddd1e8e
 
     def best_population(self, population: List[Solution]) -> List[Solution]:
         #TODO ordenamiento no dominadoa
