@@ -1,4 +1,6 @@
 import copy
+import time
+\
 from typing import List
 from dominio.Algorithm import Algorithm
 from utils.graph import Graph
@@ -13,8 +15,9 @@ from conf import settings
 # object = generate_pyckle.read_file('tests/population.pickle')
 
 class NsgaII(Algorithm):
-    currency_efos = 0
+    currency_efos = 1
     Evoluction_soluction: List[List[Solution]]= []
+    MAX_TIMEOUT: int
 
     
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
@@ -27,10 +30,16 @@ class NsgaII(Algorithm):
 
 
     def Execute(self, problem: VigilantAssigment):
+        self.CURRENT_TIMEOUT = time.time()
+        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + 1500000000000
         population_obj =  Population(problem, settings.NUM_SOLUTION)
         population_obj.inicialize_population()
+        self.Evoluction_soluction.append(population_obj.populations) 
         while self.currency_efos < settings.MAX_EFOS:
-            #TODO BREAK TIMER
+            self.CURRENT_TIMEOUT = time.time()
+            if(self.CURRENT_TIMEOUT < self.MAX_TIMEOUT):
+                return self.Evoluction_soluction
+
             print(f"iteration N. {self.currency_efos}")
             population_parents: List[Solution] = population_obj.populations
             population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
