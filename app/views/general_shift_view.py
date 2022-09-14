@@ -47,9 +47,9 @@ class GenerateShiftView:
     def executeNsga(self):
         print("Start Nsga")
         ticNsga = time.perf_counter()
-        data_nsgaii= self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
+        data_nsgaii = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
         tocNsga = time.perf_counter()
-        fig = Graph(self.Evoluction_soluction).get_fig()
+        fig = Graph(data_nsgaii).get_fig()
         return self.getMetrics(data_nsgaii,fig ,ticNsga,tocNsga)
 
     def executeNsgaIIToOptimize(self):
@@ -57,19 +57,19 @@ class GenerateShiftView:
         data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
         return data_nsgaII[0]
        
-    def getMetrics(self,population:List[List[Solution]],fig, tic:int,toc:int):
+    def getMetrics(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
         metrics = {}
         fitnesses = []
         hv = []
         igd = []
-        for poblation in population:
-            solutionsNormalized = Normalize().normalizeFitness(poblation)
+        for pupulation in evolutions:
+            solutionsNormalized = Normalize().normalizeFitness(pupulation)
             fitnesses.append(solutionsNormalized)
             pf = np.array(solutionsNormalized)
             hv.append(Hipervolumen.calculate_hipervolumen(pf))
             igdPerformance = get_performance_indicator("igd", np.array(self.__reference_points_IGD))
             igd.append(igdPerformance.do(np.array(pf)))
-        metrics["population"] = population
+        metrics["evolutions"] = evolutions
         metrics["fitnesses"] = fitnesses
         metrics["hv"] = hv
         metrics["igd"] = igd

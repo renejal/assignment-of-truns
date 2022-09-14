@@ -40,23 +40,23 @@ class Grasp(Algorithm):
         self.AMOUNT_POPULATION = amount_population
 
     def Execute(self, problem: VigilantAssigment):
-        fig = None
-        self.CURRENT_EFOS = 0
-        data = []
+        self.CURRENT_EFOS = 1
+        evolutions = []
         self.CURRENT_TIMEOUT = time.time()
-        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + 10
+        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + 30
 
         population: List[Solution] = self.get_initial_poblation(problem)
+        evolutions.append(population)
         if(self.CURRENT_TIMEOUT < self.MAX_TIMEOUT):
             while self.CURRENT_EFOS < self.MAX_EFOS:
                 self.CURRENT_TIMEOUT = time.time()
                 if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
-                    return population, fig
+                    return evolutions.append(population)
                 print("evolution:"+ str(self.CURRENT_EFOS+1))
                 for index_solution in range(self.AMOUNT_POPULATION):
                     self.CURRENT_TIMEOUT = time.time()
                     if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
-                        return population, fig
+                        return evolutions.append(population)
                     new_solution:Solution = copy.deepcopy(population[index_solution])
                     for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
                         self.CURRENT_TIMEOUT = time.time()
@@ -64,10 +64,10 @@ class Grasp(Algorithm):
                             break
                         new_solution = Tweak_service().Tweak(new_solution)
                     population.append(new_solution)
-                data.append(population)
+                evolutions.append(population)
                 population = self.best_population(population)
-                self.CURRENT_EFOS+=1   
-        return data
+                self.CURRENT_EFOS+= 1   
+        return evolutions
 
     def get_initial_poblation(self,problem) -> List[Solution]:
         print("Getting started population")

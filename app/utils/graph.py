@@ -11,10 +11,10 @@ from utils.normalize import Normalize
 
 class Graph:
 
-    def __init__(self, data: List[List[Solution]]) -> None:   
+    def __init__(self, evolutions: List[List[Solution]]) -> None:   
         dataG = []
         normalize = Normalize()
-        for index,evolution in enumerate(data):
+        for index,evolution in enumerate(evolutions):
             solutionsNormalized:List[Solution] = normalize.normalizeFitness(evolution)
             for solution in solutionsNormalized:
                 dataG.append([solution[0],solution[1],solution[2],solution[3],index+1])
