@@ -1,10 +1,9 @@
 from typing import List
-from dominio.Solution import Solution
 from dominio.Component import Component
 class Order:
 
     @classmethod
-    def order_solution_of_objetive_value(self, population: List[Solution], index_objective, par_reverse=True):
+    def order_solution_of_objetive_value(self, population, index_objective, par_reverse=True):
         result = sorted(population, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
         return result
 
