@@ -1,4 +1,6 @@
 import copy
+from ctypes import util
+from tkinter.tix import Tree
 from typing import List
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -7,6 +9,7 @@ import random
 from dominio.vigilant_assigment import VigilantAssigment
 from services.site_schedule_service import Site_schedule_service
 from conf.settings import *
+from utils.order import Order
 
 class Solution:
 
@@ -115,6 +118,11 @@ class Solution:
         if response:
             return response
         raise ValueError("not found gen whit:",gen_id)
+    
+    def get_best_componente_by_fitnnes(self,fitnessToOptimize,rango_percentage):
+        """Obtiene el mejor gen de un rango porsentual de la lista obtenidad ordenada por fitnnes"""
+        return  Order.order_sitio_of_objective_value(self.sites_schedule,fitnessToOptimize)
+        
             
     def modification_status(self, value: bool):
         for gen in self.sites_schedule:

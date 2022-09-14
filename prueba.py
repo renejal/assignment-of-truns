@@ -12,5 +12,4 @@ student_objects = [
     Student('dave', 'B', 10),
 ]
 a = sorted(student_objects, key=lambda student: student.age) 
-print(a)
 

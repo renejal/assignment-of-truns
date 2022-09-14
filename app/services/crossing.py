@@ -10,6 +10,7 @@ class Crossing:
     def get_parents_by_objetive(self, parents: List[Solution], objective_index) -> List[Solution]:
         population_order = self.order_solution_of_objetive_value(parents,objective_index,True) # order True: descendente
         # NUMBER OF SOLUTIONS TO BE TAKEN FROM THE ORDERED POPULATION
+        # TODO: MEJORA PROBABILIAD PARA QUE SE PUEDA OBTENER DOS SOLUCIONES DEL MIMOS NIVEL DEL FITNNES
         num_solutions = int(len(population_order)* settings.NUM_PARENTS_OF_ORDERED_POPULATION)
         if num_solutions == 0: num_solutions = 1
         first_solutions = population_order[:num_solutions]
