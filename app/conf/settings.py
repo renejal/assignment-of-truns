@@ -22,7 +22,7 @@ env1 = environ.Env(
     AMOUNT_POPULATION_TO_CREATE = (int, 5),
     #NUMBER ITERACTION FOR THA SELECCION OF RANDOM COMPONENTE IN THE CROOSIN
     #NSGA2 
-    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5),
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUM_OBJECTIVE=(int, 4),  # 0 -3 = 4 objetive
     MAX_EFOS=(int, 10), 
     NUM_SOLUTION=(int, 10),

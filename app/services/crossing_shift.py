@@ -35,7 +35,20 @@ class CrossingShift:
 
     @classmethod
     def crossing_vigilant_assigment(self, population:  List[Solution], objective_index=3):
+        """crossing enfocad en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
+            ordinaria
+
+        Args:
+            population (List[Solution]): poblacion de soluciones a tener en cuenta para el cruce
+            objective_index (int, optional): objetivo a obtimizar
+
+        Returns:
+            Dos hijos resultantes del cruce entre los dos padres
+        """
+        # selecionar un sitio con mejor fitnees de horas extra  y missing shift
         solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
+        gen = solution_A.get_best_componente_by_fitnnes("extra_hours", settings.NUM_PARENTS_OF_ORDERED_POPULATION)
+        # 2 . obtener el mejor vigilante del gen
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
         childs.append(child)
