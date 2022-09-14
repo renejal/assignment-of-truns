@@ -22,6 +22,6 @@ class Site(FromDictMixin):
             for day in week_schedule.days:
                 for working_day in day.working_day:
                      hours_to_work_on_week += (working_day.working_end - working_day.working_start + 1)*working_day.num_vigilantes
-            max_extra_hours+= math.floor(hours_to_work_on_week/49)
+            max_extra_hours+= math.floor(hours_to_work_on_week/(49*math.ceil(hours_to_work_on_week/56)))
         self.max_extra_hours = max_extra_hours
         

@@ -11,9 +11,6 @@ import pprint
 
 class Population():
 
-    __finnest: int
-    __soluction_list: List[Solution]
-    __decendets_list: List[Solution]
     __populations: List[Solution]
     __num_soluction: int
     __frente: Dict[int,List[Solution]] # el indice del la lista representa el rango del frente 0: rango 0 del frente de pareto
@@ -30,26 +27,16 @@ class Population():
            response = True 
         return response
 
-    def add_dominate(self, soluction_dominate: Solution, soluction_dominate_me: Solution):
-
-        "add tha domiNAte soluction a tha list oF soluction that dominates it"
-        pass 
-    
-
     def inicialize_population(self) -> List[Solution]:
         """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
         population: List[Solution] = []
         for i in range(self.__num_soluction):
             S = Solution(self.problem)
+            #TODO TIMER CON CONDICION MINIMO 2
             while S.is_solution_complete():
-                components = S.create_components(self.__num_soluction)
-                restried_list = components 
-                if restried_list == None:
-                    continue
-                else:
-                    best_restricted_list = S.get_best_components(restried_list, settings.RESTRICTED_LIST_AMOUNT_COMPONENT)
-                    S.merge_component(best_restricted_list)            
+                components = S.create_components(1)
+                S.merge_component(components[0])            
             population.append(S) 
         self.populations = population 
 
@@ -83,6 +70,7 @@ class Population():
             return False
     
     def get_populations(self, num_soluction):
+        print(self.__populations)
         population = []
         rango = 1
         while len(population) < num_soluction:
@@ -96,13 +84,6 @@ class Population():
         for solution in self.__populations:
             if solution.range_soluction == 1:
                 return solution
-
-    def order_by(self, R: List[Solution]):
-        """se ordenas las soluciones dependiendo del rango
-        o basado en el numero del frente"""
-        """Aquie es donde dentra el ordenamiento no dominda o shorting 
-        TODO: ENTENDER EL ALGORITMO DE SHORTING PARA IMPELENTAR ESA FUNCION"""
-        pass
 
     @property
     def populations(self):
@@ -127,13 +108,3 @@ class Population():
     def frente(self, list_soluction: List[Solution]):
         self.__frente = list_soluction
      
-    def evaluate_solucion(self, soluction: Solution):
-        """
-        la funcion debe guarda en cada atributo de la solucion le valor fitness
-        hay que tener en cuenta la funcion de clounding
-
-        :param solucion: la solucion a la que se debe calcular el fitness
-        :return: null
-        """
-        """se encarga de evaluar cad solucion que llegue"""
-        pass

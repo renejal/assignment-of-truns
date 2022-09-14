@@ -20,6 +20,7 @@ class Tweak_assignment_vigilantes_amount:
         for index_week, extra_vigilantes_on_week in enumerate(extra_vigilantes_by_week):
             random.shuffle(extra_vigilantes_on_week)
             for extra_vigilant in extra_vigilantes_on_week:
+                #Si tiene mas de 20 horas trabajas se le quitan las horas a otro vigilante que tenga mas de 40 horas y se las asigna al vigilante que no cumple con las horas minimas
                 if extra_vigilant.total_hours_worked_by_week[index_week] > 20:
                     random.shuffle(available_vigilantes[index_week])
                     index = 0
@@ -47,6 +48,7 @@ class Tweak_assignment_vigilantes_amount:
                         if extra_vigilant.total_hours_worked_by_week[index_week] >= 40:
                             break
                         index+=1
+                #Si tiene menos de 20 horas trabajadas estas horas se las asigna a cualquier otro vigilante que este disponible
                 else:
                     shifts = extra_vigilant.get_shifts_on_week(index_week+1)
                     random.shuffle(shifts)
@@ -83,7 +85,7 @@ class Tweak_assignment_vigilantes_amount:
         available_vigilantes_by_week: List[List[Vigilant]] = np.array([[]]* MAX_TOTAL_WEEKS, dtype=object).tolist() 
         for vigilant in vigilantes:
             for index_week,hours_worked_on_week in enumerate(vigilant.total_hours_worked_by_week):
-                if hours_worked_on_week >= 40 and hours_worked_on_week < 56:
+                if hours_worked_on_week >= 40 and hours_worked_on_week <= 56:
                     available_vigilantes_by_week[index_week].append(vigilant)
         return available_vigilantes_by_week
 
