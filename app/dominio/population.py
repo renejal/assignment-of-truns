@@ -1,13 +1,11 @@
 import copy
+import time
 from typing import List, Dict
 
-from numpy import var
 from dominio.Solution import Solution
-# from dominio.soluction_nsga_ii import Solution
 from dominio.vigilant_assigment import VigilantAssigment
 from services.tweak_service import Tweak_service
 from conf import settings
-import pprint
 
 class Population():
 
@@ -16,7 +14,7 @@ class Population():
     __frente: Dict[int,List[Solution]] # el indice del la lista representa el rango del frente 0: rango 0 del frente de pareto
 
     def __init__(self, problem: VigilantAssigment = None, num_soluction: int = None, population = None):
-        self.__num_soluction = settings.SIZE_POPULATION
+        self.__num_soluction = settings.POPULATION_AMOUNT_NSGAII
         self.__populations = population
         self.problem = problem
         self.__frente = {} 
@@ -27,13 +25,16 @@ class Population():
            response = True 
         return response
 
-    def inicialize_population(self) -> List[Solution]:
-        """la idea seria llmaar los metodo s de GRAS que tuilizan para genear los componentes y asi
+    def inicialize_population(self, maxTime) -> List[Solution]:
+        """la idea seria llaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
+        print("Getting started population")
         population: List[Solution] = []
         for i in range(self.__num_soluction):
+            current_timeout = time.time()
+            if(current_timeout > maxTime and len(population >= 2)):
+                self.populations = population 
             S = Solution(self.problem)
-            #TODO TIMER CON CONDICION MINIMO 2
             while S.is_solution_complete():
                 components = S.create_components(1)
                 S.merge_component(components[0])            
@@ -64,20 +65,17 @@ class Population():
         for solution in self.__populations:
             if solution.range == rango:
                 frents.append(solution)
-        if frents:
-            return frents
-        else:
-            return False
+        return frents
     
     def get_populations(self, num_soluction):
-        print(self.__populations)
         population = []
         rango = 1
         while len(population) < num_soluction:
             population = population + self.get_Solutions_of_range(rango)
             rango = +1
         if len(population) <= num_soluction:
-            raise("No se encontro el numero de soluciones requeridas")
+            return population
+            # raise("No se encontro el numero de soluciones requeridas")
         return population[:num_soluction]
 
     def get_soluction_the_frente_whit_range(self, range: int):

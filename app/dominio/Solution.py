@@ -1,6 +1,4 @@
 import copy
-from ctypes import util
-from tkinter.tix import Tree
 from typing import List
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -107,30 +105,11 @@ class Solution:
                 continue
             return gen
         
-
-    def get_gen(self, gen_id: int) -> Component:
-        # note : gen_id = site_id 
-        response: Component = None
-        for gen in self.sites_schedule:
-           if gen.site_id == gen_id:
-              response = gen 
-              break
-        if response:
-            return response
-        raise ValueError("not found gen whit:",gen_id)
     
     def get_best_componente_by_fitnnes(self,fitnessToOptimize,rango_percentage):
         """Obtiene el mejor gen de un rango porsentual de la lista obtenidad ordenada por fitnnes"""
         return  Order.order_sitio_of_objective_value(self.sites_schedule,fitnessToOptimize)
         
-            
-    def modification_status(self, value: bool):
-        for gen in self.sites_schedule:
-            if gen.modified:
-                gen.modified = value 
-               
-        self.sites_schedule
-    # get 
     
     def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
         for gen in self.sites_schedule:
@@ -140,18 +119,6 @@ class Solution:
                 elif vigilant_id== id_vigilant_new:
                     gen.assigned_Vigilantes.get(vigilant_id).set_id(id_vigilant_exchange)
             
-    def reparate_component(self, gen_new: Component, gen_change: Component):
-        vigilants_new: List[Vigilant] = gen_new.get_vigilantes()
-        vigilants_change: List[Vigilant] = gen_change.get_vigilantes()
-
-    def remove_gen(self, id_gen):
-        "return elimined component"
-        gen = self.get_gen(id_gen)
-        return self.sites_schedule.pop(gen)
-    
-    def add_gen(self, gen):
-        self.sites_schedule.append(gen)
-
     def calculate_fitness(self):
         self.missing_shifts_fitness = 0
         self.distance_fitness = 0

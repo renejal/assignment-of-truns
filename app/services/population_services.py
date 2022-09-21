@@ -1,30 +1,26 @@
-import copy
 import random
-from re import I
-import statistics
 from conf import settings
-from typing import List, Tuple
-from utils import aleatory
+from typing import List
 from dominio.model.vigilant import Vigilant
 from dominio.population import Population
 from dominio.Solution import Solution
 from dominio.Solution import Solution
 from dominio.Component import Component
-from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
 from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
-from services.crossing_missing_shift import CrosssingMissinShift
-from services.crossing_vigilant_assigment import CrossingVigilantAssigmend
 from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY, 
                            ASSIGNED_VIGILANTES_CROSSING_PROBABILITY, 
                            EXTRA_HOURS_CROSSING_PROBABILITY,
-                           DISTANCE_CROSSING_PROBABILITY)
+                           DISTANCE_CROSSING_PROBABILITY,
+                           NUMBER_OBJECTIVE_AT_OBTIMIZATE
+                           )
 
 
 class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: List[Solution]) -> List[Solution]:
+        print("generate_decendents")
         childrens: list[Solution] = []
         while len(childrens)<len(population): 
             #TODO
@@ -39,10 +35,10 @@ class PopulationServices:
                                                          EXTRA_HOURS_CROSSING_PROBABILITY,
                                                          DISTANCE_CROSSING_PROBABILITY))[0]
         objective_dict ={
-            1:CrossingVigilant.crossing_vigilantes,
-            2:CrossingShift.crossing_hours_extras,
-            3:CrossingShift.crossing_missing_shift,
-            4:CrossingShift.crossing_vigilant_assigment
+            1:CrossingShift.crossing_missing_shift,
+            2:CrossingShift.crossing_vigilant_assigment,
+            3:CrossingShift.crossing_hours_extras,
+            4:CrossingVigilant.crossing_vigilantes
             }
         return objective_dict.get(objective)
 
@@ -54,6 +50,7 @@ class PopulationServices:
 
     @staticmethod
     def union_soluction(parents, childrens) -> List[Solution]:
+        print("union_soluction")
         return  parents + childrens
     
     @staticmethod
@@ -151,7 +148,7 @@ class PopulationServices:
         rango = PopulationServices.get_range_of_objective(frente)
         for solution in frente:
             solution.crowding_distance = 0
-        for j in range(settings.NUMBER_OBJECTIVE_AT_OBTIMIZATE): # la lista de objetivos posiblemente se una lita de enteros 
+        for j in range(NUMBER_OBJECTIVE_AT_OBTIMIZATE): # la lista de objetivos posiblemente se una lita de enteros 
             PopulationServices.order_solution_of_objetive_value(frente, j)
             frente[0].crowding_distance = settings.INFINITE_POSITIVE
             for i in range(1, len(frente)-1):
@@ -167,7 +164,7 @@ class PopulationServices:
         rango: List[int] = []
         min = settings.INFINITE_POSITIVE
         max = settings.INFINITE_NEGATIVE
-        for index_objective in range(settings.NUM_OBJECTIVE):
+        for index_objective in range(settings.NUMBER_OBJECTIVE_AT_OBTIMIZATE):
             for solution in frente:
                 if min > solution.fitness[index_objective]:
                     min = solution.fitness[index_objective]

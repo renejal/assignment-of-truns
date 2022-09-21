@@ -1,5 +1,6 @@
 import random
 import numpy
+from utils.print_xls import generate_parameter_optimizacion
 from views.general_shift_view import GenerateShiftView
 from dominio.Metaheuristics.GA import *
 
@@ -15,28 +16,38 @@ class OptimizerParamets:
             Mating pool size
             Population size
     """
-    sol_per_pop = 4
+    sol_per_pop = 10
     num_parents_mating = 2
-    num_generations = 5
+    num_generations = 2
 
     def __init__(self) -> None:
         pass
 
     def calculate_best_parameters(self, view: GenerateShiftView):
-        # Number of the weights we are looking to optimize.
+        self.generate_grasp_optimization(view)
+        # self.generate_nsgaII_optimization(view)
+
+
+    def generate_grasp_optimization(self,view: GenerateShiftView):
         amount_grasp_weights = self.GRASP_INPUTS
-        amount_nsgaII_weights = self.NSGAII_INPUTS
-        # Creating the initial population.
         new_grasp_population = self.get_grasp_population()
-        execute_ga(new_grasp_population , view, self.GRASP_ALGORITHM , amount_grasp_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
-        # new_nsgaII_population = self.get_nsgaII_population()
-        # execute_ga(new_nsgaII_population , view, self.NSGAII_ALGORITHM , amount_nsgaII_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
+        data = execute_ga(new_grasp_population , view, self.GRASP_ALGORITHM , amount_grasp_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
+        colums = ["evolution","solution","components_amount","restricted_list_size","tweak_amount_repetitions","amount_population","time", "average_hv"]
+        generate_parameter_optimizacion(data, colums, self.GRASP_ALGORITHM)
+    
+    def generate_nsgaII_optimization(self,view: GenerateShiftView):
+        amount_nsgaII_weights = self.NSGAII_INPUTS
+        new_nsgaII_population = self.get_nsgaII_population()
+        data = execute_ga(new_nsgaII_population , view, self.NSGAII_ALGORITHM , amount_nsgaII_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
+        colums = ["evolution","solution","children_amount_to_generate","amount_parents_of_ordered_population","tweak_amount_repetitions","amount_population","time","average_hv"]
+        generate_parameter_optimizacion(data, colums, self.GRASP_ALGORITHM)
+
 
     def get_grasp_population(self):
         new_population = []
         for i in range(0, self.sol_per_pop):
             components_amount = random.randrange(10, 100, 10)
-            restricted_list = random.randrange(3, components_amount*0.3, 2)
+            restricted_list = random.randrange(2, 20, 2)
             tweak_amount_repetitions = random.randrange(10, 100, 10)
             amount_population =  random.randrange(10, 20, 2)
             new_population.append([components_amount, restricted_list, tweak_amount_repetitions, amount_population])

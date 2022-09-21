@@ -1,46 +1,48 @@
 import copy
 import time
-\
 from typing import List
 from dominio.Algorithm import Algorithm
-from utils.graph import Graph
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
-# from dominio.soluction_nsga_ii import SoluctionNsgaII
 from dominio.population import Population
 from services.population_services import PopulationServices
-from tests import generate_pyckle 
 from conf import settings
-# generate_pyckle.save_object("tests/population.pickle", population)
-# object = generate_pyckle.read_file('tests/population.pickle')
 
 class NsgaII(Algorithm):
-    currency_efos = 1
-    Evoluction_soluction: List[List[Solution]]= []
+
     MAX_TIMEOUT: int
+    MAX_EFOS: int = settings.MAX_EFOS_NSGAII   
+    current_efo: int
+    current_timeout: int
+
+    POPULATION_AMOUNT_NSGAII = settings.POPULATION_AMOUNT_NSGAII
+
+    evolutions: List[List[Solution]] = []
 
     
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
-    ,tweak_amount_repetitions, amount_population) -> None:
+    ,tweak_amount_repetitions, population_amount_nsgaii) -> None:
     #TODO cambiar semilla
+        self.MAX_EFOS = 99999999999999
         self.CHILDREN_AMOUNT_TO_GENERATE = children_amount_to_generate
         self.AMOUNT_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
         self.TWEAK_AMOUNT_REPETITIONS = tweak_amount_repetitions
-        self.AMOUNT_POPULATION = amount_population
-
+        self.POPULATION_AMOUNT_NSGAII = population_amount_nsgaii
 
     def Execute(self, problem: VigilantAssigment):
         self.CURRENT_TIMEOUT = time.time()
-        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + 1500000000000
-        population_obj =  Population(problem, settings.NUM_SOLUTION)
-        population_obj.inicialize_population()
-        self.Evoluction_soluction.append(population_obj.populations) 
-        while self.currency_efos < settings.MAX_EFOS:
-            self.CURRENT_TIMEOUT = time.time()
-            if(self.CURRENT_TIMEOUT < self.MAX_TIMEOUT):
-                return self.Evoluction_soluction
+        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + settings.MAX_TIME_DURATION
+        self.current_efo = 1
 
-            print(f"iteration N. {self.currency_efos}")
+        population_obj = Population(problem, self.POPULATION_AMOUNT_NSGAII)
+        population_obj.inicialize_population(self.MAX_TIMEOUT)
+        self.evolutions.append(population_obj.populations) 
+
+        while self.current_efo < self.MAX_EFOS:
+            self.CURRENT_TIMEOUT = time.time()
+            if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+                return self.evolutions
+            print(f"iteration N. {self.current_efo}")
             population_parents: List[Solution] = population_obj.populations
             population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
             union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), population_children)
@@ -59,10 +61,10 @@ class NsgaII(Algorithm):
                    break 
                 rango +=1
             population_obj.populations = population_parents
-            population_obj.populations = population_obj.get_populations(settings.SIZE_POPULATION)
-            self.Evoluction_soluction.append(population_obj.populations) 
-            self.currency_efos +=1
-        return self.Evoluction_soluction
+            population_obj.populations = population_obj.get_populations(self.POPULATION_AMOUNT_NSGAII)
+            self.evolutions.append(population_obj.populations) 
+            self.current_efo +=1
+        return self.evolutions
 
 
 

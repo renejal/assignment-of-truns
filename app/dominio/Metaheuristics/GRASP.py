@@ -1,8 +1,6 @@
 import copy
-import random
 import time
 from typing import List
-
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution 
 from dominio.population import Population
@@ -10,27 +8,25 @@ from dominio.vigilant_assigment import VigilantAssigment
 from services.population_services import PopulationServices
 from dominio.population import Population
 from services.tweak_service import Tweak_service
-from conf.settings import AMOUNT_POPULATION_TO_CREATE
+from conf import settings
 
 class Grasp(Algorithm):
 
     MAX_TIMEOUT: int
-    CURRENT_TIMEOUT: int
-
-    #TODO max efos cambiarlo por tiempo.
+    MAX_EFOS: int = settings.MAX_EFOS_GRASP   
+    current_efo: int
+    current_timeout: int
     
-    ALEATORY:int = 0
-    CURRENT_EFOS: int = 0
-    MAX_EFOS: int = 10
-    
-    COMPONENTS_AMOUNT: int = 50
-    RESTRICTED_LIST_AMOUNT_COMPONENT:int = 10
-    TWEAK_AMOUNT_REPETITIONS: int = 10
-    AMOUNT_POPULATION: int = AMOUNT_POPULATION_TO_CREATE
+    ALEATORY:int = 0 
+    COMPONENTS_AMOUNT: int = settings.COMPONENTS_AMOUNT_GRASP
+    RESTRICTED_LIST_AMOUNT_COMPONENT:int = settings.RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP
+    TWEAK_AMOUNT_REPETITIONS: int = settings.TWEAK_AMOUNT_REPETITIONS_GRASP
+    AMOUNT_POPULATION: int = settings.POPULATION_AMOUNT_GRASP
 
     def setParameters(self,components_amount,restricted_list
     ,tweak_amount_repetitions, amount_population) -> None:
     #TODO cambiar semilla
+        self.MAX_EFOS = 99999999999999
         self.COMPONENTS_AMOUNT = components_amount
         if restricted_list >= components_amount:
             self.RESTRICTED_LIST_AMOUNT_COMPONENT = components_amount-1
@@ -40,35 +36,35 @@ class Grasp(Algorithm):
         self.AMOUNT_POPULATION = amount_population
 
     def Execute(self, problem: VigilantAssigment):
-        self.CURRENT_EFOS = 1
+        self.current_efo = 1
         evolutions = []
-        self.CURRENT_TIMEOUT = time.time()
-        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + 15
+        self.current_timeout = time.time()
+        self.MAX_TIMEOUT = self.current_timeout + settings.MAX_TIME_DURATION
 
         population: List[Solution] = self.get_initial_poblation(problem)
         evolutions.append(population)
-        if(self.CURRENT_TIMEOUT < self.MAX_TIMEOUT):
-            while self.CURRENT_EFOS < self.MAX_EFOS:
-                self.CURRENT_TIMEOUT = time.time()
-                if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+        if(self.current_timeout < self.MAX_TIMEOUT):
+            while self.current_efo < self.MAX_EFOS:
+                self.current_timeout = time.time()
+                if(self.current_timeout > self.MAX_TIMEOUT):
                     evolutions.append(population)
                     return evolutions
-                print("evolution:"+ str(self.CURRENT_EFOS+1))
+                print("evolution:"+ str(self.current_efo+1))
                 for index_solution in range(self.AMOUNT_POPULATION):
-                    self.CURRENT_TIMEOUT = time.time()
-                    if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+                    self.current_timeout = time.time()
+                    if(self.current_timeout > self.MAX_TIMEOUT):
                         evolutions.append(population)
                         return evolutions
                     new_solution:Solution = copy.deepcopy(population[index_solution])
                     for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
-                        self.CURRENT_TIMEOUT = time.time()
-                        if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+                        self.current_timeout = time.time()
+                        if(self.current_timeout > self.MAX_TIMEOUT):
                             break
                         new_solution = Tweak_service().Tweak(new_solution)
                     population.append(new_solution)
                 evolutions.append(population)
                 population = self.best_population(population)
-                self.CURRENT_EFOS+= 1   
+                self.current_efo+= 1   
         return evolutions
 
     def get_initial_poblation(self,problem) -> List[Solution]:
@@ -76,8 +72,8 @@ class Grasp(Algorithm):
         population:List[Solution] = []
         for i in range(self.AMOUNT_POPULATION):
             S = Solution(problem)
-            self.CURRENT_TIMEOUT = time.time()
-            if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+            self.current_timeout = time.time()
+            if(self.current_timeout > self.MAX_TIMEOUT):
                 print("timeout pass")
                 return population
             while S.is_solution_complete():
@@ -89,7 +85,6 @@ class Grasp(Algorithm):
         return population
 
     def best_population(self, population: List[Solution]) -> List[Solution]:
-        #TODO ordenamiento no dominadoa
         PopulationServices.not_dominate_sort(Population(None, None, population))
         population = PopulationServices.get_solutions_by_frente(population,len(population)/2)
         return population

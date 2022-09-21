@@ -1,9 +1,10 @@
 import os
 import pandas as pd
+from conf.settings import MAX_TIME_DURATION
 from utils.print_sites_xls import generate_excel_site
 from utils.print_vigilants_xls import generate_excel_vigilantes
 from conf.settings import PATH_RESULTS
-from typing import Dict
+from typing import Dict, List
 import datetime
 
 
@@ -43,17 +44,13 @@ def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     colums = ["evolution", "solution"]
     fitnessesGrasp = None
     fitnessesNsga = None
-
-    if dataGrasp != None:
-        colums.extend(["turnosFalGrasp", "vigilantesExGrasp", "horasExFrasp", "distanceGrasp"])
-        fitnessesGrasp = dataGrasp.get("fitnesses")
-    if dataNsga != None:
-        colums.extend(["turnosFalNsgaII", "vigilantesExNsgaII", "horasExNsgaII", "distanceNsgaII"])
-        fitnessesNsga = dataNsga.get("fitnesses")
-
     data = []
-    if dataGrasp != None and dataNsga != None: 
+
+    if dataGrasp != None and dataNsga != None:
+        colums.extend(["mShiftG","mShiftN","extraVigG","extraVigN","extraHoG","extraHoN","distanceG", "distanceN"])
         colums.extend(["hvGrasp","hvNsgaII","igdGrasp","igdNsgaII","timeGrasp","timeNsgaII"])
+        fitnessesGrasp = dataGrasp.get("fitnesses")
+        fitnessesNsga = dataNsga.get("fitnesses")
         amountEvolutionGrasp = len(fitnessesGrasp)
         amountEvolutionNSGA = len(fitnessesNsga)
         maxEvolution = amountEvolutionGrasp if amountEvolutionGrasp > amountEvolutionNSGA else amountEvolutionNSGA
@@ -84,22 +81,53 @@ def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                     igdGrasp = dataGrasp.get("igd")[i] if s < amountPopulationGrasp and populationGrasp != None else None
                     data.append([i, s+1, fitnessShiftGRASP, fitnessVigilantsGRASP, fitnessHoursGRASP, fitnessDistanceGRASP
                         , fitnessesNsga[i][s][0], fitnessesNsga[i][s][1], fitnessesNsga[i][s][2], fitnessesNsga[i][s][3],
-                        hvGrasp,  dataNsga.get("hv")[i], igdGrasp,  dataNsga.get("hv")[i], dataGrasp.get("time"), dataNsga.get("time")
+                        hvGrasp,  dataNsga.get("hv")[i], igdGrasp,  dataNsga.get("igd")[i], dataGrasp.get("time"), dataNsga.get("time")
                     ])
     
     elif dataGrasp != None and dataNsga ==  None:
-        colums.extend(["hvGrasp","igdGrasp","timeGrasp"])
+        colums.extend(["mShiftG", "extraVigG", "extraHoG", "distanceG","hvGrasp","igdGrasp","timeGrasp"])
+        fitnessesGrasp = dataGrasp.get("fitnesses")
         for i, fitnessesPopulation in enumerate(fitnessesGrasp):
             for s, fitnessSolution in enumerate(fitnessesPopulation):
                 data.append([i,s+1, fitnessSolution[0], fitnessSolution[1], fitnessSolution[2],
                         fitnessSolution[3], dataGrasp.get("hv")[i], dataGrasp.get("igd")[i], dataGrasp.get("time")])
     else:
-        colums.extend(["hvNsgaII","igdNsgaII","timeNsgaII"])
+        colums.extend(["mShiftN", "extraVigN", "extraHoN", "distanceN","hvNsgaII","igdNsgaII","timeNsgaII"])
+        fitnessesNsga = dataNsga.get("fitnesses")
         for i, fitnessesPopulation in enumerate(fitnessesNsga):
                     for s, fitnessSolution in enumerate(fitnessesPopulation):
                         data.append([i,s+1, fitnessSolution[0], fitnessSolution[1], fitnessSolution[2],
                                 fitnessSolution[3], dataNsga.get("hv")[i], dataNsga.get("igd")[i], dataNsga.get("time")])
     df = pd.DataFrame(data, columns=colums)
-    df.to_excel(writer, sheet_name='metrics')
+    df.to_excel(writer, sheet_name ='metrics')
+    worksheet = wb['metrics']
+    columns  = worksheet.max_column
+    rows = worksheet.max_row
+    for c in range(4,columns+1):
+        worksheet.column_dimensions[chr(c+63)].bestFit = True
+        for r in range(2,rows+1):
+            worksheet.cell(row=r, column=c).number_format = '0.000'
+
     wb.save(path+"/metrics.xlsx")
     writer.close()
+
+def generate_parameter_optimizacion(evolutions: List[List[object]], columns, name):
+    time = datetime.datetime.now()
+    time = str(time.year)+"-"+str(time.month)+"-"+str(time.day) + \
+        "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
+    path = PATH_RESULTS+"optimizations/"+name+time+".xlsx"
+    writer = pd.ExcelWriter(path, engine='openpyxl')
+    data = []
+    for p, population in enumerate(evolutions):
+        for s in range(len(population[0])):
+            list = [p+1,s+1]
+            list.extend(population[0][s])
+            list.append(MAX_TIME_DURATION)
+            list.append(population[1][s])
+            data.append(list)
+    wb = writer.book
+    df = pd.DataFrame(data,columns=columns)
+    df.to_excel(writer, sheet_name ='optimizacion')
+    wb.save(path)
+    writer.close()
+

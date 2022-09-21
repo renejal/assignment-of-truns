@@ -1,6 +1,4 @@
 import copy
-from tkinter.tix import Select
-from types import ClassMethodDescriptorType
 from typing import List
 from conf import settings
 from dominio.Solution import Solution

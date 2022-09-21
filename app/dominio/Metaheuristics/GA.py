@@ -10,50 +10,29 @@ def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_ge
     # Defining the population size.
     # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
     pop_size = (sol_per_pop, num_weights)
-    best_outputs = []
-    for generation in range(num_generations):
+    data = []
+    for generation in range(num_generations-1):
         # Measuring the fitness of each chromosome in the population.
         fitness = cal_pop_fitness(new_population, view, algorithm)
-        print("Fitness")
-        print(fitness)
-
-        best_outputs.append(numpy.min(fitness))
-        # The best result in the current iteration.
-        print("Best result : ", numpy.min(fitness))
+        data.append([new_population,fitness])
 
         # Selecting the best parents in the population for mating.
         parents = select_mating_pool(new_population, fitness,num_parents_mating)
-        print("Parents")
-        print(parents)
 
         # Generating next generation using crossover.
         offspring_crossover = crossover(parents,offspring_size=(pop_size[0]-parents.shape[0], num_weights))
-        print("Crossover")
-        print(offspring_crossover)
 
         # Adding some variations to the offspring using mutation.
         offspring_mutation = mutation(offspring_crossover, algorithm ,  num_mutations= num_weights)
-        print("Mutation")
-        print(offspring_mutation)
 
         # Creating the new population based on the parents and offspring.
         new_population[0:parents.shape[0], :] = parents
         new_population[parents.shape[0]:, :] = offspring_mutation
-
     # Getting the best solution after iterating finishing all generations.
     # At first, the fitness is calculated for each solution in the final generation.
     fitness = cal_pop_fitness(new_population, view, algorithm)
-    # Then return the index of that solution corresponding to the best fitness.
-    best_match_idx = numpy.where(fitness == numpy.min(fitness))
-    best_solution = new_population[best_match_idx, :]
-<<<<<<< HEAD
-    print("Best solution : ", best_solution)
-    print("Best solution fitness : ", fitness[best_match_idx])
-    best_outputs.append(fitness[best_match_idx])
-    return best_solution, fitness[best_match_idx], best_outputs
-=======
-    return best_solution, fitness[best_match_idx]
->>>>>>> fb59b2d362de5153e8c710200048b1229ddd1e8e
+    data.append([new_population,fitness])
+    return data
 
 
 def cal_pop_fitness(population, view: GenerateShiftView, algorithm: str):
@@ -87,7 +66,6 @@ def crossover(parents, offspring_size):
         offspring[k, crossover_point:] = parents[parent2_idx, crossover_point:]
     return offspring
 
-
 def mutation(offspring_crossover, algorithm, num_mutations=1 ):
     mutations_counter = numpy.uint8(offspring_crossover.shape[1] / num_mutations)
     # Mutation changes a number of genes as defined by the num_mutations argument. The changes are random.
@@ -100,9 +78,8 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
             gene_idx = gene_idx + mutations_counter
     return offspring_crossover
 
-
 def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: str):
-    fitness = []
+    fitnesss = []
     max_iterations = 30
     for solution in population:
         if algorithm == "GRASP":
@@ -112,8 +89,8 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
                 solutions = view.executeGraspToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
-            fitness.append(hv_average/max_iterations)
+                hv_average+= Hipervolumen.calculate_hipervolumen_for_optimization(pf)
+            fitnesss.append(hv_average/max_iterations)
         else:
             hv_average = 0
             view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
@@ -121,9 +98,9 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
                 solutions = view.executeNsgaIIToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
-            fitness.append(hv_average/max_iterations)
-    return fitness
+                hv_average+= Hipervolumen.calculate_hipervolumen_for_optimization(pf)
+            fitnesss.append(hv_average/max_iterations)
+    return fitnesss
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":

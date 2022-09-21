@@ -60,7 +60,7 @@ class CrossingShift:
     def exchange_shift(self, soluction_A: Solution, soluction_B: Solution) -> Solution:
         """exchange shift of soluciton A for shift soluction B"""
         list_random = [] 
-        for i in range(settings.NUMBER_OF_CHILDREN_FOR_PARENTS):
+        for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
             component_a: Component = soluction_A.get_random_gen([])
             random_number = aleatory.get_random_int(0,len(component_a.site_schedule)-1, list_random)
             list_random.append(random_number)

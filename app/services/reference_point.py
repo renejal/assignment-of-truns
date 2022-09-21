@@ -1,18 +1,15 @@
 
 
-from typing import List
-
 import numpy as np
-
 
 class Reference_point:
 
     def get_reference_points_from_IGD(self):
         points = []
-        points.extend(self.get_reference_point_by_exis(0, [1, 2, 3], 0.1))
-        points.extend(self.get_reference_point_by_exis(1, [0, 2, 3], 0.1))
-        points.extend(self.get_reference_point_by_exis(2, [0, 1, 3], 0.1))
-        points.extend(self.get_reference_point_by_exis(3, [0, 1, 2], 0.1))
+        points.extend(self.get_reference_point_by_exis(0, [1, 2, 3], 0.2))
+        points.extend(self.get_reference_point_by_exis(1, [0, 2, 3], 0.2))
+        points.extend(self.get_reference_point_by_exis(2, [0, 1, 3], 0.2))
+        points.extend(self.get_reference_point_by_exis(3, [0, 1, 2], 0.2))
         tpls = [tuple(x) for x in points]
         mylist = list(dict.fromkeys(tpls))
         points = [list(x) for x in mylist]

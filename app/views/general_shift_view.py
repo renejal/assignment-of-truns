@@ -1,4 +1,5 @@
 from copy import deepcopy
+from datetime import datetime
 from typing import List
 from services.reference_point import Reference_point
 from dominio.Solution import Solution
@@ -42,7 +43,8 @@ class GenerateShiftView:
     def executeGraspToOptimize(self):
         print("Start Grasp")
         data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
-        return data_grasp[0]
+        #TODO unir todas las soluciones o solo retornar la final?
+        return data_grasp[len(data_grasp)-1]
 
     def executeNsga(self):
         print("Start Nsga")
@@ -55,7 +57,7 @@ class GenerateShiftView:
     def executeNsgaIIToOptimize(self):
         print("Start Nsga II")
         data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
-        return data_nsgaII[0]
+        return data_nsgaII[len(data_nsgaII)-1]
        
     def getMetrics(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
         metrics = {}
@@ -73,7 +75,7 @@ class GenerateShiftView:
         metrics["fitnesses"] = fitnesses
         metrics["hv"] = hv
         metrics["igd"] = igd
-        metrics["time"] = toc - tic
+        metrics["time"] = self.calculate_time(tic,toc)
         metrics["fig"] = fig
         return metrics
 
@@ -90,4 +92,14 @@ class GenerateShiftView:
             json_vigilantes = json.load(json_file)
             json_file.close()
         return DataVigilantes.from_dict(json_vigilantes).data_vigilantes
+    
+    def calculate_time(self, tic, toc):
+        d = datetime.utcfromtimestamp(toc - tic)
+        decimal_places = 3
+        ndigits = decimal_places - 6
+        r = round(d.microsecond, ndigits)
+        if r > 999999:
+            r = 999999
+        d = d.replace(microsecond=r)
+        return d.strftime("%H:%M:%S.%f")[:ndigits]
 
