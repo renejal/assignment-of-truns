@@ -18,7 +18,7 @@ class OptimizerParamets:
     """
     sol_per_pop = 10
     num_parents_mating = 2
-    num_generations = 2
+    num_generations = 3
 
     def __init__(self) -> None:
         pass
