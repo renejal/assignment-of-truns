@@ -21,12 +21,12 @@ class NsgaII(Algorithm):
 
     
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
-    ,tweak_amount_repetitions, population_amount_nsgaii) -> None:
+    ,NUMBER_ITERATION_SELECTION_COMPONENTE, population_amount_nsgaii) -> None:
     #TODO cambiar semilla
         self.MAX_EFOS = 99999999999999
-        self.CHILDREN_AMOUNT_TO_GENERATE = children_amount_to_generate
-        self.AMOUNT_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
-        self.TWEAK_AMOUNT_REPETITIONS = tweak_amount_repetitions
+        settings.NUMBER_OF_CHILDREN_GENERATE = children_amount_to_generate
+        settings.NUM_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
+        settings.NUMBER_ITERATION_SELECTION_COMPONENTE = NUMBER_ITERATION_SELECTION_COMPONENTE
         self.POPULATION_AMOUNT_NSGAII = population_amount_nsgaii
 
     def Execute(self, problem: VigilantAssigment):

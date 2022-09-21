@@ -18,6 +18,8 @@ EXTRA_HOURS_FITNESS_VALUE= 1
 INFINITE_POSITIVE = 100000000000000
 INFINITE_NEGATIVE = -100000000000000
 
+SEEDS = [722, 829, 616, 923, 150, 317, 101, 747, 75, 920, 870, 700, 338, 483, 573, 103,362,444,323,625,655,934,209,989,565,488,453,886,533,266 ]
+
 env1 = environ.Env(
     #GENERAL
     SETTINGS = (int, random.seed(0)), #SEED
@@ -34,7 +36,7 @@ env1 = environ.Env(
     MAX_EFOS_NSGAII =(int, 100), 
     POPULATION_AMOUNT_NSGAII = (int, 10),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
-    NUMBER_OF_CHILDREN_GENERATE=(int, 10),
+    NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
     #PorcetanjeCrossingNsgaii
     MISSING_SHIFT_CROSSING_PROBABILITY = (int, 50),

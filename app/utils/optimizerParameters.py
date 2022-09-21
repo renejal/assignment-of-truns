@@ -56,9 +56,9 @@ class OptimizerParamets:
     def get_nsgaII_population(self):
         new_population = []
         for i in range(0, self.sol_per_pop):
-            children_amount_to_generate = random.randrange(1, 2, 10)
-            amount_parents_of_ordered_population = random.randrange(1, 1, 10)
-            tweak_amount_repetitions = random.randrange(1, 1, 10)
+            children_amount_to_generate = random.randrange(2, 10, 1)
+            NUM_PARENTS_OF_ORDERED_POPULATION = random.randrange(0.1, 1, 0.1)
+            NUMBER_ITERATION_SELECTION_COMPONENTE = random.randrange(5,15,1)
             amount_population =  random.randrange(10, 20, 2)
-            new_population.append([children_amount_to_generate, amount_parents_of_ordered_population, tweak_amount_repetitions, amount_population])
+            new_population.append([children_amount_to_generate, NUM_PARENTS_OF_ORDERED_POPULATION, NUMBER_ITERATION_SELECTION_COMPONENTE, amount_population])
         return numpy.array(new_population)

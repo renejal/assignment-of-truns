@@ -1,3 +1,4 @@
+import random
 from dominio.model.problem import DataUser
 from views.general_shift_view import GenerateShiftView
 from utils.print_xls import generate_results

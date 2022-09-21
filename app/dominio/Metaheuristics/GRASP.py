@@ -25,7 +25,6 @@ class Grasp(Algorithm):
 
     def setParameters(self,components_amount,restricted_list
     ,tweak_amount_repetitions, amount_population) -> None:
-    #TODO cambiar semilla
         self.MAX_EFOS = 99999999999999
         self.COMPONENTS_AMOUNT = components_amount
         if restricted_list >= components_amount:
