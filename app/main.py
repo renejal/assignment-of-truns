@@ -8,12 +8,12 @@ class Main:
     def __init__(self,data) -> None:   
 
         view = GenerateShiftView(data)
-        dataNsga = view.executeNsga()
-        dataGrasp = view.executeGrasp()
+        # dataNsga = view.executeNsga()
+        # dataGrasp = view.executeGrasp()
         # dataGrasp = None
         # dataNsga = None
-        generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        # OptimizerParamets().calculate_best_parameters(view)
+        # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        OptimizerParamets().calculate_best_parameters(view)
 
 
 

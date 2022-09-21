@@ -1,6 +1,6 @@
 import random
 import numpy
-from conf.settings import SETTINGS
+from conf.settings import SEEDS
 
 from views.general_shift_view import GenerateShiftView
 from utils.normalize import Normalize
@@ -88,7 +88,7 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
             hv_average = 0
             view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
-                random.seed(SETTINGS.SEEDS[i])
+                random.seed(SEEDS[i])
                 solutions = view.executeGraspToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
@@ -98,7 +98,7 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
             hv_average = 0
             view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
-                random.seed(SETTINGS.SEEDS[i])
+                random.seed(SEEDS[i])
                 solutions = view.executeNsgaIIToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
