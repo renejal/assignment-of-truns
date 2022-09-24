@@ -46,10 +46,10 @@ class OptimizerParamets:
     def get_grasp_population(self):
         new_population = []
         for i in range(0, self.sol_per_pop):
-            components_amount = random.randrange(10, 100, 10)
+            components_amount = random.randrange(10, 50, 10)
             restricted_list = random.randrange(2, 20, 2)
-            tweak_amount_repetitions = random.randrange(10, 100, 10)
-            amount_population =  random.randrange(10, 20, 2)
+            tweak_amount_repetitions = random.randrange(10, 30, 10)
+            amount_population =  random.randrange(5, 10, 2)
             new_population.append([components_amount, restricted_list, tweak_amount_repetitions, amount_population])
         return numpy.array(new_population)
     

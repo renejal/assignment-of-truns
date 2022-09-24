@@ -92,7 +92,7 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
                 solutions = view.executeGraspToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen_for_optimization(pf)
+                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
             fitnesss.append(hv_average/max_iterations)
         else:
             hv_average = 0
@@ -102,7 +102,7 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
                 solutions = view.executeNsgaIIToOptimize()
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen_for_optimization(pf)
+                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
             fitnesss.append(hv_average/max_iterations)
     return fitnesss
 
