@@ -40,11 +40,17 @@ class GenerateShiftView:
         fig = Graph(data_grasp).get_fig()
         return self.getMetrics(data_grasp,fig,ticGrasp,tocGrasp)
     
-    def executeGraspToOptimize(self):
+    def executeGraspToOptimize(self, amountPopulation):
         print("Start Grasp")
         data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
-        #TODO unir todas las soluciones o solo retornar la final?
-        return data_grasp[len(data_grasp)-1]
+        amountEvolutions = len(data_grasp)
+        lastEvolution = data_grasp[amountEvolutions-1]
+        if amountEvolutions == 1:
+            return lastEvolution
+        if(len(lastEvolution) >= amountPopulation):
+            return lastEvolution
+        else:
+            return data_grasp[amountEvolutions-2]
 
     def executeNsga(self):
         print("Start Nsga")
@@ -54,10 +60,17 @@ class GenerateShiftView:
         fig = Graph(data_nsgaii).get_fig()
         return self.getMetrics(data_nsgaii,fig ,ticNsga,tocNsga)
 
-    def executeNsgaIIToOptimize(self):
+    def executeNsgaIIToOptimize(self, amountPopulation):
         print("Start Nsga II")
         data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
-        return data_nsgaII[len(data_nsgaII)-1]
+        amountEvolutions = len(data_nsgaII)
+        lastEvolution = data_nsgaII[amountEvolutions-1]
+        if amountEvolutions == 1:
+            return lastEvolution
+        if(len(lastEvolution) >= amountPopulation):
+            return lastEvolution
+        else:
+            return data_nsgaII[amountEvolutions-2]
        
     def getMetrics(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
         metrics = {}

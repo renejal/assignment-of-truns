@@ -1,3 +1,4 @@
+import copy
 import random
 import numpy
 from conf.settings import SEEDS
@@ -25,7 +26,7 @@ def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_ge
         offspring_crossover = crossover(parents,offspring_size=(pop_size[0]-parents.shape[0], num_weights))
 
         # Adding some variations to the offspring using mutation.
-        offspring_mutation = mutation(offspring_crossover, algorithm ,  num_mutations= num_weights)
+        offspring_mutation = mutation(offspring_crossover, algorithm ,  num_mutations = 2)
 
         # Creating the new population based on the parents and offspring.
         new_population[0:parents.shape[0], :] = parents
@@ -45,16 +46,18 @@ def cal_pop_fitness(population, view: GenerateShiftView, algorithm: str):
 def select_mating_pool(pop, fitness, num_parents):
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
     parents = numpy.empty((num_parents, pop.shape[1]))
+    fitnessCopy =  copy.copy(fitness)
     for parent_num in range(num_parents):
-        min_fitness_idx = numpy.where(fitness == numpy.min(fitness))
-        min_fitness_idx = min_fitness_idx[0][0]
-        parents[parent_num, :] = pop[min_fitness_idx, :]
-        fitness[min_fitness_idx] = 99999999999
+        max_fitness_idx = numpy.where(fitnessCopy == numpy.max(fitnessCopy))
+        max_fitness_idx = max_fitness_idx[0][0]
+        parents[parent_num, :] = pop[max_fitness_idx, :]
+        fitnessCopy[max_fitness_idx] = -99999999999
     return parents
 
 
 def crossover(parents, offspring_size):
     offspring = numpy.empty(offspring_size)
+    #single point crossover
     # The point at which crossover takes place between two parents. Usually, it is at the center.
     crossover_point = numpy.uint8(offspring_size[1]/2)
     for k in range(offspring_size[0]):
@@ -69,27 +72,25 @@ def crossover(parents, offspring_size):
     return offspring
 
 def mutation(offspring_crossover, algorithm, num_mutations=1 ):
-    mutations_counter = numpy.uint8(offspring_crossover.shape[1] / num_mutations)
     # Mutation changes a number of genes as defined by the num_mutations argument. The changes are random.
     for idx in range(offspring_crossover.shape[0]):
-        gene_idx = mutations_counter - 1
         for mutation_num in range(num_mutations):
+            gene_idx = random.randint(0,3)
             # The random value to be added to the gene.
             random_value = get_mutation_value(algorithm , mutation_num)
             offspring_crossover[idx, gene_idx] = offspring_crossover[idx,gene_idx] + random_value
-            gene_idx = gene_idx + mutations_counter
     return offspring_crossover
 
 def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: str):
     fitnesss = []
-    max_iterations = 30
+    max_iterations = 1
     for solution in population:
         if algorithm == "GRASP":
             hv_average = 0
             view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
                 random.seed(SEEDS[i])
-                solutions = view.executeGraspToOptimize()
+                solutions = view.executeGraspToOptimize(len(population))
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
                 hv_average+= Hipervolumen.calculate_hipervolumen(pf)
@@ -99,29 +100,29 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
             view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
                 random.seed(SEEDS[i])
-                solutions = view.executeNsgaIIToOptimize()
+                solutions = view.executeNsgaIIToOptimize(len(population))
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
+                hv_average+= Hipervolumen.calculate_hipervolumen (pf)
             fitnesss.append(hv_average/max_iterations)
     return fitnesss
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":
         if mutation_num == 0:
-            return numpy.random.randint(0, 10)
+            return numpy.random.randint(1, 10)
         if mutation_num == 1:
-            return numpy.random.randint(0, 5)
+            return numpy.random.randint(1, 5)
         if mutation_num == 2:
-            return numpy.random.randint(0, 10)
+            return numpy.random.randint(1, 10)
         if mutation_num == 3:
-            return numpy.random.randint(0, 2)
+            return numpy.random.randint(1, 2)
     else:    
         if mutation_num == 0:
-            return numpy.random.randint(0, 2)
+            return numpy.random.randint(1, 2)
         if mutation_num == 1:
-            return numpy.random.randint(0, 2)
+            return numpy.random.randint(1, 2)
         if mutation_num == 2:
-            return numpy.random.randint(0, 5)
+            return numpy.random.randint(1, 5)
         if mutation_num == 3:
-            return numpy.random.randint(0, 2)
+            return numpy.random.randint(1, 2)
