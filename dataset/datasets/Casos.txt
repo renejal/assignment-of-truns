@@ -1,0 +1,77 @@
+Casos:
+Facil: 2 semanas
+2 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
+        Facil:
+            18 vigilantes
+        Medio: 16
+        hard: 14
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Facil:
+            7 vigilantes
+        Medio:
+            6 vigilantes
+        hard:
+            5 vigilantes
+    Mezclado:
+        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+         Facil:
+            14 vigilantes
+        Medio:
+            12 vigilantes
+        hard:
+            10 vigilantes
+20 sitios:
+
+100:sitios
+
+Medio: 1 mes
+2 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
+        Facil:
+            18 vigilantes
+        Medio: 16
+        hard: 14
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Facil:
+            7 vigilantes
+        Medio:
+            6 vigilantes
+        hard:
+            5 vigilantes
+    Mezclado:
+        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+         Facil:
+            14 vigilantes
+        Medio:
+            12 vigilantes
+        hard:
+            10 vigilantes
+duro: 6 meses
+2 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
+        Facil:
+            18 vigilantes
+        Medio: 16
+        hard: 14
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Facil:
+            7 vigilantes
+        Medio:
+            6 vigilantes
+        hard:
+            5 vigilantes
+    Mezclado:
+        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+         Facil:
+            14 vigilantes
+        Medio:
+            12 vigilantes
+        hard:
+            10 vigilantes

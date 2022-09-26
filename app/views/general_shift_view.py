@@ -8,11 +8,11 @@ from dominio.Metaheuristics.GRASP import Grasp
 from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from utils.hipervolumen import Hipervolumen
+from utils.igd import IGD
 from dominio.model.problem import DataSites, DataVigilantes
 import time
 import json
 import numpy as np
-from pymoo.factory import get_performance_indicator
 from utils.graph import Graph
 
 class GenerateShiftView:
@@ -82,8 +82,7 @@ class GenerateShiftView:
             fitnesses.append(solutionsNormalized)
             pf = np.array(solutionsNormalized)
             hv.append(Hipervolumen.calculate_hipervolumen(pf))
-            igdPerformance = get_performance_indicator("igd", np.array(self.__reference_points_IGD))
-            igd.append(igdPerformance.do(np.array(pf)))
+            igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
         metrics["evolutions"] = evolutions
         metrics["fitnesses"] = fitnesses
         metrics["hv"] = hv
