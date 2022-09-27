@@ -24,8 +24,8 @@ class OptimizerParamets:
         pass
 
     def calculate_best_parameters(self, view: GenerateShiftView):
-        self.generate_grasp_optimization(view)
-        # self.generate_nsgaII_optimization(view)
+        # self.generate_grasp_optimization(view)
+        self.generate_nsgaII_optimization(view)
 
 
     def generate_grasp_optimization(self,view: GenerateShiftView):
@@ -57,7 +57,7 @@ class OptimizerParamets:
         new_population = []
         for i in range(0, self.sol_per_pop):
             children_amount_to_generate = random.randrange(2, 10, 1)
-            NUM_PARENTS_OF_ORDERED_POPULATION = random.randrange(0.1, 1, 0.1)
+            NUM_PARENTS_OF_ORDERED_POPULATION = random.uniform(0, 1)
             NUMBER_ITERATION_SELECTION_COMPONENTE = random.randrange(5,15,1)
             amount_population =  random.randrange(10, 20, 2)
             new_population.append([children_amount_to_generate, NUM_PARENTS_OF_ORDERED_POPULATION, NUMBER_ITERATION_SELECTION_COMPONENTE, amount_population])

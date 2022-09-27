@@ -75,7 +75,7 @@ class Population():
             rango = +1
         if len(population) <= num_soluction:
             return population
-            # raise("No se encontro el numero de soluciones requeridas")
+            # raise("No se encontro el numero de soluciones requeridas") 
         return population[:num_soluction]
 
     def get_soluction_the_frente_whit_range(self, range: int):
