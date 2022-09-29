@@ -33,7 +33,9 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/nsgaii/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/nsgaii/vigilantSolution"+str(index))
+        print("paso 1")
         dataNsga.get("fig").write_image(path+"/figNsga.png")
+        print("paso 2")
         dataNsga.get("fig").write_html(path+"/figNsgaHtml.html")
     generate_metrics(dataGrasp, dataNsga, path)
 
