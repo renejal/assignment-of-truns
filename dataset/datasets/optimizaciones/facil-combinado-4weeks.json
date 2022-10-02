@@ -6,6 +6,7 @@
             "total_weeks": 4,
             "initialHour": 6,
             "is_special_site": false,
+            "hours_extra_last_week": 6,
             "weeks_schedule": [
                 {
                     "days": [
@@ -398,6 +399,7 @@
             "total_weeks": 4,
             "initialHour": 22,
             "is_special_site": false,
+            "hours_extra_last_week": 6,
             "weeks_schedule": [
                 {
                     "days": [
