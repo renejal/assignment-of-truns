@@ -1,5 +1,6 @@
 import copy
 from typing import List
+from dominio.model.site import Site
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
@@ -46,10 +47,10 @@ class Solution:
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []
-        site_id: int = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
-        shifts: List[Shift] = self.problem.get_shifts_on_site(site_id)
+        site: Site = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
+        shifts: List[Shift] = self.problem.get_shifts_on_site(site.id)
         for component in range(components_new_amount):
-            component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
+            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
             components.append(component)
         return components
 

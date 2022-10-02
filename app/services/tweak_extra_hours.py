@@ -1,10 +1,9 @@
 
-from random import shuffle
 import random
 from typing import List, Tuple
 
 import numpy as np
-from conf.settings import MAX_TOTAL_WEEKS
+from conf import settings
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -66,7 +65,7 @@ class Tweak_extra_hours:
         vigilant_with_hour_to_work.assign_shift(shift.shift,shift.site_id)
 
     def  get_available_vigilantes_to_work_by_prioritys(self,vigilantes: List[Vigilant]) -> List[List[List[Vigilant]]]:
-        vigilantes_with_hours_to_work: List[List[List[Vigilant]]] =  np.array([[[],[],[]]]* MAX_TOTAL_WEEKS, dtype=object).tolist() 
+        vigilantes_with_hours_to_work: List[List[List[Vigilant]]] =  np.array([[[],[],[]]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
         range_prioritys: List[Tuple] = [(1,39),(40,55),(0,0)]
         for vigilant in vigilantes:
             for index_range, range in enumerate(range_prioritys):
@@ -76,7 +75,7 @@ class Tweak_extra_hours:
         return vigilantes_with_hours_to_work 
 
     def get_vigilantes_with_extra_hours_by_week(self, vigilantes: List[Vigilant]) -> List[List[Vigilant]]:
-        vigilantes_with_extra_hours_by_week = np.array([[]]* MAX_TOTAL_WEEKS, dtype=object).tolist() 
+        vigilantes_with_extra_hours_by_week = np.array([[]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
         for vigilant in vigilantes:
             for index, hours_worked_on_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hours_worked_on_week > 48:

@@ -1,11 +1,11 @@
-from cgi import print_arguments
+import math
 import operator
 from typing import Dict, List
 from dominio.model.site import Site
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
 from services.shifts_generation_service import Shifts_generation_service
-from conf.settings import MAX_TOTAL_WEEKS
+from conf import settings
 
 class VigilantAssigment:
     
@@ -20,10 +20,10 @@ class VigilantAssigment:
     max_possible_fitness: List[int]
 
     DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
-    MAX_TOTAL_WEEKS = MAX_TOTAL_WEEKS
 
     def __init__(self, vigilantes: List[Vigilant], sites: List[Site]) -> None:
         self.vigilantes = vigilantes
+        self.total_vigilantes = len(vigilantes)
         self.sites = sites
         self.total_sites = len(sites)
         self.expected_places_to_look_out_by_vigilants = {}
@@ -38,7 +38,7 @@ class VigilantAssigment:
             if vigilant.default_place_to_look_out!= -1:
                 vigilant.default_place_to_look_out = sitesDict.get(vigilant.default_place_to_look_out)
             vigilant.closet_place = sitesDict.get(vigilant.closet_place)
-            vigilant.set_total_hours_worked_by_week(self.MAX_TOTAL_WEEKS)
+            vigilant.set_total_hours_worked_by_week(settings.MAX_TOTAL_WEEKS)
             if vigilant.default_place_to_look_out != self.DEFAULT_PLACE_TO_LOOK_OUT_FORMAT:
                 if vigilant.default_place_to_look_out in self.expected_places_to_look_out_by_vigilants:
                     self.expected_places_to_look_out_by_vigilants[vigilant.default_place_to_look_out].append(vigilant.id)
@@ -57,17 +57,30 @@ class VigilantAssigment:
         for site in sites:
             total_missing_shifts += site.total_missing_shifts
             minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
-            max_extra_hours += site.max_extra_hours
+        for week in range(settings.MAX_TOTAL_WEEKS):
+            hours_by_week = 0
+            for site in sites:
+                if week < len(site.hours_to_work_by_week):
+                    hours_by_week += site.hours_to_work_by_week[week]
+            amount_vigilants_with_hours_extra = math.floor(hours_by_week/49)
+            if  amount_vigilants_with_hours_extra > self.total_vigilantes:
+                max_extra_hours+= self.total_vigilantes
+            else:
+                max_extra_hours += amount_vigilants_with_hours_extra
         self.max_possible_fitness[0] = total_missing_shifts
         self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = len(vigilantes) * (len(sites)-1) * 2
+        self.max_possible_fitness[3] = self.total_vigilantes * (len(sites)-1) * 2
 
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}
+        max_weeks = 0
         for index, site in enumerate(sites):
             site.id = index + 1 
             sitesDict[site.description] = site.id
+            if site.total_weeks > max_weeks:
+                max_weeks = site.total_weeks
+        settings.MAX_TOTAL_WEEKS = max_weeks
         return sitesDict
 
     def sorted_sites_by_vigilant_amount(self, shifts_by_sites:List[List[Shift]] ):
@@ -90,8 +103,8 @@ class VigilantAssigment:
     def get_order_site_by_vigilantes_amount(self, pos: int) -> int:
         return self.get_site(self.order_sites_by_id_vigilantes_amount[pos])
 
-    def get_site(self, site_id:int) -> int:
-        return self.sites[site_id-1].id
+    def get_site(self, site_id:int) -> Site:
+        return self.sites[site_id-1]
 
     def get_shifts_on_site(self, site_id:int) -> List[Shift]:
         return self.shifts_by_sites[site_id-1]

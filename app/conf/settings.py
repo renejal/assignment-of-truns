@@ -1,7 +1,8 @@
 import random
 import environ
 
-MAX_TIME_DURATION = 600 #oneDay
+MAX_TOTAL_WEEKS = 0
+MAX_TIME_DURATION = 3600 #oneDay
 # MAX_TIME_DURATION = 1 #oneDay
 PATH_RESULTS = "dataset/results/"
 
@@ -23,7 +24,6 @@ SEEDS = [722, 829, 616, 923, 150, 317, 101, 747, 75, 920, 870, 700, 338, 483, 57
 env1 = environ.Env(
     #GENERAL
     SETTINGS = (int, random.seed(0)), #SEED
-    MAX_TOTAL_WEEKS= (int, 4), 
     
     #Probability to choose a objective to optimize in one solution
     MISSING_SHIFT_PROBABILITY = (int, 50),
@@ -33,8 +33,8 @@ env1 = environ.Env(
 
     #NSGAII
     #PARAMETERS
-    MAX_EFOS_NSGAII =(int, 100), 
-    POPULATION_AMOUNT_NSGAII = (int, 10),
+    MAX_EFOS_NSGAII =(int, 10), 
+    POPULATION_AMOUNT_NSGAII = (int, 40),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
@@ -63,7 +63,6 @@ env = env1
 
 #GENERAL
 SETTINGS = env("SETTINGS")
-MAX_TOTAL_WEEKS = env("MAX_TOTAL_WEEKS")
 # SEED = env("SEED")
 #Probability to choose a objective to optimize in one solution
 MISSING_SHIFT_PROBABILITY = env("MISSING_SHIFT_PROBABILITY")

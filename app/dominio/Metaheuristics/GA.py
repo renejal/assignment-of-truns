@@ -83,14 +83,16 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
 
 def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: str):
     fitnesss = []
-    max_iterations = 1
+    max_iterations = 10
     for solution in population:
         if algorithm == "GRASP":
             hv_average = 0
             view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
                 random.seed(SEEDS[i])
-                solutions = view.executeGraspToOptimize(len(population))
+                datasetfacil = view.executeGraspToOptimize(len(population))
+                datasetmedio = view.executeGraspToOptimize(len(population))
+                datasetdificil = view.executeGraspToOptimize(len(population))
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
                 hv_average+= Hipervolumen.calculate_hipervolumen(pf)

@@ -6,10 +6,14 @@ from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALU
 
 class Normalize:
 
-    missing_shifts_fitness_acceptable_porcentage: float = 0.95
-    assigned_vigilantes_acceptable_porcentage: float = 0.2
-    extra_hours_acceptable_porcentage: float = 0.2
-    distance_acceptable_porcentage: float = 0.1
+    missing_shifts_fitness_acceptable_porcentage: float = 0
+    assigned_vigilantes_acceptable_porcentage: float = 0
+    extra_hours_acceptable_porcentage: float = 0
+    distance_acceptable_porcentage: float = 0
+    # missing_shifts_fitness_acceptable_porcentage: float = 0.95
+    # assigned_vigilantes_acceptable_porcentage: float = 0.2
+    # extra_hours_acceptable_porcentage: float = 0.2
+    # distance_acceptable_porcentage: float = 0.1
     fitnessMax: List[int]
 
     def normalizeFitness(self, population: List[Solution]) -> List[Solution]:
@@ -37,6 +41,8 @@ class Normalize:
     def normalize(self, valor, maximo, minimo):
         if maximo == 0:
             return 0
+        if (valor-minimo)/(maximo-minimo) >1:
+            print("")
         return (valor-minimo)/(maximo-minimo)
 
     def getMaxFitnessSolution(self, solution: Solution, fitnessMax: List[int]):

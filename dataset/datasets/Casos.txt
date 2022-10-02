@@ -3,75 +3,66 @@ Facil: 2 semanas
 2 sitios:
     FullTime:
         2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
-        Facil:
-            18 vigilantes
+        Facil: 17
         Medio: 16
         hard: 14
     Parcial:
         Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
         Facil:
-            7 vigilantes
-        Medio:
             6 vigilantes
-        hard:
+        Medio:
             5 vigilantes
-    Mezclado:
+        hard:
+            4 vigilantes
+    Probar Optimizacion Mezclado:
         Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
          Facil:
-            14 vigilantes
-        Medio:
             12 vigilantes
-        hard:
+        Medio:
             10 vigilantes
-20 sitios:
-
-100:sitios
-
-Medio: 1 mes
-2 sitios:
+        hard:
+            8 vigilantes
+30 sitios:
     FullTime:
-        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
-        Facil:
-            18 vigilantes
-        Medio: 16
-        hard: 14
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  252
+        Facil: 255 
+        Medio: 250
+        hard: 240
     Parcial:
-        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  84
         Facil:
-            7 vigilantes
+            84 vigilantes
         Medio:
-            6 vigilantes
+            80 vigilantes
         hard:
-            5 vigilantes
-    Mezclado:
-        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+            75 vigilantes
+    Probar Optimizacion Mezclado:
+        10 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 10 sitio con full time de a 3 vig, vigilantes minimos requeridos  =  207
          Facil:
-            14 vigilantes
+            207 vigilantes
         Medio:
-            12 vigilantes
+            200 vigilantes
         hard:
-            10 vigilantes
-duro: 6 meses
-2 sitios:
+            195 vigilantes
+50 sitios:
     FullTime:
-        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
-        Facil:
-            18 vigilantes
-        Medio: 16
-        hard: 14
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  420
+       Facil: 420
+        Medio: 415
+        hard: 405 
     Parcial:
-        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  140
         Facil:
-            7 vigilantes
+            140 vigilantes
         Medio:
-            6 vigilantes
+            135 vigilantes
         hard:
-            5 vigilantes
-    Mezclado:
-        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+            125 vigilantes
+    Probar Optimizacion Mezclado:
+         20 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 15 sitio con 3 full time 5 con 4 full, vigilantes minimos requeridos  =  385
          Facil:
-            14 vigilantes
+            385 vigilantes
         Medio:
-            12 vigilantes
+            380 vigilantes
         hard:
-            10 vigilantes
+            375 vigilantes

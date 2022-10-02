@@ -29,7 +29,9 @@ class Shifts_generation_service:
         total_missing_shifts = 0
         minimum_necessary_vigilantes = 0
         last_shift_finished_at_end_day = False
-        shift_start_time = -1
+        shift_start_time = - 1
+        hours_extra_last_week = site.hours_extra_last_week 
+        special_end = False
         for index_week , week in enumerate(site.weeks_schedule):
             for index_day, day in enumerate(week.days):
                 for shift in day.working_day:
@@ -48,16 +50,30 @@ class Shifts_generation_service:
                         working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week].days[0].working_day[0].working_end + 1
                         if working_hours_amount > self.__MAX_HOURS_TO_WORK:
                             working_hours_amount = self.__MAX_HOURS_TO_WORK
-                        last_shift_finished_at_end_day = True     
+                        last_shift_finished_at_end_day = True 
+                    elif shift.working_end == self.__END_HOUR_TO_WORK and day.id == 6 and index_week + 1 == total_weeks and hours_extra_last_week !=0:
+                        working_hours_amount = shift_end_time - shift_start_time + hours_extra_last_week + 1
+                        if working_hours_amount > self.__MAX_HOURS_TO_WORK:
+                            hours_extra_last_week = working_hours_amount - self.__MAX_HOURS_TO_WORK
+                            working_hours_amount = self.__MAX_HOURS_TO_WORK
+                            special_end = True         
                     else:                         
                         working_hours_amount =  shift_end_time - shift_start_time + 1
                         last_shift_finished_at_end_day = False
                     hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
                     for index_shift, hours_amount_to_work in enumerate(hours_amount_to_work_by_shift):
-                        shifts.append(Shift(index_shift, shift_start_time , shift_start_time + hours_amount_to_work -1  , shift.num_vigilantes))
+                        shifts.append(Shift(index_shift, shift_start_time - hours_extra_last_week , shift_start_time + hours_amount_to_work - hours_extra_last_week -1  , shift.num_vigilantes))
                         shift_start_time += hours_amount_to_work
                         total_missing_shifts+=shift.num_vigilantes
                         minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
+                    if special_end == True:
+                        working_hours_amount = hours_extra_last_week
+                        hours_amount_to_work_by_shift = ideal_hours_amount_to_work[working_hours_amount]
+                        for index_shift, hours_amount_to_work in enumerate(hours_amount_to_work_by_shift):
+                            shifts.append(Shift(index_shift, shift_start_time - hours_extra_last_week , shift_start_time + hours_amount_to_work - hours_extra_last_week -1  , shift.num_vigilantes))
+                            shift_start_time += hours_amount_to_work
+                            total_missing_shifts+=shift.num_vigilantes
+                            minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
         return shifts,total_missing_shifts,minimum_necessary_vigilantes
         
     def create_shifts_in_special_site(self,site: Site, total_weeks : int) -> List[Shift]:
@@ -83,4 +99,4 @@ class Shifts_generation_service:
     def calculate_max_fitness(self,site: Site, total_missing_shifts,minimum_necessary_vigilantes) -> None:
         site.total_missing_shifts = total_missing_shifts
         site.minimum_necessary_vigilantes = math.ceil(minimum_necessary_vigilantes/(40*site.total_weeks))
-        site.calculate_max_extra_hours()
+        site.calculate_hours_to_work_by_week()

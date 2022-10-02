@@ -49,7 +49,6 @@ class Site_schedule_service:
         if not vigilantes:
             return None
         random.shuffle(vigilantes)
-        #TODO validar que no se puedan asignar vigilantes que tengan sitio por defecto
         for possible_vigilant_to_assing in vigilantes:
             if possible_vigilant_to_assing.id not in assigned_vigilants_in_actual_shift and (possible_vigilant_to_assing.default_place_to_look_out == site_id or possible_vigilant_to_assing.default_place_to_look_out == -1):
                 if self.vigilant_assigment_service.is_vigilant_avaible(possible_vigilant_to_assing, shift):

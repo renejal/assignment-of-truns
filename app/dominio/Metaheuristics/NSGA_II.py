@@ -22,7 +22,6 @@ class NsgaII(Algorithm):
     
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
     ,NUMBER_ITERATION_SELECTION_COMPONENTE, population_amount_nsgaii) -> None:
-    #TODO cambiar semilla
         self.MAX_EFOS = 99999999999999
         settings.NUMBER_OF_CHILDREN_GENERATE = children_amount_to_generate
         settings.NUM_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population

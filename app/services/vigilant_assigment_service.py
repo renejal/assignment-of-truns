@@ -22,7 +22,6 @@ class Vigilant_assigment_service:
             return False
         if self.is_available_on_shift(vigilant, shift) == False:
             return False 
-        #TODO work on sunday
         return True          
 
     def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
