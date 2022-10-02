@@ -1,8 +1,7 @@
 import copy
 import random
 import numpy
-from conf.settings import SEEDS
-
+from conf import settings
 from views.general_shift_view import GenerateShiftView
 from utils.normalize import Normalize
 import numpy as np
@@ -89,10 +88,11 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
             hv_average = 0
             view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
-                random.seed(SEEDS[i])
-                datasetfacil = view.executeGraspToOptimize(len(population))
-                datasetmedio = view.executeGraspToOptimize(len(population))
-                datasetdificil = view.executeGraspToOptimize(len(population))
+                random.seed(settings.SEEDS[i])
+                solutions = view.executeGraspToOptimize(len(population))
+                # datasetfacil = view.executeGraspToOptimize(len(population))
+                # datasetmedio = view.executeGraspToOptimize(len(population))
+                # datasetdificil = view.executeGraspToOptimize(len(population))
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)
                 hv_average+= Hipervolumen.calculate_hipervolumen(pf)
@@ -101,7 +101,7 @@ def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: st
             hv_average = 0
             view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
             for i in range(max_iterations):
-                random.seed(SEEDS[i])
+                random.seed(settings.SEEDS[i])
                 solutions = view.executeNsgaIIToOptimize(len(population))
                 solutionsNormalized = Normalize().normalizeFitness(solutions)
                 pf = np.array(solutionsNormalized)

@@ -23,10 +23,11 @@ class NsgaII(Algorithm):
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
     ,NUMBER_ITERATION_SELECTION_COMPONENTE, population_amount_nsgaii) -> None:
         self.MAX_EFOS = 99999999999999
-        settings.NUMBER_OF_CHILDREN_GENERATE = children_amount_to_generate
+        print("*********children_amount_to_generate", children_amount_to_generate)
+        settings.NUMBER_OF_CHILDREN_GENERATE = int(children_amount_to_generate)
         settings.NUM_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
-        settings.NUMBER_ITERATION_SELECTION_COMPONENTE = NUMBER_ITERATION_SELECTION_COMPONENTE
-        self.POPULATION_AMOUNT_NSGAII = population_amount_nsgaii
+        settings.NUMBER_ITERATION_SELECTION_COMPONENTE = int(NUMBER_ITERATION_SELECTION_COMPONENTE)
+        self.POPULATION_AMOUNT_NSGAII = int(population_amount_nsgaii)
 
     def Execute(self, problem: VigilantAssigment):
         self.CURRENT_TIMEOUT = time.time()
