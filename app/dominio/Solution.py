@@ -105,12 +105,26 @@ class Solution:
                 continue
             return gen
         
-    
-    def get_best_componente_by_fitnnes(self,fitnessToOptimize,rango_percentage):
-        """Obtiene el mejor gen de un rango porsentual de la lista obtenidad ordenada por fitnnes"""
-        return  Order.order_sitio_of_objective_value(self.sites_schedule,fitnessToOptimize)
-        
-    
+    def get_gen(self, id):
+        for gen in self.sites_schedule:
+            if gen.site_id == id:
+                return gen
+        raise(f"no se encontro gen con id {id}")
+
+
+    def get_bad_by_fitnnes(self, fitness_to_optimeze) -> Component:
+        """_summary_: obtiene el gen con peor fitnnes de la solucion
+
+        Args:
+            fitness_to_optimeze (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        # ordenar la solucion por fitnes posicion
+        gens = Order.order_sitio_of_objective_value(self.sites_schedule,fitness_to_optimeze)
+        return self.get_gen(gens[0].site_id)
+
     def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
         for gen in self.sites_schedule:
             for vigilant_id in gen.assigned_Vigilantes:

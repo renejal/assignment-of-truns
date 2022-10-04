@@ -8,7 +8,9 @@ class Order:
         return result
 
     @classmethod
-    def order_sitio_of_objective_value(self, components: List[Component], fitnessToOptimize, par_reverse=True) -> Component:
+    def order_sitio_of_objective_value(self, components: List[Component], fitnessToOptimize, par_reverse=True) -> List[Component]:
         result = sorted(components, key = lambda component : component.get_fitness_by_criteria(fitnessToOptimize), reverse=par_reverse) # reserve = True: ordena descendente
+        if not result:
+            raise("no se encontro genes")
         return result
     

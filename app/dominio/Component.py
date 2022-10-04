@@ -74,7 +74,7 @@ class Component:
             return self.distance_fitness
 
     def order_workings_days(self):
-        "ordenamiento por seleccios"
+        "ordena los workings days de el componente self"
         for i in range(len(self.site_schedule)):
             temp = i
             for j in range(i+1, len(self.site_schedule)):

@@ -1,6 +1,7 @@
 from cgi import print_arguments
+import random
 import sched
-from typing import List
+from typing import Dict, List
 import copy
 from pkg_resources import working_set
 from dominio.model.shift import Shift
@@ -35,7 +36,7 @@ class CrossingShift:
 
     @classmethod
     def crossing_vigilant_assigment(self, population:  List[Solution], objective_index=3):
-        """crossing enfocad en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
+        """crossing enfocado en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
             ordinaria
 
         Args:
@@ -45,16 +46,76 @@ class CrossingShift:
         Returns:
             Dos hijos resultantes del cruce entre los dos padres
         """
-        # selecionar un sitio con mejor fitnees de horas extra  y missing shift
-        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
-        gen = solution_A.get_best_componente_by_fitnnes("extra_hours", settings.NUM_PARENTS_OF_ORDERED_POPULATION)
+        #1. toma una de las mejores soluciones por facor de rango NUM_PARENTS_OF_ORDERED_POPULATION de la poblacion
+        parent = Crossing.get_best_parent(population, objective_index)
+        #1. tomar una gen con peor fitness del "parent"
+        gen = parent.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
+        #2. tomar un gen equivalente o similar con mejor fitnes de la poblacion en geneneral
+        best_gens_list = self.get_list_order_best_gen_similary_of_population(gen, population,"necesary_vigilantes")
+        #3. realizar el cruce de genes 
+        self.crossing_gen(population, best_gens_list[random.randint(0,len(best_gens_list)-1)])
+        #4 reparar genes afectados con criterios de obtimizacion
         # 2 . obtener el mejor vigilante del gen
-        childs = []
-        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
-        childs.append(child)
-        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
-        childs.append(child)
-        return childs
+        # beforeA = solution_A.fitness[3]
+        # beforeB =  solution_B.fitness[3]
+        # child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        # child.calculate_fitness()
+        # childs.append(child)
+        # child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        # child.calculate_fitness()
+        # childs.append(child)
+        # print(f"fitnnes A before {beforeA} -fater: {solution_A.fitness[3]}")
+        # print(f"fitnnes B before {beforeB} -fater: {solution_B.fitness[3]}")
+        # return childs
+        pass
+
+    def crossing_gen(self, gen_new:Component, gen_to_change_dict:Dict):
+        """realiza el cruce de un gen (gen new id) por (gen to change)
+
+        Args:
+            gen_new (Component): gen nuevo que se obtubo como mejor para reemplazar 
+            gen_to_change_id (Dict): gen a reemplazar
+        """
+        gen_to_change_id = random.choice(list(gen_to_change_dict.items()))
+        print(gen_to_change_dict)
+        get_to_change = random.shuffle(gen_to_change_dict)
+        get_to_change = gen_new # se realiza el intercambio
+        #1 , se procede al proced
+
+    @staticmethod
+    def get_list_order_best_gen_similary_of_population(gen_to_comparate: Component, population: List[Solution], objective_fitnnes):
+        """ obtiene lista  ordenada por la ponderacion del fitnes y la similitud al gen_to_comparate
+        la busqueda se hace en toda la poblacion para identificar que gen de que sonlucion puede aportar mejor fitnnes
+             0 = similitud 100%
+        Args:
+            gen_to_comparate (Componente): gen con el cual se va a comparar 
+            gen (Componente): gen para validar su similitud  
+        Returns:
+            list: lista ordenadas de los primrso 10  genes que reportarn mejor fitnnes y similitud
+        """
+        # 1. contar la hora de inicio y finalizacion de cada workign_day, ademas del numero de vigialantes 
+        simility_list = []
+        gen_to_comparate.order_workings_days()
+        for soluction in population:
+            for gen in soluction.sites_schedule:
+                gen.order_workings_days()
+                simility = 0
+                for shift_to_comparate_copy, shift in zip(gen_to_comparate.site_schedule, gen.site_schedule):
+                    if shift_to_comparate_copy.shift_start != shift.shift_start:
+                        simility +=1
+                    if shift_to_comparate_copy.shift_end != shift.shift_end:
+                        simility +=1
+                    fitnnes = gen.get_fitness_by_criteria(objective_fitnnes),
+                    simility_list.append({"id_soluction":soluction.id,
+                                          "id_gen":gen.site_id,
+                                          "simility": simility,
+                                          "fitnnes": fitnnes[0],
+                                          "fitnnes_simility": fitnnes[0] + simility
+                                          })
+        simility_list = sorted(simility_list, key= lambda gen: gen.get("fitnnes_simility"), reverse=False)
+        if len(simility_list) < 10:
+            raise("No hay un numero de genes suficientes")
+        return simility_list[0:10]
 
     @classmethod
     def exchange_shift(self, soluction_A: Solution, soluction_B: Solution) -> Solution:
