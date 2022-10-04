@@ -47,7 +47,7 @@ class Shifts_generation_service:
                             working_hours_amount = self.__MAX_HOURS_TO_WORK
                         last_shift_finished_at_end_day = True     
                     elif shift.working_end == self.__END_HOUR_TO_WORK and day.id == 6 and index_week + 1 < total_weeks and site.weeks_schedule[index_week+1].days[0].id == 0 and site.weeks_schedule[index_week+1].days[0].working_day[0].working_start == 0:
-                        working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week].days[0].working_day[0].working_end + 1
+                        working_hours_amount = shift.working_end - shift.working_start + site.weeks_schedule[index_week+1].days[0].working_day[0].working_end + 2
                         if working_hours_amount > self.__MAX_HOURS_TO_WORK:
                             working_hours_amount = self.__MAX_HOURS_TO_WORK
                         last_shift_finished_at_end_day = True 

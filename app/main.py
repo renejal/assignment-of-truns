@@ -13,9 +13,9 @@ class Main:
         # dataNsga = view.executeNsga()
         dataGrasp = view.executeGrasp()
         # dataGrasp = None
-        # dataNsga = None
-        # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        OptimizerParamets().calculate_best_parameters(view)
+        dataNsga = None
+        generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        # OptimizerParamets().calculate_best_parameters(view)
         print("exit")
 
 
