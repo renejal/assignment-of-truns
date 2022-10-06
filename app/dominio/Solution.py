@@ -52,6 +52,13 @@ class Solution:
             component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
             components.append(component)
         return components
+    
+    def set_gen(self, gen_id, obj_new_gen):
+        for gen in self.sites_schedule:
+            if gen.site_id == gen_id:
+                self.sites_schedule.remove(gen)
+                self.sites_schedule.append(obj_new_gen)
+                break
 
     def get_best_components(self, components: List[Component], restricted_components_amount: int):
         for iteration in range(restricted_components_amount):

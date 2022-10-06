@@ -16,6 +16,8 @@ class CrossingShift:
 
     @classmethod
     def crossing_hours_extras(self, population:  List[Solution], objective_index=1):
+        """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
+        objetivo mejoramiento horas extras"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
@@ -26,6 +28,8 @@ class CrossingShift:
 
     @classmethod
     def crossing_missing_shift(self, population:  List[Solution], objective_index=2):
+        """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
+        objetivo missing shift"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
@@ -49,41 +53,41 @@ class CrossingShift:
         #1. toma una de las mejores soluciones por facor de rango NUM_PARENTS_OF_ORDERED_POPULATION de la poblacion
         parent = Crossing.get_best_parent(population, objective_index)
         #1. tomar una gen con peor fitness del "parent"
-        gen = parent.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
+        bad_gen = parent.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
         #2. tomar un gen equivalente o similar con mejor fitnes de la poblacion en geneneral
-        best_gens_list = self.get_list_order_best_gen_similary_of_population(gen, population,"necesary_vigilantes")
-        #3. realizar el cruce de genes 
-        self.crossing_gen(population, best_gens_list[random.randint(0,len(best_gens_list)-1)])
-        #4 reparar genes afectados con criterios de obtimizacion
-        # 2 . obtener el mejor vigilante del gen
-        # beforeA = solution_A.fitness[3]
-        # beforeB =  solution_B.fitness[3]
-        # child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
-        # child.calculate_fitness()
-        # childs.append(child)
-        # child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
-        # child.calculate_fitness()
-        # childs.append(child)
-        # print(f"fitnnes A before {beforeA} -fater: {solution_A.fitness[3]}")
-        # print(f"fitnnes B before {beforeB} -fater: {solution_B.fitness[3]}")
-        # return childs
-        pass
+        best_gens_list = self.get_list_order_best_gen_similary_of_population(bad_gen, population,"necesary_vigilantes")
+        #2.1 mejor gen random de la lista restringida
+        best_gen_list = best_gens_list[random.randint(0,len(best_gens_list)-1)]
+        #3. obtiene el gen mejor reportado en la poblacion
+        best_gen = self.get_gen_of_dict(best_gen_list, population)
+        # 4 realiza el intercambio de gen
+        print(f"before crossing: {parent.total_fitness}")
+        parent.set_gen(bad_gen.site_id, best_gen)
+        parent.calculate_fitness()
+        print(f"after crossing: {parent.total_fitness}")
+        print("salio")
+        return [parent]
+        #5 Todo: reparar genes afectados con criterios de obtimizacion
 
-    def crossing_gen(self, gen_new:Component, gen_to_change_dict:Dict):
-        """realiza el cruce de un gen (gen new id) por (gen to change)
+    @classmethod
+    def get_gen_of_dict(self,gen_to_change_dict:dict, population):
+        best_soluction = self.get_gen_of_population(population, gen_to_change_dict)
+        best_gen = best_soluction.get_gen(gen_to_change_dict["id_gen"])
+        return best_gen
 
-        Args:
-            gen_new (Component): gen nuevo que se obtubo como mejor para reemplazar 
-            gen_to_change_id (Dict): gen a reemplazar
-        """
-        gen_to_change_id = random.choice(list(gen_to_change_dict.items()))
-        print(gen_to_change_dict)
-        get_to_change = random.shuffle(gen_to_change_dict)
-        get_to_change = gen_new # se realiza el intercambio
-        #1 , se procede al proced
+    @classmethod 
+    def get_gen_of_population(self, population: List[Solution], gen_to_change_dict):
+        s = None
+        for soluction in population:
+            if soluction.id == gen_to_change_dict["id_soluction"]:
+                s = soluction
+                break
+        if not soluction:
+            raise("No se Encontro solucion")
+        return s
 
-    @staticmethod
-    def get_list_order_best_gen_similary_of_population(gen_to_comparate: Component, population: List[Solution], objective_fitnnes):
+    @classmethod
+    def get_list_order_best_gen_similary_of_population(self, gen_to_comparate: Component, population: List[Solution], objective_fitnnes):
         """ obtiene lista  ordenada por la ponderacion del fitnes y la similitud al gen_to_comparate
         la busqueda se hace en toda la poblacion para identificar que gen de que sonlucion puede aportar mejor fitnnes
              0 = similitud 100%
