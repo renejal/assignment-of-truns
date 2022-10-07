@@ -6,16 +6,18 @@ from views.general_shift_view import GenerateShiftView
 from utils.normalize import Normalize
 import numpy as np
 from utils.hipervolumen import Hipervolumen
+from typing import List
 
 
-def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_generations, num_parents_mating):
+def execute_ga(new_population, views, algorithm, num_weights, sol_per_pop, num_generations, num_parents_mating):
     # Defining the population size.
     # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
     pop_size = (sol_per_pop, num_weights)
     data = []
     for generation in range(num_generations-1):
+        print("Generation"+ str(generation+1))
         # Measuring the fitness of each chromosome in the population.
-        fitness = cal_pop_fitness(new_population, view, algorithm)
+        fitness = cal_pop_fitness(new_population, views, algorithm)
         data.append([new_population,fitness])
 
         # Selecting the best parents in the population for mating.
@@ -32,14 +34,14 @@ def execute_ga(new_population, view, algorithm, num_weights, sol_per_pop, num_ge
         new_population[parents.shape[0]:, :] = offspring_mutation
     # Getting the best solution after iterating finishing all generations.
     # At first, the fitness is calculated for each solution in the final generation.
-    fitness = cal_pop_fitness(new_population, view, algorithm)
+    fitness = cal_pop_fitness(new_population, views, algorithm)
     data.append([new_population,fitness])
     return data
 
 
-def cal_pop_fitness(population, view: GenerateShiftView, algorithm: str):
+def cal_pop_fitness(population, views: List[GenerateShiftView], algorithm: str):
     # Calculating the fitness value of each solution in the current population.
-    return numpy.array(calculate_fitness_problem(population, view, algorithm))
+    return numpy.array(calculate_fitness_problem(population, views, algorithm))
 
 
 def select_mating_pool(pop, fitness, num_parents):
@@ -80,45 +82,51 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
             offspring_crossover[idx, gene_idx] = offspring_crossover[idx,gene_idx] + random_value
     return offspring_crossover
 
-def calculate_fitness_problem(population, view: GenerateShiftView, algorithm: str):
+def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
     fitnesss = []
     max_iterations = 10
     for solution in population:
+        print("new solution")
         if algorithm == "GRASP":
+            for view in views:
+                view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             hv_average = 0
-            view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
-            for i in range(max_iterations):
-                random.seed(settings.SEEDS[i])
-                solutions = view.executeGraspToOptimize(len(population))
-                # datasetfacil = view.executeGraspToOptimize(len(population))
-                # datasetmedio = view.executeGraspToOptimize(len(population))
-                # datasetdificil = view.executeGraspToOptimize(len(population))
-                solutionsNormalized = Normalize().normalizeFitness(solutions)
-                pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen(pf)
-            fitnesss.append(hv_average/max_iterations)
+            for view in views:
+                for i in range(max_iterations):
+                    random.seed(settings.SEEDS[i])
+                    solutions = view.executeGraspToOptimize(len(population))
+                    solutionsNormalized = Normalize().normalizeFitness(solutions)
+                    pf = np.array(solutionsNormalized)
+                    hv_average+= Hipervolumen.calculate_hipervolumen(pf)
         else:
+            for view in views:
+                view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
             hv_average = 0
-            view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
-            for i in range(max_iterations):
-                random.seed(settings.SEEDS[i])
-                solutions = view.executeNsgaIIToOptimize(len(population))
-                solutionsNormalized = Normalize().normalizeFitness(solutions)
-                pf = np.array(solutionsNormalized)
-                hv_average+= Hipervolumen.calculate_hipervolumen (pf)
-            fitnesss.append(hv_average/max_iterations)
+            for view in views:
+                print("new dataset")
+                for i in range(max_iterations):
+                    random.seed(settings.SEEDS[i])
+                    solutions = view.executeNsgaIIToOptimize(len(population))
+                    solutionsNormalized = Normalize().normalizeFitness(solutions)
+                    pf = np.array(solutionsNormalized)
+                    hv_average+= Hipervolumen.calculate_hipervolumen (pf)
+        fitnesss.append(hv_average/(max_iterations*len(views)))
     return fitnesss
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":
+        #Components Amount
         if mutation_num == 0:
-            return numpy.random.randint(1, 10)
+            return random.randrange(0, 21, 5)
+        #Restricted List
         if mutation_num == 1:
-            return numpy.random.randint(1, 5)
+            return random.randrange(0, 11, 2)
+        #TweakAmountRepetion
         if mutation_num == 2:
-            return numpy.random.randint(1, 10)
+            return random.randrange(0, 21, 5)
+        #amount_population
         if mutation_num == 3:
-            return numpy.random.randint(1, 2)
+            return random.randrange(0, 11, 5)
     else:    
         if mutation_num == 0:
             return numpy.random.randint(1, 2)
