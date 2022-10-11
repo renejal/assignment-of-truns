@@ -7,7 +7,7 @@ from utils.print_xls import generate_results
 class Main:
     def __init__(self,data) -> None:   
         random.seed(SEEDS[0])   
-        view = GenerateShiftView(data)
+        view = GenerateShiftView(data, None)
         dataGrasp = None
         dataNsga = None
         # dataNsga = view.executeNsga()

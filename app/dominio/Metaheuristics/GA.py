@@ -92,6 +92,7 @@ def calculate_fitness_problem(population, views: List[GenerateShiftView], algori
                 view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
             hv_average = 0
             for view in views:
+                settings.MAX_TIME_DURATION = view.time
                 for i in range(max_iterations):
                     random.seed(settings.SEEDS[i])
                     solutions = view.executeGraspToOptimize(len(population))
@@ -103,6 +104,7 @@ def calculate_fitness_problem(population, views: List[GenerateShiftView], algori
                 view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
             hv_average = 0
             for view in views:
+                settings.MAX_TIME_DURATION = view.time
                 print("new dataset")
                 for i in range(max_iterations):
                     random.seed(settings.SEEDS[i])

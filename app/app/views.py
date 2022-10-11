@@ -15,8 +15,7 @@ class CSVUploadHandler(APIView):
         converted_request = Request(request._request, parsers=[JSONParser()]).data
         algorithm = converted_request.get("algorithm")
         filesNames = converted_request.get("filesNames")
-        time = converted_request.get("time")
-        OptimizerParamets(algorithm, filesNames, time)
+        OptimizerParamets(algorithm, filesNames)
         return Response({}, status=status.HTTP_200_OK)
 
     def post(self, request: Request) -> Response:

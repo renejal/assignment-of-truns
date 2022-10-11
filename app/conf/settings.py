@@ -25,10 +25,10 @@ env1 = environ.Env(
     SETTINGS = (int, random.seed(0)), #SEED
     
     #Probability to choose a objective to optimize in one solution
-    MISSING_SHIFT_PROBABILITY = (int, 50),
-    ASSIGNED_VIGILANTES_PROBABILITY = (int, 30),
-    EXTRA_HOURS_PROBABILITY = (int, 15),
-    DISTANCE_GRASP_PROBABILITY = (int, 5),
+    MISSING_SHIFT_PROBABILITY = (int, 25),
+    ASSIGNED_VIGILANTES_PROBABILITY = (int, 25),
+    EXTRA_HOURS_PROBABILITY = (int, 25),
+    DISTANCE_GRASP_PROBABILITY = (int, 25),
 
     #NSGAII
     #PARAMETERS
@@ -51,10 +51,10 @@ env1 = environ.Env(
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 8),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 30),
     #PorcetanjeTweaksGRASP
-    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 50),
-    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 30),
-    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 15),
-    DISTANCE_TWEAK_PROBABILITY = (int, 5)
+    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 25),
+    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 25),
+    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 25),
+    DISTANCE_TWEAK_PROBABILITY = (int, 25)
 )
 
 # envirom exect

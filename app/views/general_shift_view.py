@@ -17,7 +17,7 @@ from utils.graph import Graph
 
 class GenerateShiftView:
 
-    def __init__(self, data: object):
+    def __init__(self, data: object, time: int):
         self.__data_sites = self.create_sites(data)
         self.__data_vigilantes = self.create_vigilantes(data)
         self.__myProblem: VigilantAssigment = VigilantAssigment(
@@ -25,6 +25,7 @@ class GenerateShiftView:
         self.algoritmGrasp = Grasp()
         self.algoritmNSGAII = NsgaII()
         self.__reference_points_IGD = Reference_point().get_reference_points_from_IGD()
+        self.time = time
 
     def create_sites(self, data) -> json:
         return DataSites.from_dict(data).data_sites

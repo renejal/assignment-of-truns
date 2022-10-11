@@ -23,18 +23,20 @@ class OptimizerParamets:
     num_parents_mating = 2
     num_generations = 3
     
-    def __init__(self, algorithm: str, filesNames: List[str], time: int) -> None:
-        settings.MAX_TIME_DURATION = time
-        self.calculate_best_parameters(algorithm, filesNames)
+    def __init__(self, algorithm: str, filesData: List[str]) -> None:
+        self.calculate_best_parameters(algorithm, filesData)
         
 
-    def calculate_best_parameters(self, algorithm: str, filesNames: List[str]):
+    def calculate_best_parameters(self, algorithm: str, filesData: List[object]):
         random.seed(SEEDS[0])   
         views = []
-        for file in filesNames:
-            data = open('./dataset/datasets/optimizaciones/'+ file)
+        for file in filesData:
+            name = file.get("name")
+            time = file.get("time")
+
+            data = open('./dataset/datasets/optimizaciones/'+ name)
             data = json.load(data)
-            views.append(GenerateShiftView(data))
+            views.append(GenerateShiftView(data, time))
         if algorithm == 'GRASP':
             self.generate_grasp_optimization(views)
         else:

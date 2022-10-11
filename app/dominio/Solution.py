@@ -32,7 +32,7 @@ class Solution:
     def __init__(self, problem: VigilantAssigment):
         self.site_schedule_service = Site_schedule_service(problem)
         self.problem = problem
-        self.sites_schedule = []
+        self.sites_schedule = [None] * len(problem.sites)
         self.vigilantes_schedule = copy.deepcopy(problem.vigilantes)
         self.__iteration = 0
         self.dominate_me = 0
@@ -70,7 +70,7 @@ class Solution:
         return restrictedList[random.randint(0, restricted_components_amount-1)]
 
     def merge_component(self, component : Component):
-        self.sites_schedule.append(component)
+        self.sites_schedule[component.site_id-1] = component
         self.__iteration += 1
         # if component.assigned_Vigilantes. == None:
         #     return

@@ -1,10 +1,9 @@
 Casos:
-Facil: 2 semanas
 2 sitios:
     FullTime:
         2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
         Facil: 17
-        Medio: 16
+        Medio: 15
         hard: 14
     Parcial:
         Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
@@ -63,6 +62,6 @@ Facil: 2 semanas
          Facil:
             385 vigilantes
         Medio:
-            380 vigilantes
-        hard:
             375 vigilantes
+        hard:
+            370 vigilantes
