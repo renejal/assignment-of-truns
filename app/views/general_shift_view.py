@@ -20,8 +20,8 @@ class GenerateShiftView:
     def __init__(self, data: object, time: int):
         self.__data_sites = self.create_sites(data)
         self.__data_vigilantes = self.create_vigilantes(data)
-        self.__myProblem: VigilantAssigment = VigilantAssigment(
-            self.__data_vigilantes, self.__data_sites)
+        expected_vigilantes = data.get("expected_vigilantes")
+        self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites, expected_vigilantes)
         self.algoritmGrasp = Grasp()
         self.algoritmNSGAII = NsgaII()
         self.__reference_points_IGD = Reference_point().get_reference_points_from_IGD()

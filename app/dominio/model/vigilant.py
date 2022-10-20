@@ -18,8 +18,10 @@ class Vigilant(FromDictMixin):
     closet_place: int = -1
     last_shift: Shift = None
     order_distances: Dict[int,int] =  dataclasses.field(default_factory=dict)
+    is_assigned: bool = False
 
     def assign_shift(self, shift: Shift, site_id: int) -> None:
+        self.is_assigned = True
         if site_id not in self.sites_to_look_out:
             self.sites_to_look_out[site_id] = 0
         self.sites_to_look_out[site_id] += 1
@@ -71,6 +73,8 @@ class Vigilant(FromDictMixin):
         self.sites_to_look_out[shift.site_id] -= 1
         if self.sites_to_look_out[shift.site_id] == 0:
             del self.sites_to_look_out[shift.site_id]
+        if len(self.shifts) == 0:
+            self.is_assigned = False
 
     def set_order_sites_by_distance(self):
         order_sites_by_distance = sorted(range(len(self.distances)), key=lambda k: self.distances[k])

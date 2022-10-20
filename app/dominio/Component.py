@@ -31,10 +31,8 @@ class Component:
         for vigilant in self.assigned_Vigilantes:
             if vigilant == id:
                 return self.assigned_Vigilantes.get(id) 
-    def set_remove_vigilant(self, vigilants: List[int]):
-        for vigilant in self.assigned_Vigilantes:
-            if vigilant.id in vigilants:
-                self.assigned_Vigilantes.remove(vigilant)
+    
+
     def exchange_vigilant(self, id_vigilant_new, id_vigilant_exchange):
         self.get_vigilant(id_vigilant_exchange).set_id(id_vigilant_new)
 
@@ -57,11 +55,16 @@ class Component:
                 # if index-1 == len(vigilant.total_hours_worked_by_week):
                 #     break
                 if hour_by_week > 48:
-                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
-                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
-                if hour_by_week < 40 and hour_by_week > 0:
-                    self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
-                    self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE
+                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
+                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
+                if hour_by_week < 48 and hour_by_week > 0:
+                    missing_hours = hour_by_week
+                    if hour_by_week >= 24:
+                        missing_hours = 48 - hour_by_week                        
+                    self.assigned_vigilantes_fitness += missing_hours
+                    self.total_fitness+= missing_hours
+        self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
+        self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
 
     def get_fitness_by_criteria(self, fitnessToOptimize:str) -> int:
         if fitnessToOptimize == "missing_shifts":
@@ -85,13 +88,3 @@ class Component:
     
     def assigment_id_order(self):
         pass
-
-            
-            
-
-
-
-        
-
-
-            

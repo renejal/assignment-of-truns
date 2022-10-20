@@ -43,9 +43,13 @@ class PopulationServices:
 
     def remove_vigilants_default_the_site(gen: Component):
         Vigilants: List[Vigilant] = gen.assigned_Vigilantes
-        for vigilant in Vigilants:
+        index_vigilant = 0
+        while index_vigilant < len(index_vigilant):
+            vigilant = Vigilants[index_vigilant]
             if vigilant.default_place_to_look_out == -1:
                 Vigilants.remove(vigilant)
+                continue
+            index_vigilant+=1
 
     @staticmethod
     def union_soluction(parents, childrens) -> List[Solution]:

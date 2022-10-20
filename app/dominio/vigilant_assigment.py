@@ -18,14 +18,16 @@ class VigilantAssigment:
     order_sites_by_id_vigilantes_distance: List[List[int]]
     shifts_by_sites: List[List[Shift]]
     max_possible_fitness: List[int]
+    expected_vigilantes: int
 
     DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
 
-    def __init__(self, vigilantes: List[Vigilant], sites: List[Site]) -> None:
+    def __init__(self, vigilantes: List[Vigilant], sites: List[Site], expected_vigilantes: int) -> None:
         self.vigilantes = vigilantes
         self.total_vigilantes = len(vigilantes)
         self.sites = sites
         self.total_sites = len(sites)
+        self.expected_vigilantes = expected_vigilantes
         self.expected_places_to_look_out_by_vigilants = {}
         self.order_sites_by_id_vigilantes_distance = []
         self.max_possible_fitness = [0,0,0,0]
@@ -52,23 +54,25 @@ class VigilantAssigment:
 
     def calculalte_max_possible_fitness(self, sites: List[Site], vigilantes: List [Vigilant]) -> None:
         total_missing_shifts = 0
-        minimum_necessary_vigilantes = 0
+        # minimum_necessary_vigilantes = 0
         max_extra_hours = 0
         for site in sites:
             total_missing_shifts += site.total_missing_shifts
-            minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
+            # minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
         for week in range(settings.MAX_TOTAL_WEEKS):
             hours_by_week = 0
             for site in sites:
                 if week < len(site.hours_to_work_by_week):
                     hours_by_week += site.hours_to_work_by_week[week]
-            amount_vigilants_with_hours_extra = math.floor(hours_by_week/49)
-            if  amount_vigilants_with_hours_extra > self.total_vigilantes:
-                max_extra_hours+= self.total_vigilantes
-            else:
-                max_extra_hours += amount_vigilants_with_hours_extra
+            max_extra_hours += 8 * math.floor(hours_by_week/56) + max(hours_by_week - (56 * math.floor(hours_by_week/56) + 48),0)
+            # amount_vigilants_with_hours_extra = math.floor(hours_by_week/49)
+            # if  amount_vigilants_with_hours_extra > self.total_vigilantes:
+            #     max_extra_hours+= self.total_vigilantes
+            # else:
+            #     max_extra_hours += amount_vigilants_with_hours_extra
         self.max_possible_fitness[0] = total_missing_shifts
-        self.max_possible_fitness[1] = minimum_necessary_vigilantes
+        # self.max_possible_fitness[1] = minimum_necessary_vigilantes
+        self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
         self.max_possible_fitness[3] = self.total_vigilantes * (len(sites)-1) * 2
 

@@ -51,7 +51,7 @@ class Vigilant_assigment_service:
     
     def check_if_vigilant_has_missing_hours(self, vigilant: Vigilant):
         for hour_by_week in vigilant.total_hours_worked_by_week:
-             if hour_by_week < 40:
+             if hour_by_week < 48:
                  return True
         return False
 

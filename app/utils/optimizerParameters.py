@@ -33,7 +33,6 @@ class OptimizerParamets:
         for file in filesData:
             name = file.get("name")
             time = file.get("time")
-
             data = open('./dataset/datasets/optimizaciones/'+ name)
             data = json.load(data)
             views.append(GenerateShiftView(data, time))
