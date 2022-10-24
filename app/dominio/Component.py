@@ -1,3 +1,7 @@
+from re import I
+
+from numpy import delete
+from utils.order import Order
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
 from typing import List, Dict
@@ -37,6 +41,26 @@ class Component:
                 self.assigned_Vigilantes.remove(vigilant)
     def exchange_vigilant(self, id_vigilant_new, id_vigilant_exchange):
         self.get_vigilant(id_vigilant_exchange).set_id(id_vigilant_new)
+    
+    def crossing_shift(self, par_vigilant_id: int, par_vigilant_best: Vigilant):
+        """hace un cruce de los shift de los vigilantes, los shit de vigilant_best 
+        son pasado al vigilante del objeto actual con id par_vigilant_id
+
+        Args:
+            par_vigilant_id (int): id del vigilane al cual se le van a actulizar los shifts
+            par_vigilant_best (Vigilant): vigilanstes que contiene los shits best
+        """
+        vigilant_bad = self.assigned_Vigilantes.get(par_vigilant_id)
+        for shift_place_bad, shift_place_best in zip(vigilant_bad.shifts, par_vigilant_best.shifts):
+            shift_place_bad.shift.shift_start = shift_place_best.shift.shift_start
+            shift_place_bad.shift.shift_end = shift_place_best.shift.shift_end
+
+    def add_vigilant(vigilant_best: Vigilant):
+        "asignar el vigilante al sitio"
+        pass
+    def delete_vigilant(id_vigilant: int):
+        "Todo implementar delete o desasignar vigilantes del gen actual"
+        pass
 
     def calculate_inicial_fitness(self) -> None:
         for shift in self.site_schedule:
@@ -73,7 +97,7 @@ class Component:
         if fitnessToOptimize == "distance":
             return self.distance_fitness
 
-    def order_workings_days(self):
+    def order_workings_days(self: List[Shift]):
         "ordena los workings days de el componente self"
         for i in range(len(self.site_schedule)):
             temp = i

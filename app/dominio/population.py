@@ -82,6 +82,12 @@ class Population():
         for solution in self.__populations:
             if solution.range_soluction == 1:
                 return solution
+    
+    def get_solution_whit_id_soluction(self, id_solution: int) -> Solution:
+        for solution in self.populations:
+            if solution.id == id_solution:
+                return solution
+        raise(f"Soluction no fount whit {id_solution}")
 
     @property
     def populations(self):

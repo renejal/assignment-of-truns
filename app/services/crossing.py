@@ -1,13 +1,13 @@
-
-from typing import List
 import random
+from typing import List
 from conf import settings
+from utils.order import Order
 from dominio.Solution import Solution
 
 class Crossing:
 
     @classmethod
-    def get_parents_by_objetive(self, parents: List[Solution], objective_index) -> List[Solution]:
+    def get_parents_by_objetive(self, parents: List[Solution], objective_index, settings) -> List[Solution]:
         """" obtiene los padres a crusar
 
         Args:
@@ -39,12 +39,10 @@ class Crossing:
             List[Solution]: solucion: Rango de mejores soluciones 
         """
         population_order = self.order_solution_of_objetive_value(populations,objective_index,False) # order True: descendente
-        range_best_soluction = int(len(population_order)* settings.NUM_PARENTS_OF_ORDERED_POPULATION)
-        if range_best_soluction == 0: range_best_soluction = 1
-        print("num_soluction mejores", range_best_soluction)
-        parent = populations[random.randint(0,range_best_soluction)]
-        print("fitnnes", parent.fitness)
-        return parent 
+        parent = Order.list_restricted(population_order,1,settings.NUM_PARENTS_OF_ORDERED_POPULATION)
+        print("lenParent", len(parent))
+        return parent[0]
+
     @classmethod
     def order_solution_of_objetive_value(self, population: List[Solution], index_objective, par_reverse=True):
         result = sorted(population, key = lambda solution : solution.fitness[index_objective], reverse=par_reverse) # reserve = True: ordena descendente
