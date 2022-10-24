@@ -1,6 +1,7 @@
 from re import I
 
 from numpy import delete
+from dominio.model.shift_place import Shift_place
 from utils.order import Order
 from dominio.model.shift import Shift
 from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
@@ -42,6 +43,24 @@ class Component:
     def exchange_vigilant(self, id_vigilant_new, id_vigilant_exchange):
         self.get_vigilant(id_vigilant_exchange).set_id(id_vigilant_new)
     
+    def get_shift(self, par_shift: Shift):
+        for shift in self.site_schedule:
+            if (shift.shift_end == par_shift.shift_end and 
+                shift.shift_start == par_shift.shift_start):
+                return shift
+        raise(f"no se encontro shits con end: {shift.shift_end}, start: {shift.shift_start}")
+    
+    def clear_shift_vigilant(self, par_vigilant: Vigilant):
+        shifts = par_vigilant.shifts
+        while shifts:
+            shift = shifts.pop(0)
+            print("shift",shift)
+            main_shift = self.get_shift(shift.shift)
+            print("entro", par_vigilant.id)
+            if par_vigilant.id in main_shift.assigment_vigilantes:
+                main_shift.assigment_vigilantes.remove(par_vigilant.id)
+        par_vigilant.last_shift = None
+
     def crossing_shift(self, par_vigilant_id: int, par_vigilant_best: Vigilant):
         """hace un cruce de los shift de los vigilantes, los shit de vigilant_best 
         son pasado al vigilante del objeto actual con id par_vigilant_id
@@ -50,10 +69,20 @@ class Component:
             par_vigilant_id (int): id del vigilane al cual se le van a actulizar los shifts
             par_vigilant_best (Vigilant): vigilanstes que contiene los shits best
         """
+
         vigilant_bad = self.assigned_Vigilantes.get(par_vigilant_id)
-        for shift_place_bad, shift_place_best in zip(vigilant_bad.shifts, par_vigilant_best.shifts):
-            shift_place_bad.shift.shift_start = shift_place_best.shift.shift_start
-            shift_place_bad.shift.shift_end = shift_place_best.shift.shift_end
+        self.clear_shift_vigilant(vigilant_bad)
+        index_best = 0
+        while True:
+            if index_best < len(par_vigilant_best.shifts):
+                # 1. busar shift en site_schedule shift y asignar a vigilants bad
+                shift_best=self.get_shift(par_vigilant_best.shifts[index_best].shift)
+                shift_best.add_vigilant(vigilant_bad.id)
+                vigilant_bad.shifts.append(Shift_place(shift_best,self.site_id))
+            else:
+                break
+            index_best += 1
+
 
     def add_vigilant(vigilant_best: Vigilant):
         "asignar el vigilante al sitio"

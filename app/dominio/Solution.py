@@ -57,18 +57,6 @@ class Solution:
         return components
   
     def crossing_gen(self, gen_bad: Component, gen_best: Component):
-        # for shift_gen_bad, shift_gen_best in zip(gen_bad.site_schedule, gen_best.site_schedule):
-        #     if (shift_gen_bad.shift_start == shift_gen_best.shift_start and
-        #         shift_gen_bad.shift_end == shift_gen_best.shift_end and 
-        #         shift_gen_bad.necesary_vigilantes == shift_gen_best.necesary_vigilantes):
-        #         shift_gen_bad.assigment_vigilantes = copy.copy(shift_gen_best.assigment_vigilantes)
-        # # missing_shifts: List[Shift]
-        # for shift_gen_bad, shif_gen_best in zip(gen_bad.missing_shifts, gen_best.missing_shifts):
-        #     if (shift_gen_bad.shift_start == shift_gen_best.shift_start and
-        #         shift_gen_bad.shift_end == shift_gen_best.shift_end and 
-        #         shift_gen_bad.necesary_vigilantes == shift_gen_best.necesary_vigilantes):
-        #         shift_gen_bad.assigment_vigilantes = copy.copy(shift_gen_best.assigment_vigilantes)
-        # assigned_Vigilantes: Dict[int,Vigilant] 
         list_best_crossing_vigilant = self.get_crossing_vigilant_avaliable(copy.deepcopy(gen_bad), copy.deepcopy(gen_best))
         while list_best_crossing_vigilant:
             vigilants = list_best_crossing_vigilant.pop(0)
@@ -122,19 +110,6 @@ class Solution:
                 return vigilant
         raise(f"Vigilant not fount {id}") 
        
-        # missing_shifts_fitness: int = 0
-        # distance_fitness: int = 0
-        # extra_hours_fitness: int = 0
-        # assigned_vigilantes_fitness: int = 0
-        # modified = False
-        # total_fitness:int = 0
-
-        # gen_bad_temp: Component = copy.copy(gen_bad)
-        # self.sites_schedule.remove(gen_bad)
-        # self.sites_schedule.append(copy.copy(gen_best))
-        # gen_best = self.get_gen(gen_best.site_id)
-        # self.to_exchange_vigilant(gen_best, gen_bad_temp)
-
     def to_exchange_vigilant(self, gen_best: Component, gen_bad_temp: Component):
         """intercambi el id del vigilant por un nuevo new_id_vigilant del gen por parametro"""
         vigilants_best = gen_best.assigned_Vigilantes
@@ -154,13 +129,7 @@ class Solution:
         for vigilant_one in vigilants_one.values():
             for vigilant_two in vigilants_two.values():
                 pass
-
-        # 1 caso: el gen one tiene mas vigialntes que el gen dos
-        # 2 caso: el gen dos tiene mas vigilantes que el gen uno
-        # 3 caso: los dos tiene el misma cantida de vigilantes
-        # 4 caso: el gen_one necesita mas vigilantes que el gen dos
-        # 5 caso: el gen two necesita mas vigilantes que el gen uno
-
+            
     def get_best_components(self, components: List[Component], restricted_components_amount: int):
         for iteration in range(restricted_components_amount):
             swapped = False
