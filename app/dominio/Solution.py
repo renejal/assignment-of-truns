@@ -55,20 +55,22 @@ class Solution:
             component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
             components.append(component)
         return components
-  
+    def add_vigilant(self, gen_bad: Component, vigilant_best: Vigilant):
+        # obtiene vigilant bad de la solucion actual
+        vigilant_bad = self.get_vigilant(vigilant_best.id)
+        gen_bad.crossing_shift(vigilant_bad, vigilant_best)
+        
     def crossing_gen(self, gen_bad: Component, gen_best: Component):
         list_best_crossing_vigilant = self.get_crossing_vigilant_avaliable(copy.deepcopy(gen_bad), copy.deepcopy(gen_best))
         while list_best_crossing_vigilant:
             vigilants = list_best_crossing_vigilant.pop(0)
             if vigilants[1] == "new vigilant":
-                raise("New vigilant")
+                self.add_vigilant(gen_bad, self.get_vigilant(vigilants[0]))
                 # gen_bad.add_vigilant(vigilants[0])
             elif vigilants[1] == "delete vigilant":
-                raise("Delete vigilant")
-                # gen_bad.delete_vigilant(vigilants[0])
+                gen_bad.delete_vigilant(vigilants[0])
             else:
-                print("crossing shift")
-                gen_bad.crossing_shift(vigilants[0], gen_best.assigned_Vigilantes.get(vigilants[1]))
+                gen_bad.crossing_shift(self.get_vigilant(vigilants[0]), gen_best.assigned_Vigilantes.get(vigilants[1]))
 
     def get_crossing_vigilant_avaliable(self, gen_bad: Component, gen_best: Component):
         # obtiene los vigilantes en communt
@@ -94,10 +96,10 @@ class Solution:
                 # el vigilantes bad no tiene vigilants disponible, se asigna etiqueta nuevo vigilante
                 # para mantener la integrida en el numero de vigilantes de la solucion best
                 list_result.append((vigilants_best.pop(0), "new vigilant"))
-            elif vigilants_bad and not vigilants_best:
+            elif not vigilants_best and vigilants_bad:
                 # el vigilantes best no tiene vigilants y vigilant bad si tiene, esto quiere decier
-                # que se debe desasignar el resto de vigilantes de la solucion bad 
-                list_result.append((vigilants_best.pop(0), "delete vigilant"))
+                # que se debe quietar resto de vigilantes de la solucion bad 
+                list_result.append((vigilants_bad.pop(0), "delete vigilant"))
             elif not vigilants_bad and not vigilants_best:
                 # si esta vacio termina la iteracion
                 break

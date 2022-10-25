@@ -54,14 +54,14 @@ class Component:
         shifts = par_vigilant.shifts
         while shifts:
             shift = shifts.pop(0)
-            print("shift",shift)
             main_shift = self.get_shift(shift.shift)
-            print("entro", par_vigilant.id)
             if par_vigilant.id in main_shift.assigment_vigilantes:
                 main_shift.assigment_vigilantes.remove(par_vigilant.id)
         par_vigilant.last_shift = None
 
-    def crossing_shift(self, par_vigilant_id: int, par_vigilant_best: Vigilant):
+    def crossing_shift(self, vigilant_bad: Vigilant, par_vigilant_best: Vigilant):
+        if par_vigilant_best is None:
+            print("is None")
         """hace un cruce de los shift de los vigilantes, los shit de vigilant_best 
         son pasado al vigilante del objeto actual con id par_vigilant_id
 
@@ -70,7 +70,6 @@ class Component:
             par_vigilant_best (Vigilant): vigilanstes que contiene los shits best
         """
 
-        vigilant_bad = self.assigned_Vigilantes.get(par_vigilant_id)
         self.clear_shift_vigilant(vigilant_bad)
         index_best = 0
         while True:
@@ -84,12 +83,12 @@ class Component:
             index_best += 1
 
 
-    def add_vigilant(vigilant_best: Vigilant):
+    def add_vigilant(self, vigilant_best: Vigilant):
         "asignar el vigilante al sitio"
         pass
-    def delete_vigilant(id_vigilant: int):
+    def delete_vigilant(self, id_vigilant: int):
         "Todo implementar delete o desasignar vigilantes del gen actual"
-        pass
+        del self.assigned_Vigilantes[id_vigilant]
 
     def calculate_inicial_fitness(self) -> None:
         for shift in self.site_schedule:

@@ -1,11 +1,5 @@
-from cgi import print_arguments
-import random
-import sched
-from symbol import single_input
-from typing import Dict, List
 import copy
-from numpy import append
-from pkg_resources import working_set
+from typing import List
 from utils.order import Order
 from dominio.model.shift import Shift
 from utils import aleatory
@@ -67,6 +61,9 @@ class CrossingShift:
         parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
         best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
         parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
+        temp_fitnnes = parent_one.total_fitness
+        parent_one.calculate_fitness()
+        print(f"parent_one id: {parent_one.id} parent_two: id: {parent_two.id} :fitnnes de {temp_fitnnes} a {parent_one.total_fitness} ")
         return parent_one
     
 
