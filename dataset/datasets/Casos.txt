@@ -58,10 +58,10 @@ Casos:
         hard:
             125 vigilantes
     Probar Optimizacion Mezclado:
-         20 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 15 sitio con 3 full time 5 con 4 full, vigilantes minimos requeridos  =  385
+         20 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 15 sitios con 3 full time 5 sitios con 4 full, vigilantes minimos requeridos  =  385
          Facil:
             385 vigilantes
         Medio:
             375 vigilantes
         hard:
-            370 vigilantes
+            365 vigilantes

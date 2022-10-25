@@ -1,6 +1,11 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 import copy
 import random
 import numpy
+from dominio.Metaheuristics.NSGA_II import NsgaII
+from dominio.Metaheuristics.GRASP import Grasp
+from dominio.Solution import Solution
 from conf import settings
 from views.general_shift_view import GenerateShiftView
 from utils.normalize import Normalize
@@ -83,37 +88,58 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
     return offspring_crossover
 
 def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
-    fitnesss = []
-    max_iterations = 10
-    for solution in population:
-        print("new solution")
-        if algorithm == "GRASP":
-            for view in views:
-                view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
-            hv_average = 0
-            for view in views:
-                settings.MAX_TIME_DURATION = view.time
-                for i in range(max_iterations):
-                    random.seed(settings.SEEDS[i])
-                    solutions = view.executeGraspToOptimize(len(population))
-                    solutionsNormalized = Normalize().normalizeFitness(solutions)
-                    pf = np.array(solutionsNormalized)
-                    hv_average+= Hipervolumen.calculate_hipervolumen(pf)
-        else:
-            for view in views:
-                view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
-            hv_average = 0
-            for view in views:
-                settings.MAX_TIME_DURATION = view.time
-                print("new dataset")
-                for i in range(max_iterations):
-                    random.seed(settings.SEEDS[i])
-                    solutions = view.executeNsgaIIToOptimize(len(population))
-                    solutionsNormalized = Normalize().normalizeFitness(solutions)
-                    pf = np.array(solutionsNormalized)
-                    hv_average+= Hipervolumen.calculate_hipervolumen (pf)
-        fitnesss.append(hv_average/(max_iterations*len(views)))
+    population_amount = len(population)
+    fitnesss = [None] * population_amount
+    max_iterations = 10    
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    future = asyncio.ensure_future(futureOptimizationResponses(population, views,algorithm,max_iterations))
+    response = loop.run_until_complete(future)
+    loop.close()
+    print(response)
+    print("new solution")
     return fitnesss
+
+async def futureOptimizationResponses(population,views,algorithm,max_iterations):
+    population_amount = len(population)
+    responses = [0]  * max_iterations
+    with ThreadPoolExecutor(max_workers=30) as executor:
+        loop = asyncio.get_event_loop()
+        tasks = []
+        for index,solution in enumerate(population):
+            for view in views:
+                tasks.append(loop.run_in_executor(executor, executeAlgorithmToOptimize ,solution,view,algorithm,max_iterations,population_amount,index))
+        for response in await asyncio.gather(*tasks):
+            pos = response[1]
+            value = response[0]
+            responses[pos] = responses[pos] + value
+    return responses
+        
+def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algorithm: str, max_iterations: int, population_amount: int, index: int):
+    if algorithm == "GRASP":
+        grasp = Grasp()
+        grasp.setParameters(solution[0], solution[1], solution[2], solution[3])            
+        hv_average = 0
+        MAX_TIME_DURATION = view.time
+        for i in range(max_iterations):
+            random.seed(settings.SEEDS[i])
+            solutions = view.executeGraspToOptimize(grasp , population_amount, MAX_TIME_DURATION)
+            solutionsNormalized = Normalize().normalizeFitness(solutions)
+            pf = np.array(solutionsNormalized)
+            hv_average+= Hipervolumen.calculate_hipervolumen(pf)
+    else:
+        nsga = NsgaII()
+        nsga.setParameters(solution[0], solution[1], solution[2], solution[3])
+        hv_average = 0
+        MAX_TIME_DURATION = view.time
+        print("new dataset")
+        for i in range(max_iterations):
+            random.seed(settings.SEEDS[i])
+            solutions = view.executeNsgaIIToOptimize(population_amount, MAX_TIME_DURATION)
+            solutionsNormalized = Normalize().normalizeFitness(solutions)
+            pf = np.array(solutionsNormalized)
+            hv_average+= Hipervolumen.calculate_hipervolumen (pf)
+    return hv_average,index
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":

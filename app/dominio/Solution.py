@@ -51,8 +51,21 @@ class Solution:
         components: List[Component] = []
         site: Site = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
         shifts: List[Shift] = self.problem.get_shifts_on_site(site.id)
+        order_vigilantes_ids_in_site = self.problem.order_sites_by_id_vigilantes_distance[site.id-1]
+        order_vigilantes_in_site = []
+        expected_vigilantes_in_place = []
+
+        for vigilant_id in order_vigilantes_ids_in_site:
+            vigilant = self.vigilantes_schedule[vigilant_id-1]
+            if vigilant.is_usuable and vigilant.default_place_to_look_out == -1:
+                order_vigilantes_in_site.append(vigilant) 
+        
+        if site.id in self.problem.expected_places_to_look_out_by_vigilants:
+            for vigilant_id in self.problem.expected_places_to_look_out_by_vigilants.get(site.id):
+                expected_vigilantes_in_place.append(self.vigilantes_schedule[vigilant_id-1])
+
         for component in range(components_new_amount):
-            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
+            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(order_vigilantes_in_site),copy.deepcopy(expected_vigilantes_in_place)) #DELETE FOR REAL PROBLEM
             components.append(component)
         return components
 

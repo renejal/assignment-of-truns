@@ -19,6 +19,7 @@ class Vigilant(FromDictMixin):
     last_shift: Shift = None
     order_distances: Dict[int,int] =  dataclasses.field(default_factory=dict)
     is_assigned: bool = False
+    is_usuable: bool = True
 
     def assign_shift(self, shift: Shift, site_id: int) -> None:
         self.is_assigned = True
@@ -33,6 +34,14 @@ class Vigilant(FromDictMixin):
                     return
         self.shifts.append(Shift_place(shift,site_id))
         self.last_shift = shift
+
+        total_weeks = len(self.total_hours_worked_by_week)
+        if total_weeks > 1 and self.total_hours_worked >= ( total_weeks * 48 )/2:
+            self.is_usuable = False
+            return
+        if total_weeks == 1 and self.total_hours_worked >= 48:
+            self.is_usuable = False
+        
     
     def assing_hours_worked(self, shift:Shift) -> None:
         self.total_hours_worked += shift.shift_end - shift.shift_start + 1
