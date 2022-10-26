@@ -72,11 +72,13 @@ class Tweak_distance():
             assigned_site = list(vigilant.sites_to_look_out.keys())[0]
             vigilant_to_change = vigilant
             closest_place_to_assign = assigned_site
+            index_change_vigilant = index
             for index_wrong_vigilant in range(len(vigilantes_with_one_wrong_assigned_place)):
                 assigned_site_to_change = list(vigilantes_with_one_wrong_assigned_place[index_wrong_vigilant].sites_to_look_out.keys())[0]
                 if vigilant_to_change.distances[assigned_site_to_change-1] < vigilant_to_change.distances[closest_place_to_assign-1]:
                     vigilant_to_change = vigilantes_with_one_wrong_assigned_place[index_wrong_vigilant]
                     closest_place_to_assign = assigned_site_to_change
+                    index_change_vigilant = index_wrong_vigilant
             #Hacer  el cambio
             if vigilant_to_change != vigilant:
                 self.change_assinged_vigilantes_on_site(solution.sites_schedule[assigned_site-1],vigilant,solution.sites_schedule[closest_place_to_assign-1],vigilant_to_change)
@@ -84,6 +86,8 @@ class Tweak_distance():
                 vigilantes_with_one_wrong_assigned_place.remove(vigilant)
                 if list(vigilant_to_change.sites_to_look_out.keys())[0] == vigilant_to_change.default_place_to_look_out:
                     vigilantes_with_one_wrong_assigned_place.remove(vigilant_to_change)
+                    if index_change_vigilant < index:
+                        index-=1
             else:
                 index+=1
 

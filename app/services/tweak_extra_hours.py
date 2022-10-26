@@ -1,10 +1,9 @@
 
-from random import shuffle
 import random
 from typing import List, Tuple
 
 import numpy as np
-from conf.settings import MAX_TOTAL_WEEKS
+from conf import settings
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -44,11 +43,11 @@ class Tweak_extra_hours:
                                     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
                                     index -= 1
                                     break
-                                if index_priority == 0 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 40:
-                                    vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
-                                    index -= 1
-                                    vigilantes_with_hours_to_work[index_week][1].append(available_vigilant_on_week)
-                                    break
+                                # if index_priority == 0 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 40:
+                                #     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
+                                #     index -= 1
+                                #     vigilantes_with_hours_to_work[index_week][1].append(available_vigilant_on_week)
+                                #     break
                                 #Chequear si el vigilante con extra horas ya no tiene horas extras
                                 if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48:
                                     break
@@ -60,14 +59,15 @@ class Tweak_extra_hours:
                     break
         return solution
 
-    def exchange_shift(self,shift: Shift_place,vigilant_with_extra_hours_on_week: Vigilant, vigilant_with_hour_to_work: Vigilant) -> None:
-        shift.shift.change_vigilant(vigilant_with_extra_hours_on_week.id, vigilant_with_hour_to_work.id)
-        vigilant_with_extra_hours_on_week.remove_shift(shift)
-        vigilant_with_hour_to_work.assign_shift(shift.shift,shift.site_id)
+    def exchange_shift(self,shift: Shift_place, vigilant_to_remove_shift: Vigilant, vigilant_to_add_shift: Vigilant) -> None:
+        shift.shift.change_vigilant(vigilant_to_remove_shift.id, vigilant_to_add_shift.id)
+        vigilant_to_remove_shift.remove_shift(shift)
+        vigilant_to_add_shift.assign_shift(shift.shift,shift.site_id)
+
 
     def  get_available_vigilantes_to_work_by_prioritys(self,vigilantes: List[Vigilant]) -> List[List[List[Vigilant]]]:
-        vigilantes_with_hours_to_work: List[List[List[Vigilant]]] =  np.array([[[],[],[]]]* MAX_TOTAL_WEEKS, dtype=object).tolist() 
-        range_prioritys: List[Tuple] = [(1,39),(40,55),(0,0)]
+        vigilantes_with_hours_to_work: List[List[List[Vigilant]]] =  np.array([[[],[],[]]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
+        range_prioritys: List[Tuple] = [(1,23),(24,47),(0,0)]
         for vigilant in vigilantes:
             for index_range, range in enumerate(range_prioritys):
                 for index_week,hours_worked_by_week in enumerate(vigilant.total_hours_worked_by_week):
@@ -76,7 +76,7 @@ class Tweak_extra_hours:
         return vigilantes_with_hours_to_work 
 
     def get_vigilantes_with_extra_hours_by_week(self, vigilantes: List[Vigilant]) -> List[List[Vigilant]]:
-        vigilantes_with_extra_hours_by_week = np.array([[]]* MAX_TOTAL_WEEKS, dtype=object).tolist() 
+        vigilantes_with_extra_hours_by_week = np.array([[]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
         for vigilant in vigilantes:
             for index, hours_worked_on_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hours_worked_on_week > 48:

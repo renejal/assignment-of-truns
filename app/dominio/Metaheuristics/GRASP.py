@@ -41,7 +41,7 @@ class Grasp(Algorithm):
         self.MAX_TIMEOUT = self.current_timeout + settings.MAX_TIME_DURATION
 
         population: List[Solution] = self.get_initial_poblation(problem)
-        evolutions.append(population)
+        evolutions.append(copy.copy(population))
         if(self.current_timeout < self.MAX_TIMEOUT):
             while self.current_efo < self.MAX_EFOS:
                 self.current_timeout = time.time()
@@ -59,10 +59,12 @@ class Grasp(Algorithm):
                         self.current_timeout = time.time()
                         if(self.current_timeout > self.MAX_TIMEOUT):
                             break
-                        new_solution = Tweak_service().Tweak(new_solution)
+                        # new_solution = Tweak_service().Tweak(new_solution)
+                        solution = Tweak_service().Tweak(new_solution)
+                        new_solution = solution if solution.total_fitness < new_solution.total_fitness else new_solution
                     population.append(new_solution)
-                evolutions.append(population)
                 population = self.best_population(population)
+                evolutions.append(copy.copy(population))
                 self.current_efo+= 1   
         return evolutions
 

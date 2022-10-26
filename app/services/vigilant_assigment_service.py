@@ -22,7 +22,6 @@ class Vigilant_assigment_service:
             return False
         if self.is_available_on_shift(vigilant, shift) == False:
             return False 
-        #TODO work on sunday
         return True          
 
     def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
@@ -52,7 +51,7 @@ class Vigilant_assigment_service:
     
     def check_if_vigilant_has_missing_hours(self, vigilant: Vigilant):
         for hour_by_week in vigilant.total_hours_worked_by_week:
-             if hour_by_week < 40:
+             if hour_by_week < 48:
                  return True
         return False
 

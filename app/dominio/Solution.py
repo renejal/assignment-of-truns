@@ -1,4 +1,9 @@
 import copy
+from typing import List
+from dominio.model.site import Site
+from dominio.model.shift import Shift
+from dominio.model.vigilant import Vigilant
+from dominio.Component import Component
 import random
 from re import I
 from conf.settings import *
@@ -18,12 +23,14 @@ class Solution:
     sites_schedule: List[Component]
     vigilantes_schedule: List[Vigilant] 
     site_schedule_service: Site_schedule_service
+
     fitness:List[int]
     missing_shifts_fitness: int
     distance_fitness: int
     extra_hours_fitness: int
     assigned_vigilantes_fitness: int
     total_fitness: int
+
     crowding_distance:int
     dominated: List[int]
     dominate_me: int
@@ -34,7 +41,7 @@ class Solution:
     def __init__(self, problem: VigilantAssigment):
         self.site_schedule_service = Site_schedule_service(problem)
         self.problem = problem
-        self.sites_schedule = []
+        self.sites_schedule = [None] * len(problem.sites)
         self.vigilantes_schedule = copy.deepcopy(problem.vigilantes)
         self.__iteration = 0
         self.dominate_me = 0
@@ -49,10 +56,10 @@ class Solution:
 
     def create_components(self, components_new_amount: int):
         components: List[Component] = []
-        site_id: int = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
-        shifts: List[Shift] = self.problem.get_shifts_on_site(site_id)
+        site: Site = self.problem.get_order_site_by_vigilantes_amount(self.__iteration)
+        shifts: List[Shift] = self.problem.get_shifts_on_site(site.id)
         for component in range(components_new_amount):
-            component = self.site_schedule_service.get_site_schedule(site_id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
+            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(self.vigilantes_schedule))
             components.append(component)
         return components
     def add_vigilant(self, gen_bad: Component, vigilant_best: Vigilant):
@@ -148,7 +155,7 @@ class Solution:
         return restrictedList[random.randint(0, restricted_components_amount-1)]
 
     def merge_component(self, component : Component):
-        self.sites_schedule.append(component)
+        self.sites_schedule[component.site_id-1] = component
         self.__iteration += 1
         # if component.assigned_Vigilantes. == None:
         #     return
@@ -226,6 +233,7 @@ class Solution:
                     self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
                     self.fitness[0] = self.missing_shifts_fitness
                     self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+        vigilantes_amount_assigned = 0
         for vigilant in self.vigilantes_schedule:
             for site_to_look_out in vigilant.sites_to_look_out:
                 if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
@@ -236,48 +244,14 @@ class Solution:
                     self.total_fitness+= DISTANCE_FITNESS_VALUE  
             for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
                 if hour_by_week > 48:
-                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
-                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
+                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
+                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
                     self.fitness[2] = self.extra_hours_fitness
-
-                # if index+1 == len(vigilant.total_hours_worked_by_week):
-                #     break
-                if hour_by_week < 40 and hour_by_week > 0:
-                    self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
-                    self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
+                if hour_by_week < 48 and hour_by_week > 0:
+                    missing_hours = hour_by_week
+                    if hour_by_week >= 24:
+                        missing_hours = 48 - hour_by_week                        
+                    self.assigned_vigilantes_fitness += missing_hours
+                    self.total_fitness+=  missing_hours
                     self.fitness[3] = self.assigned_vigilantes_fitness
     
-
-    def recalculate_fitness(self):
-        self.missing_shifts_fitness = 0
-        self.distance_fitness = 0
-        self.extra_hours_fitness = 0
-        self.assigned_vigilantes_fitness = 0
-        self.total_fitness = 0
-        self.fitness = [0,0,0,0]
-        for site in self.sites_schedule:
-            for shift in site.missing_shifts:
-                if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
-                    self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-                    self.fitness[0] = self.missing_shifts_fitness
-                    self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-            for vigilant in site.assigned_Vigilantes.values():
-                    for site_to_look_out in vigilant.sites_to_look_out:
-                        if site_to_look_out != vigilant.default_place_to_look_out and site_to_look_out != vigilant.closet_place:
-                            # self.distance_fitness+= vigilant.distances[site_to_look_out-1]    
-                            # self.total_fitness+= vigilant.distances[site_to_look_out-1]
-                            self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(site_to_look_out)
-                            self.fitness[1] = self.distance_fitness * vigilant.order_distances.get(site_to_look_out)
-                            self.total_fitness+= DISTANCE_FITNESS_VALUE  
-                    for index, hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
-                        if hour_by_week > 48:
-                            self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE
-                            self.total_fitness += EXTRA_HOURS_FITNESS_VALUE
-                            self.fitness[2] = self.extra_hours_fitness
-
-                        # if index+1 == len(vigilant.total_hours_worked_by_week):
-                        #     break
-                        if hour_by_week < 40 and hour_by_week > 0:
-                            self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE
-                            self.total_fitness+= ASSIGNED_VIGILANTES_FITNESS_VALUE  
-                            self.fitness[3] = self.assigned_vigilantes_fitness

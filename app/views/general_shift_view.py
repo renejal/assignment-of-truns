@@ -8,23 +8,24 @@ from dominio.Metaheuristics.GRASP import Grasp
 from dominio.Metaheuristics.NSGA_II import NsgaII
 from dominio.vigilant_assigment import VigilantAssigment
 from utils.hipervolumen import Hipervolumen
+from utils.igd import IGD
 from dominio.model.problem import DataSites, DataVigilantes
 import time
 import json
 import numpy as np
-from pymoo.factory import get_performance_indicator
 from utils.graph import Graph
 
 class GenerateShiftView:
 
-    def __init__(self, data: object):
+    def __init__(self, data: object, time: int):
         self.__data_sites = self.create_sites(data)
         self.__data_vigilantes = self.create_vigilantes(data)
-        self.__myProblem: VigilantAssigment = VigilantAssigment(
-            self.__data_vigilantes, self.__data_sites)
+        expected_vigilantes = data.get("expected_vigilantes")
+        self.__myProblem: VigilantAssigment = VigilantAssigment(self.__data_vigilantes, self.__data_sites, expected_vigilantes)
         self.algoritmGrasp = Grasp()
         self.algoritmNSGAII = NsgaII()
         self.__reference_points_IGD = Reference_point().get_reference_points_from_IGD()
+        self.time = time
 
     def create_sites(self, data) -> json:
         return DataSites.from_dict(data).data_sites
@@ -82,8 +83,7 @@ class GenerateShiftView:
             fitnesses.append(solutionsNormalized)
             pf = np.array(solutionsNormalized)
             hv.append(Hipervolumen.calculate_hipervolumen(pf))
-            igdPerformance = get_performance_indicator("igd", np.array(self.__reference_points_IGD))
-            igd.append(igdPerformance.do(np.array(pf)))
+            igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
         metrics["evolutions"] = evolutions
         metrics["fitnesses"] = fitnesses
         metrics["hv"] = hv

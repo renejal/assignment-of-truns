@@ -11,7 +11,7 @@ class Tweak_missing_shifts:
         
     def missing_shifts_tweak(self, solution: Solution) -> Solution:
         vigilantes_with_missing_hours: List[Vigilant] = self.get_vigilantes_with_missing_hours(solution.vigilantes_schedule)
-        #Asignar a los turnos los vigilantes que tienen menos de 40 horas en el mismo sitio
+        #Asignar a los turnos los vigilantes que tienen menos de 48 horas en el mismo sitio
         for site in solution.sites_schedule:
              if len(site.missing_shifts) == 0:
                  continue
@@ -25,7 +25,7 @@ class Tweak_missing_shifts:
             if len(site.missing_shifts) == 0:
                  continue
             self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
-        #Asignar a los turnos los vigilantes que tienen menos de 40 horas en algun otro sitio
+        #Asignar a los turnos los vigilantes que tienen menos de 48 horas en algun otro sitio
         for site in solution.sites_schedule:      
             if len(site.missing_shifts) == 0:
                  continue      
@@ -52,7 +52,7 @@ class Tweak_missing_shifts:
         vigilantes_with_missing_hours: List[Vigilant] = []
         for vigilant in vigilantes:
             for hours_worked_on_week in vigilant.total_hours_worked_by_week:
-                if hours_worked_on_week < 40 and vigilant not in vigilantes_with_missing_hours:
+                if hours_worked_on_week < 48 and vigilant not in vigilantes_with_missing_hours:
                     vigilantes_with_missing_hours.append(vigilant)
         return vigilantes_with_missing_hours
 
