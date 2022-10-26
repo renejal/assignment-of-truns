@@ -103,7 +103,7 @@ class Component:
                 self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(self.site_id)
                 self.total_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(self.site_id) 
             #TODO Revisar si es mejor calcular las horas por semaana si trabajo o algo
-            for index,hour_by_week in enumerate(vigilant.total_hours_worked_by_week):
+            for hour_by_week in vigilant.total_hours_worked_by_week:
                 # if index-1 == len(vigilant.total_hours_worked_by_week):
                 #     break
                 if hour_by_week > 48:

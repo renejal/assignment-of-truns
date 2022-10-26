@@ -1,5 +1,5 @@
 import random
-from conf.settings import SEEDS
+from conf.settings import SEEDS,MAX_TIME_DURATION
 from dominio.model.problem import DataUser
 from views.general_shift_view import GenerateShiftView
 from utils.print_xls import generate_results
@@ -7,7 +7,7 @@ from utils.print_xls import generate_results
 class Main:
     def __init__(self,data) -> None:   
         random.seed(SEEDS[0])   
-        view = GenerateShiftView(data, None)
+        view = GenerateShiftView(data, MAX_TIME_DURATION)
         dataGrasp = None
         dataNsga = None
         # dataNsga = view.executeNsga()

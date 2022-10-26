@@ -29,9 +29,9 @@ class NsgaII(Algorithm):
         settings.NUMBER_ITERATION_SELECTION_COMPONENTE = int(NUMBER_ITERATION_SELECTION_COMPONENTE)
         self.POPULATION_AMOUNT_NSGAII = int(population_amount_nsgaii)
 
-    def Execute(self, problem: VigilantAssigment):
+    def Execute(self, problem: VigilantAssigment, MAX_TIME_DURATION):
         self.CURRENT_TIMEOUT = time.time()
-        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + settings.MAX_TIME_DURATION
+        self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + MAX_TIME_DURATION
         self.current_efo = 1
 
         population_obj = Population(problem, self.POPULATION_AMOUNT_NSGAII)
