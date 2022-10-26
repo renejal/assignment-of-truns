@@ -36,14 +36,14 @@ class GenerateShiftView:
     def executeGrasp(self):
         print("Start Grasp")
         ticGrasp = time.perf_counter()
-        data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
+        data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem), self.time)
         tocGrasp = time.perf_counter()
         fig = Graph(data_grasp).get_fig()
         return self.getMetrics(data_grasp,fig,ticGrasp,tocGrasp)
     
-    def executeGraspToOptimize(self, amountPopulation):
+    def executeGraspToOptimize(self, grasp: Grasp, amountPopulation , time):
         print("Start Grasp")
-        data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem))
+        data_grasp = grasp.Execute(deepcopy(self.__myProblem), time)
         amountEvolutions = len(data_grasp)
         lastEvolution = data_grasp[amountEvolutions-1]
         if amountEvolutions == 1:
@@ -56,14 +56,14 @@ class GenerateShiftView:
     def executeNsga(self):
         print("Start Nsga")
         ticNsga = time.perf_counter()
-        data_nsgaii = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
+        data_nsgaii = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem),self.time)
         tocNsga = time.perf_counter()
         fig = Graph(data_nsgaii).get_fig()
         return self.getMetrics(data_nsgaii,fig ,ticNsga,tocNsga)
 
-    def executeNsgaIIToOptimize(self, amountPopulation):
+    def executeNsgaIIToOptimize(self, amountPopulation,time):
         print("Start Nsga II")
-        data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem))
+        data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem),time)
         amountEvolutions = len(data_nsgaII)
         lastEvolution = data_nsgaII[amountEvolutions-1]
         if amountEvolutions == 1:

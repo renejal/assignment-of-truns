@@ -34,11 +34,11 @@ class Grasp(Algorithm):
         self.TWEAK_AMOUNT_REPETITIONS = tweak_amount_repetitions
         self.AMOUNT_POPULATION = amount_population
 
-    def Execute(self, problem: VigilantAssigment):
+    def Execute(self, problem: VigilantAssigment , MAX_TIME_DURATION):
         self.current_efo = 1
         evolutions = []
         self.current_timeout = time.time()
-        self.MAX_TIMEOUT = self.current_timeout + settings.MAX_TIME_DURATION
+        self.MAX_TIMEOUT = self.current_timeout + MAX_TIME_DURATION
 
         population: List[Solution] = self.get_initial_poblation(problem)
         evolutions.append(copy.copy(population))

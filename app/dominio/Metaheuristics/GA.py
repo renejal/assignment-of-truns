@@ -1,6 +1,11 @@
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 import copy
 import random
 import numpy
+from dominio.Metaheuristics.NSGA_II import NsgaII
+from dominio.Metaheuristics.GRASP import Grasp
+from dominio.Solution import Solution
 from conf import settings
 from views.general_shift_view import GenerateShiftView
 from utils.normalize import Normalize
@@ -14,12 +19,14 @@ def execute_ga(new_population, views, algorithm, num_weights, sol_per_pop, num_g
     # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
     pop_size = (sol_per_pop, num_weights)
     data = []
+    dataSolutions = []
     for generation in range(num_generations-1):
         print("Generation"+ str(generation+1))
         # Measuring the fitness of each chromosome in the population.
-        fitness = cal_pop_fitness(new_population, views, algorithm)
+        data_fitnesss = cal_pop_fitness(new_population, views, algorithm)
+        fitness = data_fitnesss[0]
         data.append([new_population,fitness])
-
+        dataSolutions.append(data_fitnesss[1])
         # Selecting the best parents in the population for mating.
         parents = select_mating_pool(new_population, fitness,num_parents_mating)
 
@@ -34,14 +41,17 @@ def execute_ga(new_population, views, algorithm, num_weights, sol_per_pop, num_g
         new_population[parents.shape[0]:, :] = offspring_mutation
     # Getting the best solution after iterating finishing all generations.
     # At first, the fitness is calculated for each solution in the final generation.
-    fitness = cal_pop_fitness(new_population, views, algorithm)
+    data_fitnesss = cal_pop_fitness(new_population, views, algorithm)
+    fitness = data_fitnesss[0]
     data.append([new_population,fitness])
-    return data
+    dataSolutions.append(data_fitnesss[1])
+    return data,dataSolutions
 
 
 def cal_pop_fitness(population, views: List[GenerateShiftView], algorithm: str):
     # Calculating the fitness value of each solution in the current population.
-    return numpy.array(calculate_fitness_problem(population, views, algorithm))
+    data = calculate_fitness_problem(population, views, algorithm)
+    return numpy.array(data[0]),data[1]
 
 
 def select_mating_pool(pop, fitness, num_parents):
@@ -83,37 +93,65 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
     return offspring_crossover
 
 def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
-    fitnesss = []
-    max_iterations = 10
-    for solution in population:
-        print("new solution")
-        if algorithm == "GRASP":
+    population_amount = len(population)
+    fitness = [None] * population_amount
+    max_iterations = 10    
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    future = asyncio.ensure_future(futureOptimizationResponses(population, views,algorithm,max_iterations))
+    response = loop.run_until_complete(future)
+    loop.close()
+    fitness = response[0]
+    data = response[1]
+    return fitness, data
+
+async def futureOptimizationResponses(population,views,algorithm,max_iterations):
+    population_amount = len(population)
+    responses = [0]  * population_amount
+    data = []
+    with ThreadPoolExecutor(max_workers=30) as executor:
+        loop = asyncio.get_event_loop()
+        tasks = []
+        for index,solution in enumerate(population):
             for view in views:
-                view.algoritmGrasp.setParameters(solution[0], solution[1], solution[2], solution[3])
-            hv_average = 0
-            for view in views:
-                settings.MAX_TIME_DURATION = view.time
-                for i in range(max_iterations):
-                    random.seed(settings.SEEDS[i])
-                    solutions = view.executeGraspToOptimize(len(population))
-                    solutionsNormalized = Normalize().normalizeFitness(solutions)
-                    pf = np.array(solutionsNormalized)
-                    hv_average+= Hipervolumen.calculate_hipervolumen(pf)
-        else:
-            for view in views:
-                view.algoritmNSGAII.setParameters(solution[0], solution[1], solution[2], solution[3])
-            hv_average = 0
-            for view in views:
-                settings.MAX_TIME_DURATION = view.time
-                print("new dataset")
-                for i in range(max_iterations):
-                    random.seed(settings.SEEDS[i])
-                    solutions = view.executeNsgaIIToOptimize(len(population))
-                    solutionsNormalized = Normalize().normalizeFitness(solutions)
-                    pf = np.array(solutionsNormalized)
-                    hv_average+= Hipervolumen.calculate_hipervolumen (pf)
-        fitnesss.append(hv_average/(max_iterations*len(views)))
-    return fitnesss
+                tasks.append(loop.run_in_executor(executor, executeAlgorithmToOptimize ,solution,view,algorithm,max_iterations,population_amount,index))
+        for response in await asyncio.gather(*tasks):
+            pos = response[1]
+            value = response[0]
+            responses[pos] = responses[pos] + value
+            data.append((response[2],response[0]))
+    return responses,data
+        
+def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algorithm: str, max_iterations: int, population_amount: int, index: int):
+    data = []
+    if algorithm == "GRASP":
+        grasp = Grasp()
+        grasp.setParameters(solution[0], solution[1], solution[2], solution[3])            
+        hv_average = 0
+        MAX_TIME_DURATION = view.time
+        for i in range(max_iterations):
+            random.seed(settings.SEEDS[i])
+            solutions = view.executeGraspToOptimize(grasp , population_amount, MAX_TIME_DURATION)
+            solutionsNormalized = Normalize().normalizeFitness(solutions)
+            pf = np.array(solutionsNormalized)
+            hv = Hipervolumen.calculate_hipervolumen(pf)
+            hv_average+= hv
+            data.append((solutionsNormalized,hv))
+    else:
+        nsga = NsgaII()
+        nsga.setParameters(solution[0], solution[1], solution[2], solution[3])
+        hv_average = 0
+        MAX_TIME_DURATION = view.time
+        print("new dataset")
+        for i in range(max_iterations):
+            random.seed(settings.SEEDS[i])
+            solutions = view.executeNsgaIIToOptimize(population_amount, MAX_TIME_DURATION)
+            solutionsNormalized = Normalize().normalizeFitness(solutions)
+            pf = np.array(solutionsNormalized)
+            hv = Hipervolumen.calculate_hipervolumen(pf)
+            hv_average+= hv
+            data.append((solutionsNormalized,hv))
+    return hv_average,index,data
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":

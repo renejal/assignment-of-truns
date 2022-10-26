@@ -34,7 +34,6 @@ class Normalize:
             distance_fitness = self.normalize(solution.distance_fitness / DISTANCE_FITNESS_VALUE, fitnessMax[3], fitnessMin[3])
             solutionsNormalizated.append([missing_shifts_fitness, assigned_vigilantes_fitness,
                                           extra_hours_fitness, distance_fitness])
-        print(suma)
         self.fitnessMax = fitnessMax
         return solutionsNormalizated
 

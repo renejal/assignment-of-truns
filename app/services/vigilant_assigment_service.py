@@ -55,9 +55,9 @@ class Vigilant_assigment_service:
                  return True
         return False
 
-    def get_order_vigilantes_index_in_place_by_distance(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
-        index_vigilants = [vID for vID in self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id -1] if vigilantes[vID-1].default_place_to_look_out == site_id or vigilantes[vID-1].default_place_to_look_out == -1]
-        return [v for v in vigilantes if v.id in index_vigilants]
+    # def get_order_vigilantes_index_in_place_by_distance(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
+    #     index_vigilants = [vID for vID in self.vigilant_assigment.order_sites_by_id_vigilantes_distance[site_id -1] if vigilantes[vID-1].default_place_to_look_out == site_id or vigilantes[vID-1].default_place_to_look_out == -1]
+    #     return [v for v in vigilantes if v.id in index_vigilants]
 
     def obtain_vigilants_in_default_for_site(self, site_id: int, vigilantes: List[Vigilant]) -> List[Vigilant]:
         if site_id in self.vigilant_assigment.expected_places_to_look_out_by_vigilants:
