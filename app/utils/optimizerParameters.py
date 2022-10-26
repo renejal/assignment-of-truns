@@ -19,9 +19,9 @@ class OptimizerParamets:
             Mating pool size
             Population size
     """
-    sol_per_pop = 4
+    sol_per_pop = 10
     num_parents_mating = 2
-    num_generations = 1
+    num_generations = 3
     
     def __init__(self, algorithm: str, filesData: List[str]) -> None:
         self.calculate_best_parameters(algorithm, filesData)

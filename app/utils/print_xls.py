@@ -132,7 +132,7 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
     df.to_excel(writer, sheet_name ='optimizacion')
     wb.save(path)
     writer.close()
-    strings = []
+    strings = ""
     for index,generation in enumerate(data_solutions):
         parameters_solutions = generation[0]
         for solutions_data_fitnesss in parameters_solutions[0]:
@@ -143,6 +143,6 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
                 string+= str(solutions_data_fitnesss[1])
                 string+= ","+str(parameters_solutions[1])
                 string+= ","+str(index)
-                strings.append(string+"\n")
+                strings+= string+"\n"
     with open(path+'.txt', 'w') as f:
         f.write(strings)
