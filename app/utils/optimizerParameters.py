@@ -19,9 +19,9 @@ class OptimizerParamets:
             Mating pool size
             Population size
     """
-    sol_per_pop = 10
+    sol_per_pop = 4
     num_parents_mating = 2
-    num_generations = 3
+    num_generations = 1
     
     def __init__(self, algorithm: str, filesData: List[str]) -> None:
         self.calculate_best_parameters(algorithm, filesData)
@@ -47,14 +47,18 @@ class OptimizerParamets:
         new_grasp_population = self.get_grasp_population()
         data = execute_ga(new_grasp_population , views, self.GRASP_ALGORITHM , amount_grasp_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
         colums = ["evolution","solution","components_amount","restricted_list_size","tweak_amount_repetitions","amount_population","time", "average_hv"]
-        generate_parameter_optimizacion(data, colums, self.GRASP_ALGORITHM)
+        data_fitness = data[0]
+        data_solutions = data[1]
+        generate_parameter_optimizacion(data_fitness, data_solutions, colums, self.GRASP_ALGORITHM)
     
     def generate_nsgaII_optimization(self, views: List[GenerateShiftView]):
         amount_nsgaII_weights = self.NSGAII_INPUTS
         new_nsgaII_population = self.get_nsgaII_population()
         data = execute_ga(new_nsgaII_population , views, self.NSGAII_ALGORITHM , amount_nsgaII_weights , self.sol_per_pop , self.num_generations, self.num_parents_mating)
         colums = ["evolution","solution","children_amount_to_generate","amount_parents_of_ordered_population","tweak_amount_repetitions","amount_population","time","average_hv"]
-        generate_parameter_optimizacion(data, colums, self.GRASP_ALGORITHM)
+        data_fitness = data[0]
+        data_solutions = data[1]
+        generate_parameter_optimizacion(data_fitness, data_solutions, colums, self.GRASP_ALGORITHM)
 
 
     def get_grasp_population(self):

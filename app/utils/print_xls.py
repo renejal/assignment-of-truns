@@ -113,12 +113,12 @@ def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     wb.save(path+"/metrics.xlsx")
     writer.close()
 
-def generate_parameter_optimizacion(evolutions: List[List[object]], columns, name):
+def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutions,columns, name):
     time = datetime.datetime.now()
     time = str(time.year)+"-"+str(time.month)+"-"+str(time.day) + \
         "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
-    path = PATH_RESULTS+"optimizations/"+name+time+".xlsx"
-    writer = pd.ExcelWriter(path, engine='openpyxl')
+    path = PATH_RESULTS+"optimizations/"+name+time
+    writer = pd.ExcelWriter(path +".xlsx", engine='openpyxl')
     data = []
     for p, population in enumerate(evolutions):
         for s in range(len(population[0])):
@@ -132,4 +132,17 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], columns, nam
     df.to_excel(writer, sheet_name ='optimizacion')
     wb.save(path)
     writer.close()
-
+    strings = []
+    for index,generation in enumerate(data_solutions):
+        parameters_solutions = generation[0]
+        for solutions_data_fitnesss in parameters_solutions[0]:
+            for solution in solutions_data_fitnesss[0]:
+                string = ""
+                for fitness in solution:
+                    string+= str(fitness) + ","
+                string+= str(solutions_data_fitnesss[1])
+                string+= ","+str(parameters_solutions[1])
+                string+= ","+str(index)
+                strings.append(string+"\n")
+    with open(path+'.txt', 'w') as f:
+        f.write(strings)
