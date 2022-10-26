@@ -79,7 +79,7 @@ class PopulationServices:
 
     @staticmethod
     def not_dominate_sort(population: Population) -> List[Solution]:
-        # PopulationServices.add_ids_solution(population.populations)
+        PopulationServices.add_ids_solution(population.populations)
         PopulationServices.calculate_dominance(population)
         PopulationServices.calculate_range(population)
         return population.frente

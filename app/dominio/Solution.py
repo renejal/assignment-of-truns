@@ -267,4 +267,15 @@ class Solution:
                     self.assigned_vigilantes_fitness += missing_hours
                     self.total_fitness+=  missing_hours
                     self.fitness[3] = self.assigned_vigilantes_fitness
+            if vigilant.is_assigned:
+                vigilantes_amount_assigned += 1
+        self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * (vigilantes_amount_assigned - self.problem.expected_vigilantes)
+        self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * (vigilantes_amount_assigned - self.problem.expected_vigilantes)
+
+    def calculate_assigned_vigilantes_fitness(self):
+        count = 0
+        for vigilant in self.vigilantes_schedule:
+            if vigilant.is_assigned:
+                count += 1
+        return count - self.problem.expected_vigilantes 
     
