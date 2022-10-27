@@ -245,8 +245,8 @@ class Solution:
         for site in self.sites_schedule:
             for shift in site.missing_shifts:
                 if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
-                    self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-                    self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
+                    self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
+                    self.total_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
                     self.fitness[0] = self.missing_shifts_fitness
         vigilantes_amount_assigned = 0
         for vigilant in self.vigilantes_schedule:

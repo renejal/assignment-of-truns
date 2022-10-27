@@ -89,11 +89,16 @@ class Component:
         del self.assigned_Vigilantes[id_vigilant]
 
     def calculate_inicial_fitness(self) -> None:
+        self.assigned_vigilantes_fitness = 0
+        self.distance_fitness = 0
+        self.extra_hours_fitness = 0
+        self.missing_shifts_fitness = 0
+        self.total_fitness = 0
         for shift in self.site_schedule:
             if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
                 self.missing_shifts.append(shift)
-                self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))
-                self.total_fitness+= MISSING_FITNESS_VALUE*(shift.necesary_vigilantes - len(shift.assigment_vigilantes))  
+                self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
+                self.total_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
         if self.assigned_Vigilantes == None:
             return
         for vigilant in self.assigned_Vigilantes.values():
