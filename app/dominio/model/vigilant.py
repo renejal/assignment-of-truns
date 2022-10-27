@@ -65,7 +65,7 @@ class Vigilant(FromDictMixin):
 
     def set_total_hours_worked_by_week(self, weeks_amount:int):
         self.total_hours_worked_by_week = [0] * weeks_amount
-
+        
     def get_shifts_on_week(self,week) -> List[Shift_place]:
         shifts_on_week = []
         for shift in self.shifts:
@@ -101,14 +101,12 @@ class Vigilant(FromDictMixin):
             else:
                 shifts_by_site[shift.site_id] = [shift.shift]
         return shifts_by_site
-
+        
     def find_shift_place(self, shift:Shift):
         for shift_place in self.shifts:
             if shift_place.shift == shift:
                 return shift_place
         return None
-
-    
 
     def set_id(self, id):
         self.id = id

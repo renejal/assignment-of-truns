@@ -32,9 +32,9 @@ env1 = environ.Env(
 
     #NSGAII
     #PARAMETERS
-    MAX_EFOS_NSGAII =(int, 10), 
-    POPULATION_AMOUNT_NSGAII = (int, 40),
-    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
+    MAX_EFOS_NSGAII =(int, 100), 
+    POPULATION_AMOUNT_NSGAII = (int, 10),
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.2), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
     #PorcetanjeCrossingNsgaii
@@ -94,4 +94,3 @@ MISSING_SHIFT_TWEAK_PROBABILITY = env("MISSING_SHIFT_TWEAK_PROBABILITY")
 ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = env("ASSIGNED_VIGILANTES_TWEAK_PROBABILITY")
 EXTRA_HOURS_TWEAK_PROBABILITY = env("EXTRA_HOURS_TWEAK_PROBABILITY")
 DISTANCE_TWEAK_PROBABILITY = env("DISTANCE_TWEAK_PROBABILITY")
-

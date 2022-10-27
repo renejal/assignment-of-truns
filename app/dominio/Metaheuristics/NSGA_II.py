@@ -37,18 +37,17 @@ class NsgaII(Algorithm):
         population_obj = Population(problem, self.POPULATION_AMOUNT_NSGAII)
         population_obj.inicialize_population(self.MAX_TIMEOUT)
         self.evolutions.append(population_obj.populations) 
+        population_parents = [] 
 
         while self.current_efo < self.MAX_EFOS:
             self.CURRENT_TIMEOUT = time.time()
             if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
                 return self.evolutions
             print(f"iteration N. {self.current_efo}")
-            population_parents: List[Solution] = population_obj.populations
-            population_children = PopulationServices.generate_decendents(copy.copy(population_parents)) 
-            union_populantion = PopulationServices.union_soluction(copy.copy(population_parents), population_children)
+            population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
+            union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
             population_obj.populations = union_populantion
             PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
-            population_parents = [] 
             if not population_obj.populations:
                 raise("population not found")
             PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 

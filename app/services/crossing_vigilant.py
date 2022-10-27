@@ -33,7 +33,7 @@ class CrossingVigilant:
     
     @classmethod
     def crossing_vigilantes(self, population:  List[Solution], objective_index=1) -> List[Solution]:
-        parent_for_exchange_one, parent_for_exchange_two = Crossing.get_parents_by_objetive(population, objective_index)
+        parent_for_exchange_one, parent_for_exchange_two = Crossing.get_parents_by_objetive(population, objective_index, settings)
         childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
             child = self.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))

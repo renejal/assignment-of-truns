@@ -19,20 +19,23 @@ from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY,
 class PopulationServices:
 
     @staticmethod
-    def generate_decendents(population: List[Solution]) -> List[Solution]:
+    def generate_decendents(population: Population) -> List[Solution]:
         print("generate_decendents")
         childrens: list[Solution] = []
-        while len(childrens)<len(population): 
+        PopulationServices.add_ids_solution(population.populations)
+        while len(childrens)<len(population.populations): 
             function_crossing = PopulationServices.get_crossing()
             childrens = childrens + function_crossing(population)
         return childrens
 
     @staticmethod
     def get_crossing():
-        objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
-                                                         ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
-                                                         EXTRA_HOURS_CROSSING_PROBABILITY,
-                                                         DISTANCE_CROSSING_PROBABILITY))[0]
+        #Todo: esta cambiando el random, revisar
+        objective = random.choices([2,2,2,2], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
+                                                          ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
+                                                          EXTRA_HOURS_CROSSING_PROBABILITY,
+                                                          DISTANCE_CROSSING_PROBABILITY))[0]
+        objective = 2 # Todo quieta esto, solo es apra probar el crossing 3
         objective_dict ={
             1:CrossingShift.crossing_missing_shift,
             2:CrossingShift.crossing_vigilant_assigment,
@@ -52,8 +55,14 @@ class PopulationServices:
             index_vigilant+=1
 
     @staticmethod
-    def union_soluction(parents, childrens) -> List[Solution]:
+    def union_soluction(parents, childrens: List[Solution]) -> List[Solution]:
         print("union_soluction")
+        for children in childrens:
+            # print("fitness antes A", children.fitness[3])
+            # print("fitness antes B", children.fitness[3])
+            children.recalculate_fitness()
+            # print("fitness despues A", children.fitness[3])
+            # print("fitness despues B", children.fitness[3])
         return  parents + childrens
     
     @staticmethod
@@ -98,13 +107,14 @@ class PopulationServices:
                         solution.range=r 
                         population.add_frente(key=rango,value=solution)
             rango +=1
-
+            
     @staticmethod
     def get_solution(population: List[Solution], id_solution: int):
         for solution in population:
             if solution.id == id_solution:
                 return solution
         return False
+
     @staticmethod
     def get_frente(population: List[Solution], range):
         frente: List[Solution] = []
@@ -175,7 +185,7 @@ class PopulationServices:
                     max = solution.fitness[index_objective]
             rango.append(max-min)
         return rango
-            
+
     @staticmethod
     def get_solution_of_range(population: Population, range: int):
         "return soluction of range x"

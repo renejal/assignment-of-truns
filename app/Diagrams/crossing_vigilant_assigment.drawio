@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="xQyda192iYuIXAEOZKDh" name="Página-1">
-        <mxGraphModel dx="1125" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1302" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -311,100 +311,126 @@
                 <mxCell id="70" value="Cruce" style="html=1;dashed=0;whitespace=wrap;labelBackgroundColor=none;fontColor=#FF1940;fillColor=none;strokeColor=none;" parent="1" vertex="1">
                     <mxGeometry x="688" y="323" width="100" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="76" value="" style="edgeStyle=none;html=1;" parent="1" source="74" target="75" edge="1">
+                <mxCell id="114" value="" style="edgeStyle=none;html=1;" parent="1" source="116" target="118" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="112" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="74" target="111">
+                <mxCell id="115" value="" style="edgeStyle=none;html=1;" parent="1" source="116" target="138" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="74" value="se obtiene el mejor sitio&lt;br&gt;&amp;nbsp;con respecto al finnes &lt;br&gt;que se quiere mejorar" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
-                    <mxGeometry x="313" y="1000" width="170" height="60" as="geometry"/>
+                <mxCell id="116" value="se busca una solucione de &lt;br&gt;forma parcialmente aleatoria &lt;br&gt;de la poblacion con mas probabilida las&lt;br&gt;&amp;nbsp;que tiene mejor&lt;br&gt;&amp;nbsp;fitness&amp;nbsp; con respecto &lt;br&gt;al fitness que se quiere obtimizar" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="197.5" y="960" width="245" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="81" value="" style="edgeStyle=none;html=1;" parent="1" source="75" target="80" edge="1">
+                <mxCell id="143" style="edgeStyle=none;html=1;" edge="1" parent="1" source="118" target="142">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="Seleccion un gen que tenga&lt;br&gt;peor fitness de la solucion A&lt;br&gt;&amp;nbsp;y se obitene los periodos&lt;br&gt;&amp;nbsp;donde faltan vigilantes" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="220" y="1070" width="205" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="119" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="120" target="138" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="Inicio" style="html=1;dashed=0;whitespace=wrap;shape=mxgraph.dfd.start" parent="1" vertex="1">
+                    <mxGeometry x="280" y="790" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" style="edgeStyle=none;html=1;entryX=0.463;entryY=0.025;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="122" target="127" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="122" value="obtiene vigilante las jornadas que concuerde con los turnos faltantes la solucion B" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="1380" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="123" value="" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="127" target="122" edge="1">
                     <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="170" y="1557.5" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="401" y="1200"/>
+                            <mxPoint x="140" y="1554"/>
+                            <mxPoint x="140" y="1420"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="75" value="Seleccion un sitio con mejor fitness &lt;br&gt;de horas extras y missing shift" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
-                    <mxGeometry x="298" y="1090" width="205" height="70" as="geometry"/>
-                </mxCell>
-                <mxCell id="77" value="Inicio" style="html=1;dashed=0;whitespace=wrap;shape=mxgraph.dfd.start" parent="1" vertex="1">
-                    <mxGeometry x="328" y="750" width="80" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="105" style="edgeStyle=none;html=1;entryX=0.463;entryY=0.025;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="80" target="82" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="80" value="obtiene vigilante" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="338" y="1200" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="86" value="" style="edgeStyle=none;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="82" target="80" edge="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="258" y="1367.5" as="targetPoint"/>
-                        <Array as="points">
-                            <mxPoint x="228" y="1364"/>
-                            <mxPoint x="228" y="1230"/>
-                        </Array>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="87" value="Si" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="86" vertex="1" connectable="0">
+                <mxCell id="124" value="Si" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="123" vertex="1" connectable="0">
                     <mxGeometry x="0.22" y="-1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="89" value="" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="82" target="100" edge="1">
+                <mxCell id="125" value="" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="127" target="133" edge="1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="548" y="1364.07" as="targetPoint"/>
+                        <mxPoint x="460" y="1554.07" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="90" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="89" vertex="1" connectable="0">
+                <mxCell id="126" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="125" vertex="1" connectable="0">
                     <mxGeometry x="-0.2908" y="1" relative="1" as="geometry">
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="82" value="vigilanate esta en el &lt;br&gt;sitio a intercambiar ?" style="shape=rhombus;html=1;dashed=0;whitespace=wrap;perimeter=rhombusPerimeter;" parent="1" vertex="1">
-                    <mxGeometry x="328" y="1298.76" width="160" height="131.25" as="geometry"/>
+                <mxCell id="127" value="vigilanate esta en el &lt;br&gt;sitio a intercambiar ?" style="shape=rhombus;html=1;dashed=0;whitespace=wrap;perimeter=rhombusPerimeter;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="1488.76" width="160" height="131.25" as="geometry"/>
                 </mxCell>
-                <mxCell id="95" value="" style="edgeStyle=none;html=1;" parent="1" source="88" target="94" edge="1">
+                <mxCell id="128" value="" style="edgeStyle=none;html=1;" parent="1" source="129" target="131" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="88" value="agregar vigilante A al sitio k con sus jornadas laborales" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="707" y="1334.3850000000002" width="120" height="60" as="geometry"/>
+                <mxCell id="129" value="agregar vigilante A al sitio k con sus jornadas laborales" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="619" y="1524.3850000000002" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="107" style="edgeStyle=none;html=1;" parent="1" source="94" target="106" edge="1">
+                <mxCell id="130" style="edgeStyle=none;html=1;" parent="1" source="131" target="136" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="94" value="reparar la jornada laborales de los vigilantes del sitio K" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
-                    <mxGeometry x="707" y="1539.9950000000001" width="120" height="60" as="geometry"/>
+                <mxCell id="131" value="reparar la jornada laborales de los vigilantes del sitio K" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="619" y="1729.9950000000001" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="101" style="edgeStyle=none;html=1;" parent="1" source="100" edge="1">
+                <mxCell id="132" style="edgeStyle=none;html=1;" parent="1" source="133" edge="1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="708" y="1364" as="targetPoint"/>
+                        <mxPoint x="620" y="1554" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="688" y="1364"/>
+                            <mxPoint x="600" y="1554"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="100" value="obtiene sitio" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
-                    <mxGeometry x="568" y="1339.39" width="100" height="50" as="geometry"/>
+                <mxCell id="133" value="obtiene sitio" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="1529.39" width="100" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="108" value="Si" style="edgeStyle=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="106" target="100" edge="1">
+                <mxCell id="134" value="Si" style="edgeStyle=none;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="136" target="133" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="109" value="No" style="edgeStyle=none;html=1;" parent="1" source="106" target="110" edge="1">
+                <mxCell id="135" value="No" style="edgeStyle=none;html=1;" parent="1" source="136" target="137" edge="1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="593" y="1670" as="targetPoint"/>
+                        <mxPoint x="505" y="1860" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="106" value="siguiente sitio del &lt;br&gt;vigilante A!= Vacio" style="shape=rhombus;html=1;dashed=0;whitespace=wrap;perimeter=rhombusPerimeter;" parent="1" vertex="1">
-                    <mxGeometry x="528" y="1524.99" width="130" height="90" as="geometry"/>
+                <mxCell id="136" value="siguiente sitio del &lt;br&gt;vigilante A!= Vacio" style="shape=rhombus;html=1;dashed=0;whitespace=wrap;perimeter=rhombusPerimeter;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="1714.99" width="130" height="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="110" value="End" style="html=1;dashed=0;whitespace=wrap;shape=mxgraph.dfd.start" parent="1" vertex="1">
-                    <mxGeometry x="553" y="1680" width="80" height="30" as="geometry"/>
+                <mxCell id="137" value="End" style="html=1;dashed=0;whitespace=wrap;shape=mxgraph.dfd.start" parent="1" vertex="1">
+                    <mxGeometry x="465" y="1870" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="111" value="se obtiene la poblacion&amp;nbsp;" style="html=1;dashed=0;whitespace=wrap;" vertex="1" parent="1">
-                    <mxGeometry x="313" y="900" width="170" height="40" as="geometry"/>
+                <mxCell id="138" value="se obtiene la poblacion&amp;nbsp;" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="235" y="880" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="140" style="edgeStyle=none;html=1;" edge="1" parent="1" source="139">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="450" y="1020" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="141" style="edgeStyle=none;html=1;" edge="1" parent="1" source="139">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="440" y="1110" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="139" value="se realiza esto con laidea de mejora las solucion mejores de la poblacion con genes de otras soluciones que talvez no sean mejores pero que en el gen especifio puede aportar buen fitnnes" style="shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="720" width="220" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="146" style="edgeStyle=none;html=1;" edge="1" parent="1" source="142" target="122">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="142" value="se busca dentro de la poblacion&amp;nbsp; los &lt;br&gt;peridos del&amp;nbsp; sitio que mejor fitness reporten&amp;nbsp;" style="html=1;dashed=0;whitespace=wrap;" vertex="1" parent="1">
+                    <mxGeometry x="205" y="1200" width="230" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="145" style="edgeStyle=none;html=1;" edge="1" parent="1" source="144">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="440" y="1250" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="144" value="con esto se asegura que los genes entrantes van a mejore con gran probabilida la solucion." style="shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="640" y="1080" width="149" height="140" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
