@@ -130,7 +130,7 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
     wb = writer.book
     df = pd.DataFrame(data,columns=columns)
     df.to_excel(writer, sheet_name ='optimizacion')
-    wb.save(path)
+    wb.save(path+".xlsx")
     writer.close()
     strings = ""
     for index,generation in enumerate(data_solutions):
@@ -144,5 +144,6 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
                 string+= ","+str(parameters_solutions[1])
                 string+= ","+str(index)
                 strings+= string+"\n"
-    with open(path+'.txt', 'w') as f:
-        f.write(strings)
+    f = open(path+".txt", "w")
+    f.write(strings)
+    f.close()
