@@ -91,6 +91,8 @@ class Solution:
                 gen_bad.delete_vigilant(vigilants[0])
             else:
                 gen_bad.crossing_shift(self.get_vigilant(vigilants[0]), gen_best.assigned_Vigilantes.get(vigilants[1]))
+        gen_bad.calculate_inicial_fitness()
+        print("termino")
 
     def get_crossing_vigilant_avaliable(self, gen_bad: Component, gen_best: Component):
         # obtiene los vigilantes en communt

@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 86400 #1day
+MAX_TIME_DURATION = 60#1day
 PATH_RESULTS = "dataset/results/"
 
 NUMBER_OBJECTIVE_AT_OBTIMIZATE = 4
@@ -34,7 +34,7 @@ env1 = environ.Env(
     #PARAMETERS
     MAX_EFOS_NSGAII =(int, 100), 
     POPULATION_AMOUNT_NSGAII = (int, 10),
-    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.2), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.1), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
     #PorcetanjeCrossingNsgaii

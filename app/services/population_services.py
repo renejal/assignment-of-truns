@@ -58,9 +58,10 @@ class PopulationServices:
     def union_soluction(parents, childrens: List[Solution]) -> List[Solution]:
         print("union_soluction")
         for children in childrens:
+            pass
             # print("fitness antes A", children.fitness[3])
             # print("fitness antes B", children.fitness[3])
-            children.recalculate_fitness()
+            # children.recalculate_fitness()
             # print("fitness despues A", children.fitness[3])
             # print("fitness despues B", children.fitness[3])
         return  parents + childrens
