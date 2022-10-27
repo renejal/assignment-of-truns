@@ -74,7 +74,7 @@ class VigilantAssigment:
         # self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = self.total_vigilantes * (len(sites)-1) * 2
+        self.max_possible_fitness[3] = self.total_vigilantes * (len(sites)-1) * 3
 
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}
