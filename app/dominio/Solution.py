@@ -173,7 +173,7 @@ class Solution:
                 vigilantes_amount_assigned += 1
         self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * (vigilantes_amount_assigned - self.problem.expected_vigilantes)
         self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * (vigilantes_amount_assigned - self.problem.expected_vigilantes)
-        self.fitness[3] += self.assigned_vigilantes_fitness
+        self.fitness[3] = self.assigned_vigilantes_fitness
 
     def calculate_assigned_vigilantes_fitness(self):
         count = 0
