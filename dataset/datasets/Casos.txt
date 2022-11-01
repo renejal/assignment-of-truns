@@ -1,0 +1,67 @@
+Casos:
+2 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
+        Facil: 17
+        Medio: 15
+        hard: 14
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
+        Facil:
+            6 vigilantes
+        Medio:
+            5 vigilantes
+        hard:
+            4 vigilantes
+    Probar Optimizacion Mezclado:
+        Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y sitio con full time, vigilantes minimos requeridos  =  12
+         Facil:
+            12 vigilantes
+        Medio:
+            10 vigilantes
+        hard:
+            8 vigilantes
+30 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  252
+        Facil: 255 
+        Medio: 250
+        hard: 240
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  84
+        Facil:
+            84 vigilantes
+        Medio:
+            80 vigilantes
+        hard:
+            75 vigilantes
+    Probar Optimizacion Mezclado:
+        10 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 10 sitio con full time de a 3 vig, vigilantes minimos requeridos  =  207
+         Facil:
+            207 vigilantes
+        Medio:
+            200 vigilantes
+        hard:
+            195 vigilantes
+50 sitios:
+    FullTime:
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  420
+       Facil: 420
+        Medio: 415
+        hard: 405 
+    Parcial:
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  140
+        Facil:
+            140 vigilantes
+        Medio:
+            135 vigilantes
+        hard:
+            125 vigilantes
+    Probar Optimizacion Mezclado:
+         20 de a 2 y 10 de a 4 Sitio con Jornadas de 8 horas de 10 p.m a 6 a.m, y 15 sitios con 3 full time 5 sitios con 4 full, vigilantes minimos requeridos  =  385
+         Facil:
+            385 vigilantes
+        Medio:
+            375 vigilantes
+        hard:
+            365 vigilantes

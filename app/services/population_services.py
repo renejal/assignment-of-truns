@@ -31,7 +31,7 @@ class PopulationServices:
     @staticmethod
     def get_crossing():
         #Todo: esta cambiando el random, revisar
-        objective = random.choices([2,2,2,2], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
+        objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
                                                           ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
                                                           EXTRA_HOURS_CROSSING_PROBABILITY,
                                                           DISTANCE_CROSSING_PROBABILITY))[0]

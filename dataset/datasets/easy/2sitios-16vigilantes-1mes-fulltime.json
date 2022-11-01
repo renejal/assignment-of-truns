@@ -1,0 +1,933 @@
+{
+    "id_user": "pruebaDataSet2",
+    "data_sites": [
+        {
+            "description": "initialSite",
+            "is_special_site": false,
+            "total_weeks": 4,
+            "weeks_schedule": [
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 1"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 2"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 3"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 4"
+                }
+            ]
+        },
+        {
+            "description": "initialSite1",
+            "is_special_site": false,
+            "total_weeks": 4,
+            "weeks_schedule": [
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 1"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 2"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 3"
+                },
+                {
+                    "days": [
+                        {
+                            "description": "day 1",
+                            "id": 0,
+                            "working_day": [
+                                {
+                                    "description": "working day 1",
+                                    "id": 0,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 2",
+                            "id": 1,
+                            "working_day": [
+                                {
+                                    "description": "working day 2",
+                                    "id": 1,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 3",
+                            "id": 2,
+                            "working_day": [
+                                {
+                                    "description": "working day 3",
+                                    "id": 2,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 4",
+                            "id": 3,
+                            "working_day": [
+                                {
+                                    "description": "working day 4",
+                                    "id": 3,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 5",
+                            "id": 4,
+                            "working_day": [
+                                {
+                                    "description": "working day 5",
+                                    "id": 4,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 6",
+                            "id": 5,
+                            "working_day": [
+                                {
+                                    "description": "working day 6",
+                                    "id": 5,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        },
+                        {
+                            "description": "day 7",
+                            "id": 6,
+                            "working_day": [
+                                {
+                                    "description": "working day 7",
+                                    "id": 6,
+                                    "working_start": 0,
+                                    "working_end": 23,
+                                    "num_vigilantes": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "description": "week 4"
+                }
+            ]
+        }
+    ],
+    "data_vigilantes": [
+        {
+            "description": 1,
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                1,
+                2
+            ]
+        },
+        {
+            "description": "new1",
+            "default_place_to_look_out": "initialSite1",
+            "closet_place": "initialSite1",
+            "distances": [
+                3,
+                0
+            ]
+        },
+        {
+            "description": "new2",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite1",
+            "distances": [
+                4,
+                2
+            ]
+        },
+        {
+            "description": "new3",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                1,
+                3
+            ]
+        },
+        {
+            "description": "new4",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite1",
+            "distances": [
+                2,
+                1
+            ]
+        },
+        {
+            "description": "new5",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite1",
+            "distances": [
+                5,
+                1
+            ]
+        },
+        {
+            "description": "new6",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite1",
+            "distances": [
+                3,
+                2
+            ]
+        },
+        {
+            "description": "new7",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                3,
+                3
+            ]
+        },
+        {
+            "description": "new8",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                1,
+                5
+            ]
+        },
+        {
+            "description": "new9",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                2,
+                2
+            ]
+        },
+        {
+            "description": "new10",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                1,
+                3
+            ]
+        },
+        {
+            "description": "new11",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                2,
+                2
+            ]
+        },
+        {
+            "description": "new12",
+            "default_place_to_look_out": "initialSite",
+            "closet_place": "initialSite",
+            "distances": [
+                0,
+                2
+            ]
+        },
+        {
+            "description": "new13",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                1,
+                1
+            ]
+        },
+        {
+            "description": "new14",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite",
+            "distances": [
+                2,
+                2
+            ]
+        },
+        {
+            "description": "new15",
+            "default_place_to_look_out": -1,
+            "closet_place": "initialSite1",
+            "distances": [
+                2,
+                0
+            ]
+        }
+    ]
+}

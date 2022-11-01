@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="GUSPRAJsgAIgAGzK0_ZS" name="Página-1">
-        <mxGraphModel dx="1925" dy="1648" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1889" dy="1969" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -388,7 +388,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="172" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="143" target="171">
+                <mxCell id="172" value="" style="edgeStyle=none;html=1;" parent="1" source="143" target="171" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="143" value="realiza el cruse de los shifts de los vigilantes" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
@@ -431,22 +431,22 @@
                 <mxCell id="160" value="realizar el cruce&amp;nbsp; de el vigilante completo" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
                     <mxGeometry x="-700" y="1730" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="174" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="171" target="173">
+                <mxCell id="174" value="" style="edgeStyle=none;html=1;" parent="1" source="171" target="173" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="171" value="obtener lista de shits de vigilantes" style="whiteSpace=wrap;html=1;dashed=0;" vertex="1" parent="1">
+                <mxCell id="171" value="obtener lista de shits de vigilantes" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
                     <mxGeometry x="-280" y="1810" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="176" value="Si" style="edgeStyle=none;html=1;" edge="1" parent="1" source="173" target="175">
+                <mxCell id="176" value="Si" style="edgeStyle=none;html=1;" parent="1" source="173" target="175" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="179" value="No" style="edgeStyle=none;html=1;" edge="1" parent="1" source="173" target="178">
+                <mxCell id="179" value="No" style="edgeStyle=none;html=1;" parent="1" source="173" target="178" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="173" value="El shift vigilant B esta asignado en el vigilante A" style="rhombus;whiteSpace=wrap;html=1;dashed=0;" vertex="1" parent="1">
+                <mxCell id="173" value="El shift vigilant B esta asignado en el vigilante A" style="rhombus;whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
                     <mxGeometry x="-275" y="1920" width="110" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="177" value="Siguiente shift" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="175" target="171">
+                <mxCell id="177" value="Siguiente shift" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="175" target="171" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="-70" y="1990" as="targetPoint"/>
                         <Array as="points">
@@ -455,10 +455,10 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="175" value="Continue" style="whiteSpace=wrap;html=1;dashed=0;" vertex="1" parent="1">
+                <mxCell id="175" value="Continue" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
                     <mxGeometry x="-280" y="2135" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="178" value="Se asigna" style="whiteSpace=wrap;html=1;dashed=0;" vertex="1" parent="1">
+                <mxCell id="178" value="Se asigna" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
                     <mxGeometry x="-470" y="1945" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>

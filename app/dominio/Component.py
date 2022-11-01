@@ -1,5 +1,6 @@
 from re import I
-
+from sched import scheduler
+from utils import union
 from numpy import delete
 from dominio.model.shift_place import Shift_place
 from utils.order import Order
@@ -46,13 +47,15 @@ class Component:
             if (shift.shift_end == par_shift.shift_end and 
                 shift.shift_start == par_shift.shift_start):
                 return shift
-        raise(f"no se encontro shits con end: {shift.shift_end}, start: {shift.shift_start}")
+        return None
     
     def clear_shift_vigilant(self, par_vigilant: Vigilant):
         shifts = par_vigilant.shifts
         while shifts:
             shift = shifts.pop(0)
             main_shift = self.get_shift(shift.shift)
+            if not main_shift:
+                continue
             if par_vigilant.id in main_shift.assigment_vigilantes:
                 main_shift.assigment_vigilantes.remove(par_vigilant.id)
         par_vigilant.last_shift = None
@@ -74,6 +77,9 @@ class Component:
             if index_best < len(par_vigilant_best.shifts):
                 # 1. busar shift en site_schedule shift y asignar a vigilants bad
                 shift_best=self.get_shift(par_vigilant_best.shifts[index_best].shift)
+                if not shift_best:
+                    index_best += 1
+                    continue
                 shift_best.add_vigilant(vigilant_bad.id)
                 vigilant_bad.shifts.append(Shift_place(shift_best,self.site_id))
             else:
@@ -145,3 +151,79 @@ class Component:
     
     def assigment_id_order(self):
         pass
+
+    def validate_working_day(self, shift: Shift):
+        schedules = self.site_schedule
+        """Valida que el tweak shift este realizado de forma correcta
+        Args:
+            schedules (List[Shift]): _description_
+            shift (Shift): _description_
+        """
+        for i in range(len(schedules)-1):
+            if schedules[i].shift_start == shift.shift_start and schedules[i].shift_end == shift.shift_end:
+                if i>0:
+                    if schedules[i-1].shift_end < schedules[i].shift_end and schedules[i-1].shift_start < schedules[i].shift_start:
+                        pass
+                    else:
+                        raise("error no se relio el tweak de forma correcta")
+                if i < len(schedules)-1:
+                    if schedules[i+1].shift_end > schedules[i].shift_end and schedules[i+1].shift_start > schedules[i].shift_start:
+                        pass
+                    else:
+                        raise("error no se relio el tweak de forma correcta")
+                    
+    def add_new_workingday(self, working_day):
+        A = working_day
+        schedule = self.site_schedule
+        workigns = [Shift]
+        assigemend_working = False
+        i = 0
+        while i < len(schedule)-1:
+            left, inner, right = union.calculate(A,schedule[i])
+            if left == [] and inner != [] and right == [] :
+                pass
+            elif left !=[] and inner == [] and right != []:
+                pass
+            elif left != [] and inner != [] and right == [] :
+                working = left + inner 
+                schedule[i].shift_start = min(working)
+                schedule[i].shift_end = max(working)
+                assigemend_working = True
+                A = left
+            elif left == [] and inner != [] and right != [] and assigemend_working:
+                schedule[i].shift_start = min(right)
+                schedule[i].shift_end = max(right)
+                break
+            elif left == [] and inner != [] and right != [] and not assigemend_working:
+                working = inner + right
+                schedule[i].shift_start = min(working)
+                schedule[i].shift_end = max(right)
+                assigemend_working = True
+                A = right
+            elif left == [] and inner != [] and right != [] and assigemend_working:
+                schedule[i].shift_start = min(right)
+                schedule[i].shift_end = max(right)
+                break
+            elif left != [] and inner != [] and right == [] and not assigemend_working:
+                schedule[i].shift_start = min(left)
+                schedule[i].shift_end = max(inner)
+                assigemend_working = True
+                A = left
+            elif left == [] and inner != [] and right != [] and assigemend_working:
+                schedule[i].shift_start = min(left)
+                schedule[i].shift_end = max(right)
+                break
+            elif left != [] and inner != [] and right != [] and not assigemend_working:
+                schedule[i].shift_start = min(right) 
+                schedule[i].shift_end= max(right) 
+                schedule[i+1].shift_start = min(inner) # le suma el los valore faltantes a la siguieten working_day
+                assigemend_working = True # lo que esta en left y inner ya se ha asignado
+            elif left != [] and inner != [] and right != [] and assigemend_working:
+                schedule[i].shift_start = min(right)
+                schedule[i].shift_end= max(right)
+                A = left # lo que esta en left y inner ya se ha asignado tomamos solo lo que esta en left para coparar con la siguiente working day
+            ## caos 5 validar que la nueva jornada ti pueda se ingresar esto se puede evidenciar si no hay
+            i = i + 1
+        return schedule
+
+        

@@ -55,15 +55,21 @@ class CrossingShift:
         Returns:
             Dos hijos resultantes del cruce entre los dos padres
         """
-        parent_one = Crossing.get_best_parent(population.populations, objective_index)
-        bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
-        value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
-        parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
-        best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
-        parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
-        temp_fitnnes = parent_one.total_fitness
-        parent_one.calculate_fitness()
-        print(f"parent_one id: {parent_one.id} parent_two: id: {parent_two.id} :fitnnes de {temp_fitnnes} a {parent_one.total_fitness} ")
+        num_child = 1
+        while num_child < 2:
+            parent_one = None
+            parent_two = None
+            if parent_one is None:
+                parent_one = Crossing.get_best_parent(population.populations, objective_index)
+            bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
+            value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
+            if parent_two is None:
+                parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
+                best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
+                parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
+                temp_fitnnes = parent_one.total_fitness
+                parent_one.calculate_fitness()
+                print(f"parent_one id: {parent_one.id} parent_two: id: {parent_two.id} :fitnnes de {temp_fitnnes} a {parent_one.total_fitness} ")
         return parent_one
     
 
@@ -131,9 +137,10 @@ class CrossingShift:
             # ordenar component b
             component_b: Component=soluction_B.get_random_gen([])
             component_b.order_workings_days()
-            schedules = component_b.site_schedule
-            self.add_new_working_day(schedules, working_day)
-            self.validate_working_day(schedules, working_day)
+            component_b.add_new_workingday(working_day)
+            component_b.validate_working_day(working_day)
+            # self.add_new_working_day(schedules, working_day)
+            # self.validate_working_day(schedules, working_day)
             return soluction_B
 
     @classmethod
