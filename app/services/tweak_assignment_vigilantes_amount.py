@@ -12,11 +12,11 @@ from services.vigilant_assigment_service import Vigilant_assigment_service
 class Tweak_assignment_vigilantes_amount:
     vigilant_assigment_service = Vigilant_assigment_service(None)
 
-    #Deberia asignarle las horas de los vigilantes extras primero a los de entre 40-48 y luego a los de 48-55?
     def assignment_vigilantes_amount(self, solution: Solution) -> Solution:
         #Obtener vigilantes que tienen menos de 48 horas
         extra_vigilantes_by_week: List[List[Vigilant]] = self.get_extra_vigilantes_by_week(solution.vigilantes_schedule)
         available_vigilantes: List[List[Vigilant]] = self.get_available_vigilantes_by_week(solution.vigilantes_schedule)
+        
         for index_week, extra_vigilantes_on_week in enumerate(extra_vigilantes_by_week):
             random.shuffle(extra_vigilantes_on_week)
             index_vigilant = 0
@@ -25,35 +25,11 @@ class Tweak_assignment_vigilantes_amount:
                 #Si tiene mas de 24 horas trabajas se le quitan las horas a otro vigilante que tenga mas de 48 horas y se las asigna al vigilante que no cumple con las horas minimas
                 if extra_vigilant.total_hours_worked_by_week[index_week] > 24:
                     random.shuffle(available_vigilantes[index_week])
-                    index = 0
-                    while index < len(available_vigilantes[index_week]):
-                        available_vigilant = available_vigilantes[index_week][index]
-                        shifts = available_vigilant.get_shifts_on_week(index_week+1)
-                        random.shuffle(shifts)
-                        for shift_place in shifts:
-                            
-                            hoursShift = shift_place.shift.shift_end - shift_place.shift.shift_start + 1
-                            if available_vigilant.total_hours_worked_by_week[index_week] - hoursShift < 48:
-                                continue 
-                            if self.vigilant_assigment_service.is_vigilant_avaible(extra_vigilant, shift_place.shift):
-                                self.exchange_shift(shift_place,available_vigilant,extra_vigilant)
-                                if extra_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
-                                    solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[extra_vigilant.id] = extra_vigilant
-                                if shift_place.site_id not in available_vigilant.sites_to_look_out:
-                                    solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes.pop(available_vigilant.id)
-
-                                if available_vigilant.total_hours_worked_by_week[index_week] <= 48:
-                                    available_vigilantes[index_week].remove(available_vigilant)
-                                    index-=1
-                                if extra_vigilant.total_hours_worked_by_week[index_week] >= 48:
-                                    extra_vigilantes_by_week[index_week].remove(extra_vigilant)
-                                    available_vigilantes[index_week].append(available_vigilant)
-                                    index_vigilant-=1
-                                    break
-                        if extra_vigilant.total_hours_worked_by_week[index_week] >= 48:
-                            break
-                        index+=1
-                    if extra_vigilant.total_hours_worked_by_week[index_week] < 48:
+                    
+                    if self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
+                        extra_vigilantes_on_week.remove(extra_vigilant)
+                        index_vigilant-=1
+                    else:
                         index_vigilant -= self.assing_shifts_between_extra_vigilantes_greater_than(extra_vigilant, extra_vigilantes_by_week , index_week, available_vigilantes, solution)
                 #Primero se las asigna a algun otro de los que tienen menos
                 #Si tiene menos de 24 horas trabajadas estas horas se las asigna a cualquier otro vigilante que este disponible
@@ -69,7 +45,7 @@ class Tweak_assignment_vigilantes_amount:
                             if other_extra_vigilant.id == extra_vigilant.id:
                                 index_other_vigilant+=1
                                 continue
-                            if self.vigilant_assigment_service.is_vigilant_avaible(other_extra_vigilant, shift_place.shift):
+                            if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(other_extra_vigilant, shift_place.shift):
                                 self.exchange_shift(shift_place,extra_vigilant,other_extra_vigilant)
                                 var_shift = True
                                 if other_extra_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
@@ -108,7 +84,7 @@ class Tweak_assignment_vigilantes_amount:
                         index_available_vigilant = 0
                         while index_available_vigilant < len(available_vigilantes[index_week]):
                             available_vigilant = available_vigilantes[index_week][index_available_vigilant]
-                            if self.vigilant_assigment_service.is_vigilant_avaible(available_vigilant, shift_place.shift):
+                            if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(available_vigilant, shift_place.shift):
                                 self.exchange_shift(shift_place,extra_vigilant,available_vigilant)
                                 if available_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
                                     solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[available_vigilant.id] = available_vigilant
@@ -130,6 +106,41 @@ class Tweak_assignment_vigilantes_amount:
         self.delete_vigilantes_in_extra(extra_vigilantes_by_week, solution)
         return solution
 
+    def assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(self, extra_vigilant: Vigilant, vigilantes_with_extra_hours_in_week : List[Vigilant], solution: Solution, week):
+        #Este esta bien ya
+        index = 0
+        while index < len(vigilantes_with_extra_hours_in_week):
+            vigilant_with_extra_hour = vigilantes_with_extra_hours_in_week[index]
+            shifts = vigilant_with_extra_hour.get_shifts_on_week(week+1)
+            random.shuffle(shifts)
+            for shift_place in shifts:  
+                hoursShift = shift_place.shift.shift_end - shift_place.shift.shift_start + 1
+                if vigilant_with_extra_hour.total_hours_worked_by_week[week] - hoursShift < 48:
+                    continue 
+                if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(extra_vigilant, shift_place.shift):
+                    self.exchange_shift(shift_place,vigilant_with_extra_hour,extra_vigilant)
+                    vigiliantes_in_site = solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes
+
+                    #Se agrega el vigilante sobrante al sitio sino estaba asginado
+                    if extra_vigilant.id not in vigiliantes_in_site:
+                        vigiliantes_in_site[extra_vigilant.id] = extra_vigilant
+                    #Se elimina el vigilante con horas extras de el sitio si ya no tienen ningun shift
+                    if shift_place.site_id not in vigilant_with_extra_hour.sites_to_look_out:
+                        vigiliantes_in_site.pop(vigilant_with_extra_hour.id)
+
+                    if vigilant_with_extra_hour.total_hours_worked_by_week[week] <= 48:
+                        vigilantes_with_extra_hours_in_week.remove(vigilant_with_extra_hour)
+                        index-=1
+                        break
+                    if extra_vigilant.total_hours_worked_by_week[week] >= 48:
+                        break
+            if extra_vigilant.total_hours_worked_by_week[week] >= 48:
+                vigilantes_with_extra_hours_in_week.append(extra_vigilant)
+                return True
+            index+=1
+        return False
+    
+
     def assing_shifts_between_extra_vigilantes_greater_than(self, extra_vigilant: Vigilant, extra_vigilantes_by_week: List[List[Vigilant]], index_week: int, available_vigilantes: List[List[Vigilant]], solution: Solution):
         #Get vigilantes < to 24 and later the  > 24
         vigilantes_deleted = 0
@@ -141,7 +152,7 @@ class Tweak_assignment_vigilantes_amount:
                 continue
             shifts = other_extra_vigilant.get_shifts_on_week(index_week+1)
             for shift_place in shifts:
-                if self.vigilant_assigment_service.is_vigilant_avaible(extra_vigilant, shift_place.shift):
+                if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(extra_vigilant, shift_place.shift):
                     self.exchange_shift(shift_place,other_extra_vigilant,extra_vigilant)
                     if extra_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
                         solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[extra_vigilant.id] = extra_vigilant
@@ -179,7 +190,6 @@ class Tweak_assignment_vigilantes_amount:
         vigilant_to_remove_shift.remove_shift(shift)
         vigilant_to_add_shift.assign_shift(shift.shift,shift.site_id)
 
-
     def get_extra_vigilantes_by_week(self, vigilantes: List[Vigilant]) -> List[List[Vigilant]]:
         extra_vigilantes_by_week: List[List[Vigilant]] = np.array([[]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
         for vigilant in vigilantes:
@@ -213,7 +223,7 @@ class Tweak_assignment_vigilantes_amount:
                     vigilant_to_take = vigilantes_extras[index_vigilant_taken]
                     shifts = vigilant_to_take.shifts
                     for shift_place in shifts:
-                        if self.vigilant_assigment_service.is_vigilant_avaible(actual_vigilant, shift_place.shift):
+                        if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(actual_vigilant, shift_place.shift):
                             self.exchange_shift(shift_place,vigilant_to_take,actual_vigilant)
                             if actual_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
                                 solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[actual_vigilant.id] = actual_vigilant

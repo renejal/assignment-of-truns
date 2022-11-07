@@ -54,15 +54,16 @@ class Grasp(Algorithm):
                     if(self.current_timeout > self.MAX_TIMEOUT):
                         evolutions.append(population)
                         return evolutions
-                    new_solution:Solution = copy.deepcopy(population[index_solution])
+                    actual_solution = population[index_solution]
+                    new_solution:Solution = copy.deepcopy(actual_solution)
                     for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
                         self.current_timeout = time.time()
                         if(self.current_timeout > self.MAX_TIMEOUT):
                             break
                         # new_solution = Tweak_service().Tweak(new_solution)
-                        solution = Tweak_service().Tweak(new_solution)
-                        new_solution = solution if solution.total_fitness < new_solution.total_fitness else new_solution
-                    population.append(new_solution)
+                        new_solution = Tweak_service().Tweak(new_solution)
+                        best_solution = actual_solution if actual_solution.total_fitness < new_solution.total_fitness else new_solution
+                    population.append(best_solution)
                 population = self.best_population(population)
                 evolutions.append(copy.copy(population))
                 self.current_efo+= 1   

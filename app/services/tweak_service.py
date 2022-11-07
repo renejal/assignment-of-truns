@@ -1,3 +1,4 @@
+import pprint
 import random
 from dominio.Solution import Solution
 from services.tweak_assignment_vigilantes_amount import Tweak_assignment_vigilantes_amount
@@ -14,15 +15,19 @@ class Tweak_service:
     tweak_distance: Tweak_distance = Tweak_distance()
 
     def Tweak(self, solution: Solution):
-        tweak = random.choices([1,2,3,4], weights = (MISSING_SHIFT_TWEAK_PROBABILITY,ASSIGNED_VIGILANTES_TWEAK_PROBABILITY,EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY))[0]
-        if tweak == 1:
-            solution = self.tweak_missing_shifts.missing_shifts_tweak(solution)
-        elif tweak == 2:
-            solution = self.tweak_assignment_vigilantes_amount.assignment_vigilantes_amount(solution)
-        elif tweak == 3:
-            solution = self.tweak_extra_hours.extra_hours_tweak(solution)
-        else:
-            solution = self.tweak_distance.tweak_distance(solution)
-        solution.calculate_fitness()
-       
-        return solution
+        try:
+            tweak = random.choices([1,2,3,4], weights = (MISSING_SHIFT_TWEAK_PROBABILITY,ASSIGNED_VIGILANTES_TWEAK_PROBABILITY,EXTRA_HOURS_TWEAK_PROBABILITY,DISTANCE_TWEAK_PROBABILITY))[0]
+            if tweak == 1:
+                solution = self.tweak_missing_shifts.missing_shifts_tweak(solution)
+            elif tweak == 2:
+                solution = self.tweak_assignment_vigilantes_amount.assignment_vigilantes_amount(solution)
+            elif tweak == 3:
+                solution = self.tweak_extra_hours.extra_hours_tweak(solution)
+            else:
+                solution = self.tweak_distance.tweak_distance(solution)
+            solution.calculate_fitness()
+            return solution
+        except Exception as inst:
+            print(inst.with_traceback)
+            print(inst)
+            return solution

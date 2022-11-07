@@ -65,7 +65,7 @@ class Solution:
                 expected_vigilantes_in_place.append(self.vigilantes_schedule[vigilant_id-1])
 
         for component in range(components_new_amount):
-            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(order_vigilantes_in_site),copy.deepcopy(expected_vigilantes_in_place)) #DELETE FOR REAL PROBLEM
+            component = self.site_schedule_service.get_site_schedule(site.id, copy.deepcopy(shifts),copy.deepcopy(order_vigilantes_in_site),copy.deepcopy(expected_vigilantes_in_place))
             components.append(component)
         return components
 

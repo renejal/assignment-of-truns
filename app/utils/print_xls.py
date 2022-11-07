@@ -134,16 +134,21 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
     writer.close()
     strings = ""
     for index,generation in enumerate(data_solutions):
-        parameters_solutions = generation[0]
-        for solutions_data_fitnesss in parameters_solutions[0]:
-            for solution in solutions_data_fitnesss[0]:
-                string = ""
-                for fitness in solution:
-                    string+= str(fitness) + ","
-                string+= str(solutions_data_fitnesss[1])
-                string+= ","+str(parameters_solutions[1])
-                string+= ","+str(index)
-                strings+= string+"\n"
+        for solutionsData in generation:
+            solutionsEvolution = solutionsData[0]
+            hv_averageGa = solutionsData[1]
+            indexSolutionGA = solutionsData[2]
+            for solutions_normalize_fitnesss in solutionsEvolution:
+                hvEvolution = solutions_normalize_fitnesss[1]
+                for solution in solutions_normalize_fitnesss[0]:
+                    string = ""
+                    for fitness in solution:
+                        string+= str(fitness) + ","
+                    string+= str(hvEvolution)
+                    string+= ","+str(indexSolutionGA)
+                    string+= ","+str(hv_averageGa)
+                    string+= ","+str(index)
+                    strings+= string+"\n"
     f = open(path+".txt", "w")
     f.write(strings)
     f.close()

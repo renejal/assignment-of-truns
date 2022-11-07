@@ -18,16 +18,24 @@ class Vigilant_assigment_service:
         self.vigilant_assigment = vigilant_assigment
 
     def is_vigilant_avaible(self, vigilant: Vigilant, shift:Shift) -> bool:
-        if self.has_enough_hours_to_work_in_week(vigilant, shift) == False:
+        limit_working_hours = random.choice([self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,self._MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK])
+        if self.has_enough_hours_to_work_in_week(vigilant, shift, limit_working_hours) == False:
             return False
         if self.is_available_on_shift(vigilant, shift) == False:
             return False 
-        return True          
+        return True
 
-    def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift):
+    def is_vigilant_avaible_tweaks(self, vigilant: Vigilant, shift:Shift) -> bool:
+        limit_working_hours = self._MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK
+        if self.has_enough_hours_to_work_in_week(vigilant, shift, limit_working_hours) == False:
+            return False
+        if self.is_available_on_shift(vigilant, shift) == False:
+            return False 
+        return True             
+
+    def has_enough_hours_to_work_in_week(self,vigilant: Vigilant, shift: Shift, limit_working_hours:int):
         start_week_of_shift = math.floor(shift.shift_start/168)
         end_week_of_shift  =  math.floor(shift.shift_end/168)
-        limit_working_hours = random.choice([self._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,self._MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK])
         total_hours_worked_by_vigilant_each_week = vigilant.total_hours_worked_by_week
         if start_week_of_shift == end_week_of_shift:
             if  (total_hours_worked_by_vigilant_each_week[start_week_of_shift]+(shift.shift_end - shift.shift_start + 1)) <= limit_working_hours:
@@ -51,7 +59,7 @@ class Vigilant_assigment_service:
     
     def check_if_vigilant_has_missing_hours(self, vigilant: Vigilant):
         for hour_by_week in vigilant.total_hours_worked_by_week:
-             if hour_by_week < 48:
+             if hour_by_week < self._MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK:
                  return True
         return False
 

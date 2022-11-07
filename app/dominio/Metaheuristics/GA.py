@@ -1,5 +1,4 @@
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed, wait, ALL_COMPLETED
 import copy
 import random
 import numpy
@@ -93,40 +92,41 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
     return offspring_crossover
 
 def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
-    population_amount = len(population)
-    fitness = [None] * population_amount
     max_iterations = 10    
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    future = asyncio.ensure_future(futureOptimizationResponses(population, views,algorithm,max_iterations))
-    response = loop.run_until_complete(future)
-    loop.close()
+    response = futureOptimizationResponses(population, views,algorithm,max_iterations)
     fitness = response[0]
     data = response[1]
     return fitness, data
 
-async def futureOptimizationResponses(population,views,algorithm,max_iterations):
+def futureOptimizationResponses(population,views,algorithm,max_iterations):
     population_amount = len(population)
     responses = [0]  * population_amount
     data = []
-    with ThreadPoolExecutor(max_workers=30) as executor:
-        loop = asyncio.get_event_loop()
-        tasks = []
-        for index,solution in enumerate(population):
-            for view in views:
-                tasks.append(loop.run_in_executor(executor, executeAlgorithmToOptimize ,solution,view,algorithm,max_iterations,population_amount,index))
-        for response in await asyncio.gather(*tasks):
-            pos = response[1]
-            value = response[0]
-            responses[pos] = responses[pos] + value
-            data.append((response[2],response[0]))
+    executor = ThreadPoolExecutor(max_workers=90)
+    argsList = []
+    for index,solution in enumerate(population):
+        for view in views:
+            argsList.append([solution,view,algorithm,max_iterations,index])
+    futures = [executor.submit(executeAlgorithmToOptimize, args[0], args[1], args[2], args[3], args[4]) for args in argsList]
+    for future in as_completed(futures):
+        # get the result for the next completed task
+        response = future.result()
+        pos = response[1]
+        value = response[0]
+        responses[pos] = responses[pos] + value
+        #Data,hv,index
+        data.append((response[2],response[0],response[1]))
+        print("NEW ITEM FINALIZADO")
+        print(len(data))
+    executor.shutdown() # blocks
     return responses,data
         
-def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algorithm: str, max_iterations: int, population_amount: int, index: int):
+def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algorithm: str, max_iterations: int, index: int):
     data = []
     if algorithm == "GRASP":
         grasp = Grasp()
-        grasp.setParameters(solution[0], solution[1], solution[2], solution[3])            
+        grasp.setParameters(solution[0], solution[1], solution[2], solution[3])    
+        population_amount = solution[3]         
         hv_average = 0
         MAX_TIME_DURATION = view.time
         for i in range(max_iterations):
@@ -140,18 +140,19 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
     else:
         nsga = NsgaII()
         nsga.setParameters(solution[0], solution[1], solution[2], solution[3])
+        population_amount = solution[3]         
         hv_average = 0
         MAX_TIME_DURATION = view.time
         print("new dataset")
         for i in range(max_iterations):
             random.seed(settings.SEEDS[i])
-            solutions = view.executeNsgaIIToOptimize(population_amount, MAX_TIME_DURATION)
+            solutions = view.executeNsgaIIToOptimize(nsga, population_amount, MAX_TIME_DURATION)
             solutionsNormalized = Normalize().normalizeFitness(solutions)
             pf = np.array(solutionsNormalized)
             hv = Hipervolumen.calculate_hipervolumen(pf)
             hv_average+= hv
             data.append((solutionsNormalized,hv))
-    return hv_average,index,data
+    return hv_average/max_iterations,index,data
 
 def get_mutation_value(algorithm, mutation_num):
     if algorithm == "GRASP":

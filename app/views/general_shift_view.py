@@ -61,9 +61,9 @@ class GenerateShiftView:
         fig = Graph(data_nsgaii).get_fig()
         return self.getMetrics(data_nsgaii,fig ,ticNsga,tocNsga)
 
-    def executeNsgaIIToOptimize(self, amountPopulation,time):
+    def executeNsgaIIToOptimize(self, nsga, amountPopulation,time):
         print("Start Nsga II")
-        data_nsgaII = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem),time)
+        data_nsgaII = nsga.Execute(deepcopy(self.__myProblem),time)
         amountEvolutions = len(data_nsgaII)
         lastEvolution = data_nsgaII[amountEvolutions-1]
         if amountEvolutions == 1:

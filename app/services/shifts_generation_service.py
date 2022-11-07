@@ -16,6 +16,7 @@ class Shifts_generation_service:
                 shifts_by_site.append(self.create_shifts_in_special_site(site, site.total_weeks))
             else:
                 shifts_data = self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks)
+                # shifts_data = self.create_shifts_university(site,ideal_hours_amount_to_work, site.total_weeks)
                 shifts_by_site.append(shifts_data[0])
                 self.calculate_max_fitness(site,shifts_data[1],shifts_data[2])
         return shifts_by_site
@@ -23,6 +24,50 @@ class Shifts_generation_service:
     def create_ideal_hours_amount_to_work(self) -> Dict[int,List[int]]: 
         return { 0:[], 1:[1],2:[2],3:[3],4:[4],5:[5],6:[6], 7:[7],8:[8],9:[9],10:[10],11:[11],12:[12],13:[7,6],14:[7,7],15:[8,7],16:[8,8],17:[8,9],18:[9,9],19:[10,9],20:[10,10],21:[7,7,7],22:[8,7,7],
                       23:[8,8,7],24:[8,8,8]}
+
+    def create_shifts_university(self, site: Site , ideal_hours_amount_to_work: int, total_weeks:int) -> List[Shift]:
+        shifts : list[Shift] = []
+        shifts_university = [
+            (0,7)
+            ,(8,15)
+            ,(16,23)
+            ,(24,35)
+            ,(36,47)
+            ,(48,59)
+            ,(48,59)
+            ,(60,71)
+            ,(60,71)
+            ,(72,83)
+            ,(72,83)
+            ,(84,95)
+            ,(84,95)
+            ,(96,103)
+            ,(104,111)
+            ,(112,119)
+            ,(120,127)
+            ,(128,135)
+            ,(136,143)
+            ,(144,151)
+            ,(152,159)
+            ,(160,167)
+            ]
+        total_missing_shifts = 0
+        minimum_necessary_vigilantes = 0
+        idShift = 0
+        for week in range(total_weeks):
+            for shiftU in shifts_university:
+                shiftStart = shiftU[0] + 168 * week
+                shiftEnd = shiftU[1] + 168 * week
+
+                if site.id == 13:
+                    shifts.append(Shift(idShift, shiftStart, shiftEnd  , 2))
+                    total_missing_shifts+=2
+                else:
+                    shifts.append(Shift(idShift, shiftStart, shiftEnd, 1))
+                    total_missing_shifts+=1
+                    minimum_necessary_vigilantes+= 1 *(shiftStart - shiftEnd + 1) 
+                idShift+=1
+        return shifts,total_missing_shifts,minimum_necessary_vigilantes
 
     def create_shifts_in_normal_sites(self, site: Site , ideal_hours_amount_to_work: int, total_weeks:int) -> List[Shift]:
         shifts : list[Shift] = []
