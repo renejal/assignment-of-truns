@@ -8,6 +8,8 @@ from dominio.Solution import Solution
 from dominio.Component import Component
 from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
+from services.mutation import Mutation_service
+from services.tweak_extra_hours import Tweak_extra_hours
 from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY, 
                            ASSIGNED_VIGILANTES_CROSSING_PROBABILITY, 
                            EXTRA_HOURS_CROSSING_PROBABILITY,
@@ -19,20 +21,31 @@ from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY,
 class PopulationServices:
 
     @staticmethod
-    def generate_decendents(population: List[Solution]) -> List[Solution]:
-        print("generate_decendents")
-        childrens: list[Solution] = []
-        while len(childrens)<len(population): 
+    def generate_decendents(population: Population) -> List[Solution]:
+        childs_list: list[Solution] = []
+        PopulationServices.add_ids_solution(population.populations)
+        while len(childs_list)<len(population.populations): 
             function_crossing = PopulationServices.get_crossing()
-            childrens = childrens + function_crossing(population)
-        return childrens
+            childs = function_crossing(population)
+            PopulationServices.Mutation(childs)
+            childs_list.extend(childs)
+        return childs_list
 
     @staticmethod
+    def Mutation(childs):
+        for child in childs:
+            probability_mutation = random.choices([1,0],weights=(10,10))
+            if probability_mutation[0] == 1:
+                Tweak_extra_hours().mutation_gen(child)
+    
+    @staticmethod
     def get_crossing():
+        #Todo: esta cambiando el random, revisar
         objective = random.choices([1,2,3,4], weights = (MISSING_SHIFT_CROSSING_PROBABILITY,
-                                                         ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
-                                                         EXTRA_HOURS_CROSSING_PROBABILITY,
-                                                         DISTANCE_CROSSING_PROBABILITY))[0]
+                                                          ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
+                                                          EXTRA_HOURS_CROSSING_PROBABILITY,
+                                                          DISTANCE_CROSSING_PROBABILITY))[0]
+        # objective = 2 # Todo quieta esto, solo es apra probar el crossing 3
         objective_dict ={
             1:CrossingShift.crossing_missing_shift,
             2:CrossingShift.crossing_vigilant_assigment,
@@ -52,8 +65,10 @@ class PopulationServices:
             index_vigilant+=1
 
     @staticmethod
-    def union_soluction(parents, childrens) -> List[Solution]:
-        print("union_soluction")
+    def union_soluction(parents, childrens: List[Solution]) -> List[Solution]:
+        # probailiad de mutation 
+        # for child in childrens:
+        #    Mutation_service().mutation(child) 
         return  parents + childrens
     
     @staticmethod
@@ -80,8 +95,8 @@ class PopulationServices:
         try:
             for index, solution in enumerate(population):
                 solution.id = index + 1
-        except:
-            raise("error population",population)
+        except ValueError as e:
+            raise("error population",e)
 
     @staticmethod
     def calculate_range(population: Population):
@@ -98,13 +113,14 @@ class PopulationServices:
                         solution.range=r 
                         population.add_frente(key=rango,value=solution)
             rango +=1
-
+            
     @staticmethod
     def get_solution(population: List[Solution], id_solution: int):
         for solution in population:
             if solution.id == id_solution:
                 return solution
         return False
+
     @staticmethod
     def get_frente(population: List[Solution], range):
         frente: List[Solution] = []
@@ -175,7 +191,7 @@ class PopulationServices:
                     max = solution.fitness[index_objective]
             rango.append(max-min)
         return rango
-            
+
     @staticmethod
     def get_solution_of_range(population: Population, range: int):
         "return soluction of range x"

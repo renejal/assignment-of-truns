@@ -18,5 +18,6 @@ class Shift:
         self.assigment_vigilantes.append(vigilant_id)
 
     def change_vigilant(self, id_last_vigilant, id_new_vigilant):
-        self.assigment_vigilantes.remove(id_last_vigilant)  
+        if id_last_vigilant in self.assigment_vigilantes:
+            self.assigment_vigilantes.remove(id_last_vigilant)  
         self.assigment_vigilantes.append(id_new_vigilant)

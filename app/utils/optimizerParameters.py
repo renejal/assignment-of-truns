@@ -58,7 +58,7 @@ class OptimizerParamets:
         colums = ["evolution","solution","children_amount_to_generate","amount_parents_of_ordered_population","tweak_amount_repetitions","amount_population","time","average_hv"]
         data_fitness = data[0]
         data_solutions = data[1]
-        generate_parameter_optimizacion(data_fitness, data_solutions, colums, self.GRASP_ALGORITHM)
+        generate_parameter_optimizacion(data_fitness, data_solutions, colums, self.NSGAII_ALGORITHM)
 
 
     def get_grasp_population(self):

@@ -1,0 +1,467 @@
+<mxfile host="65bd71144e">
+    <diagram id="GUSPRAJsgAIgAGzK0_ZS" name="Página-1">
+        <mxGraphModel dx="1889" dy="1969" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="se busca una solucione de &lt;br&gt;forma parcialmente aleatoria &lt;br&gt;de la poblacion con mas probabilida las&lt;br&gt;&amp;nbsp;que tiene mejor&lt;br&gt;&amp;nbsp;fitness&amp;nbsp; con respecto &lt;br&gt;al fitness que se quiere obtimizar" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="131.5" y="610" width="245" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" style="edgeStyle=none;html=1;" parent="1" source="8" target="33" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="Seleccion un gen GA(Sitio A) de la &lt;br&gt;listar restringida&lt;br&gt;&amp;nbsp;que tenga&lt;br&gt;peor fitness de la solucion A" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="154" y="720" width="205" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="10" target="28" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Inicio" style="html=1;dashed=0;whitespace=wrap;shape=mxgraph.dfd.start" parent="1" vertex="1">
+                    <mxGeometry x="214" y="440" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" style="edgeStyle=none;html=1;fontColor=#000000;" parent="1" source="12" target="110" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Se realiza el cruce de la solucion A con la B&lt;br&gt;(gen de la solucion B se pasa a la solucion A)" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="186.5" y="950" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="se obtiene la poblacion&amp;nbsp;" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="169" y="530" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" style="edgeStyle=none;html=1;" parent="1" source="31" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="374" y="760" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" value="esto se hace con el fin de asegurar que el gen poco factible sea reemplazo por uno mejor, asi tenienod la serteza el mejoramienot de la solucion con el nuevo gen." style="shape=cloud;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="534" y="370" width="220" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" style="edgeStyle=none;html=1;" parent="1" source="33" target="12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="se busca dentro de la poblacion B&amp;nbsp;&amp;nbsp;&lt;br&gt;un gen GA(sitio A) con mejor &lt;br&gt;fitness de las lista restringida" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="139" y="820" width="230" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" style="edgeStyle=none;html=1;" parent="1" source="35" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="374" y="900" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="35" value="se busca el mejor gen dentro de la poblacion para acelerar la convergencia&amp;nbsp;" style="shape=cloud;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="574" y="730" width="149" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="Solucion hija&lt;br&gt;" style="edgeStyle=none;html=1;fontColor=#000000;" parent="1" source="37" target="75" edge="1">
+                    <mxGeometry x="0.0244" y="25" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="37" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="-110" width="450" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="37" vertex="1">
+                    <mxGeometry width="450" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="SOLUCION A" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="38" vertex="1">
+                    <mxGeometry width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="40" value="Vigilante" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="38" vertex="1">
+                    <mxGeometry x="90" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="41" value="Horas trabajadas por semana en un sitio x" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="38" vertex="1">
+                    <mxGeometry x="180" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="42" value="Turnos a cubrir" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="38" vertex="1">
+                    <mxGeometry x="270" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="43" value="Turnos faltantes" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="38" vertex="1">
+                    <mxGeometry x="360" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="44" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="37" vertex="1">
+                    <mxGeometry y="60" width="450" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="A1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#dae8fc;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#6c8ebf;" parent="44" vertex="1">
+                    <mxGeometry width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="46" value="1,8,6,9" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="44" vertex="1">
+                    <mxGeometry x="90" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="47" value="[30,48,48,48]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="44" vertex="1">
+                    <mxGeometry x="180" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="48" value="174" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="44" vertex="1">
+                    <mxGeometry x="270" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="44" vertex="1">
+                    <mxGeometry x="360" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="50" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="37" vertex="1">
+                    <mxGeometry y="104" width="450" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="A2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#dae8fc;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#6c8ebf;" parent="50" vertex="1">
+                    <mxGeometry width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="10,2,13" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="50" vertex="1">
+                    <mxGeometry x="90" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="53" value="[52,52,52]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="50" vertex="1">
+                    <mxGeometry x="180" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="54" value="192" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="50" vertex="1">
+                    <mxGeometry x="270" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="55" value="36" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="50" vertex="1">
+                    <mxGeometry x="360" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="62" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="-280" width="450" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="62" vertex="1">
+                    <mxGeometry width="450" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="SOLUCION B" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="63" vertex="1">
+                    <mxGeometry width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="65" value="Vigilante" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="63" vertex="1">
+                    <mxGeometry x="90" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="66" value="Horas trabajadas por semana en un sitio x" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="63" vertex="1">
+                    <mxGeometry x="180" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="67" value="Turnos a cubrir" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="63" vertex="1">
+                    <mxGeometry x="270" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="68" value="Turnos faltantes" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="63" vertex="1">
+                    <mxGeometry x="360" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="69" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="62" vertex="1">
+                    <mxGeometry y="60" width="450" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="B1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#f8cecc;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#b85450;" parent="69" vertex="1">
+                    <mxGeometry width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="71" value="1,2,3,4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="69" vertex="1">
+                    <mxGeometry x="90" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="72" value="[48,48,48,48]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="69" vertex="1">
+                    <mxGeometry x="180" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="73" value="192" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="69" vertex="1">
+                    <mxGeometry x="270" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="74" value="0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="69" vertex="1">
+                    <mxGeometry x="360" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="75" value="" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="160" width="450" height="147" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="75" vertex="1">
+                    <mxGeometry width="450" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="SOLUCION C" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="76" vertex="1">
+                    <mxGeometry width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="78" value="Vigilante" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="76" vertex="1">
+                    <mxGeometry x="90" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="79" value="Horas trabajadas por semana en un sitio x" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="76" vertex="1">
+                    <mxGeometry x="180" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="80" value="Turnos a cubrir" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="76" vertex="1">
+                    <mxGeometry x="270" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="81" value="Turnos faltantes" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#e1d5e7;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#9673a6;" parent="76" vertex="1">
+                    <mxGeometry x="360" width="90" height="60" as="geometry">
+                        <mxRectangle width="90" height="60" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="82" value="" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="75" vertex="1">
+                    <mxGeometry y="60" width="450" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="A1" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#dae8fc;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#6c8ebf;" parent="82" vertex="1">
+                    <mxGeometry width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="84" value="1,8,6,9" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="82" vertex="1">
+                    <mxGeometry x="90" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="85" value="[4,48,48,48]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="82" vertex="1">
+                    <mxGeometry x="180" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="86" value="174" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="82" vertex="1">
+                    <mxGeometry x="270" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="87" value="26" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" parent="82" vertex="1">
+                    <mxGeometry x="360" width="90" height="44" as="geometry">
+                        <mxRectangle width="90" height="44" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="94" style="shape=partialRectangle;collapsible=0;dropTarget=0;pointerEvents=0;fillColor=none;top=0;left=0;bottom=0;right=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="75" vertex="1">
+                    <mxGeometry y="104" width="450" height="43" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="A2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=#f8cecc;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#b85450;" parent="94" vertex="1">
+                    <mxGeometry width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="96" value="1,2,3,4" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#82b366;" parent="94" vertex="1">
+                    <mxGeometry x="90" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="97" value="[48,48,48,48]" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#82b366;" parent="94" vertex="1">
+                    <mxGeometry x="180" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="98" value="192" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#82b366;" parent="94" vertex="1">
+                    <mxGeometry x="270" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="99" value="0" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;strokeColor=#82b366;" parent="94" vertex="1">
+                    <mxGeometry x="360" width="90" height="43" as="geometry">
+                        <mxRectangle width="90" height="43" as="alternateBounds"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="104" value="" style="edgeStyle=none;html=1;fontColor=#FF1940;entryX=1.009;entryY=0.279;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="633.95" y="-210.00252742430888" as="sourcePoint"/>
+                        <mxPoint x="570" y="-209.44299999999993" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="105" value="Gen o Sitio" style="html=1;dashed=0;whitespace=wrap;labelBackgroundColor=none;fontColor=#FF1940;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="-230" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="106" value="" style="edgeStyle=none;html=1;fontColor=#FF1940;entryX=1.009;entryY=0.279;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="637.95" y="11.497472575691063" as="sourcePoint"/>
+                        <mxPoint x="574" y="12.057000000000016" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="107" value="Gen a cambiar" style="html=1;dashed=0;whitespace=wrap;labelBackgroundColor=none;fontColor=#FF1940;fillColor=none;strokeColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="673" y="-13" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="109" style="edgeStyle=none;html=1;fontColor=#000000;" parent="1" source="108" target="110" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="340" y="1020" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="108" value="el proceso de reparacion debe hacerce con criterios que permitan el mejoramieonto de las otros genes" style="shape=cloud;whiteSpace=wrap;html=1;fontColor=#000000;strokeColor=#FFCCCC;fillColor=#FFCCCC;" parent="1" vertex="1">
+                    <mxGeometry x="620" y="910" width="120" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="" style="edgeStyle=none;html=1;" parent="1" source="110" target="114" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="110" value="Se realiza la reparacion&lt;br&gt;&amp;nbsp;de los genes afectados: se obtiene los &lt;br&gt;vigilanes de gen defectuoso" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="176" y="1080" width="156" height="59" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="" style="edgeStyle=none;html=1;" parent="1" source="114" target="116" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="114" value="se obtiene un porcentaje de similitud entre los vigilantes del gen defectuso y el nuevo gen" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="180.5" y="1190" width="146" height="78.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="intercambiar el vigilante mas similar del gen defectuoso por el vigilante con mayor similitud del nuevo gen" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="180.75" y="1320" width="146.5" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="119" style="edgeStyle=none;html=1;" parent="1" source="118" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="330" y="1230" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="118" value="criterios de similitud:&lt;br&gt;sitios en los cuales estan trabajando,&lt;br&gt;distancia hacia el sitios mas sercano.&lt;br&gt;y demas" style="shape=cloud;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="1050" width="200" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="" style="endArrow=classic;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="12" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="390" y="1340" as="sourcePoint"/>
+                        <mxPoint x="90" y="1520" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="90" y="985"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="124" value="" style="edgeStyle=none;html=1;" parent="1" source="121" target="123" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" value="se toman los dos &lt;br&gt;genes A(gen desfectuoso) y &lt;br&gt;B(gen bueno) a intercambiar" style="html=1;dashed=0;whitespace=wrap;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="1500" width="170" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="142" value="" style="edgeStyle=none;html=1;fontSize=12;" parent="1" source="123" target="141" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="123" value="Lista de vigilantes del gen B" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-180" y="1515" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="144" value="si" style="edgeStyle=none;html=1;fontSize=12;" parent="1" source="141" target="143" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="151" value="No" style="edgeStyle=none;html=1;fontSize=12;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="141" target="152" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-460" y="1545" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="141" value="vigilante esta en el gen A?" style="rhombus;whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-440" y="1490" width="150" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="155" style="edgeStyle=none;html=1;fontSize=12;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="143" target="123" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-110" y="1680" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-120" y="1680"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="156" value="Siguiente Vigilante" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" parent="155" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0621" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="172" value="" style="edgeStyle=none;html=1;" parent="1" source="143" target="171" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="143" value="realiza el cruse de los shifts de los vigilantes" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-425" y="1650" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="147" value="get vigilant" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="-270" y="1530" width="70" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="158" value="No" style="edgeStyle=none;html=1;fontSize=12;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="152" target="160" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-670" y="1540" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-640" y="1540"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="163" value="Si" style="edgeStyle=none;html=1;fontSize=12;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="152" target="143" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-560" y="1690" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-560" y="1680"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="152" value="El vigilante tiene &lt;br&gt;sitio por default" style="shape=rhombus;html=1;dashed=0;whitespace=wrap;perimeter=rhombusPerimeter;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="-610" y="1497.5" width="100" height="85" as="geometry"/>
+                </mxCell>
+                <mxCell id="165" style="edgeStyle=none;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=12;" parent="1" source="160" target="123" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-90" y="1754"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="166" value="Siguiente Vigilante" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=12;" parent="165" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3565" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="160" value="realizar el cruce&amp;nbsp; de el vigilante completo" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-700" y="1730" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="174" value="" style="edgeStyle=none;html=1;" parent="1" source="171" target="173" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="171" value="obtener lista de shits de vigilantes" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-280" y="1810" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="176" value="Si" style="edgeStyle=none;html=1;" parent="1" source="173" target="175" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="179" value="No" style="edgeStyle=none;html=1;" parent="1" source="173" target="178" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="173" value="El shift vigilant B esta asignado en el vigilante A" style="rhombus;whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-275" y="1920" width="110" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="177" value="Siguiente shift" style="edgeStyle=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="175" target="171" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-70" y="1990" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-40" y="2165"/>
+                            <mxPoint x="-40" y="1840"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="175" value="Continue" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-280" y="2135" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="178" value="Se asigna" style="whiteSpace=wrap;html=1;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="-470" y="1945" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

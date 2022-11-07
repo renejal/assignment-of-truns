@@ -4,6 +4,7 @@ from conf import settings
 from dominio.Solution import Solution
 from dominio.Component import Component
 from services.crossing import Crossing
+from dominio.population import Population
 
 class CrossingVigilant:
 
@@ -32,8 +33,8 @@ class CrossingVigilant:
         return children
     
     @classmethod
-    def crossing_vigilantes(self, population:  List[Solution], objective_index=1) -> List[Solution]:
-        parent_for_exchange_one, parent_for_exchange_two = Crossing.get_parents_by_objetive(population, objective_index)
+    def crossing_vigilantes(self, population: Population, objective_index=1) -> List[Solution]:
+        parent_for_exchange_one, parent_for_exchange_two = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
             child = self.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))

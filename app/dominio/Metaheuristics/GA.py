@@ -143,7 +143,6 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
         population_amount = solution[3]         
         hv_average = 0
         MAX_TIME_DURATION = view.time
-        print("new dataset")
         for i in range(max_iterations):
             random.seed(settings.SEEDS[i])
             solutions = view.executeNsgaIIToOptimize(nsga, population_amount, MAX_TIME_DURATION)
