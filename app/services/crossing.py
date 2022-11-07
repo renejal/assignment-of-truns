@@ -40,7 +40,6 @@ class Crossing:
         """
         population_order = self.order_solution_of_objetive_value(populations,objective_index,False) # order True: descendente
         parent = Order.list_restricted(population_order,1,settings.NUM_PARENTS_OF_ORDERED_POPULATION)
-        print("lenParent", len(parent))
         return parent[0]
 
     @classmethod

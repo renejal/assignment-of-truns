@@ -78,7 +78,8 @@ class Vigilant(FromDictMixin):
     
     def remove_shift(self, shift: Shift_place):
         self.delete_hours_worked(shift.shift)
-        self.shifts.remove(shift)
+        if shift in self.shifts:
+            self.shifts.remove(shift)
         self.sites_to_look_out[shift.site_id] -= 1
         if self.sites_to_look_out[shift.site_id] == 0:
             del self.sites_to_look_out[shift.site_id]

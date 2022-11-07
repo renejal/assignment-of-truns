@@ -31,7 +31,6 @@ from utils.order import Order
 ])
 def test_list_restrited(list, num_return, persentage):
     response = Order.list_restricted(list, num_return, persentage )
-    print(f"\n{response} esta dentro de {list} con porsentaje de {persentage}")
     for number in response:
         if number in [1,2,3,4,5,6,7,8,9,10]:
             assert True

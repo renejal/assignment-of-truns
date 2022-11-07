@@ -13,10 +13,10 @@ class CrossingShift:
 
 
     @classmethod
-    def crossing_hours_extras(self, population:  List[Solution], objective_index=1):
+    def crossing_hours_extras(self, population: Population, objective_index=1):
         """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
         objetivo mejoramiento horas extras"""
-        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index, settings)
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
         childs.append(child)
@@ -25,10 +25,10 @@ class CrossingShift:
         return childs
 
     @classmethod
-    def crossing_missing_shift(self, population:  List[Solution], objective_index=2):
+    def crossing_missing_shift(self, population: Population, objective_index=2):
         """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
         objetivo missing shift"""
-        solution_A, solution_B = Crossing.get_parents_by_objetive(population, objective_index, settings)
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childs = []
         child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
         childs.append(child)
@@ -55,21 +55,15 @@ class CrossingShift:
         Returns:
             Dos hijos resultantes del cruce entre los dos padres
         """
-        num_child = 1
-        while num_child < 2:
-            parent_one = None
-            parent_two = None
-            if parent_one is None:
-                parent_one = Crossing.get_best_parent(population.populations, objective_index)
-            bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
-            value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
-            if parent_two is None:
-                parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
-                best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
-                parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
-                temp_fitnnes = parent_one.total_fitness
-                parent_one.calculate_fitness()
-                print(f"parent_one id: {parent_one.id} parent_two: id: {parent_two.id} :fitnnes de {temp_fitnnes} a {parent_one.total_fitness} ")
+        parent_two = None
+        parent_one = Crossing.get_best_parent(population.populations, objective_index)
+        bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
+        value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
+        parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
+        best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
+        parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
+        temp_fitnnes = parent_one.total_fitness
+        parent_one.calculate_fitness()
         return parent_one
     
 

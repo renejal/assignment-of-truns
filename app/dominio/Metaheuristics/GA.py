@@ -95,7 +95,7 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
 def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
     population_amount = len(population)
     fitness = [None] * population_amount
-    max_iterations = 10    
+    max_iterations = 10 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     future = asyncio.ensure_future(futureOptimizationResponses(population, views,algorithm,max_iterations))
@@ -142,7 +142,6 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
         nsga.setParameters(solution[0], solution[1], solution[2], solution[3])
         hv_average = 0
         MAX_TIME_DURATION = view.time
-        print("new dataset")
         for i in range(max_iterations):
             random.seed(settings.SEEDS[i])
             solutions = view.executeNsgaIIToOptimize(population_amount, MAX_TIME_DURATION)

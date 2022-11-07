@@ -23,7 +23,6 @@ class NsgaII(Algorithm):
     def setParameters(self,children_amount_to_generate,amount_parents_of_ordered_population
     ,NUMBER_ITERATION_SELECTION_COMPONENTE, population_amount_nsgaii) -> None:
         self.MAX_EFOS = 99999999999999
-        print("*********children_amount_to_generate", children_amount_to_generate)
         settings.NUMBER_OF_CHILDREN_GENERATE = int(children_amount_to_generate)
         settings.NUM_PARENTS_OF_ORDERED_POPULATION = amount_parents_of_ordered_population
         settings.NUMBER_ITERATION_SELECTION_COMPONENTE = int(NUMBER_ITERATION_SELECTION_COMPONENTE)
@@ -43,7 +42,7 @@ class NsgaII(Algorithm):
             self.CURRENT_TIMEOUT = time.time()
             if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
                 return self.evolutions
-            print(f"iteration N. {self.current_efo}")
+            print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
             population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
             union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
             population_obj.populations = union_populantion

@@ -1,17 +1,14 @@
 import copy
+import random
+from conf import settings
+from conf.settings import *
+from utils.order import Order
 from typing import List
 from dominio.model.site import Site
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
-import random
-from re import I
-from conf.settings import *
-from utils.order import Order
-from typing import List
-from conf import settings
 from dominio.model.shift import Shift
-from utils import aleatory
 from dominio.model.vigilant import Vigilant
 from dominio.Component import Component
 from dominio.vigilant_assigment import VigilantAssigment
@@ -92,7 +89,8 @@ class Solution:
             else:
                 gen_bad.crossing_shift(self.get_vigilant(vigilants[0]), gen_best.assigned_Vigilantes.get(vigilants[1]))
         gen_bad.calculate_inicial_fitness()
-        print("termino")
+    
+
 
     def get_crossing_vigilant_avaliable(self, gen_bad: Component, gen_best: Component):
         # obtiene los vigilantes en communt

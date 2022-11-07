@@ -61,8 +61,6 @@ class Component:
         par_vigilant.last_shift = None
 
     def crossing_shift(self, vigilant_bad: Vigilant, par_vigilant_best: Vigilant):
-        if par_vigilant_best is None:
-            print("is None")
         """hace un cruce de los shift de los vigilantes, los shit de vigilant_best 
         son pasado al vigilante del objeto actual con id par_vigilant_id
 
@@ -92,7 +90,8 @@ class Component:
         pass
     def delete_vigilant(self, id_vigilant: int):
         "Todo implementar delete o desasignar vigilantes del gen actual"
-        del self.assigned_Vigilantes[id_vigilant]
+        if self.assigned_Vigilantes.get(id_vigilant):
+            del self.assigned_Vigilantes[id_vigilant]
 
     def calculate_inicial_fitness(self) -> None:
         self.assigned_vigilantes_fitness = 0

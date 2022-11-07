@@ -28,7 +28,6 @@ class Population():
     def inicialize_population(self, maxTime) -> List[Solution]:
         """la idea seria llaar los metodo s de GRAS que tuilizan para genear los componentes y asi
         logra genear una soluion e ir armando la poblacion inicial, creo  que es la mejor opcion"""
-        print("Getting started population")
         population: List[Solution] = []
         for i in range(self.__num_soluction):
             current_timeout = time.time()

@@ -8,6 +8,8 @@ from dominio.Solution import Solution
 from dominio.Component import Component
 from services.crossing_shift import CrossingShift
 from services.crossing_vigilant import CrossingVigilant
+from services.mutation import Mutation_service
+from services.tweak_extra_hours import Tweak_extra_hours
 from conf.settings import (MISSING_SHIFT_CROSSING_PROBABILITY, 
                            ASSIGNED_VIGILANTES_CROSSING_PROBABILITY, 
                            EXTRA_HOURS_CROSSING_PROBABILITY,
@@ -20,14 +22,22 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: Population) -> List[Solution]:
-        print("generate_decendents")
-        childrens: list[Solution] = []
+        childs_list: list[Solution] = []
         PopulationServices.add_ids_solution(population.populations)
-        while len(childrens)<len(population.populations): 
+        while len(childs_list)<len(population.populations): 
             function_crossing = PopulationServices.get_crossing()
-            childrens = childrens + function_crossing(population)
-        return childrens
+            childs = function_crossing(population)
+            PopulationServices.Mutation(childs)
+            childs_list.extend(childs)
+        return childs_list
 
+    @staticmethod
+    def Mutation(childs):
+        for child in childs:
+            probability_mutation = random.choices([1,0],weights=(10,10))
+            if probability_mutation[0] == 1:
+                Tweak_extra_hours().mutation_gen(child)
+    
     @staticmethod
     def get_crossing():
         #Todo: esta cambiando el random, revisar
@@ -35,7 +45,7 @@ class PopulationServices:
                                                           ASSIGNED_VIGILANTES_CROSSING_PROBABILITY,
                                                           EXTRA_HOURS_CROSSING_PROBABILITY,
                                                           DISTANCE_CROSSING_PROBABILITY))[0]
-        objective = 2 # Todo quieta esto, solo es apra probar el crossing 3
+        # objective = 2 # Todo quieta esto, solo es apra probar el crossing 3
         objective_dict ={
             1:CrossingShift.crossing_missing_shift,
             2:CrossingShift.crossing_vigilant_assigment,
@@ -56,14 +66,9 @@ class PopulationServices:
 
     @staticmethod
     def union_soluction(parents, childrens: List[Solution]) -> List[Solution]:
-        print("union_soluction")
-        for children in childrens:
-            pass
-            # print("fitness antes A", children.fitness[3])
-            # print("fitness antes B", children.fitness[3])
-            # children.recalculate_fitness()
-            # print("fitness despues A", children.fitness[3])
-            # print("fitness despues B", children.fitness[3])
+        # probailiad de mutation 
+        # for child in childrens:
+        #    Mutation_service().mutation(child) 
         return  parents + childrens
     
     @staticmethod
@@ -90,8 +95,8 @@ class PopulationServices:
         try:
             for index, solution in enumerate(population):
                 solution.id = index + 1
-        except:
-            raise("error population",population)
+        except ValueError as e:
+            raise("error population",e)
 
     @staticmethod
     def calculate_range(population: Population):
