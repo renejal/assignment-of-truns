@@ -14,6 +14,7 @@ class CrossingShift:
 
     @classmethod
     def crossing_hours_extras(self, population: Population, objective_index=1):
+        print("crossing hours extras")
         """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
         objetivo mejoramiento horas extras"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
@@ -26,6 +27,7 @@ class CrossingShift:
 
     @classmethod
     def crossing_missing_shift(self, population: Population, objective_index=2):
+        print("crossing_missing_shift")
         """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
         objetivo missing shift"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
@@ -38,6 +40,7 @@ class CrossingShift:
 
     @classmethod
     def crossing_vigilant_assigment(self, population: Population , objective_index=3):
+        print("crossing_vigilant_assigment")
         childrens = []
         childrens.append(self.crossing_vigilant(population, objective_index))
         childrens.append(self.crossing_vigilant(population, objective_index))
@@ -45,6 +48,7 @@ class CrossingShift:
 
     @classmethod
     def crossing_vigilant(self, population: Population , objective_index):
+        print("crossing_vigilant_assigment")
         """crossing enfocado en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
             ordinaria
 

@@ -50,7 +50,7 @@ class PopulationServices:
             1:CrossingShift.crossing_missing_shift,
             2:CrossingShift.crossing_vigilant_assigment,
             3:CrossingShift.crossing_hours_extras,
-            4:CrossingVigilant.crossing_vigilantes
+            4:CrossingVigilant().crossing_vigilantes
             }
         return objective_dict.get(objective)
 

@@ -12,7 +12,9 @@ class Main:
         dataNsga = None
         dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
+        print("exit")
         generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        print("exit")
 
 
 

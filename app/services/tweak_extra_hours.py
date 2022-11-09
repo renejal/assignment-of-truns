@@ -62,6 +62,7 @@ class Tweak_extra_hours:
         return solution
         
     def mutation_gen(self, solution: Solution)-> Solution:
+        print("soluction", solution)
         vigilantes_with_hours_to_work: List[List[List[Vigilant]]] = self.get_available_vigilantes_to_work_by_prioritys(solution.vigilantes_schedule)
         vigilantes_with_extra_hours: List[List[Vigilant]] = self.get_vigilantes_with_extra_hours_by_week(solution.vigilantes_schedule)    
         for index_week, vigilantes_with_extra_hours_on_week in enumerate(vigilantes_with_extra_hours):
