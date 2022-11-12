@@ -68,21 +68,24 @@ class Component:
             par_vigilant_id (int): id del vigilane al cual se le van a actulizar los shifts
             par_vigilant_best (Vigilant): vigilanstes que contiene los shits best
         """
-
-        self.clear_shift_vigilant(vigilant_bad)
-        index_best = 0
-        while True:
-            if index_best < len(par_vigilant_best.shifts):
-                # 1. busar shift en site_schedule shift y asignar a vigilants bad
-                shift_best=self.get_shift(par_vigilant_best.shifts[index_best].shift)
-                if not shift_best:
+        try:
+            if vigilant_bad and par_vigilant_best:
+                self.clear_shift_vigilant(vigilant_bad)
+                index_best = 0
+                while True:
+                    if index_best < len(par_vigilant_best.shifts):
+                        # 1. busar shift en site_schedule shift y asignar a vigilants bad
+                        shift_best=self.get_shift(par_vigilant_best.shifts[index_best].shift)
+                        if not shift_best:
+                            index_best += 1
+                            continue
+                        shift_best.add_vigilant(vigilant_bad.id)
+                        vigilant_bad.shifts.append(Shift_place(shift_best,self.site_id))
+                    else:
+                        break
                     index_best += 1
-                    continue
-                shift_best.add_vigilant(vigilant_bad.id)
-                vigilant_bad.shifts.append(Shift_place(shift_best,self.site_id))
-            else:
-                break
-            index_best += 1
+        except ValueError as e:
+            pass
 
 
     def add_vigilant(self, vigilant_best: Vigilant):

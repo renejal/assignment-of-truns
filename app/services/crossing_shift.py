@@ -14,7 +14,6 @@ class CrossingShift:
 
     @classmethod
     def crossing_hours_extras(self, population: Population, objective_index=1):
-        print("crossing hours extras")
         """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
         objetivo mejoramiento horas extras"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
@@ -27,48 +26,73 @@ class CrossingShift:
 
     @classmethod
     def crossing_missing_shift(self, population: Population, objective_index=2):
-        print("crossing_missing_shift")
-        """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
-        objetivo missing shift"""
-        solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
-        childs = []
-        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
-        childs.append(child)
-        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
-        childs.append(child)
+        try:
+            """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
+            objetivo missing shift"""
+            solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
+            childs = []
+            child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+            childs.append(child)
+            child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+            childs.append(child)
+        except ValueError as e: 
+            print(e)
+            child = [solution_A, solution_B]
         return childs
 
     @classmethod
     def crossing_vigilant_assigment(self, population: Population , objective_index=3):
-        print("crossing_vigilant_assigment")
-        childrens = []
-        childrens.append(self.crossing_vigilant(population, objective_index))
-        childrens.append(self.crossing_vigilant(population, objective_index))
+        try: 
+            childrens = []
+            ch = self.crossing_vigilant(population, objective_index)
+            ch2 = self.crossing_vigilant(population, objective_index)
+            if ch and ch2:
+                childrens.extend([ch, ch2])
+        except ValueError as e:
+            print(e)
         return childrens
 
     @classmethod
     def crossing_vigilant(self, population: Population , objective_index):
-        print("crossing_vigilant_assigment")
-        """crossing enfocado en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
-            ordinaria
+        parent_temp = None
+        try:
+            """crossing enfocado en asignar vigilantes al sitio cuando los vigilantes superan el numero de horas normal
+                ordinaria
 
-        Args:
-            population (List[Solution]): poblacion de soluciones a tener en cuenta para el cruce
-            objective_index (int, optional): objetivo a obtimizar
+            Args:
+                population (List[Solution]): poblacion de soluciones a tener en cuenta para el cruce
+                objective_index (int, optional): objetivo a obtimizar
 
-        Returns:
-            Dos hijos resultantes del cruce entre los dos padres
-        """
-        parent_two = None
-        parent_one = Crossing.get_best_parent(population.populations, objective_index)
-        bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
-        value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
-        parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
-        best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
-        parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
-        temp_fitnnes = parent_one.total_fitness
-        parent_one.calculate_fitness()
+            Returns:
+                Dos hijos resultantes del cruce entre los dos padres
+            """
+            parent_two = None
+            parent_one = Crossing.get_best_parent(population.populations, objective_index)
+            if parent_one: 
+                parent_temp = copy.deepcopy(parent_one)
+                bad_gen_parent_one = parent_one.get_bad_by_fitnnes("necesary_vigilantes") # esto con el fin de mejorar el gen que menos aporta a la solucion #todo: poner rando en lista restringida
+                if bad_gen_parent_one:
+                    value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
+                else:
+                    return None
+            else:
+                return None
+
+            parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
+            if parent_two:
+                best_gen_parent_two = parent_two.get_gen(value[0]["id_gen"])
+                parent_one.crossing_gen(bad_gen_parent_one,best_gen_parent_two)
+                temp_fitnnes = parent_one.total_fitness
+                parent_one.calculate_fitness()
+
+            if parent_two: 
+                if not value:
+                    return None
+        except ValueError as e:
+            return parent_temp
+
         return parent_one
+
     
 
     @classmethod 

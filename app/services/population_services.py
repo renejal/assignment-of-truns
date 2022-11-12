@@ -25,17 +25,20 @@ class PopulationServices:
         childs_list: list[Solution] = []
         PopulationServices.add_ids_solution(population.populations)
         while len(childs_list)<len(population.populations): 
-            function_crossing = PopulationServices.get_crossing()
-            childs = function_crossing(population)
-            PopulationServices.Mutation(childs)
-            childs_list.extend(childs)
+            try:
+                function_crossing = PopulationServices.get_crossing()
+                childs = function_crossing(population)
+                PopulationServices.Mutation(childs)
+                childs_list.extend(childs)
+            except ValueError as e:
+                print(e)
         return childs_list
 
     @staticmethod
     def Mutation(childs):
         for child in childs:
             probability_mutation = random.choices([1,0],weights=(10,10))
-            if probability_mutation[0] == 1:
+            if probability_mutation[0] == 1 and child:
                 Tweak_extra_hours().mutation_gen(child)
     
     @staticmethod

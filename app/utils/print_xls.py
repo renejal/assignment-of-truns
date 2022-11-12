@@ -112,6 +112,7 @@ def generate_metrics(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     writer.close()
 
 def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutions,columns, name):
+    print("******************Entro a save*********************")
     time = datetime.datetime.now()
     time = str(time.year)+"-"+str(time.month)+"-"+str(time.day) + \
         "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
@@ -128,7 +129,9 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
     wb = writer.book
     df = pd.DataFrame(data,columns=columns)
     df.to_excel(writer, sheet_name ='optimizacion')
+    print(f" se guardo en {path}.xlsx")
     wb.save(path+".xlsx")
+    print("exitoso")
     writer.close()
     strings = ""
     for index,generation in enumerate(data_solutions):

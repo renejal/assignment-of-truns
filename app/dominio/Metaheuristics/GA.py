@@ -40,6 +40,7 @@ def execute_ga(new_population, views, algorithm, num_weights, sol_per_pop, num_g
         new_population[parents.shape[0]:, :] = offspring_mutation
     # Getting the best solution after iterating finishing all generations.
     # At first, the fitness is calculated for each solution in the final generation.
+    print("paso las generaciones")
     data_fitnesss = cal_pop_fitness(new_population, views, algorithm)
     fitness = data_fitnesss[0]
     data.append([new_population,fitness])
@@ -50,6 +51,7 @@ def execute_ga(new_population, views, algorithm, num_weights, sol_per_pop, num_g
 def cal_pop_fitness(population, views: List[GenerateShiftView], algorithm: str):
     # Calculating the fitness value of each solution in the current population.
     data = calculate_fitness_problem(population, views, algorithm)
+    print("data", data)
     return numpy.array(data[0]),data[1]
 
 
@@ -108,6 +110,7 @@ def futureOptimizationResponses(population,views,algorithm,max_iterations):
         for view in views:
             argsList.append([solution,view,algorithm,max_iterations,index])
     futures = [executor.submit(executeAlgorithmToOptimize, args[0], args[1], args[2], args[3], args[4]) for args in argsList]
+    print(futures)
     for future in as_completed(futures):
         # get the result for the next completed task
         response = future.result()
@@ -144,6 +147,7 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
         hv_average = 0
         MAX_TIME_DURATION = view.time
         for i in range(max_iterations):
+            print("max_ietracines", max_iterations)
             random.seed(settings.SEEDS[i])
             solutions = view.executeNsgaIIToOptimize(nsga, population_amount, MAX_TIME_DURATION)
             solutionsNormalized = Normalize().normalizeFitness(solutions)
@@ -169,10 +173,10 @@ def get_mutation_value(algorithm, mutation_num):
             return random.randrange(0, 11, 5)
     else:    
         if mutation_num == 0:
-            return numpy.random.randint(1, 2)
+            return numpy.random.randint(10, 20,1)
         if mutation_num == 1:
-            return numpy.random.randint(1, 2)
+            return numpy.random.randint(0, 1)
         if mutation_num == 2:
-            return numpy.random.randint(1, 5)
+            return numpy.random.randint(5, 10,1)
         if mutation_num == 3:
             return numpy.random.randint(1, 2)

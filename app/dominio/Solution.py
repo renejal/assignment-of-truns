@@ -75,7 +75,8 @@ class Solution:
     def add_vigilant(self, gen_bad: Component, vigilant_best: Vigilant):
         # obtiene vigilant bad de la solucion actual
         vigilant_bad = self.get_vigilant(vigilant_best.id)
-        gen_bad.crossing_shift(vigilant_bad, vigilant_best)
+        if vigilant_bad and vigilant_best:
+            gen_bad.crossing_shift(vigilant_bad, vigilant_best)
         
     def crossing_gen(self, gen_bad: Component, gen_best: Component):
         list_best_crossing_vigilant = self.get_crossing_vigilant_avaliable(copy.deepcopy(gen_bad), copy.deepcopy(gen_best))
@@ -86,7 +87,7 @@ class Solution:
                 # gen_bad.add_vigilant(vigilants[0])
             elif vigilants[1] == "delete vigilant":
                 gen_bad.delete_vigilant(vigilants[0])
-            else:
+            elif vigilants[1] and vigilants[0]:
                 gen_bad.crossing_shift(self.get_vigilant(vigilants[0]), gen_best.assigned_Vigilantes.get(vigilants[1]))
         gen_bad.calculate_inicial_fitness()
     
@@ -223,7 +224,10 @@ class Solution:
         # ordenar la solucion por fitnes posicion
         gens = Order.order_sitio_of_objective_value(self.sites_schedule,fitness_to_optimeze)
         gens = Order.list_restricted(gens,1,settings.NUM_PARENTS_OF_ORDERED_POPULATION)
-        return self.get_gen(gens[0].site_id)
+        if gens:
+            return self.get_gen(gens[0].site_id)
+        else:
+            return None
 
     def crossing_vigilant(self, id_vigilant_new:int, id_vigilant_exchange: int):
         for gen in self.sites_schedule:

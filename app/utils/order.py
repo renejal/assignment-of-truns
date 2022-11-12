@@ -18,14 +18,16 @@ class Order:
         range_best_soluction = int(len(list)* persentage)
         result_list = []
         ramdon_list = []
+        random_number = 1
         for i in range(num_return):
             if range_best_soluction != 0:
                 random_number = aleatory.get_random_int(0,range_best_soluction-1,ramdon_list)
-                result_list.append(list[random_number])
+                if random_number < len(list):
+                    result_list.append(list[random_number])
             else:
                 result_list.append(list[0])
                 break
             ramdon_list.append(random_number)
         if not result_list:
-            raise("no se encontro dato en lista restringidad")
+            return None
         return result_list

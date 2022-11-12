@@ -1,0 +1,9 @@
+{
+    "algorithm":"NSGAII",
+    "filesNames":[
+        {
+        "name":"facil-combinado-4weeks.json",
+        "time":60
+        }
+    ]
+}

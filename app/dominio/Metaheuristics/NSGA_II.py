@@ -39,30 +39,33 @@ class NsgaII(Algorithm):
         population_parents = [] 
 
         while self.current_efo < self.MAX_EFOS:
-            self.CURRENT_TIMEOUT = time.time()
-            if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
-                return self.evolutions
-            print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
-            if self.current_efo == 5:
-                print("entro")
-            population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
-            union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
-            population_obj.populations = union_populantion
-            PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
-            if not population_obj.populations:
-                raise("population not found")
-            PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
-            rango = 1
-            while population_obj.is_soluction_complete():
-                range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango)
-                if range_of_solution:
-                    population_parents=population_parents+range_of_solution
-                else:
-                   break 
-                rango +=1
-            population_obj.populations = population_parents
-            population_obj.populations = population_obj.get_populations(self.POPULATION_AMOUNT_NSGAII)
-            self.evolutions.append(population_obj.populations) 
+            try: 
+                self.CURRENT_TIMEOUT = time.time()
+                if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
+                    return self.evolutions
+                # print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
+                population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
+                union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
+                population_obj.populations = union_populantion
+                PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
+                if not population_obj.populations:
+                    raise("population not found")
+                PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
+                rango = 1
+                while population_obj.is_soluction_complete():
+                    range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango)
+                    if range_of_solution:
+                        population_parents=population_parents+range_of_solution
+                    else:
+                        break 
+                    rango +=1
+                population_obj.populations = population_parents
+                population_obj.populations = population_obj.get_populations(self.POPULATION_AMOUNT_NSGAII)
+                self.evolutions.append(population_obj.populations) 
+                self.current_efo +=1
+            except ValueError as e:
+                print("error nsga",e)
+                pass
             self.current_efo +=1
         return self.evolutions
 
