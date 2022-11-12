@@ -1,9 +1,18 @@
 {
-    "algorithm":"NSGAII",
-    "filesNames":[
+    "algorithm": "GRASP",
+    "filesNames": [
         {
-        "name":"facil-combinado-4weeks.json",
-        "time":60
+            "name": "facil-combinado-4weeks.json",
+            "time":  60 
+        },
+        {
+            "name": "medio-combinado-4weeks.json",
+            "time":  1800 
+        },
+        {
+            "name": "hard-combinado-4weeks.json",
+            "time":  3600 
         }
+        
     ]
 }
