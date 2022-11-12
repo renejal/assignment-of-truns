@@ -1,4 +1,5 @@
 import random
+import copy
 from conf import settings
 from typing import List
 from dominio.model.vigilant import Vigilant
@@ -28,18 +29,30 @@ class PopulationServices:
             try:
                 function_crossing = PopulationServices.get_crossing()
                 childs = function_crossing(population)
-                PopulationServices.Mutation(childs)
+                childs = PopulationServices.Mutation(childs)
                 childs_list.extend(childs)
             except ValueError as e:
-                print(e)
+                print(str(e))
+                childs_list.append(population[random.randint(0,len(population)-1)])
+                childs_list.append(population[random.randint(0,len(population)-1)])
+                print("len chils",len(childs_list))
+
         return childs_list
 
     @staticmethod
     def Mutation(childs):
-        for child in childs:
-            probability_mutation = random.choices([1,0],weights=(10,10))
-            if probability_mutation[0] == 1 and child:
-                Tweak_extra_hours().mutation_gen(child)
+        recup_shild = copy.deepcopy(childs)
+        try: 
+            list_chids = []
+            for child in childs:
+                probability_mutation = random.choices([1,0],weights=(10,10))
+                if probability_mutation[0] == 1 and child:
+                    child = Tweak_extra_hours().mutation_gen(copy.deepcopy(child))
+                    list_chids.append(child)
+        except ValueError as e:
+            print(str(e))
+            return recup_shild
+        return list_chids
     
     @staticmethod
     def get_crossing():

@@ -1,5 +1,5 @@
 {
-    "algorithm": "GRASP",
+    "algorithm": "NSGA-II",
     "filesNames": [
         {
             "name": "facil-combinado-4weeks.json",

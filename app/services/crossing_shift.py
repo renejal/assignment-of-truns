@@ -50,6 +50,7 @@ class CrossingShift:
                 childrens.extend([ch, ch2])
         except ValueError as e:
             print(e)
+            return [population[0], population[1]]
         return childrens
 
     @classmethod
@@ -74,9 +75,9 @@ class CrossingShift:
                 if bad_gen_parent_one:
                     value = self.get_gen_best_whit_list_restricted(bad_gen_parent_one, population,"necesary_vigilantes")
                 else:
-                    return None
+                    return parent_temp
             else:
-                return None
+                return parent_temp
 
             parent_two: Solution = population.get_solution_whit_id_soluction(value[0]["id_soluction"])
             if parent_two:
@@ -87,8 +88,9 @@ class CrossingShift:
 
             if parent_two: 
                 if not value:
-                    return None
+                    return parent_temp
         except ValueError as e:
+            print("erro", str(e))
             return parent_temp
 
         return parent_one

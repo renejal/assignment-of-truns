@@ -131,7 +131,6 @@ class Solution:
         for vigilant in self.vigilantes_schedule:
             if vigilant.id == id:
                 return vigilant
-        raise(f"Vigilant not fount {id}") 
        
     def to_exchange_vigilant(self, gen_best: Component, gen_bad_temp: Component):
         """intercambi el id del vigilant por un nuevo new_id_vigilant del gen por parametro"""
