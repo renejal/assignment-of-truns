@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 2000#1day
+MAX_TIME_DURATION = 500#1day
 PATH_RESULTS = "app/dataset/results/"
 
 NUMBER_OBJECTIVE_AT_OBTIMIZATE = 4

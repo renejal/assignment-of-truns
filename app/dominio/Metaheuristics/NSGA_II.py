@@ -43,6 +43,8 @@ class NsgaII(Algorithm):
             if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
                 return self.evolutions
             print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
+            if self.current_efo == 5:
+                print("entro")
             population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
             union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
             population_obj.populations = union_populantion
