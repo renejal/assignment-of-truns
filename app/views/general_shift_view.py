@@ -43,9 +43,14 @@ class GenerateShiftView:
     
     def executeGraspToOptimize(self, grasp: Grasp, amountPopulation , time):
         print("Start Grasp")
-        data_grasp = grasp.Execute(deepcopy(self.__myProblem), time)
+        try:
+            data_grasp = grasp.Execute(deepcopy(self.__myProblem), time)
+        except ValueError as e:
+            return None
         amountEvolutions = len(data_grasp)
         lastEvolution = data_grasp[amountEvolutions-1]
+        if amountEvolutions == 0:
+            return None
         if amountEvolutions == 1:
             return lastEvolution
         if(len(lastEvolution) >= amountPopulation):
@@ -65,9 +70,11 @@ class GenerateShiftView:
             data_nsgaII = nsga.Execute(deepcopy(self.__myProblem),time)
         except ValueError as e:
             print("error", e)
-
+            return None
         amountEvolutions = len(data_nsgaII)
         lastEvolution = data_nsgaII[amountEvolutions-1]
+        if amountEvolutions == 0:
+            return None
         if amountEvolutions == 1:
             return lastEvolution
         if(len(lastEvolution) >= amountPopulation):

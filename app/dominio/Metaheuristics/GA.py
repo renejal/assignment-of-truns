@@ -135,11 +135,14 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
         for i in range(max_iterations):
             random.seed(settings.SEEDS[i])
             solutions = view.executeGraspToOptimize(grasp , population_amount, MAX_TIME_DURATION)
-            solutionsNormalized = Normalize().normalizeFitness(solutions)
-            pf = np.array(solutionsNormalized)
-            hv = Hipervolumen.calculate_hipervolumen(pf)
-            hv_average+= hv
-            data.append((solutionsNormalized,hv))
+            if solutions == None:
+                data.append(([[0,0.2,0.2,0.2]],0.6))
+            else:
+                solutionsNormalized = Normalize().normalizeFitness(solutions)
+                pf = np.array(solutionsNormalized)
+                hv = Hipervolumen.calculate_hipervolumen(pf)
+                hv_average+= hv
+                data.append((solutionsNormalized,hv))
     else:
         nsga = NsgaII()
         nsga.setParameters(solution[0], solution[1], solution[2], solution[3])
@@ -150,11 +153,14 @@ def executeAlgorithmToOptimize(solution: Solution, view: GenerateShiftView ,algo
             print("max_ietracines", max_iterations)
             random.seed(settings.SEEDS[i])
             solutions = view.executeNsgaIIToOptimize(nsga, population_amount, MAX_TIME_DURATION)
-            solutionsNormalized = Normalize().normalizeFitness(solutions)
-            pf = np.array(solutionsNormalized)
-            hv = Hipervolumen.calculate_hipervolumen(pf)
-            hv_average+= hv
-            data.append((solutionsNormalized,hv))
+            if solutions == None:
+                data.append(([[0,0.2,0.2,0.2]],0.6))
+            else:
+                solutionsNormalized = Normalize().normalizeFitness(solutions)
+                pf = np.array(solutionsNormalized)
+                hv = Hipervolumen.calculate_hipervolumen(pf)
+                hv_average+= hv
+                data.append((solutionsNormalized,hv))
     return hv_average/max_iterations,index,data
 
 def get_mutation_value(algorithm, mutation_num):
