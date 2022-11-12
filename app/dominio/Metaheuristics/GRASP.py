@@ -54,15 +54,7 @@ class Grasp(Algorithm):
                     if(self.current_timeout > self.MAX_TIMEOUT):
                         evolutions.append(population)
                         return evolutions
-                    actual_solution = population[index_solution]
-                    new_solution:Solution = copy.deepcopy(actual_solution)
-                    for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
-                        self.current_timeout = time.time()
-                        if(self.current_timeout > self.MAX_TIMEOUT):
-                            break
-                        # new_solution = Tweak_service().Tweak(new_solution)
-                        new_solution = Tweak_service().Tweak(new_solution)
-                        best_solution = actual_solution if actual_solution.total_fitness < new_solution.total_fitness else new_solution
+                    best_solution = self.local_optimization(population[index_solution])
                     population.append(best_solution)
                 population = self.best_population(population)
                 evolutions.append(copy.copy(population))
@@ -86,6 +78,17 @@ class Grasp(Algorithm):
             print("new iteration")
         return population
 
+    def local_optimization(self, actual_solution: Solution):
+        new_solution:Solution = copy.deepcopy(actual_solution)
+        for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
+            self.current_timeout = time.time()
+            if(self.current_timeout > self.MAX_TIMEOUT):
+                break
+            # new_solution = Tweak_service().Tweak(new_solution)
+            new_solution = Tweak_service().Tweak(new_solution)
+            best_solution = actual_solution if actual_solution.total_fitness < new_solution.total_fitness else new_solution
+        return best_solution
+        
     def best_population(self, population: List[Solution]) -> List[Solution]:
         PopulationServices.not_dominate_sort(Population(None, None, population))
         population = PopulationServices.get_solutions_by_frente(population,len(population)/2)

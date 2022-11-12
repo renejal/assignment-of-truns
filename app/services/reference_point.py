@@ -17,9 +17,9 @@ class Reference_point:
 
     def get_reference_point_by_exis(self, fixed_col, cols_to_modify, step):
         list = []
-        x = np.arange(0, 0.3 + step, step, dtype=float)
-        y = np.arange(0, 0.3 + step, step, dtype=float)
-        z = np.arange(0, 0.3 + step, step, dtype=float)
+        x = np.arange(0, 1 + step, step, dtype=float)
+        y = np.arange(0, 1 + step, step, dtype=float)
+        z = np.arange(0, 1 + step, step, dtype=float)
         for i in x:
             for j in y:
                 for k in z:
