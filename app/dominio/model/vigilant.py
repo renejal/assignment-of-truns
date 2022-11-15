@@ -5,6 +5,7 @@ from typing import List, Dict
 from dominio.model.shift import Shift
 from dominio.model.shift_place import Shift_place
 from utils.dataclass_classmethod import FromDictMixin
+from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
 
 @dataclasses.dataclass
 class Vigilant(FromDictMixin):
@@ -36,10 +37,10 @@ class Vigilant(FromDictMixin):
         self.last_shift = shift
 
         total_weeks = len(self.total_hours_worked_by_week)
-        if total_weeks > 1 and self.total_hours_worked >= ( total_weeks * 48 )/2:
+        if total_weeks > 1 and self.total_hours_worked >= ( total_weeks * MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK )/2:
             self.is_usuable = False
             return
-        if total_weeks == 1 and self.total_hours_worked >= 48:
+        if total_weeks == 1 and self.total_hours_worked >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
             self.is_usuable = False
         
     

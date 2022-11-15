@@ -61,7 +61,9 @@ class Solution:
 
         for vigilant_id in order_vigilantes_ids_in_site:
             vigilant = self.vigilantes_schedule[vigilant_id-1]
-            if vigilant.is_usuable and vigilant.default_place_to_look_out == -1:
+            # if vigilant.is_usuable and vigilant.default_place_to_look_out == -1:
+            #     order_vigilantes_in_site.append(vigilant) 
+            if vigilant.default_place_to_look_out == -1:
                 order_vigilantes_in_site.append(vigilant) 
         
         if site.id in self.problem.expected_places_to_look_out_by_vigilants:

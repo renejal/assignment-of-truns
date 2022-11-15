@@ -1,11 +1,9 @@
 import copy
-import math
 from pickle import NONE
 import random
 from typing import List
 from dominio.Component import Component
 from dominio.Solution import Solution
-from dominio.model.shift import Shift
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
 

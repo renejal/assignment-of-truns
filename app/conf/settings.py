@@ -60,6 +60,44 @@ env1 = environ.Env(
     DISTANCE_TWEAK_PROBABILITY = (int, 25)
 )
 
+
+universidad = environ.Env(
+    #GENERAL
+    SETTINGS = (int, random.seed(0)), #SEED
+    
+    #Probability to choose a objective to optimize in one solution
+    MISSING_SHIFT_PROBABILITY = (int, 75),
+    ASSIGNED_VIGILANTES_PROBABILITY = (int, 0),
+    EXTRA_HOURS_PROBABILITY = (int, 0),
+    DISTANCE_GRASP_PROBABILITY = (int, 25),
+
+    #NSGAII
+    #PARAMETERS
+    MAX_EFOS_NSGAII =(int, 100), 
+    POPULATION_AMOUNT_NSGAII = (int, 10),
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
+    NUMBER_OF_CHILDREN_GENERATE= (int, 2),
+    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
+    #PorcetanjeCrossingNsgaii
+    MISSING_SHIFT_CROSSING_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_CROSSING_PROBABILITY = (int, 30),
+    EXTRA_HOURS_CROSSING_PROBABILITY = (int, 15),
+    DISTANCE_CROSSING_PROBABILITY = (int, 5),
+    
+    #GRASP CONFIG
+    #PARAMETERS
+    MAX_EFOS_GRASP =  (int, 10),
+    POPULATION_AMOUNT_GRASP = (int, 10),
+    COMPONENTS_AMOUNT_GRASP =  (int, 50),
+    RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 3),
+    TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 20),
+    #PorcetanjeTweaksGRASP
+    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 25),
+    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 25),
+    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 0),
+    DISTANCE_TWEAK_PROBABILITY = (int, 25)
+)
+
 # envirom exect
 env = env1
 

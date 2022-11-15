@@ -48,7 +48,7 @@ class Grasp(Algorithm):
                 if(self.current_timeout > self.MAX_TIMEOUT):
                     evolutions.append(population)
                     return evolutions
-                # print("evolution:"+ str(self.current_efo+1))
+                print("evolution:"+ str(self.current_efo+1))
                 for index_solution in range(self.AMOUNT_POPULATION):
                     self.current_timeout = time.time()
                     if(self.current_timeout > self.MAX_TIMEOUT):
