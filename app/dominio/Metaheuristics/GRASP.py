@@ -48,7 +48,7 @@ class Grasp(Algorithm):
                 if(self.current_timeout > self.MAX_TIMEOUT):
                     evolutions.append(population)
                     return evolutions
-                print("evolution:"+ str(self.current_efo+1))
+                # print("evolution:"+ str(self.current_efo+1))
                 for index_solution in range(self.AMOUNT_POPULATION):
                     self.current_timeout = time.time()
                     if(self.current_timeout > self.MAX_TIMEOUT):
@@ -62,31 +62,31 @@ class Grasp(Algorithm):
         return evolutions
 
     def get_initial_poblation(self,problem) -> List[Solution]:
-        print("Getting started population")
+        # print("Getting started population")
         population:List[Solution] = []
         for i in range(self.AMOUNT_POPULATION):
             S = Solution(problem)
             self.current_timeout = time.time()
             if(self.current_timeout > self.MAX_TIMEOUT):
-                print("timeout pass")
+                # print("timeout pass")
                 return population
             while S.is_solution_complete():
                 components = S.create_components(self.COMPONENTS_AMOUNT)
                 restricted_list = S.get_best_components(components,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
                 S.merge_component(restricted_list)    
             population.append(S)
-            print("new iteration")
+            # print("new iteration")
         return population
 
     def local_optimization(self, actual_solution: Solution):
-        new_solution:Solution = copy.deepcopy(actual_solution)
+        best_solution:Solution = copy.deepcopy(actual_solution)
         for tweak_index in range(self.TWEAK_AMOUNT_REPETITIONS):
             self.current_timeout = time.time()
             if(self.current_timeout > self.MAX_TIMEOUT):
                 break
-            # new_solution = Tweak_service().Tweak(new_solution)
-            new_solution = Tweak_service().Tweak(new_solution)
-            best_solution = actual_solution if actual_solution.total_fitness < new_solution.total_fitness else new_solution
+            new_solution = Tweak_service().Tweak(copy.deepcopy(best_solution))
+            if new_solution.total_fitness < best_solution.total_fitness:
+                best_solution = new_solution
         return best_solution
         
     def best_population(self, population: List[Solution]) -> List[Solution]:
