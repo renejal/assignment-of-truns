@@ -1,11 +1,7 @@
-from re import I
-from sched import scheduler
 from utils import union
-from numpy import delete
 from dominio.model.shift_place import Shift_place
-from utils.order import Order
 from dominio.model.shift import Shift
-from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE
+from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE, MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
 from typing import List, Dict
 from dominio.model.vigilant import Vigilant
 
@@ -119,13 +115,13 @@ class Component:
             for hour_by_week in vigilant.total_hours_worked_by_week:
                 # if index-1 == len(vigilant.total_hours_worked_by_week):
                 #     break
-                if hour_by_week > 48:
-                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
-                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - 48)
-                if hour_by_week < 48 and hour_by_week > 0:
+                if hour_by_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                if hour_by_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and hour_by_week > 0:
                     missing_hours = hour_by_week
-                    if hour_by_week >= 24:
-                        missing_hours = 48 - hour_by_week                        
+                    if hour_by_week >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
+                        missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week                        
                     self.assigned_vigilantes_fitness += missing_hours
                     self.total_fitness+= missing_hours
         self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
