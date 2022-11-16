@@ -2,6 +2,8 @@ import copy
 from pickle import NONE
 import random
 from typing import List
+from conf import settings
+from conf.settings import STOP_GRASP_TWEAK
 from dominio.Component import Component
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
@@ -15,7 +17,9 @@ class Tweak_distance():
         vigilantes_with_wrong_assigned_place: List[List[Vigilant]] = self.get_vigilantes_with_wrong_assigned_place(solution.vigilantes_schedule)
         vigilantes_with_one_wrong_assigned_place = vigilantes_with_wrong_assigned_place[0]
         #Case solo pertenecen a un sitio
-        self.change_place_vigilantes_assigned_to_one_place(solution,vigilantes_with_one_wrong_assigned_place)        
+        if self.change_place_vigilantes_assigned_to_one_place(solution,vigilantes_with_one_wrong_assigned_place):
+            if STOP_GRASP_TWEAK:
+                return solution
         #Case pertenecen a varios sitios
         vigilantes_with_assigned_place_and_wrong_assigned_places = vigilantes_with_wrong_assigned_place[1]
         random.shuffle(vigilantes_with_assigned_place_and_wrong_assigned_places)
@@ -31,6 +35,8 @@ class Tweak_distance():
             if assigment_amount_on_closets_place / total_assigment_shifts > 0.8:
                 if self.change_vigilant_with_most_shifts_in_close_place(solution,vigilant,vigilantes_with_one_wrong_assigned_place):
                     vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                    if STOP_GRASP_TWEAK:
+                        return solution
                 index+=1
             elif assigment_amount_on_closets_place/total_assigment_shifts < 0.2:
                 #Cambiar los shifts con un vigilante que se encuentre en un solo sitio y sea el el sitio requerido o mas cercano
@@ -38,6 +44,8 @@ class Tweak_distance():
                 #Cambiar los shifts con un vigilante que contenga su sitio requerido o sitios mas cercano
                 if self.change_shifts_from_incorrect_place(vigilant, solution):
                     vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                    if STOP_GRASP_TWEAK:
+                        return solution
                 #Cambiar con vigilantes con sitios mas cercanos
                 index+=1
             else:
@@ -45,6 +53,8 @@ class Tweak_distance():
                 #Cambiar los shifts de los que no son el requerido con otros mas cercanos
                 if self.change_shifts_from_incorrect_place(vigilant, solution):
                     vigilantes_with_one_wrong_assigned_place = self.get_vigilantes_with_one_wrong_assigned_place(solution.vigilantes_schedule)
+                    if STOP_GRASP_TWEAK:
+                        return solution
                 index+=1
 
 
@@ -86,9 +96,10 @@ class Tweak_distance():
                     vigilantes_with_one_wrong_assigned_place.remove(vigilant_to_change)
                     if index_change_vigilant < index:
                         index-=1
+                return True
             else:
                 index+=1
-
+        return False
     def change_vigilant_with_multiple_places_with_vigilant_with_one_place(self, solution:Solution, vigilant: Vigilant, vigilantes_with_one_wrong_assigned_place: List[Vigilant]) -> bool:
         for index_wrong_vigilant in range(len(vigilantes_with_one_wrong_assigned_place)):
             vigilant_to_change = vigilantes_with_one_wrong_assigned_place[index_wrong_vigilant]

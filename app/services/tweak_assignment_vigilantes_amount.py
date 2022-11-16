@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 from conf import settings
-from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK
+from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -30,8 +30,14 @@ class Tweak_assignment_vigilantes_amount:
                     if self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
                         extra_vigilantes_on_week.remove(extra_vigilant)
                         index_vigilant-=1
+                        if STOP_GRASP_TWEAK:
+                            return solution
                     else:
-                        index_vigilant -= self.assing_shifts_between_extra_vigilantes_greater_than(extra_vigilant, extra_vigilantes_by_week , index_week, available_vigilantes, solution)
+                        vigilants_deleted = self.assing_shifts_between_extra_vigilantes_greater_than(extra_vigilant, extra_vigilantes_by_week , index_week, available_vigilantes, solution)
+                        index_vigilant -= vigilants_deleted
+                        if vigilants_deleted > 0:
+                            if STOP_GRASP_TWEAK:
+                                return solution
                 #Primero se las asigna a algun otro de los que tienen menos
                 #Si tiene menos de 24 horas trabajadas estas horas se las asigna a cualquier otro vigilante que este disponible
                 else:
@@ -75,10 +81,14 @@ class Tweak_assignment_vigilantes_amount:
                                     if index_actual >= index_delete:
                                         index_other_vigilant=-1
                                     index_vigilant-=1
+                                if STOP_GRASP_TWEAK:
+                                    return solution
                                 break
                             index_other_vigilant+=1
                         if var_shift:
                             if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
+                                if STOP_GRASP_TWEAK:
+                                    return solution
                                 break
                             continue
                         random.shuffle(available_vigilantes[index_week])
@@ -98,9 +108,13 @@ class Tweak_assignment_vigilantes_amount:
                                 if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
                                     extra_vigilantes_by_week[index_week].remove(extra_vigilant)
                                     index_vigilant-=1
+                                if STOP_GRASP_TWEAK:
+                                    return solution
                                 break
                             index_available_vigilant+=1    
                         if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
+                            if STOP_GRASP_TWEAK:
+                                return solution
                             break                
                 index_vigilant+=1                    
         #Quitarle los shifts y asignarselos a algun otro guardia con 48 horas o mas

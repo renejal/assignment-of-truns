@@ -1,7 +1,7 @@
 from utils import union
 from dominio.model.shift_place import Shift_place
 from dominio.model.shift import Shift
-from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE, MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
+from conf.settings import DISTANCE_FITNESS_VALUE, ASSIGNED_VIGILANTES_FITNESS_VALUE, EXTRA_HOURS_FITNESS_VALUE, MISSING_FITNESS_VALUE, MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,CALCULATE_HOURS_FITNESS
 from typing import List, Dict
 from dominio.model.vigilant import Vigilant
 
@@ -112,20 +112,22 @@ class Component:
                 self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(self.site_id)
                 self.total_fitness+= DISTANCE_FITNESS_VALUE * vigilant.order_distances.get(self.site_id) 
             #TODO Revisar si es mejor calcular las horas por semaana si trabajo o algo
-            for hour_by_week in vigilant.total_hours_worked_by_week:
-                # if index-1 == len(vigilant.total_hours_worked_by_week):
-                #     break
-                if hour_by_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
-                    self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
-                    self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
-                if hour_by_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and hour_by_week > 0:
-                    missing_hours = hour_by_week
-                    if hour_by_week >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
-                        missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week                        
-                    self.assigned_vigilantes_fitness += missing_hours
-                    self.total_fitness+= missing_hours
-        self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
-        self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
+            if CALCULATE_HOURS_FITNESS:
+                for hour_by_week in vigilant.total_hours_worked_by_week:
+                    # if index-1 == len(vigilant.total_hours_worked_by_week):
+                    #     break
+                    if hour_by_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+                        self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                        self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                    if hour_by_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and hour_by_week > 0:
+                        missing_hours = hour_by_week
+                        if hour_by_week >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
+                            missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week                        
+                        self.assigned_vigilantes_fitness += missing_hours
+                        self.total_fitness+= missing_hours
+            if CALCULATE_HOURS_FITNESS:
+                self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
+                self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
 
     def get_fitness_by_criteria(self, fitnessToOptimize:str) -> int:
         if fitnessToOptimize == "missing_shifts":
