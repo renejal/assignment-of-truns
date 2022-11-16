@@ -1,5 +1,6 @@
 {
     "id_user": "Default",
+    "expected_vigilantes": 10,
     "data_sites": [
         {
             "description": "prueba",
