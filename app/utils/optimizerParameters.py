@@ -21,7 +21,7 @@ class OptimizerParamets:
     """
     sol_per_pop = 10
     num_parents_mating = 2
-    num_generations = 3
+    num_generations = 3 # Cambiar 
     
     def __init__(self, algorithm: str, filesData: List[str]) -> None:
         self.calculate_best_parameters(algorithm, filesData)

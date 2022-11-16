@@ -31,7 +31,7 @@ class Population():
         population: List[Solution] = []
         for i in range(self.__num_soluction):
             current_timeout = time.time()
-            if(current_timeout > maxTime and len(population >= 2)):
+            if(current_timeout > maxTime and len(population) >= 2):
                 self.populations = population 
             S = Solution(self.problem)
             while S.is_solution_complete():
