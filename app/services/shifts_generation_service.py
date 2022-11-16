@@ -1,5 +1,6 @@
 import math
 from typing import Dict, List
+from conf.settings import GENERATE_UNI_SHIFTS
 from dominio.model.site import Site
 from dominio.model.shift import Shift
 
@@ -15,8 +16,10 @@ class Shifts_generation_service:
             if site.is_special_site:
                 shifts_by_site.append(self.create_shifts_in_special_site(site, site.total_weeks))
             else:
-                shifts_data = self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks)
-                # shifts_data = self.create_shifts_university(site,ideal_hours_amount_to_work, site.total_weeks)
+                if GENERATE_UNI_SHIFTS:
+                    shifts_data = self.create_shifts_university(site,ideal_hours_amount_to_work, site.total_weeks)
+                else:
+                    shifts_data = self.create_shifts_in_normal_sites(site,ideal_hours_amount_to_work, site.total_weeks)
                 shifts_by_site.append(shifts_data[0])
                 self.calculate_max_fitness(site,shifts_data[1],shifts_data[2])
         return shifts_by_site
@@ -34,12 +37,8 @@ class Shifts_generation_service:
             ,(24,35)
             ,(36,47)
             ,(48,59)
-            ,(48,59)
-            ,(60,71)
             ,(60,71)
             ,(72,83)
-            ,(72,83)
-            ,(84,95)
             ,(84,95)
             ,(96,103)
             ,(104,111)

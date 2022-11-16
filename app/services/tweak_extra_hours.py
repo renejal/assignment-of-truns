@@ -4,6 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 from conf import settings
+from conf.settings import STOP_GRASP_TWEAK
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -53,11 +54,17 @@ class Tweak_extra_hours:
                                     break
                             #Chequear si el vigilante con extra horas ya no tiene horas extras
                             if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48:
+                                if STOP_GRASP_TWEAK:
+                                    return solution
                                 break    
                         if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
+                            if STOP_GRASP_TWEAK:
+                                return solution
                             break        
                         index += 1
                     if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
+                            if STOP_GRASP_TWEAK:
+                                return solution
                             break        
         return solution
         

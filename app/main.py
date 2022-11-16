@@ -10,9 +10,8 @@ class Main:
         view = GenerateShiftView(data, MAX_TIME_DURATION)
         dataGrasp = None
         dataNsga = None
-        dataNsga = view.executeNsga()
-        # dataGrasp = view.executeGrasp()
-        print("exit")
+        # dataNsga = view.executeNsga()
+        dataGrasp = view.executeGrasp()
         generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
         print("exit")
 

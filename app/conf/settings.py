@@ -2,17 +2,23 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 500#1day
+MAX_TIME_DURATION = 3600#1day
 PATH_RESULTS = "app/dataset/results/"
+
 
 NUMBER_OBJECTIVE_AT_OBTIMIZATE = 4
 #TODO RENOMBRAR ESTA VARIABLE PORQUE NO SE ENTIENDE
 WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE = 5
 #VALUE TO APPLY TO EACH INFRACTION IN A OBJETIVE
-MISSING_FITNESS_VALUE =  100
+MISSING_FITNESS_VALUE =  10000
 ASSIGNED_VIGILANTES_FITNESS_VALUE = 100
 DISTANCE_FITNESS_VALUE= 100
 EXTRA_HOURS_FITNESS_VALUE = 20
+#Permite decidir si calcular el fitness de horas extras y de cantidad de vigilantes
+CALCULATE_HOURS_FITNESS = True
+
+#Decide si para tweaks
+STOP_GRASP_TWEAK = True
 
 #Nsga2 Constants
 INFINITE_POSITIVE = 100000000000000
@@ -20,9 +26,14 @@ INFINITE_NEGATIVE = -100000000000000
 
 SEEDS = [722, 829, 616, 923, 150, 317, 101, 747, 75, 920, 870, 700, 338, 483, 573, 103,362,444,323,625,655,934,209,989,565,488,453,886,533,266 ]
 
-env1 = environ.Env(
+normal = environ.Env(
     #GENERAL
     SETTINGS = (int, random.seed(0)), #SEED
+    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 48),
+    MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MINIMUN_BREAK_DURATION = (int, 12),
+    ##Genera turnos de la universidad
+    GENERATE_UNI_SHIFTS = (bool, False),
     
     #Probability to choose a objective to optimize in one solution
     MISSING_SHIFT_PROBABILITY = (int, 25),
@@ -57,11 +68,104 @@ env1 = environ.Env(
     DISTANCE_TWEAK_PROBABILITY = (int, 25)
 )
 
+extra = environ.Env(
+    #GENERAL
+    SETTINGS = (int, random.seed(0)), #SEED
+    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MINIMUN_BREAK_DURATION = (int, 12),
+    ##Genera turnos de la universidad
+    GENERATE_UNI_SHIFTS = (bool, False),
+    
+    #Probability to choose a objective to optimize in one solution
+    MISSING_SHIFT_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_PROBABILITY = (int, 25),
+    EXTRA_HOURS_PROBABILITY = (int, 0),
+    DISTANCE_GRASP_PROBABILITY = (int, 25),
+
+    #NSGAII
+    #PARAMETERS
+    MAX_EFOS_NSGAII =(int, 100), 
+    POPULATION_AMOUNT_NSGAII = (int, 10),
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
+    NUMBER_OF_CHILDREN_GENERATE= (int, 2),
+    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
+    #PorcetanjeCrossingNsgaii
+    MISSING_SHIFT_CROSSING_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_CROSSING_PROBABILITY = (int, 30),
+    EXTRA_HOURS_CROSSING_PROBABILITY = (int, 15),
+    DISTANCE_CROSSING_PROBABILITY = (int, 5),
+    
+    #GRASP CONFIG
+    #PARAMETERS
+    MAX_EFOS_GRASP =  (int, 10),
+    POPULATION_AMOUNT_GRASP = (int, 10),
+    COMPONENTS_AMOUNT_GRASP =  (int, 300),
+    RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 3),
+    TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 100),
+    #PorcetanjeTweaksGRASP
+    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 25),
+    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 0),
+    DISTANCE_TWEAK_PROBABILITY = (int, 25)
+)
+
+
+universidad = environ.Env(
+    #GENERAL
+    SETTINGS = (int, random.seed(0)), #SEED
+    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MINIMUN_BREAK_DURATION = (int, 12),
+    ##Genera turnos de la universidad
+    GENERATE_UNI_SHIFTS = (bool, True),
+
+    #Probability to choose a objective to optimize in one solution
+    MISSING_SHIFT_PROBABILITY = (int, 75),
+    ASSIGNED_VIGILANTES_PROBABILITY = (int, 0),
+    EXTRA_HOURS_PROBABILITY = (int, 0),
+    DISTANCE_GRASP_PROBABILITY = (int, 25),
+
+    #NSGAII
+    #PARAMETERS
+    MAX_EFOS_NSGAII =(int, 100), 
+    POPULATION_AMOUNT_NSGAII = (int, 10),
+    NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
+    NUMBER_OF_CHILDREN_GENERATE= (int, 2),
+    NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
+    #PorcetanjeCrossingNsgaii
+    MISSING_SHIFT_CROSSING_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_CROSSING_PROBABILITY = (int, 30),
+    EXTRA_HOURS_CROSSING_PROBABILITY = (int, 15),
+    DISTANCE_CROSSING_PROBABILITY = (int, 5),
+    
+    #GRASP CONFIG
+    #PARAMETERS
+    MAX_EFOS_GRASP =  (int, 10),
+    POPULATION_AMOUNT_GRASP = (int, 10),
+    COMPONENTS_AMOUNT_GRASP =  (int, 300),
+    RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 3),
+    TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 5),
+    #PorcetanjeTweaksGRASP
+    MISSING_SHIFT_TWEAK_PROBABILITY = (int, 50),
+    ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 25),
+    EXTRA_HOURS_TWEAK_PROBABILITY = (int, 0),
+    DISTANCE_TWEAK_PROBABILITY = (int, 25)
+)
+
 # envirom exect
-env = env1
+env = normal
+if env == universidad:
+    CALCULATE_HOURS_FITNESS = False
+
 
 #GENERAL
 SETTINGS = env("SETTINGS")
+MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = env("MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK")
+MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = env("MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK")
+MINIMUN_BREAK_DURATION = env("MINIMUN_BREAK_DURATION")
+GENERATE_UNI_SHIFTS = env("GENERATE_UNI_SHIFTS")
+
 # SEED = env("SEED")
 #Probability to choose a objective to optimize in one solution
 MISSING_SHIFT_PROBABILITY = env("MISSING_SHIFT_PROBABILITY")

@@ -2,7 +2,7 @@ from copy import copy
 import math
 from typing import List
 from dominio.Solution import Solution
-from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALUE,DISTANCE_FITNESS_VALUE,EXTRA_HOURS_FITNESS_VALUE
+from conf.settings import MISSING_FITNESS_VALUE,ASSIGNED_VIGILANTES_FITNESS_VALUE,DISTANCE_FITNESS_VALUE,EXTRA_HOURS_FITNESS_VALUE,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
 
 class Normalize:
 
@@ -29,7 +29,7 @@ class Normalize:
             suma += solution.total_fitness
             missing_shifts_fitness = self.normalize(solution.missing_shifts_fitness / MISSING_FITNESS_VALUE, fitnessMax[0], fitnessMin[0])
             # solution.assigned_vigilantes_fitness = solution.calculate_assigned_vigilantes_fitness()
-            assigned_vigilantes_fitness = self.normalize(solution.assigned_vigilantes_fitness / 24, fitnessMax[1], fitnessMin[1])
+            assigned_vigilantes_fitness = self.normalize(solution.assigned_vigilantes_fitness / MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK /2, fitnessMax[1], fitnessMin[1])
             # assigned_vigilantes_fitness = self.normalize(solution.assigned_vigilantes_fitness, fitnessMax[1], fitnessMin[1])
             extra_hours_fitness = self.normalize(solution.extra_hours_fitness / EXTRA_HOURS_FITNESS_VALUE, fitnessMax[2], fitnessMin[2])
             distance_fitness = self.normalize(solution.distance_fitness / DISTANCE_FITNESS_VALUE, fitnessMax[3], fitnessMin[3])

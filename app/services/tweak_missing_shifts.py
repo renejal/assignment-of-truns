@@ -1,5 +1,6 @@
 import random
 from typing import List, Dict
+from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
 from dominio.Solution import Solution
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -20,11 +21,17 @@ class Tweak_missing_shifts:
              for v in assigned_vigilantes:
                  if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
                      vigilantes_with_missing_hours.remove(v)
+             if len(assigned_vigilantes) > 1:
+                if STOP_GRASP_TWEAK:
+                    return solution
         #Asignar horas extras a los vigilantes en el mismo sitio
         for site in solution.sites_schedule:
             if len(site.missing_shifts) == 0:
                  continue
-            self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
+            assigned_vigilantes = self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
+            if len(assigned_vigilantes) > 1:
+                if STOP_GRASP_TWEAK:
+                    return solution
         #Asignar a los turnos los vigilantes que tienen menos de 48 horas en algun otro sitio
         for site in solution.sites_schedule:      
             if len(site.missing_shifts) == 0:
@@ -36,6 +43,9 @@ class Tweak_missing_shifts:
                     site.assigned_Vigilantes[v.id] = v
                 if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
                      vigilantes_with_missing_hours.remove(v)
+            if len(assigned_vigilantes) > 1:
+                if STOP_GRASP_TWEAK:
+                    return solution
         #Asignar horas extras a los vigilantes en otro sitio
         for site in solution.sites_schedule:
             if len(site.missing_shifts) == 0:
@@ -52,7 +62,7 @@ class Tweak_missing_shifts:
         vigilantes_with_missing_hours: List[Vigilant] = []
         for vigilant in vigilantes:
             for hours_worked_on_week in vigilant.total_hours_worked_by_week:
-                if hours_worked_on_week < 48 and vigilant not in vigilantes_with_missing_hours:
+                if hours_worked_on_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and vigilant not in vigilantes_with_missing_hours:
                     vigilantes_with_missing_hours.append(vigilant)
         return vigilantes_with_missing_hours
 
@@ -64,9 +74,9 @@ class Tweak_missing_shifts:
         return vigilantes_from_other_sites
 
     def assign_extra_hours_on_vigilantes(self, vigilantes:List[Vigilant], site_id: int, shifts: List[Shift]):
-        self.vigilant_assigment_service._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = 56
+        self.vigilant_assigment_service._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK
         assigned_vigilantes =self.assign_vigilantes_on_missing_shifts(vigilantes,site_id, shifts)
-        self.vigilant_assigment_service._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = 48
+        self.vigilant_assigment_service._MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
         return assigned_vigilantes
 
     def assign_vigilantes_on_missing_shifts(self, vigilantes:List[Vigilant], site_id: int, shifts: List[Shift])-> List[Vigilant] :

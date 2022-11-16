@@ -56,6 +56,7 @@ class VigilantAssigment:
         total_missing_shifts = 0
         minimum_necessary_vigilantes = 0
         max_extra_hours = 0
+        max_distance_fitness = 0
         for site in sites:
             total_missing_shifts += site.total_missing_shifts
             minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
@@ -64,18 +65,23 @@ class VigilantAssigment:
             for site in sites:
                 if week < len(site.hours_to_work_by_week):
                     hours_by_week += site.hours_to_work_by_week[week]
-            max_extra_hours += 8 * math.floor(hours_by_week/56) + max(hours_by_week - (56 * math.floor(hours_by_week/56) + 48),0)
+            max_extra_hours += (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK - settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK) * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + max(hours_by_week - (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK),0)
             # amount_vigilants_with_hours_extra = math.floor(hours_by_week/49)
             # if  amount_vigilants_with_hours_extra > self.total_vigilantes:
             #     max_extra_hours+= self.total_vigilantes
             # else:
             #     max_extra_hours += amount_vigilants_with_hours_extra
+        #FITNESS MAXIMO PARA LA DISTANCIA ES QUE QUEDE ASIGNADO EN TODOS LOS SITIO
+        for i in range(len(sites)):
+            max_distance_fitness+= i
         self.max_possible_fitness[0] = total_missing_shifts
         # self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[1] = minimum_necessary_vigilantes + (self.total_vigilantes - self.expected_vigilantes) * settings.ASSIGNED_VIGILANTES_FITNESS_VALUE
         # self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = self.total_vigilantes * (len(sites)-1) * 3
+        self.max_possible_fitness[3] = self.total_vigilantes * max_distance_fitness
+        if settings.GENERATE_UNI_SHIFTS:
+            self.max_possible_fitness[0] = 18 * 12 + 18 * 2
 
     def mapSites(self, sites: List[Site]):
         sitesDict: Dict[str, int] = {}
