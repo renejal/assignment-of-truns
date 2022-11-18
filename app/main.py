@@ -24,16 +24,17 @@ class Main:
         executor = ThreadPoolExecutor(max_workers=10)
         argsList = []
         responses = []
+        sol = 0
         for i in range(10):
             view = GenerateShiftView(data, MAX_TIME_DURATION)
             argsList.append([view,i])
         futures = [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
+            sol+=1
             # get the result for the next completed task
             response = future.result()
             responses.append(response)
             print("Finalizo metodo")
-            generate_results(response,None,DataUser.from_dict(data).id_user)
         executor.shutdown() # blocks
         for i in responses:
             generate_results(None,i,DataUser.from_dict(data).id_user)
