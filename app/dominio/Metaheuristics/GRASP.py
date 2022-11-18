@@ -1,4 +1,5 @@
 import copy
+import random
 import time
 from typing import List
 from dominio.Algorithm import Algorithm
@@ -85,7 +86,10 @@ class Grasp(Algorithm):
             if(self.current_timeout > self.MAX_TIMEOUT):
                 break
             new_solution = Tweak_service().Tweak(copy.deepcopy(best_solution))
-            if new_solution.total_fitness < best_solution.total_fitness:
+            if random.randint(0,1) == 1:
+                if new_solution.total_fitness < best_solution.total_fitness:
+                    best_solution = new_solution
+            else:
                 best_solution = new_solution
         return best_solution
         
