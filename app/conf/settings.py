@@ -58,7 +58,7 @@ normal = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 20),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 500),
+    COMPONENTS_AMOUNT_GRASP =  (int, 20),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
