@@ -1,4 +1,5 @@
 import copy
+import random
 import time
 from typing import List
 from dominio.Algorithm import Algorithm
@@ -75,7 +76,7 @@ class Grasp(Algorithm):
                 restricted_list = S.get_best_components(components,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
                 S.merge_component(restricted_list)    
             population.append(S)
-            # print("new iteration")
+            print("new iteration")
         return population
 
     def local_optimization(self, actual_solution: Solution):
@@ -85,7 +86,10 @@ class Grasp(Algorithm):
             if(self.current_timeout > self.MAX_TIMEOUT):
                 break
             new_solution = Tweak_service().Tweak(copy.deepcopy(best_solution))
-            if new_solution.total_fitness < best_solution.total_fitness:
+            if random.randint(0,1) == 1:
+                if new_solution.total_fitness < best_solution.total_fitness:
+                    best_solution = new_solution
+            else:
                 best_solution = new_solution
         return best_solution
         

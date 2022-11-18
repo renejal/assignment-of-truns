@@ -72,14 +72,17 @@ class VigilantAssigment:
             # else:
             #     max_extra_hours += amount_vigilants_with_hours_extra
         #FITNESS MAXIMO PARA LA DISTANCIA ES QUE QUEDE ASIGNADO EN TODOS LOS SITIO
-        for i in range(len(sites)):
-            max_distance_fitness+= i
+        max_distance_fitness = 0
+        for v in vigilantes:
+            for distance in v.distances:
+                max_distance_fitness+= distance
+
         self.max_possible_fitness[0] = total_missing_shifts
         # self.max_possible_fitness[1] = minimum_necessary_vigilantes
         self.max_possible_fitness[1] = minimum_necessary_vigilantes + (self.total_vigilantes - self.expected_vigilantes) * settings.ASSIGNED_VIGILANTES_FITNESS_VALUE
         # self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
         self.max_possible_fitness[2] = max_extra_hours
-        self.max_possible_fitness[3] = self.total_vigilantes * max_distance_fitness
+        self.max_possible_fitness[3] = max_distance_fitness
         if settings.GENERATE_UNI_SHIFTS:
             self.max_possible_fitness[0] = 18 * 12 + 18 * 2
 

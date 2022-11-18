@@ -153,3 +153,32 @@ def generate_parameter_optimizacion(evolutions: List[List[object]], data_solutio
     f = open(path+".txt", "w")
     f.write(strings)
     f.close()
+
+def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], idUser: str):
+    time = datetime.datetime.now()
+    time = str(time.year)+"-"+str(time.month)+"-"+str(time.day) + \
+        "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
+    path = PATH_RESULTS+idUser+"/casos/"+time
+    if(dataGrasp != None):
+        os.makedirs(path+"/grasp")
+        evolutions = dataGrasp.get("evolutions")
+        bestPopulationIndex = len(evolutions)-1
+        for index, solution in enumerate(evolutions[bestPopulationIndex]):
+            generate_excel_site(
+                solution, path+"/grasp/siteSolution"+str(index))
+            generate_excel_vigilantes(
+                solution, path+"/grasp/vigilantSolution"+str(index))
+        dataGrasp.get("fig").write_image(path+"/figGrasp.png")
+        dataGrasp.get("fig").write_html(path+"/figGraspHtml.html")
+    if(dataNsga != None):
+        os.makedirs(path+"/nsgaii")
+        evolutions = dataNsga.get("evolutions")
+        bestPopulationIndex = len(evolutions)-1
+        for index, solution in enumerate(evolutions[bestPopulationIndex]):
+            generate_excel_site(
+                solution, path+"/nsgaii/siteSolution"+str(index))
+            generate_excel_vigilantes(
+                solution, path+"/nsgaii/vigilantSolution"+str(index))
+        dataNsga.get("fig").write_image(path+"/figNsga.png")
+        dataNsga.get("fig").write_html(path+"/figNsgaHtml.html")
+    generate_metrics(dataGrasp, dataNsga, path)
