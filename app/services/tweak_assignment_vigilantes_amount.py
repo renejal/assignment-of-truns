@@ -3,7 +3,7 @@ from typing import List
 
 import numpy as np
 from conf import settings
-from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
+from conf.settings import ACTIVE_CASES,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -17,7 +17,6 @@ class Tweak_assignment_vigilantes_amount:
         #Obtener vigilantes que tienen menos de 48 horas
         extra_vigilantes_by_week: List[List[Vigilant]] = self.get_extra_vigilantes_by_week(solution.vigilantes_schedule)
         available_vigilantes: List[List[Vigilant]] = self.get_available_vigilantes_by_week(solution.vigilantes_schedule)
-        
         for index_week, extra_vigilantes_on_week in enumerate(extra_vigilantes_by_week):
             random.shuffle(extra_vigilantes_on_week)
             index_vigilant = 0
@@ -26,8 +25,8 @@ class Tweak_assignment_vigilantes_amount:
                 #Si tiene mas de 24 horas trabajas se le quitan las horas a otro vigilante que tenga mas de 48 horas y se las asigna al vigilante que no cumple con las horas minimas
                 if extra_vigilant.total_hours_worked_by_week[index_week] > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
                     random.shuffle(available_vigilantes[index_week])
-                    
-                    if self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
+                    case = random.choices([1,2])
+                    if ACTIVE_CASES and case == 1 and self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
                         extra_vigilantes_on_week.remove(extra_vigilant)
                         index_vigilant-=1
                         if STOP_GRASP_TWEAK:
@@ -47,50 +46,52 @@ class Tweak_assignment_vigilantes_amount:
                         # # random.shuffle(extra_vigilantes_by_week[index_week])
                         var_shift = False
                         index_other_vigilant = 0
-                        while index_other_vigilant < len(extra_vigilantes_by_week[index_week]):
-                            other_extra_vigilant = extra_vigilantes_by_week[index_week][index_other_vigilant]
-                            if other_extra_vigilant.id == extra_vigilant.id:
-                                index_other_vigilant+=1
-                                continue
-                            if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(other_extra_vigilant, shift_place.shift):
-                                self.exchange_shift(shift_place,extra_vigilant,other_extra_vigilant)
-                                var_shift = True
-                                if other_extra_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
-                                    solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[other_extra_vigilant.id] = other_extra_vigilant
-                                if shift_place.site_id not in extra_vigilant.sites_to_look_out:
-                                    solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes.pop(extra_vigilant.id)
+                        case = random.choices([1,2])
+                        if ACTIVE_CASES and case == 1:
+                            while index_other_vigilant < len(extra_vigilantes_by_week[index_week]):
+                                other_extra_vigilant = extra_vigilantes_by_week[index_week][index_other_vigilant]
+                                if other_extra_vigilant.id == extra_vigilant.id:
+                                    index_other_vigilant+=1
+                                    continue
+                                if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(other_extra_vigilant, shift_place.shift):
+                                    self.exchange_shift(shift_place,extra_vigilant,other_extra_vigilant)
+                                    var_shift = True
+                                    if other_extra_vigilant.id not in solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes:
+                                        solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes[other_extra_vigilant.id] = other_extra_vigilant
+                                    if shift_place.site_id not in extra_vigilant.sites_to_look_out:
+                                        solution.sites_schedule[shift_place.site_id-1].assigned_Vigilantes.pop(extra_vigilant.id)
 
-                                if other_extra_vigilant.total_hours_worked_by_week[index_week] >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
-                                    index_delete = extra_vigilantes_by_week[index_week].index(other_extra_vigilant)
-                                    index_actual = extra_vigilantes_by_week[index_week].index(extra_vigilant)
-                                    extra_vigilantes_by_week[index_week].remove(other_extra_vigilant)
-                                    if index_actual >= index_delete:
-                                        index_other_vigilant=-1
+                                    if other_extra_vigilant.total_hours_worked_by_week[index_week] >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+                                        index_delete = extra_vigilantes_by_week[index_week].index(other_extra_vigilant)
+                                        index_actual = extra_vigilantes_by_week[index_week].index(extra_vigilant)
+                                        extra_vigilantes_by_week[index_week].remove(other_extra_vigilant)
+                                        if index_actual >= index_delete:
+                                            index_other_vigilant=-1
+                                            index_vigilant-=1
+                                            index_actual-=1
+                                        available_vigilantes[index_week].append(other_extra_vigilant)
+
+                                    if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
+                                        if other_extra_vigilant not in extra_vigilantes_by_week[index_week]:
+                                            index_actual = index_delete
+                                            index_delete = extra_vigilantes_by_week[index_week].index(extra_vigilant)
+                                        else:
+                                            index_actual = extra_vigilantes_by_week[index_week].index(other_extra_vigilant)
+                                            index_delete = extra_vigilantes_by_week[index_week].index(extra_vigilant)
+                                        extra_vigilantes_by_week[index_week].remove(extra_vigilant)
+                                        if index_actual >= index_delete:
+                                            index_other_vigilant=-1
                                         index_vigilant-=1
-                                        index_actual-=1
-                                    available_vigilantes[index_week].append(other_extra_vigilant)
-
-                                if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
-                                    if other_extra_vigilant not in extra_vigilantes_by_week[index_week]:
-                                        index_actual = index_delete
-                                        index_delete = extra_vigilantes_by_week[index_week].index(extra_vigilant)
-                                    else:
-                                        index_actual = extra_vigilantes_by_week[index_week].index(other_extra_vigilant)
-                                        index_delete = extra_vigilantes_by_week[index_week].index(extra_vigilant)
-                                    extra_vigilantes_by_week[index_week].remove(extra_vigilant)
-                                    if index_actual >= index_delete:
-                                        index_other_vigilant=-1
-                                    index_vigilant-=1
-                                if STOP_GRASP_TWEAK:
-                                    return solution
-                                break
+                                    if STOP_GRASP_TWEAK:
+                                        return solution
+                                    break
                             index_other_vigilant+=1
-                        if var_shift:
-                            if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
-                                if STOP_GRASP_TWEAK:
-                                    return solution
-                                break
-                            continue
+                            if var_shift:
+                                if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
+                                    if STOP_GRASP_TWEAK:
+                                        return solution
+                                    break
+                                continue
                         random.shuffle(available_vigilantes[index_week])
                         index_available_vigilant = 0
                         while index_available_vigilant < len(available_vigilantes[index_week]):

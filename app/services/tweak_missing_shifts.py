@@ -2,7 +2,7 @@ import random
 from typing import List, Dict
 from dominio.model.shift_place import Shift_place
 from dominio.Component import Component
-from conf.settings import MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
+from conf.settings import ACTIVE_CASES,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK,STOP_GRASP_TWEAK
 from dominio.Solution import Solution
 from dominio.model.shift import Shift
 from dominio.model.vigilant import Vigilant
@@ -17,62 +17,67 @@ class Tweak_missing_shifts:
             return solution
         vigilantes_with_missing_hours: List[Vigilant] = self.get_vigilantes_with_missing_hours(solution.vigilantes_schedule)
         #Asignar a los turnos los vigilantes que tienen menos de 48 horas en el mismo sitio
-        for site in solution.sites_schedule:
-             if len(site.missing_shifts) == 0:
-                 continue
-             vigilantes = [x for x in vigilantes_with_missing_hours if site.site_id in x.sites_to_look_out]
-             assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
-             for v in assigned_vigilantes:
-                 if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
-                     vigilantes_with_missing_hours.remove(v)
-             if len(assigned_vigilantes) > 1:
-                if STOP_GRASP_TWEAK:
+        case = random.choices([1,2,3,4,5])
+        if ACTIVE_CASES and case == 1:
+            for site in solution.sites_schedule:
+                if len(site.missing_shifts) == 0:
+                    continue
+                vigilantes = [x for x in vigilantes_with_missing_hours if site.site_id in x.sites_to_look_out]
+                assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
+                for v in assigned_vigilantes:
+                    if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
+                        vigilantes_with_missing_hours.remove(v)
+                if len(assigned_vigilantes) > 1:
+                    if STOP_GRASP_TWEAK:
+                        return solution
+                if site.site_id == len(solution.sites_schedule): 
                     return solution
-             if site.site_id == len(solution.sites_schedule): 
-                return solution
-        #Asignar horas extras a los vigilantes en el mismo sitio
-        for site in solution.sites_schedule:
-            if len(site.missing_shifts) == 0:
-                 continue
-            assigned_vigilantes = self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
-            if len(assigned_vigilantes) > 1:
-                if STOP_GRASP_TWEAK:
+        if ACTIVE_CASES and case == 2:
+            #Asignar horas extras a los vigilantes en el mismo sitio
+            for site in solution.sites_schedule:
+                if len(site.missing_shifts) == 0:
+                    continue
+                assigned_vigilantes = self.assign_extra_hours_on_vigilantes(list(site.assigned_Vigilantes.values()), site.site_id, site.missing_shifts)
+                if len(assigned_vigilantes) > 1:
+                    if STOP_GRASP_TWEAK:
+                        return solution
+                if site.site_id == len(solution.sites_schedule): 
                     return solution
-            if site.site_id == len(solution.sites_schedule): 
-                return solution
-        #Asignar a los turnos los vigilantes que tienen menos de 48 horas en algun otro sitio
-        for site in solution.sites_schedule:      
-            if len(site.missing_shifts) == 0:
-                 continue      
-            vigilantes = self.get_vigilantes_from_other_sites( vigilantes_with_missing_hours, site.assigned_Vigilantes)
-            assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
-            for v in assigned_vigilantes:
-                if v.id not in site.assigned_Vigilantes:
-                    site.assigned_Vigilantes[v.id] = v
-                if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
-                     vigilantes_with_missing_hours.remove(v)
-            if len(assigned_vigilantes) > 1:
-                if STOP_GRASP_TWEAK:
+        if ACTIVE_CASES and  case == 3:
+            #Asignar a los turnos los vigilantes que tienen menos de 48 horas en algun otro sitio
+            for site in solution.sites_schedule:      
+                if len(site.missing_shifts) == 0:
+                    continue      
+                vigilantes = self.get_vigilantes_from_other_sites( vigilantes_with_missing_hours, site.assigned_Vigilantes)
+                assigned_vigilantes = self.assign_vigilantes_on_missing_shifts(vigilantes,site.site_id,site.missing_shifts)
+                for v in assigned_vigilantes:
+                    if v.id not in site.assigned_Vigilantes:
+                        site.assigned_Vigilantes[v.id] = v
+                    if self.vigilant_assigment_service.check_if_vigilant_has_missing_hours(v) == False:
+                        vigilantes_with_missing_hours.remove(v)
+                if len(assigned_vigilantes) > 1:
+                    if STOP_GRASP_TWEAK:
+                        return solution
+                if site.site_id == len(solution.sites_schedule): 
                     return solution
-            if site.site_id == len(solution.sites_schedule): 
-                return solution
-        #Asignar horas extras a los vigilantes en otro sitio
-        for site in solution.sites_schedule:
-            if len(site.missing_shifts) == 0:
-                 continue
-            vigilantes = self.get_vigilantes_from_other_sites( solution.vigilantes_schedule, site.assigned_Vigilantes)    
-            assigned_vigilantes = self.assign_extra_hours_on_vigilantes(vigilantes, site.site_id, site.missing_shifts)
-            for v in assigned_vigilantes:
-                if v.id not in site.assigned_Vigilantes:
-                    site.assigned_Vigilantes[v.id] = v
-            if len(assigned_vigilantes) > 1:
-                if STOP_GRASP_TWEAK:
+        if ACTIVE_CASES and  case == 4:    
+            #Asignar horas extras a los vigilantes en otro sitio
+            for site in solution.sites_schedule:
+                if len(site.missing_shifts) == 0:
+                    continue
+                vigilantes = self.get_vigilantes_from_other_sites( solution.vigilantes_schedule, site.assigned_Vigilantes)    
+                assigned_vigilantes = self.assign_extra_hours_on_vigilantes(vigilantes, site.site_id, site.missing_shifts)
+                for v in assigned_vigilantes:
+                    if v.id not in site.assigned_Vigilantes:
+                        site.assigned_Vigilantes[v.id] = v
+                if len(assigned_vigilantes) > 1:
+                    if STOP_GRASP_TWEAK:
+                        return solution
+                if site.site_id == len(solution.sites_schedule): 
                     return solution
-            if site.site_id == len(solution.sites_schedule): 
-                return solution
-
-        self.change_shift(solution.sites_schedule, solution.vigilantes_schedule)
-        #Modificar turnos en guardias
+        if case == 5:
+            #Modificar turnos en guardias
+            self.change_shift(solution.sites_schedule, solution.vigilantes_schedule)
         return solution
     
     def get_vigilantes_with_missing_hours(self, vigilantes: List [Vigilant]) -> List[Vigilant]:

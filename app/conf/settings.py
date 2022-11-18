@@ -19,6 +19,7 @@ CALCULATE_HOURS_FITNESS = True
 
 #Decide si para tweaks
 STOP_GRASP_TWEAK = True
+ACTIVE_CASES = True
 
 #Nsga2 Constants
 INFINITE_POSITIVE = 100000000000000
@@ -43,7 +44,7 @@ normal = environ.Env(
 
     #NSGAII
     #PARAMETERS
-    MAX_EFOS_NSGAII =(int, 100), 
+    MAX_EFOS_NSGAII =(int, 999999999999999999999), 
     POPULATION_AMOUNT_NSGAII = (int, 10),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
@@ -56,7 +57,7 @@ normal = environ.Env(
     
     #GRASP CONFIG
     #PARAMETERS
-    MAX_EFOS_GRASP =  (int, 20),
+    MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
     COMPONENTS_AMOUNT_GRASP =  (int, 20),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
@@ -85,7 +86,7 @@ extra = environ.Env(
 
     #NSGAII
     #PARAMETERS
-    MAX_EFOS_NSGAII =(int, 100), 
+    MAX_EFOS_NSGAII =(int, 999999999999999999999), 
     POPULATION_AMOUNT_NSGAII = (int, 10),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
@@ -98,7 +99,7 @@ extra = environ.Env(
     
     #GRASP CONFIG
     #PARAMETERS
-    MAX_EFOS_GRASP =  (int, 100),
+    MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
     COMPONENTS_AMOUNT_GRASP =  (int, 20),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
@@ -128,7 +129,7 @@ universidad = environ.Env(
 
     #NSGAII
     #PARAMETERS
-    MAX_EFOS_NSGAII =(int, 100), 
+    MAX_EFOS_NSGAII =(int, 999999999999999999999), 
     POPULATION_AMOUNT_NSGAII = (int, 10),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
@@ -141,11 +142,11 @@ universidad = environ.Env(
     
     #GRASP CONFIG
     #PARAMETERS
-    MAX_EFOS_GRASP =  (int, 10),
+    MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 300),
-    RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 3),
-    TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 5),
+    COMPONENTS_AMOUNT_GRASP =  (int, 20),
+    RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
+    TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
     MISSING_SHIFT_TWEAK_PROBABILITY = (int, 50),
     ASSIGNED_VIGILANTES_TWEAK_PROBABILITY = (int, 25),

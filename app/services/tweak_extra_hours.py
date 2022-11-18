@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 from conf import settings
-from conf.settings import STOP_GRASP_TWEAK
+from conf.settings import STOP_GRASP_TWEAK,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
 from dominio.Solution import Solution
 from dominio.model.shift_place import Shift_place
 from dominio.model.vigilant import Vigilant
@@ -36,12 +36,12 @@ class Tweak_extra_hours:
                                     solution.sites_schedule[shift.site_id-1].assigned_Vigilantes.pop(vigilant_with_extra_hours_on_week.id)
                                 
                                 #Chequar si el vigilante ya no puede trabajar mas horas en la semana
-                                if available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 48:
+                                if available_vigilant_on_week.total_hours_worked_by_week[index_week] >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                                     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
                                     index -= 1
                                     break
 
-                                if index_priority == 1 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 24:
+                                if index_priority == 1 and available_vigilant_on_week.total_hours_worked_by_week[index_week] >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK/2:
                                     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
                                     vigilantes_with_hours_to_work[index_week][0].append(available_vigilant_on_week)
                                     index -= 1
@@ -53,16 +53,16 @@ class Tweak_extra_hours:
                                     index -= 1
                                     break
                             #Chequear si el vigilante con extra horas ya no tiene horas extras
-                            if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48:
+                            if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                                 if STOP_GRASP_TWEAK:
                                     return solution
                                 break    
-                        if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
+                        if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: 
                             if STOP_GRASP_TWEAK:
                                 return solution
                             break        
                         index += 1
-                    if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
+                    if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: 
                             if STOP_GRASP_TWEAK:
                                 return solution
                             break        
@@ -88,13 +88,13 @@ class Tweak_extra_hours:
                                     solution.sites_schedule[shift.site_id-1].assigned_Vigilantes[available_vigilant_on_week.id] = available_vigilant_on_week
                                 if shift.site_id not in vigilant_with_extra_hours_on_week.sites_to_look_out:
                                     solution.sites_schedule[shift.site_id-1].assigned_Vigilantes.pop(vigilant_with_extra_hours_on_week.id)
-                                if available_vigilant_on_week.total_hours_worked_by_week[index_week] >= 48:
+                                if available_vigilant_on_week.total_hours_worked_by_week[index_week] >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                                     vigilantes_by_priority_on_week.remove(available_vigilant_on_week)
                                     index -= 1
                                     break
-                                if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48:
+                                if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                                     break
-                        if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= 48: 
+                        if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: 
                             break        
                         index += 1
                     else:
@@ -109,7 +109,7 @@ class Tweak_extra_hours:
 
     def  get_available_vigilantes_to_work_by_prioritys(self,vigilantes: List[Vigilant]) -> List[List[List[Vigilant]]]:
         vigilantes_with_hours_to_work: List[List[List[Vigilant]]] =  np.array([[[],[],[]]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
-        range_prioritys: List[Tuple] = [(24,47),(1,23),(0,0)]
+        range_prioritys: List[Tuple] = [(MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK/2,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK-1),(1,(MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK/2)-1),(0,0)]
         for vigilant in vigilantes:
             for index_range, range in enumerate(range_prioritys):
                 for index_week,hours_worked_by_week in enumerate(vigilant.total_hours_worked_by_week):
@@ -121,6 +121,6 @@ class Tweak_extra_hours:
         vigilantes_with_extra_hours_by_week = np.array([[]]* settings.MAX_TOTAL_WEEKS, dtype=object).tolist() 
         for vigilant in vigilantes:
             for index, hours_worked_on_week in enumerate(vigilant.total_hours_worked_by_week):
-                if hours_worked_on_week > 48:
+                if hours_worked_on_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                     vigilantes_with_extra_hours_by_week[index].append(vigilant)
         return vigilantes_with_extra_hours_by_week

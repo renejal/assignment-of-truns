@@ -76,7 +76,7 @@ class Grasp(Algorithm):
                 restricted_list = S.get_best_components(components,self.RESTRICTED_LIST_AMOUNT_COMPONENT)
                 S.merge_component(restricted_list)    
             population.append(S)
-            # print("new iteration")
+            print("new iteration")
         return population
 
     def local_optimization(self, actual_solution: Solution):
