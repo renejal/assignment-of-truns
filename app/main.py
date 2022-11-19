@@ -16,12 +16,12 @@ class Main:
         # # dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
         # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        filesData = ['hard-parcial.json','medio-fulltime.json','medio-parcial.json']
+        filesData = ['medio-fulltime.json','medio-parcial.json']
         for file in filesData:
             datanew = open('./app/dataset/datosSinteticos/'+file)
             datanew = json.load(datanew)
-            self.pruebaGrasp(datanew)
-        # self.pruebaNSGA(data)
+            # self.pruebaGrasp(datanew)
+            self.pruebaNSGA(datanew)
         print("exit")
 
 
