@@ -23,21 +23,21 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: Population) -> List[Solution]:
-        childs_list: list[Solution] = []
-        PopulationServices.add_ids_solution(population.populations)
-        while len(childs_list)<len(population.populations): 
-            try:
-                function_crossing = PopulationServices.get_crossing()
-                childs = function_crossing(population)
-                childs = PopulationServices.Mutation(childs)
-                childs_list.extend(childs)
-            except ValueError as e:
-                print(str(e))
-                childs_list.append(population[random.randint(0,len(population)-1)])
-                childs_list.append(population[random.randint(0,len(population)-1)])
-                print("len chils",len(childs_list))
+        try:
+            childs_list: list[Solution] = []
+            PopulationServices.add_ids_solution(population.populations)
+            while len(childs_list)<len(population.populations): 
+                    function_crossing = PopulationServices.get_crossing()
+                    childs = function_crossing(population)
+                    if childs:
+                        childs = PopulationServices.Mutation(childs)
+                        childs_list.extend(childs)
+                    else:
+                        continue
+            return childs_list
+        except ValueError as e:
+            return []
 
-        return childs_list
 
     @staticmethod
     def Mutation(childs):
