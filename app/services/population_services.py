@@ -23,28 +23,26 @@ class PopulationServices:
 
     @staticmethod
     def generate_decendents(population: Population) -> List[Solution]:
-        try:
-            childs_list: list[Solution] = []
-            PopulationServices.add_ids_solution(population.populations)
-            while len(childs_list)<len(population.populations): 
-                    function_crossing = PopulationServices.get_crossing()
-                    childs = function_crossing(population)
-                    if childs:
-                        childs = PopulationServices.Mutation(childs)
-                        childs_list.extend(childs)
-                    else:
-                        continue
-            return childs_list
-        except ValueError as e:
-            return []
+        childs_list: list[Solution] = []
+        PopulationServices.add_ids_solution(population.populations)
+        while len(childs_list)<len(population.populations): 
+            try:
+                function_crossing = PopulationServices.get_crossing()
+                childs = function_crossing(population)
+                childs_list.extend(childs)
+            except ValueError as e:
+                print("error e", e)
+                continue
+        return childs_list
 
 
     @staticmethod
     def Mutation(childs):
         recup_shild = copy.deepcopy(childs)
+        list_chids = []
         try: 
             list_chids = []
-            for child in childs:
+            for child in recup_shild:
                 probability_mutation = random.choices([1,0],weights=(10,10))
                 if probability_mutation[0] == 1 and child:
                     child = Tweak_extra_hours().mutation_gen(copy.deepcopy(child))
@@ -108,11 +106,8 @@ class PopulationServices:
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
-        try:
             for index, solution in enumerate(population):
                 solution.id = index + 1
-        except ValueError as e:
-            raise("error population",e)
 
     @staticmethod
     def calculate_range(population: Population):

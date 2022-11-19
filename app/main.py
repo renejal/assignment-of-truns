@@ -15,7 +15,7 @@ class Main:
         # # dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
         # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        self.pruebaGrasp(data)
+        # self.pruebaGrasp(data)
         self.pruebaNSGA(data)
         print("exit")
 
@@ -34,10 +34,13 @@ class Main:
             # get the result for the next completed task
             response = future.result()
             responses.append(response)
-            print("Finalizo metodo")
+            print("Finalizo metodo Nsga")
         executor.shutdown() # blocks
+        print("paso shutdown")
         for i in responses:
+            print("entro")
             generate_results(None,i,DataUser.from_dict(data).id_user)
+        print("Finalizo metodo Nsga")
 
     def pruebaGrasp(self, data):
         executor = ThreadPoolExecutor(max_workers=10)
@@ -53,10 +56,13 @@ class Main:
             # get the result for the next completed task
             response = future.result()
             responses.append(response)
-            print("Finalizo metodo")
+            print("Finalizo metodo GRasp")
         executor.shutdown() # blocks
+        print("paso shutdown")
         for i in responses:
+            print("entro")
             generate_results(i,None,DataUser.from_dict(data).id_user)
+        print("termino")
 
 
     def executeGrasp(self, view: GenerateShiftView, seed):
