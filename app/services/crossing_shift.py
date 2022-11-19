@@ -26,31 +26,23 @@ class CrossingShift:
 
     @classmethod
     def crossing_missing_shift(self, population: Population, objective_index=2):
-        try:
-            """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
-            objetivo missing shift"""
-            solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
-            childs = []
-            child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
-            childs.append(child)
-            child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
-            childs.append(child)
-        except ValueError as e: 
-            print(e)
-            child = [solution_A, solution_B]
+        """ese cruce intercambia jornadas laborales entre los padres teniendo en cuenta el  
+        objetivo missing shift"""
+        solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
+        childs = []
+        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        childs.append(child)
+        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        childs.append(child)
         return childs
 
     @classmethod
     def crossing_vigilant_assigment(self, population: Population , objective_index=3):
-        try: 
-            childrens = []
-            ch = self.crossing_vigilant(population, objective_index)
-            ch2 = self.crossing_vigilant(population, objective_index)
-            if ch and ch2:
-                childrens.extend([ch, ch2])
-        except ValueError as e:
-            print(e)
-            return [population[0], population[1]]
+        childrens = []
+        ch = self.crossing_vigilant(population, objective_index)
+        ch2 = self.crossing_vigilant(population, objective_index)
+        if ch and ch2:
+            childrens.extend([ch, ch2])
         return childrens
 
     @classmethod
