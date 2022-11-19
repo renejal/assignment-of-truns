@@ -47,7 +47,7 @@ class PopulationServices:
             for child in childs:
                 probability_mutation = random.choices([1,0],weights=(10,10))
                 if probability_mutation[0] == 1 and child:
-                    child = Tweak_extra_hours().mutation_gen(copy.deepcopy(child))
+                    child = Tweak_extra_hours().extra_hours_tweak_mutation(copy.deepcopy(child))
                     list_chids.append(child)
         except ValueError as e:
             print(str(e))

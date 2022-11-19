@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import json
 import random
 import time
 from conf.settings import SEEDS,MAX_TIME_DURATION
@@ -15,8 +16,12 @@ class Main:
         # # dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
         # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        self.pruebaGrasp(data)
-        self.pruebaNSGA(data)
+        filesData = ['hard-parcial.json','medio-fulltime.json','medio-parcial.json']
+        for file in filesData:
+            datanew = open('./app/dataset/datosSinteticos/'+file)
+            datanew = json.load(datanew)
+            self.pruebaGrasp(datanew)
+        # self.pruebaNSGA(data)
         print("exit")
 
 

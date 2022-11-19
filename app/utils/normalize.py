@@ -68,7 +68,7 @@ class Normalize:
 
     def normalizeGraph(self, population: List[Solution]) -> List[List[int]]:
         fitnessMax = copy(population[0].problem.max_possible_fitness) 
-        fitnessMax[1] = population[0].problem.total_sites
+        fitnessMax[1] = population[0].problem.total_vigilantes
         fitnessMin = [0,0,0,0]
         fitnessMax[0] = math.ceil(fitnessMax[0]*(1-self.missing_shifts_fitness_acceptable_porcentage))
         fitnessMax[1] = math.ceil(fitnessMax[1]*(1-self.assigned_vigilantes_acceptable_porcentage))
