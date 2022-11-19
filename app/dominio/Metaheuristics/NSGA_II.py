@@ -33,6 +33,7 @@ class NsgaII(Algorithm):
         self.MAX_TIMEOUT = self.CURRENT_TIMEOUT + MAX_TIME_DURATION
         self.current_efo = 1
 
+        print("START NSGA")
         population_obj = Population(problem, self.POPULATION_AMOUNT_NSGAII)
         population_obj.inicialize_population(self.MAX_TIMEOUT)
         self.evolutions.append(population_obj.populations) 
@@ -64,6 +65,7 @@ class NsgaII(Algorithm):
                 self.evolutions.append(population_obj.populations) 
                 self.current_efo +=1
             except ValueError as e:
+                population_obj.populations = self.evolutions[self.current_efo-1]
                 print("error nsga",e)
                 pass
             self.current_efo +=1

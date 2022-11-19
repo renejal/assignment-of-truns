@@ -2,13 +2,13 @@ Casos:
 2 sitios:
     FullTime:
         2 vigilantes en cada turno, vigilantes minimos requeridos  =  17
-        Facil: 17
-        Medio: 15
+        Facil: 11
+        Medio: 14
         hard: 14
     Parcial:
         Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  6
         Facil:
-            6 vigilantes
+            3 vigilantes
         Medio:
             5 vigilantes
         hard:
@@ -23,16 +23,16 @@ Casos:
             8 vigilantes
 30 sitios:
     FullTime:
-        2 vigilantes en cada turno, vigilantes minimos requeridos  =  252
-        Facil: 255 
-        Medio: 250
+        2 vigilantes en cada turno, vigilantes minimos requeridos  =  210
+        Facil: 205 
+        Medio: 210
         hard: 240
     Parcial:
-        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  84
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  70
         Facil:
-            84 vigilantes
+            65 vigilantes
         Medio:
-            80 vigilantes
+            70 vigilantes
         hard:
             75 vigilantes
     Probar Optimizacion Mezclado:
@@ -43,18 +43,18 @@ Casos:
             200 vigilantes
         hard:
             195 vigilantes
-50 sitios:
+50 sitios: // si trabajan a 48 horas necesitamos 350 vigilantes
     FullTime:
         2 vigilantes en cada turno, vigilantes minimos requeridos  =  420
-       Facil: 420
-        Medio: 415
+       Facil: 345
+        Medio: 350
         hard: 405 
     Parcial:
-        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  140
+        Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  116
         Facil:
-            140 vigilantes
+            110 vigilantes
         Medio:
-            135 vigilantes
+            116 vigilantes
         hard:
             125 vigilantes
     Probar Optimizacion Mezclado:

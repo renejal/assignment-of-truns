@@ -1,5 +1,5 @@
 import random
-from conf.settings import MINIMUN_BREAK_DURATION,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
+from conf.settings import MINIMUN_BREAK_DURATION,MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK,MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK
 from dominio.model.shift_place import Shift_place
 from dominio.vigilant_assigment import VigilantAssigment
 from typing import List
@@ -11,7 +11,7 @@ class Vigilant_assigment_service:
 
     _MINIMUN_BREAK_DURATION: int = MINIMUN_BREAK_DURATION
     _MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: int = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
-    _MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK: int = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
+    _MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK: int = MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK
 
     vigilant_assigment: VigilantAssigment
 
