@@ -1,6 +1,6 @@
 {
     "id_user": "Default",
-    "expected_vigilantes": 110,
+    "expected_vigilantes": 106,
     "data_sites": [
         {
             "description": "initialSite",

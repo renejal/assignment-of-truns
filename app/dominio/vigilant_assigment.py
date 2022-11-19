@@ -18,6 +18,7 @@ class VigilantAssigment:
     order_sites_by_id_vigilantes_distance: List[List[int]]
     shifts_by_sites: List[List[Shift]]
     max_possible_fitness: List[int]
+    min_possible_fitness: List[int]
     expected_vigilantes: int
 
     DEFAULT_PLACE_TO_LOOK_OUT_FORMAT: int = -1
@@ -31,6 +32,7 @@ class VigilantAssigment:
         self.expected_places_to_look_out_by_vigilants = {}
         self.order_sites_by_id_vigilantes_distance = []
         self.max_possible_fitness = [0,0,0,0]
+        self.min_possible_fitness = [0,0,0,0]
         self.initProblem()
 
     def initProblem(self) -> None:
@@ -53,36 +55,68 @@ class VigilantAssigment:
         self.calculalte_max_possible_fitness(self.sites, self.vigilantes)
 
     def calculalte_max_possible_fitness(self, sites: List[Site], vigilantes: List [Vigilant]) -> None:
-        total_missing_shifts = 0
-        minimum_necessary_vigilantes = 0
-        max_extra_hours = 0
-        max_distance_fitness = 0
-        for site in sites:
-            total_missing_shifts += site.total_missing_shifts
-            minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
-        for week in range(settings.MAX_TOTAL_WEEKS):
-            hours_by_week = 0
-            for site in sites:
-                if week < len(site.hours_to_work_by_week):
-                    hours_by_week += site.hours_to_work_by_week[week]
-            max_extra_hours += (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK - settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK) * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + max(hours_by_week - (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK),0)
+        # total_missing_shifts = 0
+        # minimum_necessary_vigilantes = 0
+        # max_extra_hours = 0
+        # max_distance_fitness = 0
+        # for site in sites:
+        #     total_missing_shifts += site.total_missing_shifts
+            # minimum_necessary_vigilantes += site.minimum_necessary_vigilantes
+        # for week in range(settings.MAX_TOTAL_WEEKS):
+        #     hours_by_week = 0
+        #     for site in sites:
+        #         if week < len(site.hours_to_work_by_week):
+        #             hours_by_week += site.hours_to_work_by_week[week]
+        #     max_extra_hours += (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK - settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK) * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + max(hours_by_week - (settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK * math.floor(hours_by_week/settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK) + settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK),0)
             # amount_vigilants_with_hours_extra = math.floor(hours_by_week/49)
             # if  amount_vigilants_with_hours_extra > self.total_vigilantes:
             #     max_extra_hours+= self.total_vigilantes
             # else:
             #     max_extra_hours += amount_vigilants_with_hours_extra
         #FITNESS MAXIMO PARA LA DISTANCIA ES QUE QUEDE ASIGNADO EN TODOS LOS SITIO
+        
+        
         max_distance_fitness = 0
+        min_distance_fitness = 0
+        max_horas_fitness = 0
+        max_necessary_vigilantes = 0
+        max_missing_shifts_fitness = 0
+        
+        max_horas_extras = settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK - settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
+        for site in sites:
+            max_missing_shifts_fitness += site.total_missing_shifts
         for v in vigilantes:
             for distance in v.distances:
                 max_distance_fitness+= distance
-
-        self.max_possible_fitness[0] = total_missing_shifts
-        # self.max_possible_fitness[1] = minimum_necessary_vigilantes
-        self.max_possible_fitness[1] = minimum_necessary_vigilantes + (self.total_vigilantes - self.expected_vigilantes) * settings.ASSIGNED_VIGILANTES_FITNESS_VALUE
-        # self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
-        self.max_possible_fitness[2] = max_extra_hours
+            max_distance_fitness -= v.distances[v.closet_place-1]
+            min_distance_fitness += v.distances[v.closet_place-1]
+            max_horas_fitness += max_horas_extras
+            max_necessary_vigilantes += settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - 1
+            
+        self.max_possible_fitness[0] = max_missing_shifts_fitness
+        self.max_possible_fitness[1] = self.total_vigilantes + (max_necessary_vigilantes * settings.MAX_TOTAL_WEEKS) 
+        self.max_possible_fitness[2] = max_horas_fitness * settings.MAX_TOTAL_WEEKS
         self.max_possible_fitness[3] = max_distance_fitness
+
+        self.min_possible_fitness[0] = 0
+        self.min_possible_fitness[1] = self.expected_vigilantes
+        self.min_possible_fitness[2] = 0
+        self.min_possible_fitness[3] = min_distance_fitness
+
+        if(self.max_possible_fitness[0] - self.min_possible_fitness[0] == 0):
+            print("")
+        if(self.max_possible_fitness[1] - self.min_possible_fitness[1] == 0):
+            print("")
+        if(self.max_possible_fitness[2] - self.min_possible_fitness[2] == 0):
+            print("")
+        if(self.max_possible_fitness[3] - self.min_possible_fitness[3] == 0):
+            print("")
+        # self.max_possible_fitness[0] = total_missing_shifts
+        # # self.max_possible_fitness[1] = minimum_necessary_vigilantes
+        # self.max_possible_fitness[1] = minimum_necessary_vigilantes + (self.total_vigilantes - self.expected_vigilantes) * settings.ASSIGNED_VIGILANTES_FITNESS_VALUE
+        # # self.max_possible_fitness[1] = self.total_vigilantes - self.expected_vigilantes
+        # self.max_possible_fitness[2] = max_extra_hours
+        # self.max_possible_fitness[3] = max_distance_fitness
         if settings.GENERATE_UNI_SHIFTS:
             self.max_possible_fitness[0] = 18 * 12 + 18 * 2
 

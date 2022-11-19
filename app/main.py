@@ -16,23 +16,26 @@ class Main:
         # # dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
         # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        filesData = ['medio-fulltime.json','medio-parcial.json']
+        filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
+        casos = []
         for file in filesData:
             datanew = open('./app/dataset/datosSinteticos/'+file)
             datanew = json.load(datanew)
-            # self.pruebaGrasp(datanew)
-            self.pruebaNSGA(datanew)
+            casos.append(datanew)
+        self.pruebaGrasp(casos)
+        self.pruebaNSGA(casos)
         print("exit")
 
 
-    def pruebaNSGA(self, data):
-        executor = ThreadPoolExecutor(max_workers=10)
+    def pruebaNSGA(self, casos):
+        executor = ThreadPoolExecutor(max_workers=30)
         argsList = []
         responses = []
         sol = 0
-        for i in range(10):
-            view = GenerateShiftView(data, MAX_TIME_DURATION)
-            argsList.append([view,i])
+        for i in range(1):
+            for data in casos:
+                view = GenerateShiftView(data, MAX_TIME_DURATION)
+                argsList.append([view,i])
         futures = [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
             sol+=1
@@ -44,14 +47,15 @@ class Main:
         for i in responses:
             generate_results(None,i,DataUser.from_dict(data).id_user)
 
-    def pruebaGrasp(self, data):
-        executor = ThreadPoolExecutor(max_workers=10)
+    def pruebaGrasp(self, casos):
+        executor = ThreadPoolExecutor(max_workers=30)
         argsList = []
         responses = []
         sol = 0
-        for i in range(10):
-            view = GenerateShiftView(data, MAX_TIME_DURATION)
-            argsList.append([view,i])
+        for i in range(1):
+            for data in casos:
+                view = GenerateShiftView(data, MAX_TIME_DURATION)
+                argsList.append([view,i])
         futures = [executor.submit(self.executeGrasp, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
             sol+=1

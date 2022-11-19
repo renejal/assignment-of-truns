@@ -46,13 +46,13 @@ Casos:
 50 sitios: // si trabajan a 48 horas necesitamos 350 vigilantes
     FullTime:
         2 vigilantes en cada turno, vigilantes minimos requeridos  =  420
-       Facil: 345
+       Facil: 335
         Medio: 350
         hard: 405 
     Parcial:
         Jornadas de 8 horas de 10 p.m a 6 a.m, vigilantes minimos requeridos  =  116
         Facil:
-            110 vigilantes
+            106 vigilantes
         Medio:
             116 vigilantes
         hard:

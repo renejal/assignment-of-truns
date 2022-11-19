@@ -18,7 +18,7 @@ class Normalize:
 
     def normalizeFitness(self, population: List[Solution]) -> List[List[int]]:
         fitnessMax = copy(population[0].problem.max_possible_fitness) 
-        fitnessMin = [0,0,0,0]
+        fitnessMin = copy(population[0].problem.min_possible_fitness) 
         fitnessMax[0] = math.ceil(fitnessMax[0]*(1-self.missing_shifts_fitness_acceptable_porcentage))
         fitnessMax[1] = math.ceil(fitnessMax[1]*(1-self.assigned_vigilantes_acceptable_porcentage))
         fitnessMax[2] = math.ceil(fitnessMax[2]*(1-self.extra_hours_acceptable_porcentage))
@@ -28,8 +28,8 @@ class Normalize:
         for solution in population:
             suma += solution.total_fitness
             missing_shifts_fitness = self.normalize(solution.missing_shifts_fitness / MISSING_FITNESS_VALUE, fitnessMax[0], fitnessMin[0])
-            # solution.assigned_vigilantes_fitness = solution.calculate_assigned_vigilantes_fitness()
-            assigned_vigilantes_fitness = self.normalize(solution.assigned_vigilantes_fitness / MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK /2, fitnessMax[1], fitnessMin[1])
+            fitness_vigilantes = solution.calculate_assigned_vigilantes_fitness()
+            assigned_vigilantes_fitness = self.normalize(fitness_vigilantes, fitnessMax[1], fitnessMin[1])
             # assigned_vigilantes_fitness = self.normalize(solution.assigned_vigilantes_fitness, fitnessMax[1], fitnessMin[1])
             extra_hours_fitness = self.normalize(solution.extra_hours_fitness / EXTRA_HOURS_FITNESS_VALUE, fitnessMax[2], fitnessMin[2])
             distance_fitness = self.normalize(solution.distance_fitness / DISTANCE_FITNESS_VALUE, fitnessMax[3], fitnessMin[3])
