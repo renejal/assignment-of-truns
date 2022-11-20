@@ -98,14 +98,14 @@ class PopulationServices:
 
     @staticmethod
     def not_dominate_sort(population: Population) -> List[Solution]:
+        pop = copy.copy(population)
         try:
-            if population.populations:
-                PopulationServices.add_ids_solution(population.populations)
-                PopulationServices.calculate_dominance(population)
-                PopulationServices.calculate_range(population)
-            return population.frente
-        except ValueError as e:
-            return False
+            PopulationServices.add_ids_solution(pop.populations)
+            PopulationServices.calculate_dominance(pop)
+            PopulationServices.calculate_range(pop)
+            return pop
+        except:
+            pass
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
@@ -114,6 +114,7 @@ class PopulationServices:
                     solution.id = index + 1
                 else:
                     print("error")
+                    continue
     @staticmethod
     def calculate_range(population: Population):
         rango = 1

@@ -40,15 +40,17 @@ class NsgaII(Algorithm):
         population_parents = [] 
 
         while self.current_efo < self.MAX_EFOS:
-            try: 
+            try:
                 self.CURRENT_TIMEOUT = time.time()
                 if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
                     return self.evolutions
                 print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
+                if self.current_efo == 33:
+                    print("error ", self.current_efo)
                 population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
                 union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
                 population_obj.populations = union_populantion
-                PopulationServices.not_dominate_sort(population_obj) # return frent de pareto
+                PopulationServices.not_dominate_sort(population_obj)
                 if not population_obj.populations:
                     raise("population not found")
                 PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
@@ -63,13 +65,23 @@ class NsgaII(Algorithm):
                 population_obj.populations = population_parents
                 population_obj.populations = population_obj.get_populations(self.POPULATION_AMOUNT_NSGAII)
                 self.evolutions.append(population_obj.populations) 
-                self.current_efo +=1
-            except ValueError as e:
-                population_obj.populations = self.evolutions[self.current_efo-1]
-                print("error nsga",e)
-                pass
+            except:
+                self.delete_error(population_obj.populations)
+                continue
             self.current_efo +=1
+        self.delete_error(population_obj.populations)
         return self.evolutions
+
+    def delete_error(self,  population: List[Solution]):
+        i = 0
+        while i < len(population):
+            if not isinstance(population[i],Solution):
+                print("se removio", population[i])
+                population.remove(population[i])
+            i = i + 1
+            
+
+            
 
 
 

@@ -160,7 +160,6 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
         "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
     path = PATH_RESULTS+idUser+"/empresaseguridad_normal/"+time
     if(dataGrasp != None):
-        print("Escribiendo imagen gras")
         os.makedirs(path+"/grasp")
         evolutions = dataGrasp.get("evolutions")
         bestPopulationIndex = len(evolutions)-1
@@ -172,7 +171,6 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
         dataGrasp.get("fig").write_image(path+"/figGrasp.png")
         dataGrasp.get("fig").write_html(path+"/figGraspHtml.html")
     if(dataNsga != None):
-        print("Escribiendo imagen Nsga-ii")
         os.makedirs(path+"/nsgaii")
         evolutions = dataNsga.get("evolutions")
         bestPopulationIndex = len(evolutions)-1
@@ -181,6 +179,7 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/nsgaii/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/nsgaii/vigilantSolution"+str(index))
+        print("excribiendo imagenes")
         dataNsga.get("fig").write_image(path+"/figNsga.png")
         dataNsga.get("fig").write_html(path+"/figNsgaHtml.html")
     generate_metrics(dataGrasp, dataNsga, path)
