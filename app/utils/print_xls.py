@@ -158,7 +158,7 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
     time = datetime.datetime.now()
     time = str(time.year)+"-"+str(time.month)+"-"+str(time.day) + \
         "-"+str(time.hour)+"-"+str(time.minute)+"-"+str(time.second)
-    path = PATH_RESULTS+idUser+"/empresaseguridad/"+time
+    path = PATH_RESULTS+idUser+"/empresaseguridad_normal/"+time
     if(dataGrasp != None):
         print("Escribiendo imagen gras")
         os.makedirs(path+"/grasp")

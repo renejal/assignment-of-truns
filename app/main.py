@@ -13,10 +13,10 @@ class Main:
         view = GenerateShiftView(data, MAX_TIME_DURATION)
         # dataGrasp = None
         # dataNsga = None
-        dataNsga = view.executeNsga()
-        # dataGrasp = view.executeGrasp()
-        # generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
-        generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
+        # dataNsga = view.executeNsga()
+        dataGrasp = view.executeGrasp()
+        generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
+        # generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
         # filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
         # casos = []
         # for file in filesData:
