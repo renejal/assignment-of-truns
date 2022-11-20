@@ -88,7 +88,6 @@ class VigilantAssigment:
         for v in vigilantes:
             for distance in v.distances:
                 max_distance_fitness+= distance
-            max_distance_fitness -= v.distances[v.closet_place-1]
             min_distance_fitness += v.distances[v.closet_place-1]
             max_horas_fitness += max_horas_extras
             max_necessary_vigilantes += settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - 1
