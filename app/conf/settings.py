@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 1000#1day
+MAX_TIME_DURATION = 180#1day
 PATH_RESULTS = "app/dataset/results/"
 
 
@@ -155,7 +155,7 @@ universidad = environ.Env(
 )
 
 # envirom exect
-env = universidad
+env = normal
 if env == universidad:
     CALCULATE_HOURS_FITNESS = False
 
