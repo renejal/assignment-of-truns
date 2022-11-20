@@ -15,8 +15,8 @@ class Main:
         # # dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
         # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
-        # self.pruebaGrasp(data)
-        self.pruebaNSGA(data)
+        self.pruebaGrasp(data)
+        # self.pruebaNSGA(data)
         print("exit")
 
 
@@ -25,7 +25,7 @@ class Main:
         argsList = []
         responses = []
         sol = 0
-        for i in range(10):
+        for i in range(1):
             view = GenerateShiftView(data, MAX_TIME_DURATION)
             argsList.append([view,i])
         futures = [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
@@ -47,7 +47,7 @@ class Main:
         argsList = []
         responses = []
         sol = 0
-        for i in range(10):
+        for i in range(1):
             view = GenerateShiftView(data, MAX_TIME_DURATION)
             argsList.append([view,i])
         futures = [executor.submit(self.executeGrasp, view[0], view[1]) for view in argsList]
