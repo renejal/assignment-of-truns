@@ -124,3 +124,42 @@ class Tweak_extra_hours:
                 if hours_worked_on_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
                     vigilantes_with_extra_hours_by_week[index].append(vigilant)
         return vigilantes_with_extra_hours_by_week
+
+    def extra_hours_tweak_mutation(self, solution: Solution)-> Solution:
+        vigilantes_with_hours_to_work: List[List[List[Vigilant]]] = self.get_available_vigilantes_to_work_by_prioritys(solution.vigilantes_schedule)
+        vigilantes_with_extra_hours: List[List[Vigilant]] = self.get_vigilantes_with_extra_hours_by_week(solution.vigilantes_schedule)    
+        
+        for index_week, vigilantes_with_extra_hours_on_week in enumerate(vigilantes_with_extra_hours):
+            random.shuffle(vigilantes_with_extra_hours_on_week)
+            for vigilant_with_extra_hours_on_week in vigilantes_with_extra_hours_on_week:
+                shifts_by_week = vigilant_with_extra_hours_on_week.get_shifts_on_week(index_week+1)
+                random.shuffle(shifts_by_week)
+                for index_priority, vigilantes_by_priority_on_week in enumerate(vigilantes_with_hours_to_work[index_week]):
+                    random.shuffle(vigilantes_by_priority_on_week)
+                    index = 0
+                    while index < len(vigilantes_by_priority_on_week):
+                        available_vigilant_on_week = vigilantes_by_priority_on_week[index]
+                        for shift in shifts_by_week:
+                            if self.vigilant_assigment_service.is_vigilant_avaible_tweaks(available_vigilant_on_week,shift.shift):
+                                self.exchange_shift(shift,vigilant_with_extra_hours_on_week,available_vigilant_on_week)
+                                if available_vigilant_on_week.id not in solution.sites_schedule[shift.site_id-1].assigned_Vigilantes:
+                                    solution.sites_schedule[shift.site_id-1].assigned_Vigilantes[available_vigilant_on_week.id] = available_vigilant_on_week
+                                if shift.site_id not in vigilant_with_extra_hours_on_week.sites_to_look_out:
+                                    solution.sites_schedule[shift.site_id-1].assigned_Vigilantes.pop(vigilant_with_extra_hours_on_week.id)
+                                return solution
+                            #Chequear si el vigilante con extra horas ya no tiene horas extras
+                            if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+                                if STOP_GRASP_TWEAK:
+                                    return solution
+                                break    
+                        if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: 
+                            if STOP_GRASP_TWEAK:
+                                return solution
+                            break        
+                        index += 1
+                    if vigilant_with_extra_hours_on_week.total_hours_worked_by_week[index_week] <= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK: 
+                            if STOP_GRASP_TWEAK:
+                                return solution
+                            break        
+        return solution
+      

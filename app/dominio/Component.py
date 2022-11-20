@@ -107,25 +107,24 @@ class Component:
             return
         for vigilant in self.assigned_Vigilantes.values():
 
-            if vigilant.default_place_to_look_out !=1 and vigilant.default_place_to_look_out != self.site_id and vigilant.closet_place != self.site_id:
-                # self.distance_fitness+= vigilant.distances[self.site_id-1]
-                # self.total_fitness+= vigilant.distances[self.site_id-1]  
-                self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.distances[self.site_id - 1]
-                self.total_fitness+= DISTANCE_FITNESS_VALUE * vigilant.distances[self.site_id - 1]
+            # if vigilant.default_place_to_look_out !=1 and vigilant.default_place_to_look_out != self.site_id and vigilant.closet_place != self.site_id:
+              
+            self.distance_fitness+= DISTANCE_FITNESS_VALUE * vigilant.distances[self.site_id - 1]
+            self.total_fitness+= DISTANCE_FITNESS_VALUE * vigilant.distances[self.site_id - 1]
             #TODO Revisar si es mejor calcular las horas por semaana si trabajo o algo
-                for hour_by_week in vigilant.total_hours_worked_by_week:
-                    # if index-1 == len(vigilant.total_hours_worked_by_week):
-                    #     break
-                    if CALCULATE_HOURS_FITNESS:
-                        if hour_by_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
-                            self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
-                            self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
-                    if hour_by_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and hour_by_week > 0:
-                        missing_hours = hour_by_week
-                        if hour_by_week >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
-                            missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week                        
-                        self.assigned_vigilantes_fitness += missing_hours
-                        self.total_fitness+= missing_hours
+            for hour_by_week in vigilant.total_hours_worked_by_week:
+                # if index-1 == len(vigilant.total_hours_worked_by_week):
+                #     break
+                if CALCULATE_HOURS_FITNESS:
+                    if hour_by_week > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK:
+                        self.extra_hours_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                        self.total_fitness += EXTRA_HOURS_FITNESS_VALUE * (hour_by_week - MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK)
+                if hour_by_week < MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK and hour_by_week > 0:
+                    missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week
+                    # if hour_by_week >= MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
+                    #     missing_hours = MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK - hour_by_week                        
+                    self.assigned_vigilantes_fitness += missing_hours
+                    self.total_fitness+= missing_hours
             self.assigned_vigilantes_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
             self.total_fitness += ASSIGNED_VIGILANTES_FITNESS_VALUE * len(self.assigned_Vigilantes) 
 

@@ -15,20 +15,17 @@ class Graph:
         dataG = []
         normalize = Normalize()
         for index,evolution in enumerate(evolutions):
-            solutionsNormalized:List[Solution] = normalize.normalizeGraph(evolution)
+            solutionsNormalized:List[Solution] = normalize.normalizeFitness(evolution)
             for solution in solutionsNormalized:
                 dataG.append([solution[0],solution[1],solution[2],solution[3],index+1])
 
         # Make the plot
         fitness_max = normalize.get_fitness_max()
-        columas = ["missingShifts "+str(fitness_max[0]) ,"assignedVigilants "+str(fitness_max[1]),"extraHours "+str(fitness_max[2]),"distance "+str(fitness_max[3]),"Evolution"]
+        columas = ["Periodos faltantes "+str(fitness_max[0]) ,"Vigilantes asignados y periodos sin asignar "+str(fitness_max[1]),"Horas extras "+str(fitness_max[2]),"distancias "+str(fitness_max[3]),"Evolucion"]
         dataG = pd.DataFrame(dataG,columns=columas)
-        # parallel_coordinates(dataG, 'Evolution', colormap=plt.get_cmap("tab20"))
-        # # parallel_coordinates(data, 'Iter', colormap=plt.get_cmap("Set1"))
-        # plt.savefig
-        # plt.show()
-        self.fig = px.parallel_coordinates(dataG, color="Evolution",
-                              dimensions=["missingShifts "+str(fitness_max[0]) ,"assignedVigilants "+str(fitness_max[1]),"extraHours "+str(fitness_max[2]),"distance "+str(fitness_max[3])],
+
+        self.fig = px.parallel_coordinates(dataG, color="Evolucion",
+                              dimensions=["Periodos faltantes " +str(fitness_max[0]) ,"Vigilantes asignados y periodos sin asignar "+str(fitness_max[1]),"Horas extras "+str(fitness_max[2]),"distancias "+str(fitness_max[3])],
                               color_continuous_scale=px.colors.sequential.Rainbow
                               )
 

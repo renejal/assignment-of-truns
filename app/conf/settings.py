@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 3600#1day
+MAX_TIME_DURATION = 1000#1day
 PATH_RESULTS = "app/dataset/results/"
 
 
@@ -130,7 +130,7 @@ universidad = environ.Env(
     #NSGAII
     #PARAMETERS
     MAX_EFOS_NSGAII =(int, 999999999999999999999), 
-    POPULATION_AMOUNT_NSGAII = (int, 10),
+    POPULATION_AMOUNT_NSGAII = (int, 30),
     NUM_PARENTS_OF_ORDERED_POPULATION=(float, 0.5), # numero de padres se se tomaran en cuenta de la lista ordenada de soluciones
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
@@ -155,7 +155,7 @@ universidad = environ.Env(
 )
 
 # envirom exect
-env = normal
+env = universidad
 if env == universidad:
     CALCULATE_HOURS_FITNESS = False
 

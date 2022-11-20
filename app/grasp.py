@@ -8,7 +8,7 @@ request  = open("dataset/real_dataset.json")
 request = json.load(request)
 Main(request)
 
-def main():
-    request  = open("app/request.json")
-    data = json.load(request)
-    Main(data)
+# def main():
+#     request  = open("app/request.json")
+#     data = json.load(request)
+#     Main(data)

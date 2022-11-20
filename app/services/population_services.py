@@ -45,7 +45,7 @@ class PopulationServices:
             for child in recup_shild:
                 probability_mutation = random.choices([1,0],weights=(10,10))
                 if probability_mutation[0] == 1 and child:
-                    child = Tweak_extra_hours().mutation_gen(copy.deepcopy(child))
+                    child = Tweak_extra_hours().extra_hours_tweak_mutation(copy.deepcopy(child))
                     list_chids.append(child)
         except ValueError as e:
             print(str(e))
@@ -99,9 +99,12 @@ class PopulationServices:
 
     @staticmethod
     def not_dominate_sort(population: Population) -> List[Solution]:
-        PopulationServices.add_ids_solution(population.populations)
-        PopulationServices.calculate_dominance(population)
-        PopulationServices.calculate_range(population)
+        if population.populations:
+            PopulationServices.add_ids_solution(population.populations)
+            PopulationServices.calculate_dominance(population)
+            PopulationServices.calculate_range(population)
+        else:
+            pass
         return population.frente
 
     @staticmethod
