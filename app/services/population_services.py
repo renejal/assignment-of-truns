@@ -24,7 +24,6 @@ class PopulationServices:
     @staticmethod
     def generate_decendents(population: Population) -> List[Solution]:
         childs_list: list[Solution] = []
-        PopulationServices.add_ids_solution(population.populations)
         while len(childs_list)<len(population.populations): 
             try:
                 function_crossing = PopulationServices.get_crossing()
@@ -99,19 +98,23 @@ class PopulationServices:
 
     @staticmethod
     def not_dominate_sort(population: Population) -> List[Solution]:
-        if population.populations:
-            PopulationServices.add_ids_solution(population.populations)
-            PopulationServices.calculate_dominance(population)
-            PopulationServices.calculate_range(population)
-        else:
+        pop = copy.copy(population)
+        try:
+            PopulationServices.add_ids_solution(pop.populations)
+            PopulationServices.calculate_dominance(pop)
+            PopulationServices.calculate_range(pop)
+            return pop
+        except:
             pass
-        return population.frente
 
     @staticmethod
     def add_ids_solution(population: List[Solution]):
             for index, solution in enumerate(population):
-                solution.id = index + 1
-
+                if isinstance(solution,Solution):
+                    solution.id = index + 1
+                else:
+                    print("error")
+                    continue
     @staticmethod
     def calculate_range(population: Population):
         rango = 1

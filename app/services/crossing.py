@@ -18,7 +18,7 @@ class Crossing:
             List[Solution]: parent_one : mejor solucion con respecto al fitnnes
             List[Solution]: parent_two : peor solucion con respecto al fitnnes
         """
-        population_order = self.order_solution_of_objetive_value(parents,objective_index,True) # order True: descendente
+        population_order = self.order_solution_of_objetive_value(parents,objective_index,False) # order True: descendente
         num_solutions = int(len(population_order)* settings.NUM_PARENTS_OF_ORDERED_POPULATION)
         if num_solutions == 0: num_solutions = 1
         first_solutions = population_order[:num_solutions]

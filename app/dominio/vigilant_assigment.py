@@ -83,6 +83,7 @@ class VigilantAssigment:
         max_missing_shifts_fitness = 0
         
         max_horas_extras = settings.MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK - settings.MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK
+        
         for site in sites:
             max_missing_shifts_fitness += site.total_missing_shifts
         for v in vigilantes:
