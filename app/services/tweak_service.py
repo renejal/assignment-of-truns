@@ -23,7 +23,7 @@ class Tweak_service:
                 solution = self.tweak_assignment_vigilantes_amount.assignment_vigilantes_amount(solution)
             elif tweak == 3:
                 pass
-                # solution = self.tweak_extra_hours.extra_hours_tweak(solution)
+                solution = self.tweak_extra_hours.extra_hours_tweak(solution)
             else:
                 solution = self.tweak_distance.tweak_distance(solution)
             solution.calculate_fitness()

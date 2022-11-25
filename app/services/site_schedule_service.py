@@ -60,6 +60,6 @@ class Site_schedule_service:
         shift.add_vigilant(vigilant_to_assign.id)
    
     def shuffle_first_shifts(self, shifts:List[Shift]):
-        shuffle_first_shifts = shifts[:3]
+        shuffle_first_shifts = shifts[:9]
         # random.shuffle(shuffle_first_shifts)
-        shifts[:3] = shuffle_first_shifts
+        shifts[:9] = shuffle_first_shifts

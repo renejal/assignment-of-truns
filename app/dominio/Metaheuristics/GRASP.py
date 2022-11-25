@@ -2,6 +2,7 @@ import copy
 import random
 import time
 from typing import List
+from utils.non_dominated_sorting import NonDominatedSorting
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution 
 from dominio.population import Population
@@ -86,15 +87,16 @@ class Grasp(Algorithm):
             if(self.current_timeout > self.MAX_TIMEOUT):
                 break
             new_solution = Tweak_service().Tweak(copy.deepcopy(best_solution))
-            if random.randint(0,1) == 1:
-                if new_solution.total_fitness < best_solution.total_fitness:
-                    best_solution = new_solution
-            else:
+            # if random.randint(0,1) == 1:
+            if new_solution.total_fitness < best_solution.total_fitness:
                 best_solution = new_solution
+            # else:
+            #     best_solution = new_solution
         return best_solution
         
     def best_population(self, population: List[Solution]) -> List[Solution]:
-        PopulationServices.not_dominate_sort(Population(None, None, population))
-        population = PopulationServices.get_solutions_by_frente(population,len(population)/2)
-        return population
+        # PopulationServices.not_dominate_sort(Population(None, None, population))
+        # population = PopulationServices.get_solutions_by_frente(population,len(population)/2)
+        newPopulation = NonDominatedSorting().getFronts(population, len(population)/2)
+        return newPopulation
 

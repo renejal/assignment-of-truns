@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 180#1day
+MAX_TIME_DURATION = 300#1day
 PATH_RESULTS = "app/dataset/results/"
 
 
@@ -18,7 +18,7 @@ EXTRA_HOURS_FITNESS_VALUE = 20
 CALCULATE_HOURS_FITNESS = True
 
 #Decide si para tweaks
-STOP_GRASP_TWEAK = True
+STOP_GRASP_TWEAK = False
 ACTIVE_CASES = True
 
 #Nsga2 Constants
@@ -59,7 +59,7 @@ normal = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 20),
+    COMPONENTS_AMOUNT_GRASP =  (int, 50),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
@@ -101,7 +101,7 @@ extra = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 200),
+    COMPONENTS_AMOUNT_GRASP =  (int, 50),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP

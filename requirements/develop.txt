@@ -10,3 +10,5 @@ scipy==1.8.0
 matplotlib==3.5.1
 isodate==0.6.1
 pymoo==0.5.0
+setuptools== 65.6.2
+nds==0.4.1

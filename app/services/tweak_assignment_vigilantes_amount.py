@@ -26,7 +26,7 @@ class Tweak_assignment_vigilantes_amount:
                 if extra_vigilant.total_hours_worked_by_week[index_week] > MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK / 2:
                     random.shuffle(available_vigilantes[index_week])
                     case = random.choices([1,2])
-                    if ACTIVE_CASES and case == 1 and self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
+                    if self.assing_shifts_between_vigilantes_with_extra_hours_and_greater_than_24(extra_vigilant,available_vigilantes[index_week],solution,index_week):
                         extra_vigilantes_on_week.remove(extra_vigilant)
                         index_vigilant-=1
                         if STOP_GRASP_TWEAK:
@@ -47,7 +47,7 @@ class Tweak_assignment_vigilantes_amount:
                         var_shift = False
                         index_other_vigilant = 0
                         case = random.choices([1,2])
-                        if ACTIVE_CASES and case == 1:
+                        if True:
                             while index_other_vigilant < len(extra_vigilantes_by_week[index_week]):
                                 other_extra_vigilant = extra_vigilantes_by_week[index_week][index_other_vigilant]
                                 if other_extra_vigilant.id == extra_vigilant.id:
@@ -85,7 +85,7 @@ class Tweak_assignment_vigilantes_amount:
                                     if STOP_GRASP_TWEAK:
                                         return solution
                                     break
-                            index_other_vigilant+=1
+                                index_other_vigilant+=1
                             if var_shift:
                                 if extra_vigilant.total_hours_worked_by_week[index_week] == 0:
                                     if STOP_GRASP_TWEAK:
