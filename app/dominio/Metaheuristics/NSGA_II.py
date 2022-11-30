@@ -49,11 +49,11 @@ class NsgaII(Algorithm):
                 print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
                 population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
                 union_populantion = PopulationServices.union_soluction(population_obj.populations, population_children)
-                population_obj.populations = union_populantion
-                newPopulation = self.best_population(population_obj.populations)
-                population_obj.populations = newPopulation
+                newPopulation = self.best_population(union_populantion)
                 self.evolutions.append(copy.deepcopy(newPopulation)) 
+                population_obj.populations = newPopulation
             except:
+                print("ERROR")
                 self.delete_error(population_obj.populations)
                 continue
             self.current_efo +=1
@@ -62,6 +62,7 @@ class NsgaII(Algorithm):
 
     def delete_error(self,  population: List[Solution]):
         i = 0
+        print("ERROR")
         while i < len(population):
             if not isinstance(population[i],Solution):
                 print("se removio", population[i])
