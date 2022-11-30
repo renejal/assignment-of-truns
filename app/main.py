@@ -7,18 +7,27 @@ from conf.settings import SEEDS,MAX_TIME_DURATION
 from dominio.model.problem import DataUser
 from views.general_shift_view import GenerateShiftView
 from utils.print_xls import generate_results
+from nds import ndomsort
+from services.reference_point import Reference_point
+from utils.hipervolumen import Hipervolumen
+from utils.igd import IGD
+import numpy as np
+
+
 
 class Main:
-    def __init__(self,data) -> None:   
-        
+    def __init__(self,data) -> None: 
+
+          
+       
         random.seed(SEEDS[0])   
         view = GenerateShiftView(data, MAX_TIME_DURATION)
         # # dataGrasp = None
         # # dataNsga = None
-        # # dataNsga = view.executeNsga()
-        dataGrasp = view.executeGrasp()
-        # # generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
-        generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
+        dataNsga = view.executeNsga()
+        # dataGrasp = view.executeGrasp()
+        generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
+        # generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
         # # filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
         # filesData = ['facil-fulltime.json']
         # # casos = []
@@ -87,3 +96,39 @@ class Main:
         return view.executeNsga()
 
 
+    def calculateMetrics():
+        reference_points_IGD = Reference_point().get_reference_points_from_IGD()
+        data = [[0.000,0.063,0.506,0.036],
+            [0.000,0.073,0.485,0.036],
+]
+        index = 0
+        fitness = []
+        solucion = 0
+        evoluciones = []
+        for i in data:
+            evoluciones.append(i)
+            solucion+=1
+            if solucion == 10:
+             fitness.append(evoluciones)
+             solucion = 0
+             evoluciones = []
+        paretoFronts = []
+
+        strings = ""
+        for index,i in enumerate(fitness):
+            fronts = ndomsort.non_domin_sort(i)
+            strings+= str(index) + ","
+            front = np.array(fronts[0])
+            if index == 93:
+                print(fronts[0])
+            strings+= str(Hipervolumen.calculate_hipervolumen(front))+ ","
+            strings+= str(IGD.calculate_igd(front, reference_points_IGD))+ "\n"
+            # for sol in fronts[0]:
+            #     for obj in sol:
+            #         strings+= str(obj)+ ","
+            #     strings+= str(index) + "\n"
+            # paretoFronts.append(fronts[0])
+        # print(paretoFronts)
+        f = open("app/dataset/front"+".txt", "w")
+        f.write(strings)
+        f.close()

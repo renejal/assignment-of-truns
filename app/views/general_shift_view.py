@@ -1,6 +1,7 @@
 from copy import deepcopy
 from datetime import datetime
 from typing import List
+from utils.non_dominated_sorting import NonDominatedSorting
 from services.reference_point import Reference_point
 from dominio.Solution import Solution
 from utils.normalize import Normalize
@@ -90,7 +91,8 @@ class GenerateShiftView:
         for pupulation in evolutions:
             solutionsNormalized = Normalize().normalizeFitness(pupulation)
             fitnesses.append(solutionsNormalized)
-            pf = np.array(solutionsNormalized)
+            front = NonDominatedSorting().getFront(solutionsNormalized)
+            pf = np.array(front)
             hv.append(Hipervolumen.calculate_hipervolumen(pf))
             igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
         metrics["evolutions"] = evolutions

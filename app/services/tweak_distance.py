@@ -161,7 +161,7 @@ class Tweak_distance():
         site_to_change.assigned_Vigilantes[actual_vigilant.id] = actual_vigilant
 
     def change_vigilantes_schedule(self, actual_vigilant:Vigilant, vigilant_to_change: Vigilant) -> None:
-        temporal_vigilant = copy.copy(actual_vigilant) 
+        temporal_vigilant = copy.deepcopy(actual_vigilant) 
         self.change_vigilant_schedule(actual_vigilant,vigilant_to_change)
         self.change_vigilant_schedule(vigilant_to_change,temporal_vigilant)
 

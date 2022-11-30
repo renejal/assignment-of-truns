@@ -141,7 +141,7 @@ class Solution:
         for vigilant_best_id, vigilant_bad_id in zip(vigilants_best, vigilants_bad):
             if vigilants_best.get(vigilant_bad_id): # busca si el vigilante ya se encuentra en el gen si no lo encuentra hace el cambio
                 continue
-            vigilants_best[vigilant_bad_id] = copy.copy(vigilants_best[vigilant_best_id])
+            vigilants_best[vigilant_bad_id] = copy.deepcopy(vigilants_best[vigilant_best_id])
             vigilants_best[vigilant_bad_id].id = vigilant_bad_id
             del vigilants_best[vigilant_best_id]
         

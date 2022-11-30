@@ -52,7 +52,7 @@ class Population():
             children: Solution
             for parent in parents:
                 "TODO: los hijos generados debe ser mejores que sus padres??"
-                children = Tweak_service().Tweak(copy.copy(parent))
+                children = Tweak_service().Tweak(copy.deepcopy(parent))
                 list_children.append(children)
         return list_children
 

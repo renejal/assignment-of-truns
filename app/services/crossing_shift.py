@@ -18,9 +18,9 @@ class CrossingShift:
         objetivo mejoramiento horas extras"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childs = []
-        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        child = self.exchange_shift(copy.deepcopy(solution_A), copy.deepcopy(solution_B))
         childs.append(child)
-        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        child = self.exchange_shift(copy.deepcopy(solution_B),copy.deepcopy(solution_A))
         childs.append(child)
         return childs
 
@@ -30,9 +30,9 @@ class CrossingShift:
         objetivo missing shift"""
         solution_A, solution_B = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childs = []
-        child = self.exchange_shift(copy.copy(solution_A), copy.copy(solution_B))
+        child = self.exchange_shift(copy.deepcopy(solution_A), copy.deepcopy(solution_B))
         childs.append(child)
-        child = self.exchange_shift(copy.copy(solution_B),copy.copy(solution_A))
+        child = self.exchange_shift(copy.deepcopy(solution_B),copy.deepcopy(solution_A))
         childs.append(child)
         return childs
 

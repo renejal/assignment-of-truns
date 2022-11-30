@@ -18,6 +18,7 @@ class Grasp(Algorithm):
     MAX_EFOS: int = settings.MAX_EFOS_GRASP   
     current_efo: int
     current_timeout: int
+    nonDominatedSorting = NonDominatedSorting()
     
     ALEATORY:int = 0 
     COMPONENTS_AMOUNT: int = settings.COMPONENTS_AMOUNT_GRASP
@@ -43,23 +44,21 @@ class Grasp(Algorithm):
         self.MAX_TIMEOUT = self.current_timeout + MAX_TIME_DURATION
 
         population: List[Solution] = self.get_initial_poblation(problem)
-        evolutions.append(copy.copy(population))
+        evolutions.append(copy.deepcopy(population))
         if(self.current_timeout < self.MAX_TIMEOUT):
             while self.current_efo < self.MAX_EFOS:
                 self.current_timeout = time.time()
                 if(self.current_timeout > self.MAX_TIMEOUT):
-                    evolutions.append(population)
                     return evolutions
                 print("evolution:"+ str(self.current_efo+1))
                 for index_solution in range(self.AMOUNT_POPULATION):
                     self.current_timeout = time.time()
                     if(self.current_timeout > self.MAX_TIMEOUT):
-                        evolutions.append(population)
                         return evolutions
                     best_solution = self.local_optimization(population[index_solution])
                     population.append(best_solution)
                 population = self.best_population(population)
-                evolutions.append(copy.copy(population))
+                evolutions.append(copy.deepcopy(population))
                 self.current_efo+= 1   
         return evolutions
 
@@ -87,16 +86,12 @@ class Grasp(Algorithm):
             if(self.current_timeout > self.MAX_TIMEOUT):
                 break
             new_solution = Tweak_service().Tweak(copy.deepcopy(best_solution))
-            # if random.randint(0,1) == 1:
             if new_solution.total_fitness < best_solution.total_fitness:
                 best_solution = new_solution
-            # else:
-            #     best_solution = new_solution
         return best_solution
         
     def best_population(self, population: List[Solution]) -> List[Solution]:
-        # PopulationServices.not_dominate_sort(Population(None, None, population))
-        # population = PopulationServices.get_solutions_by_frente(population,len(population)/2)
-        newPopulation = NonDominatedSorting().getFronts(population, len(population)/2)
-        return newPopulation
+        newPopulation = self.nonDominatedSorting.getFronts(population)
+        return self.nonDominatedSorting.get_best_populations(newPopulation,self.AMOUNT_POPULATION)
+         
 

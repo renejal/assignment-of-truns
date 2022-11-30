@@ -24,7 +24,7 @@ class PopulationServices:
     @staticmethod
     def generate_decendents(population: Population) -> List[Solution]:
         childs_list: list[Solution] = []
-        while len(childs_list)<len(population.populations): 
+        while len(childs_list) < len(population.populations): 
             try:
                 function_crossing = PopulationServices.get_crossing()
                 childs = function_crossing(population)
@@ -98,7 +98,7 @@ class PopulationServices:
 
     @staticmethod
     def not_dominate_sort(population: Population) -> List[Solution]:
-        pop = copy.copy(population)
+        pop = copy.deepcopy(population)
         try:
             PopulationServices.add_ids_solution(pop.populations)
             PopulationServices.calculate_dominance(pop)

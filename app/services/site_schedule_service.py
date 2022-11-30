@@ -1,5 +1,5 @@
 from typing import List
-from conf.settings import WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE
+from conf.settings import WINDOWS_RANDOM_THE_VIGILANTS_ORDER_FOR_SITE, SHUFFLE
 from dominio.Component import Component
 from dominio.model.vigilant import Vigilant
 from dominio.model.shift import Shift
@@ -60,6 +60,7 @@ class Site_schedule_service:
         shift.add_vigilant(vigilant_to_assign.id)
    
     def shuffle_first_shifts(self, shifts:List[Shift]):
-        shuffle_first_shifts = shifts[:9]
-        # random.shuffle(shuffle_first_shifts)
-        shifts[:9] = shuffle_first_shifts
+        if SHUFFLE:
+            shuffle_first_shifts = shifts[:9]
+            random.shuffle(shuffle_first_shifts)
+            shifts[:9] = shuffle_first_shifts

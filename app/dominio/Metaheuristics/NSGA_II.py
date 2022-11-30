@@ -1,6 +1,7 @@
 import copy
 import time
 from typing import List
+from utils.non_dominated_sorting import NonDominatedSorting
 from dominio.Algorithm import Algorithm
 from dominio.Solution import Solution
 from dominio.vigilant_assigment import VigilantAssigment
@@ -9,6 +10,8 @@ from services.population_services import PopulationServices
 from conf import settings
 
 class NsgaII(Algorithm):
+
+    nonDominatedSorting = NonDominatedSorting()
 
     MAX_TIMEOUT: int
     MAX_EFOS: int = settings.MAX_EFOS_NSGAII   
@@ -36,8 +39,7 @@ class NsgaII(Algorithm):
         print("START NSGA")
         population_obj = Population(problem, self.POPULATION_AMOUNT_NSGAII)
         population_obj.inicialize_population(self.MAX_TIMEOUT)
-        self.evolutions.append(population_obj.populations) 
-        population_parents = [] 
+        self.evolutions.append(copy.deepcopy(population_obj.populations)) 
 
         while self.current_efo < self.MAX_EFOS:
             try:
@@ -45,26 +47,12 @@ class NsgaII(Algorithm):
                 if(self.CURRENT_TIMEOUT > self.MAX_TIMEOUT):
                     return self.evolutions
                 print(f"iteration N. {self.current_efo}, time: {self.MAX_TIMEOUT - self.CURRENT_TIMEOUT}")
-                if self.current_efo == 33:
-                    print("error ", self.current_efo)
                 population_children = PopulationServices.generate_decendents(copy.deepcopy(population_obj)) 
-                union_populantion = PopulationServices.union_soluction(copy.deepcopy(population_obj.populations), population_children)
+                union_populantion = PopulationServices.union_soluction(population_obj.populations, population_children)
                 population_obj.populations = union_populantion
-                PopulationServices.not_dominate_sort(population_obj)
-                if not population_obj.populations:
-                    raise("population not found")
-                PopulationServices.distance_crowding(population_obj)# order by population distance of crowding 
-                rango = 1
-                while population_obj.is_soluction_complete():
-                    range_of_solution = PopulationServices.get_solution_of_range(population_obj, rango)
-                    if range_of_solution:
-                        population_parents=population_parents+range_of_solution
-                    else:
-                        break 
-                    rango +=1
-                population_obj.populations = population_parents
-                population_obj.populations = population_obj.get_populations(self.POPULATION_AMOUNT_NSGAII)
-                self.evolutions.append(population_obj.populations) 
+                newPopulation = self.best_population(population_obj.populations)
+                population_obj.populations = newPopulation
+                self.evolutions.append(copy.deepcopy(newPopulation)) 
             except:
                 self.delete_error(population_obj.populations)
                 continue
@@ -79,6 +67,10 @@ class NsgaII(Algorithm):
                 print("se removio", population[i])
                 population.remove(population[i])
             i = i + 1
+
+    def best_population(self, population: List[Solution]) -> List[Solution]:
+        newPopulation = self.nonDominatedSorting.getFronts(population)
+        return self.nonDominatedSorting.get_best_populations(newPopulation,self.POPULATION_AMOUNT_NSGAII)
             
 
             

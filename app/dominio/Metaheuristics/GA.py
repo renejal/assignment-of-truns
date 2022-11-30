@@ -58,7 +58,7 @@ def cal_pop_fitness(population, views: List[GenerateShiftView], algorithm: str):
 def select_mating_pool(pop, fitness, num_parents):
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
     parents = numpy.empty((num_parents, pop.shape[1]))
-    fitnessCopy =  copy.copy(fitness)
+    fitnessCopy =  copy.deepcopy(fitness)
     for parent_num in range(num_parents):
         max_fitness_idx = numpy.where(fitnessCopy == numpy.max(fitnessCopy))
         max_fitness_idx = max_fitness_idx[0][0]

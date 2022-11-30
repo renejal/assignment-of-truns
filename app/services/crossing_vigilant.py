@@ -11,7 +11,7 @@ class CrossingVigilant:
     def exchanges_vigilantes(self, parent_for_exchange_one: Solution, parent_for_exchange_two: Solution) -> List[Solution]:
         childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
-            child = self.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
+            child = self.parent_crossing(copy.deepcopy(parent_for_exchange_one),copy.deepcopy(parent_for_exchange_two))
             if child:
                 childrens.append(child)  
             elif childrens:
@@ -24,7 +24,7 @@ class CrossingVigilant:
         return childrens
 
     def parent_crossing(self, parent_for_exchange_new: Solution, children: Solution) -> Solution:
-        vigilants: List[Component] = self.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
+        vigilants: List[Component] = self.get_random_gens(copy.deepcopy(parent_for_exchange_new),copy.deepcopy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         if not vigilants:
             return False
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
@@ -35,7 +35,7 @@ class CrossingVigilant:
         parent_for_exchange_one, parent_for_exchange_two = Crossing.get_parents_by_objetive(population.populations, objective_index, settings)
         childrens: List[Solution] = []
         for i in range(settings.NUMBER_OF_CHILDREN_GENERATE):
-            child = self.parent_crossing(copy.copy(parent_for_exchange_one),copy.copy(parent_for_exchange_two))
+            child = self.parent_crossing(copy.deepcopy(parent_for_exchange_one),copy.deepcopy(parent_for_exchange_two))
             if child:
                 childrens.append(child)  
             if len(childrens) == settings.NUMBER_OF_CHILDREN_GENERATE:
@@ -69,7 +69,7 @@ class CrossingVigilant:
         return best
     
     def parent_crossing(self, parent_for_exchange_new: Solution, children: Solution) -> Solution:
-        vigilants: List[Component] = self.get_random_gens(copy.copy(parent_for_exchange_new),copy.copy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
+        vigilants: List[Component] = self.get_random_gens(copy.deepcopy(parent_for_exchange_new),copy.deepcopy(children)) #TODO: los vigilantes deven ser diferentes en las dos listas
         if not vigilants:
             return False
         for vigilant_new_id, vigilant_for_exchagen_id in zip(vigilants[0], vigilants[1]):
