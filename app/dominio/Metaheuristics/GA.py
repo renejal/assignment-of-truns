@@ -94,7 +94,7 @@ def mutation(offspring_crossover, algorithm, num_mutations=1 ):
     return offspring_crossover
 
 def calculate_fitness_problem(population, views: List[GenerateShiftView], algorithm: str):
-    max_iterations = 10
+    max_iterations = 1
     response = futureOptimizationResponses(population, views,algorithm,max_iterations)
     fitness = response[0]
     data = response[1]

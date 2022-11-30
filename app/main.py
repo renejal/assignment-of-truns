@@ -73,6 +73,7 @@ class Main:
                 view = GenerateShiftView(data, MAX_TIME_DURATION)
                 argsList.append([view,i])
         futures = [executor.submit(self.executeGrasp, view[0], view[1]) for view in argsList]
+        futures =+ [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
             sol+=1
             # get the result for the next completed task
@@ -86,6 +87,11 @@ class Main:
             generate_results(i,None,DataUser.from_dict(data).id_user)
         print("termino")
 
+    def execute_algoritm(self, view: GenerateShiftView, seed):
+        result = []
+        result.append(view.executeGrasp())
+        result.append(view.executeNsga())
+        return result
 
     def executeGrasp(self, view: GenerateShiftView, seed):
         random.seed(SEEDS[seed])   

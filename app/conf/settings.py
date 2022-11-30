@@ -2,7 +2,7 @@ import random
 import environ
 
 MAX_TOTAL_WEEKS = 0
-MAX_TIME_DURATION = 240#1day
+MAX_TIME_DURATION = 3600#1day
 PATH_RESULTS = "app/dataset/results/"
 
 SHUFFLE = True
@@ -30,7 +30,7 @@ SEEDS = [722, 829, 616, 923, 150, 317, 101, 747, 75, 920, 870, 700, 338, 483, 57
 normal = environ.Env(
     #GENERAL
     SETTINGS = (int, random.seed(0)), #SEED
-    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 48),
     MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
     MINIMUN_BREAK_DURATION = (int, 12),
     ##Genera turnos de la universidad
@@ -59,7 +59,7 @@ normal = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 50),
+    COMPONENTS_AMOUNT_GRASP =  (int, 500),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
@@ -101,7 +101,7 @@ extra = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 50),
+    COMPONENTS_AMOUNT_GRASP =  (int, 500),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
@@ -144,7 +144,7 @@ universidad = environ.Env(
     #PARAMETERS
     MAX_EFOS_GRASP =  (int, 999999999999999999999),
     POPULATION_AMOUNT_GRASP = (int, 10),
-    COMPONENTS_AMOUNT_GRASP =  (int, 20),
+    COMPONENTS_AMOUNT_GRASP =  (int, 500),
     RESTRICTED_LIST_AMOUNT_COMPONENT_GRASP =  (int, 19),
     TWEAK_AMOUNT_REPETITIONS_GRASP =  (int, 18),
     #PorcetanjeTweaksGRASP
