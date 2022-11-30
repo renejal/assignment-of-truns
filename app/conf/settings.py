@@ -30,7 +30,7 @@ SEEDS = [722, 829, 616, 923, 150, 317, 101, 747, 75, 920, 870, 700, 338, 483, 57
 normal = environ.Env(
     #GENERAL
     SETTINGS = (int, random.seed(0)), #SEED
-    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
+    MAXIMUM_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 48),
     MAXIMUM_EXTRA_WORKING_AMOUNT_HOURS_BY_WEEK = (int, 56),
     MINIMUN_BREAK_DURATION = (int, 12),
     ##Genera turnos de la universidad

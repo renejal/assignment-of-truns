@@ -24,19 +24,19 @@ class Main:
         view = GenerateShiftView(data, MAX_TIME_DURATION)
         # # dataGrasp = None
         # # dataNsga = None
-        dataNsga = view.executeNsga()
-        # dataGrasp = view.executeGrasp()
-        generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
-        # generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
-        # # filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
-        # filesData = ['facil-fulltime.json']
-        # # casos = []
-        # # for file in filesData:
-        # #     datanew = open('./app/dataset/datosSinteticos/'+file)
-        # #     datanew = json.load(datanew)
-        # #     casos.append(datanew)
-        # # # self.pruebaGrasp(casos)
-        # # self.pruebaNSGA(casos)
+        # dataNsga = view.executeNsga()
+        dataGrasp = view.executeGrasp()
+        # generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
+        generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
+        # filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
+        # # filesData = ['facil-fulltime.json']
+        # casos = []
+        # for file in filesData:
+        #     datanew = open('./app/dataset/datosSinteticos/'+file)
+        #     datanew = json.load(datanew)
+        #     casos.append(datanew)
+        # self.pruebaGrasp(casos)
+        # self.pruebaNSGA(casos)
         print("exit")
 
 
