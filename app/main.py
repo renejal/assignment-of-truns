@@ -24,20 +24,20 @@ class Main:
         view = GenerateShiftView(data, MAX_TIME_DURATION)
         # # dataGrasp = None
         # # dataNsga = None
-        # dataNsga = view.executeNsga()
+        dataNsga = view.executeNsga()
         # dataGrasp = view.executeGrasp()
-        # generate_results(dataGrasp,dataNsga,DataUser.from_dict(data).id_user)
+        generate_results(None,dataNsga,DataUser.from_dict(data).id_user)
         # generate_results(dataGrasp,None,DataUser.from_dict(data).id_user)
         # filesData = ['facil-fulltime.json','facil-parcial.json','medio-fulltime.json','medio-parcial.json','hard-fulltime.json','hard-parcial.json']
-        filesData = ['datareal.json']
-        casos = []
-        for file in filesData:
-            datanew = open('./dataset/casoreal/'+file)
-            datanew = json.load(datanew)
-            casos.append(datanew)
-        self.pruebaGrasp(casos)
-        self.pruebaNSGA(casos)
-        print("exit")
+        # filesData = ['datareal.json']
+        # casos = []
+        # for file in filesData:
+        #     datanew = open('./dataset/casoreal/'+file)
+        #     datanew = json.load(datanew)
+        #     casos.append(datanew)
+        # self.Execute_algoritm(casos)
+        # # self.pruebaNSGA(casos)
+        # print("exit")
 
 
     def pruebaNSGA(self, casos):
@@ -63,7 +63,7 @@ class Main:
             generate_results(None,i,DataUser.from_dict(data).id_user)
         print("Finalizo metodo Nsga")
 
-    def pruebaGrasp(self, casos):
+    def Execute_algoritm(self, casos):
         executor = ThreadPoolExecutor(max_workers=30)
         argsList = []
         responses = []
@@ -73,25 +73,21 @@ class Main:
                 view = GenerateShiftView(data, MAX_TIME_DURATION)
                 argsList.append([view,i])
         futures = [executor.submit(self.executeGrasp, view[0], view[1]) for view in argsList]
-        futures =+ [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
+        futures += [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
             sol+=1
             # get the result for the next completed task
             response = future.result()
             responses.append(response)
-            print("Finalizo metodo GRasp")
         executor.shutdown() # blocks
         print("paso shutdown")
-        for i in responses:
-            print("entro")
-            generate_results(i,None,DataUser.from_dict(data).id_user)
+        for response in responses:
+            if response.get("name")=="Nsga":
+                generate_results(None,response,DataUser.from_dict(data).id_user)
+            else:
+                generate_results(response,None,DataUser.from_dict(data).id_user)
         print("termino")
 
-    def execute_algoritm(self, view: GenerateShiftView, seed):
-        result = []
-        result.append(view.executeGrasp())
-        result.append(view.executeNsga())
-        return result
 
     def executeGrasp(self, view: GenerateShiftView, seed):
         random.seed(SEEDS[seed])   

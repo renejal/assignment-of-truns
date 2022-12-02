@@ -50,10 +50,10 @@ normal = environ.Env(
     NUMBER_OF_CHILDREN_GENERATE= (int, 2),
     NUMBER_ITERATION_SELECTION_COMPONENTE=(int, 10),
     #PorcetanjeCrossingNsgaii
-    MISSING_SHIFT_CROSSING_PROBABILITY = (int, 50),
-    ASSIGNED_VIGILANTES_CROSSING_PROBABILITY = (int, 30),
-    EXTRA_HOURS_CROSSING_PROBABILITY = (int, 15),
-    DISTANCE_CROSSING_PROBABILITY = (int, 5),
+    MISSING_SHIFT_CROSSING_PROBABILITY = (int, 25),
+    ASSIGNED_VIGILANTES_CROSSING_PROBABILITY = (int, 25),
+    EXTRA_HOURS_CROSSING_PROBABILITY = (int, 25),
+    DISTANCE_CROSSING_PROBABILITY = (int, 25),
     
     #GRASP CONFIG
     #PARAMETERS
@@ -155,7 +155,7 @@ universidad = environ.Env(
 )
 
 # envirom exect
-env = normal
+env = normal 
 if env == universidad:
     CALCULATE_HOURS_FITNESS = False
 
