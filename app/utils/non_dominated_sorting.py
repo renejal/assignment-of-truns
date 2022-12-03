@@ -65,7 +65,7 @@ class NonDominatedSorting:
         for sol in frente:
             if sol.crowding_distance != INFINITE_POSITIVE and sol.crowding_distance != INFINITE_NEGATIVE:
                 sol_in_middle.append(sol)
-        sol_in_middle = sorted(sol_in_middle, key = lambda solution : solution.crowding_distance)
+        sol_in_middle = sorted(sol_in_middle, key = lambda solution : solution.crowding_distance, reverse=True)
         soluciones+= sol_in_middle
         return soluciones
 

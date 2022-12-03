@@ -246,7 +246,7 @@ class Solution:
         self.total_fitness = 0
         self.fitness = [0,0,0,0]
         for site in self.sites_schedule:
-            for shift in site.missing_shifts:
+            for shift in site.site_schedule:
                 if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
                     self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
                     self.total_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))

@@ -28,6 +28,7 @@ class PopulationServices:
             try:
                 function_crossing = PopulationServices.get_crossing()
                 childs = function_crossing(population)
+                childs = PopulationServices.Mutation(childs)
                 childs_list.extend(childs)
             except ValueError as e:
                 print("error e", e)
