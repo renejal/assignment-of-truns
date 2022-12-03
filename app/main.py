@@ -64,13 +64,8 @@ class Main:
             generate_results(None,i,DataUser.from_dict(data).id_user)
         print("Finalizo metodo Nsga")
 
-<<<<<<< HEAD
     def pruebaGrasp(self, casos):
         executor = ThreadPoolExecutor(max_workers=1)
-=======
-    def Execute_algoritm(self, casos):
-        executor = ThreadPoolExecutor(max_workers=30)
->>>>>>> 8e859d9082accaf0c12e8977a1b60b82c11d1527
         argsList = []
         responses = []
         sol = 0
