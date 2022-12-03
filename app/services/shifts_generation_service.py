@@ -103,7 +103,7 @@ class Shifts_generation_service:
                     for index_shift, hours_amount_to_work in enumerate(hours_amount_to_work_by_shift):
                         shifts.append(Shift(index_shift, shift_start_time - hours_extra_last_week , shift_start_time + hours_amount_to_work - hours_extra_last_week -1  , shift.num_vigilantes))
                         shift_start_time += hours_amount_to_work
-                        total_missing_shifts+=shift.num_vigilantes
+                        total_missing_shifts+=shift.num_vigilantes * hours_amount_to_work
                         minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
                     if special_end == True:
                         working_hours_amount = hours_extra_last_week

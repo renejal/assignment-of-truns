@@ -91,10 +91,10 @@ class GenerateShiftView:
         for pupulation in evolutions:
             solutionsNormalized = Normalize().normalizeFitness(pupulation)
             fitnesses.append(solutionsNormalized)
-            # front = NonDominatedSorting().getFront(solutionsNormalized)
-            # pf = np.array(front)
+            front = NonDominatedSorting().getFront(solutionsNormalized)
+            front = np.array(front)
             pf = np.array(solutionsNormalized)
-            hv.append(Hipervolumen.calculate_hipervolumen(pf))
+            hv.append(Hipervolumen.calculate_hipervolumen(front))
             igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
         metrics["evolutions"] = evolutions
         metrics["fitnesses"] = fitnesses
@@ -113,10 +113,10 @@ class GenerateShiftView:
         for pupulation in evolutions:
             solutionsNormalized = Normalize().normalizeFitness(pupulation)
             fitnesses.append(solutionsNormalized)
-            # front = NonDominatedSorting().getFront(solutionsNormalized)
-            # pf = np.array(front)
+            front = NonDominatedSorting().getFront(solutionsNormalized)
+            front = np.array(front)
             pf = np.array(solutionsNormalized)
-            hv.append(Hipervolumen.calculate_hipervolumen(pf))
+            hv.append(Hipervolumen.calculate_hipervolumen(front))
             igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
         metrics["evolutions"] = evolutions
         metrics["fitnesses"] = fitnesses

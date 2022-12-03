@@ -89,6 +89,7 @@ class Vigilant(FromDictMixin):
 
     def set_order_sites_by_distance(self):
         order_sites_by_distance = sorted(range(len(self.distances)), key=lambda k: self.distances[k])
+        self.last_site_distance = order_sites_by_distance[len(order_sites_by_distance)-1] + 1 
         for index, order_site in enumerate(order_sites_by_distance):
             self.order_distances[order_site+1] = index
 
