@@ -40,7 +40,7 @@ class GenerateShiftView:
         data_grasp = self.algoritmGrasp.Execute(deepcopy(self.__myProblem), self.time)
         tocGrasp = time.perf_counter()
         fig = Graph(data_grasp).get_fig()
-        return self.getMetrics(data_grasp,fig,ticGrasp,tocGrasp)
+        return self.getMetrics_grasp(data_grasp,fig,ticGrasp,tocGrasp)
     
     def executeGraspToOptimize(self, grasp: Grasp, amountPopulation , time):
         print("Start Grasp")
@@ -64,7 +64,7 @@ class GenerateShiftView:
         data_nsgaii = self.algoritmNSGAII.Execute(deepcopy(self.__myProblem),self.time)
         tocNsga = time.perf_counter()
         fig = Graph(data_nsgaii).get_fig()
-        return self.getMetrics(data_nsgaii,fig ,ticNsga,tocNsga)
+        return self.getMetrics_nsga(data_nsgaii,fig ,ticNsga,tocNsga)
 
     def executeNsgaIIToOptimize(self, nsga: NsgaII, amountPopulation,time):
         try:
@@ -83,7 +83,7 @@ class GenerateShiftView:
         else:
             return data_nsgaII[amountEvolutions-2]
        
-    def getMetrics(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
+    def getMetrics_nsga(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
         metrics = {}
         fitnesses = []
         hv = []
@@ -102,6 +102,29 @@ class GenerateShiftView:
         metrics["igd"] = igd
         metrics["time"] = self.calculate_time(tic,toc)
         metrics["fig"] = fig
+        metrics["name"] = "Nsga"
+        return metrics
+
+    def getMetrics_grasp(self, evolutions:List[List[Solution]], fig, tic:int, toc:int):
+        metrics = {}
+        fitnesses = []
+        hv = []
+        igd = []
+        for pupulation in evolutions:
+            solutionsNormalized = Normalize().normalizeFitness(pupulation)
+            fitnesses.append(solutionsNormalized)
+            # front = NonDominatedSorting().getFront(solutionsNormalized)
+            # pf = np.array(front)
+            pf = np.array(solutionsNormalized)
+            hv.append(Hipervolumen.calculate_hipervolumen(pf))
+            igd.append(IGD.calculate_igd(pf, self.__reference_points_IGD))
+        metrics["evolutions"] = evolutions
+        metrics["fitnesses"] = fitnesses
+        metrics["hv"] = hv
+        metrics["igd"] = igd
+        metrics["time"] = self.calculate_time(tic,toc)
+        metrics["fig"] = fig
+        metrics["name"] = "Grasp"
         return metrics
 
     def create_sites_test(self, data) -> json:

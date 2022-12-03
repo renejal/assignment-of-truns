@@ -64,8 +64,13 @@ class Main:
             generate_results(None,i,DataUser.from_dict(data).id_user)
         print("Finalizo metodo Nsga")
 
+<<<<<<< HEAD
     def pruebaGrasp(self, casos):
         executor = ThreadPoolExecutor(max_workers=1)
+=======
+    def Execute_algoritm(self, casos):
+        executor = ThreadPoolExecutor(max_workers=30)
+>>>>>>> 8e859d9082accaf0c12e8977a1b60b82c11d1527
         argsList = []
         responses = []
         sol = 0
@@ -74,17 +79,19 @@ class Main:
                 view = GenerateShiftView(data, MAX_TIME_DURATION)
                 argsList.append([view,i])
         futures = [executor.submit(self.executeGrasp, view[0], view[1]) for view in argsList]
+        futures += [executor.submit(self.executeNSGA, view[0], view[1]) for view in argsList]
         for future in as_completed(futures):
             sol+=1
             # get the result for the next completed task
             response = future.result()
             responses.append(response)
-            print("Finalizo metodo GRasp")
         executor.shutdown() # blocks
         print("paso shutdown")
-        for i in responses:
-            print("entro")
-            generate_results(i,None,DataUser.from_dict(data).id_user)
+        for response in responses:
+            if response.get("name")=="Nsga":
+                generate_results(None,response,DataUser.from_dict(data).id_user)
+            else:
+                generate_results(response,None,DataUser.from_dict(data).id_user)
         print("termino")
 
 

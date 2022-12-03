@@ -168,6 +168,7 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/grasp/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/grasp/vigilantSolution"+str(index))
+        print("escribiendo imagenes Grasp")
         dataGrasp.get("fig").write_image(path+"/figGrasp.png")
         dataGrasp.get("fig").write_html(path+"/figGraspHtml.html")
     if(dataNsga != None):
@@ -179,7 +180,7 @@ def generate_results(dataGrasp: Dict[str, object], dataNsga: Dict[str, object], 
                 solution, path+"/nsgaii/siteSolution"+str(index))
             generate_excel_vigilantes(
                 solution, path+"/nsgaii/vigilantSolution"+str(index))
-        print("excribiendo imagenes")
+        print("excribiendo imagenes Nsgaz")
         dataNsga.get("fig").write_image(path+"/figNsga.png")
         dataNsga.get("fig").write_html(path+"/figNsgaHtml.html")
     generate_metrics(dataGrasp, dataNsga, path)

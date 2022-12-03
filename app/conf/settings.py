@@ -155,7 +155,7 @@ universidad = environ.Env(
 )
 
 # envirom exect
-env = normal
+env = normal 
 if env == universidad:
     CALCULATE_HOURS_FITNESS = False
 
