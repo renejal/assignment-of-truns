@@ -57,14 +57,9 @@ class Shifts_generation_service:
             for shiftU in shifts_university:
                 shiftStart = shiftU[0] + 168 * week
                 shiftEnd = shiftU[1] + 168 * week
-
-                if site.id == 13:
-                    shifts.append(Shift(idShift, shiftStart, shiftEnd  , 2))
-                    total_missing_shifts+=2
-                else:
-                    shifts.append(Shift(idShift, shiftStart, shiftEnd, 1))
-                    total_missing_shifts+=1
-                    minimum_necessary_vigilantes+= 1 *(shiftStart - shiftEnd + 1) 
+                shifts.append(Shift(idShift, shiftStart, shiftEnd, 1))
+                total_missing_shifts+=1 *(shiftStart - shiftEnd + 1) 
+                minimum_necessary_vigilantes+= 1 *(shiftStart - shiftEnd + 1) 
                 idShift+=1
         return shifts,total_missing_shifts,minimum_necessary_vigilantes
 
@@ -116,7 +111,7 @@ class Shifts_generation_service:
                         for index_shift, hours_amount_to_work in enumerate(hours_amount_to_work_by_shift):
                             shifts.append(Shift(index_shift, shift_start_time - hours_extra_last_week , shift_start_time + hours_amount_to_work - hours_extra_last_week -1  , shift.num_vigilantes))
                             shift_start_time += hours_amount_to_work
-                            total_missing_shifts+=shift.num_vigilantes
+                            total_missing_shifts+=shift.num_vigilantes * hours_amount_to_work
                             minimum_necessary_vigilantes+=shift.num_vigilantes * hours_amount_to_work
         return shifts,total_missing_shifts,minimum_necessary_vigilantes
         

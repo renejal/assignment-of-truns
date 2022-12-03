@@ -33,6 +33,8 @@ class PopulationServices:
             except ValueError as e:
                 print("error e", e)
                 continue
+        for child in childs_list:
+            child.calculate_fitness()
         return childs_list
 
 

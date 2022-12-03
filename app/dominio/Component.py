@@ -101,8 +101,8 @@ class Component:
         for shift in self.site_schedule:
             if shift.necesary_vigilantes != len(shift.assigment_vigilantes):
                 self.missing_shifts.append(shift)
-                self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
-                self.total_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes)))
+                self.missing_shifts_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes))) * (shift.shift_end - shift.shift_start + 1)
+                self.total_fitness+= MISSING_FITNESS_VALUE*(abs(shift.necesary_vigilantes - len(shift.assigment_vigilantes))) * (shift.shift_end - shift.shift_start + 1)
         if self.assigned_Vigilantes == None:
             return
         for vigilant in self.assigned_Vigilantes.values():
